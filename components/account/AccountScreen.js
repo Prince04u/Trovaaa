@@ -59,58 +59,60 @@ export default function AccountScreen() {
   const avatarChar = displayName.charAt(0) || "P";
 
   const menuItems = [
-    { label: "Sign In", href: "/account/vip", icon: "event_available", isTealIcon: false },
-    { label: "Orders", href: "/games/history", icon: "assignment", isTealIcon: false },
-    { label: "Promotion", href: "/referral", icon: "card_giftcard", isTealIcon: false },
-    { label: "Red Envelope", href: "/account/gifts", icon: "account_balance_wallet", isTealIcon: true },
-    { label: "Luck Draw", href: "/promo", icon: "account_balance_wallet", isTealIcon: true },
-    { label: "Wallet", href: "/wallet", icon: "account_balance_wallet", isTealIcon: false },
-    { label: "Bank Card", href: "/wallet/withdraw/accounts", icon: "credit_card", isTealIcon: false },
-    { label: "Address", href: "/account/profile", icon: "location_city", isTealIcon: false },
-    { label: "Account Security", href: "/account/security", icon: "security", isTealIcon: false },
-    { label: "App Download", href: "/account/guide", icon: "download", isTealIcon: false },
-    { label: "Complaints & Suggestions", href: "/account/feedback", icon: "feedback", isTealIcon: false },
-    { label: "About", href: "/about", icon: "info", isTealIcon: false },
+    { label: "Sign In", href: "/account/vip", icon: "event_available", isTealIcon: false, hasChevron: true },
+    { label: "Orders", href: "/games/history", icon: "assignment", isTealIcon: false, hasChevron: true },
+    { label: "Promotion", href: "/referral", icon: "card_giftcard", isTealIcon: false, hasChevron: true },
+    { label: "Red Envelope", href: "/account/gifts", icon: "monetization_on", isTealIcon: true, hasChevron: false },
+    { label: "Luck Draw", href: "/promo", icon: "monetization_on", isTealIcon: true, hasChevron: true },
+    { label: "Wallet", href: "/wallet", icon: "account_balance_wallet", isTealIcon: false, hasChevron: true },
+    { label: "Bank Card", href: "/wallet/withdraw/accounts", icon: "credit_card", isTealIcon: false, hasChevron: true },
+    { label: "Address", href: "/account/profile", icon: "location_city", isTealIcon: false, hasChevron: true },
+    { label: "Account Security", href: "/account/security", icon: "security", isTealIcon: false, hasChevron: true },
+    { label: "App Download", href: "/account/guide", icon: "download", isTealIcon: false, hasChevron: true },
+    { label: "Complaints & Suggestions", href: "/account/feedback", icon: "feedback", isTealIcon: false, hasChevron: true },
+    { label: "About", href: "/about", icon: "info", isTealIcon: false, hasChevron: true },
   ];
 
   return (
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
-      {/* Profile Header Banner matching reference screenshot 1 */}
-      <section className="bg-[#00A091] text-white px-[22px] pt-[17px] pb-[16px] min-h-[180px] flex flex-col justify-between relative select-none w-full box-border">
+      {/* Profile Header Banner matching reference screenshot 2 */}
+      <section className="bg-[#009F8F] text-white px-[21px] pt-[12px] pb-[16px] min-h-[175px] flex flex-col justify-between relative select-none w-full box-border shadow-sm">
         {/* User identification top bar with top-right bell button */}
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-[16px]">
-            <div className="w-[44px] h-[44px] rounded-full bg-[#1E88E5] text-white flex items-center justify-center font-normal text-[18px] shadow-sm shrink-0">
+          <div className="flex items-center gap-[20px]">
+            <div className="w-[40px] h-[40px] rounded-full bg-[#9DE3DF] text-white flex items-center justify-center font-normal text-[18px] shadow-sm shrink-0">
               {avatarChar}
             </div>
             <div className="flex flex-col gap-[2px] justify-center">
-              <span className="text-[14px] font-normal text-white leading-tight">User: {displayName}</span>
-              <span className="text-[12px] text-white opacity-90 leading-tight">ID: {uid}</span>
+              <span className="text-[16px] font-normal text-white leading-tight flex items-center gap-1">
+                User: <span className="border-b border-white/70 pb-[1px] inline-block">{displayName}</span>
+              </span>
+              <span className="text-[14px] text-white opacity-95 leading-tight">ID: {uid}</span>
             </div>
           </div>
 
-          {/* Top-right bell inside white circular button matching reference photo */}
+          {/* Top-right bell inside white circular button matching reference photo 2 */}
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="w-[36px] h-[36px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 text-gray-600 border-none cursor-pointer shrink-0 outline-none"
+            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 text-gray-600 border-none cursor-pointer shrink-0 outline-none"
             aria-label="Notifications"
           >
-            <span className="material-icons-outlined text-[20px] text-[#555555]">notifications</span>
+            <span className="material-icons-outlined text-[22px] text-[#555555]">notifications</span>
           </button>
         </div>
 
         {/* 3 Stat Columns (Balance, Commission, Interest) spread across full width */}
-        <div className="grid grid-cols-3 w-full text-center items-center mt-6 pb-2">
+        <div className="grid grid-cols-3 w-full text-center items-center mt-5 pb-1">
           {/* Balance */}
           <div className="flex flex-col items-center">
-            <strong className="text-[14px] font-normal text-white leading-none">
+            <strong className="text-[16px] font-normal text-white leading-none">
               ₹ {Number(balance || 0).toFixed(2)}
             </strong>
-            <span className="text-[12px] text-white opacity-90 mt-1">Balance</span>
+            <span className="text-[15px] text-white opacity-95 mt-1.5">Balance</span>
             <Link 
               href="/wallet/deposit" 
-              className="mt-2 bg-[#2196F3] text-white text-[12px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[22px] w-[85px] border-none outline-none"
+              className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               Recharge
             </Link>
@@ -118,13 +120,13 @@ export default function AccountScreen() {
 
           {/* Commission */}
           <div className="flex flex-col items-center">
-            <strong className="text-[14px] font-normal text-white leading-none">
+            <strong className="text-[16px] font-normal text-white leading-none">
               ₹ 0
             </strong>
-            <span className="text-[12px] text-white opacity-90 mt-1">Commission</span>
+            <span className="text-[15px] text-white opacity-95 mt-1.5">Commission</span>
             <Link 
               href="/referral" 
-              className="mt-2 bg-[#2196F3] text-white text-[12px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[22px] w-[85px] border-none outline-none"
+              className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               See
             </Link>
@@ -132,13 +134,13 @@ export default function AccountScreen() {
 
           {/* Interest */}
           <div className="flex flex-col items-center">
-            <strong className="text-[14px] font-normal text-white leading-none">
+            <strong className="text-[16px] font-normal text-white leading-none">
               ₹ 0
             </strong>
-            <span className="text-[12px] text-white opacity-90 mt-1">Interest</span>
+            <span className="text-[15px] text-white opacity-95 mt-1.5">Interest</span>
             <Link 
               href="/referral" 
-              className="mt-2 bg-[#2196F3] text-white text-[12px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[22px] w-[85px] border-none outline-none"
+              className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               See
             </Link>
@@ -146,25 +148,30 @@ export default function AccountScreen() {
         </div>
       </section>
 
-      {/* Menu List - Full Viewport Width */}
+      {/* Menu List - Full Viewport Width Flat White Continuous Surface */}
       <section className="bg-white w-full flex flex-col">
         {menuItems.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className="flex items-center h-[52px] pl-[18px] hover:bg-gray-50 text-decoration-none group transition-colors w-full box-border border-b border-[#f5f5f5]"
+            className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none group transition-colors w-full box-border border-b border-[#fafafa]"
           >
             <div className="w-[44px] flex items-center shrink-0">
               <span 
-                className="material-icons-outlined text-[20px] shrink-0"
-                style={{ color: item.isTealIcon ? "#00A091" : "#757575" }}
+                className="material-icons-outlined text-[22px] shrink-0"
+                style={{ color: item.isTealIcon ? "#00A091" : "#7b7b7b" }}
               >
                 {item.icon}
               </span>
             </div>
-            <span className="text-[16px] font-normal text-[#333333] group-hover:text-black transition-colors flex-grow">
+            <span className="text-[16px] font-normal text-[#555555] group-hover:text-black transition-colors flex-grow">
               {item.label}
             </span>
+            {item.hasChevron && (
+              <span className="material-icons-outlined text-[18px] text-[#999999] shrink-0 select-none">
+                keyboard_arrow_down
+              </span>
+            )}
           </Link>
         ))}
       </section>
@@ -179,7 +186,7 @@ export default function AccountScreen() {
         </button>
       </section>
 
-      {/* Notice Modal Dialog matching reference photo 2 */}
+      {/* Notice Modal Dialog matching reference photo */}
       {showNotice && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
           <div className="bg-white rounded-[4px] w-full max-w-[480px] p-6 shadow-lg flex flex-col justify-between min-h-[160px]">
