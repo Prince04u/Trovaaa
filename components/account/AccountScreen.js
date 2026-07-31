@@ -99,6 +99,16 @@ const BankCardIcon = () => (
   </svg>
 );
 
+const GiftIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+    <rect x="3" y="10" width="18" height="11" rx="1" />
+    <path d="M12 10v11" />
+    <rect x="2" y="7" width="20" height="3" rx="0.5" />
+    <path d="M12 7c-1.5-1.5-3-2.5-4.5-1A2.5 2.5 0 0 0 11 9.5" fill="none" />
+    <path d="M12 7c1.5-1.5 3-2.5 4.5-1A2.5 2.5 0 0 1 13 9.5" fill="none" />
+  </svg>
+);
+
 export default function AccountScreen() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -151,7 +161,7 @@ export default function AccountScreen() {
   const menuItems = [
     { label: "Sign In", href: "/account/vip", customIcon: <SignInIcon />, hasChevron: true },
     { label: "Orders", href: "/games/history", customIcon: <OrdersIcon />, hasChevron: true },
-    { label: "Promotion", href: "/referral", icon: "card_giftcard", isTealIcon: false, hasChevron: true },
+    { label: "Promotion", href: "/referral", customIcon: <GiftIcon />, hasChevron: true },
     { label: "Red Envelope", href: "/account/gifts", customIcon: <PouchIcon />, hasChevron: false },
     { label: "Luck Draw", href: "/promo", customIcon: <PouchIcon />, hasChevron: true },
     { label: "Wallet", href: "/wallet", customIcon: <WalletIcon />, hasChevron: true },
