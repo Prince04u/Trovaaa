@@ -1,0 +1,597 @@
+/* ==========================================================
+   SUPERWIN - PLATFORM STYLES FOR PARITY GAME SCREEN (OPTION B)
+   ========================================================== */
+
+.wingo-game {
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #F7F7F7;
+  color: #222222;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1px;
+  padding-bottom: 74px;
+}
+
+/* Available Balance Header */
+.wg-dashboard-header {
+  background-color: #43A047;
+  color: #FFFFFF;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.wg-balance-label {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.wg-balance-value {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.wg-header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wg-btn-recharge {
+  background-color: #2196F3;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: 4px;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+.wg-btn-trend {
+  background-color: #FFFFFF;
+  color: #222222;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: 1px solid #E0E0E0;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.wg-refresh-btn {
+  margin-left: auto;
+  color: #FFFFFF;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* Durations Tab Bar */
+.wg-duration-bar {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E0E0E0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.wg-duration-tab {
+  padding: 12px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888888;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.wg-duration-tab.active {
+  color: #43A047;
+  border-bottom-color: #43A047;
+}
+
+/* Period & Countdown Row */
+.wg-timer-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.wg-period-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wg-period-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #888888;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wg-period-id {
+  font-size: 18px;
+  font-weight: 500;
+  color: #222222;
+}
+
+.wg-countdown-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.wg-countdown-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: #888888;
+}
+
+.wg-timer-digits {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wg-digit-box {
+  background-color: #F2F2F2;
+  border: 1px solid #E0E0E0;
+  color: #222222;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.wg-timer-colon {
+  color: #43A047;
+  font-weight: 500;
+  padding: 0 2px;
+}
+
+/* Betting Board Grid */
+.wg-betting-board {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.wg-countdown-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: 10;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.wg-countdown-digit {
+  background-color: #43A047;
+  color: #FFFFFF;
+  font-size: 48px;
+  font-weight: 500;
+  width: 70px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3);
+}
+
+.wg-color-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.wg-color-btn {
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.wg-color-btn:hover {
+  opacity: 0.9;
+}
+
+.wg-color-btn.green {
+  background-color: #43A047;
+  box-shadow: 0 3px 6px rgba(67, 160, 71, 0.3);
+}
+
+.wg-color-btn.violet {
+  background-color: #8E24AA;
+  box-shadow: 0 3px 6px rgba(142, 36, 170, 0.3);
+}
+
+.wg-color-btn.red {
+  background-color: #F44336;
+  box-shadow: 0 3px 6px rgba(244, 67, 54, 0.3);
+}
+
+/* Number grid */
+.wg-number-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.wg-num-btn {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease;
+}
+
+.wg-num-btn:active {
+  transform: scale(0.95);
+}
+
+.wg-num-btn.green {
+  background-color: #43A047;
+}
+
+.wg-num-btn.red {
+  background-color: #F44336;
+}
+
+.wg-num-btn.v0 {
+  background: linear-gradient(135deg, #8E24AA 50%, #F44336 50%);
+}
+
+.wg-num-btn.v5 {
+  background: linear-gradient(135deg, #8E24AA 50%, #43A047 50%);
+}
+
+.wg-size-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.wg-size-btn {
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.wg-size-btn.big {
+  background-color: #43A047;
+  box-shadow: 0 3px 6px rgba(67, 160, 71, 0.2);
+}
+
+.wg-size-btn.small {
+  background-color: #2196F3;
+  box-shadow: 0 3px 6px rgba(33, 150, 243, 0.2);
+}
+
+/* History logs section */
+.wg-logs-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  margin: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.wg-logs-title-bar {
+  border-bottom: 2px solid #43A047;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #222222;
+}
+
+.wg-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.wg-history-table th {
+  background-color: #F9F9F9;
+  border-bottom: 1px solid #E0E0E0;
+  color: #666666;
+  font-weight: 500;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.wg-history-table td {
+  border-bottom: 1px solid #F0F0F0;
+  padding: 10px 8px;
+  text-align: center;
+  color: #222222;
+}
+
+.wg-period-cell {
+  font-weight: 400;
+}
+
+.wg-number-cell {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.wg-number-cell.green { color: #43A047; }
+.wg-number-cell.red { color: #F44336; }
+.wg-number-cell.violet { color: #8E24AA; }
+
+.wg-result-chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.wg-result-chip.green {
+  background-color: #43A047;
+}
+
+.wg-result-chip.red {
+  background-color: #F44336;
+}
+
+.wg-result-chip.violet-red {
+  background: linear-gradient(135deg, #8E24AA 50%, #F44336 50%);
+}
+
+.wg-result-chip.violet-green {
+  background: linear-gradient(135deg, #8E24AA 50%, #43A047 50%);
+}
+
+/* Slide up dialog sheet style rules */
+.wg-sheet-mask {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.wg-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFFFFF;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.wg-sheet-header {
+  padding: 14px;
+  text-align: center;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.wg-sheet-header.green { background-color: #43A047; }
+.wg-sheet-header.violet { background-color: #8E24AA; }
+.wg-sheet-header.red { background-color: #F44336; }
+.wg-sheet-header.blue { background-color: #2196F3; }
+
+.wg-sheet-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wg-sheet-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wg-sheet-row > span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #666666;
+}
+
+.wg-sheet-contract-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.wg-sheet-contract-btn {
+  padding: 8px 0;
+  border: 1px solid #E0E0E0;
+  background-color: #F9F9F9;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.wg-sheet-contract-btn.active {
+  border-color: #43A047;
+  background-color: rgba(67, 160, 71, 0.08);
+  color: #43A047;
+}
+
+.wg-sheet-qty-row {
+  display: flex;
+  align-items: center;
+  border: 1px solid #E0E0E0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wg-sheet-qty-btn {
+  width: 44px;
+  height: 38px;
+  background-color: #F9F9F9;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.wg-sheet-qty-input {
+  flex: 1;
+  height: 38px;
+  border: none;
+  border-left: 1px solid #E0E0E0;
+  border-right: 1px solid #E0E0E0;
+  text-align: center;
+  font-weight: 500;
+  outline: none;
+}
+
+.wg-sheet-multi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.wg-sheet-multi-btn {
+  padding: 6px 0;
+  border: 1px solid #E0E0E0;
+  background-color: #F9F9F9;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.wg-sheet-multi-btn.active {
+  background-color: #43A047;
+  color: #FFFFFF;
+  border-color: #43A047;
+}
+
+.wg-sheet-total-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #F0F0F0;
+  padding-top: 12px;
+}
+
+.wg-sheet-total-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666666;
+}
+
+.wg-sheet-total-val {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.wg-sheet-total-val.text-green { color: #43A047; }
+.wg-sheet-total-val.text-violet { color: #8E24AA; }
+.wg-sheet-total-val.text-red { color: #F44336; }
+.wg-sheet-total-val.text-blue { color: #2196F3; }
+
+.wg-sheet-agree {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #888888;
+  cursor: pointer;
+}
+
+.wg-sheet-agree input {
+  accent-color: #43A047;
+}
+
+.wg-sheet-link {
+  color: #43A047;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.wg-sheet-footer {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  border-top: 1px solid #E0E0E0;
+}
+
+.wg-sheet-btn-cancel {
+  padding: 14px 0;
+  background-color: #FFFFFF;
+  color: #666666;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.wg-sheet-btn-submit {
+  padding: 14px 0;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.wg-sheet-btn-submit:disabled {
+  opacity: 0.6;
+}
+
+.wg-sheet-btn-submit.bg-green { background-color: #43A047; }
+.wg-sheet-btn-submit.bg-violet { background-color: #8E24AA; }
+.wg-sheet-btn-submit.bg-red { background-color: #F44336; }
+.wg-sheet-btn-submit.bg-blue { background-color: #2196F3; }
