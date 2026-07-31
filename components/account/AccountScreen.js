@@ -18,19 +18,19 @@ const PouchIcon = () => (
 );
 
 const OrdersIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
     <rect x="3.5" y="3.5" width="17" height="17" rx="2" />
-    <circle cx="7.5" cy="8.5" r="0.75" fill="#7b7b7b" />
+    <circle cx="7.5" cy="8.5" r="0.75" fill="#646566" />
     <line x1="10.5" y1="8.5" x2="17.5" y2="8.5" />
-    <circle cx="7.5" cy="12" r="0.75" fill="#7b7b7b" />
+    <circle cx="7.5" cy="12" r="0.75" fill="#646566" />
     <line x1="10.5" y1="12" x2="17.5" y2="12" />
-    <circle cx="7.5" cy="15.5" r="0.75" fill="#7b7b7b" />
+    <circle cx="7.5" cy="15.5" r="0.75" fill="#646566" />
     <line x1="10.5" y1="15.5" x2="17.5" y2="15.5" />
   </svg>
 );
 
 const SignInIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
     <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
     <line x1="8" y1="2.5" x2="8" y2="5.5" />
     <line x1="16" y1="2.5" x2="16" y2="5.5" />
@@ -40,15 +40,15 @@ const SignInIcon = () => (
 );
 
 const WalletIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
     <path d="M4 4h14a2 2 0 0 1 2 2v2H12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h8v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
     <path d="M12 10h10v4H12a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="#ffffff" />
-    <circle cx="16" cy="12" r="1" fill="#7b7b7b" />
+    <circle cx="16" cy="12" r="1" fill="#646566" />
   </svg>
 );
 
 const AddressIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
     <path d="M9 2h6a1 1 0 0 1 1 1v18H8V3a1 1 0 0 1 1-1zM3 9h5v12H3a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1z" />
     <rect x="11" y="5" width="2" height="1.5" rx="0.5" fill="#ffffff" />
     <rect x="11" y="8" width="2" height="1.5" rx="0.5" fill="#ffffff" />
@@ -60,7 +60,7 @@ const AddressIcon = () => (
 );
 
 const AboutIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
     <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
     <circle cx="12" cy="8" r="1" fill="#ffffff" />
     <rect x="11" y="11" width="2" height="5" rx="0.5" fill="#ffffff" />
@@ -68,7 +68,7 @@ const AboutIcon = () => (
 );
 
 const FeedbackIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
     <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
     <rect x="7" y="8" width="10" height="2" rx="1" fill="#ffffff" />
     <rect x="7" y="12" width="10" height="2" rx="1" fill="#ffffff" />
@@ -76,31 +76,31 @@ const FeedbackIcon = () => (
 );
 
 const DownloadIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
-    <path d="M12 3v10m0 0l-5-5m5 5l5-5" stroke="#7b7b7b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-    <rect x="4" y="18" width="16" height="2.5" rx="0.5" fill="#7b7b7b" />
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
+    <path d="M12 3v10m0 0l-5-5m5 5l5-5" stroke="#646566" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <rect x="4" y="18" width="16" height="2.5" rx="0.5" fill="#646566" />
   </svg>
 );
 
 const SecurityIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
     <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12c4.16-1.26 8-6.45 8-12V5l-8-3z" />
-    <path d="M12 2v20c4.16-1.26 8-6.45 8-12V5l-8-3z" fill="#666666" />
+    <path d="M12 2v20c4.16-1.26 8-6.45 8-12V5l-8-3z" fill="#4f5051" />
     <path d="M6 7.5h6V12H6z" fill="#ffffff" />
     <path d="M12 12h6v4.5c0 2.5-1.5 5-3.5 6.2L12 22V12z" fill="#ffffff" />
   </svg>
 );
 
 const BankCardIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
     <rect x="3" y="5" width="18" height="14" rx="2" />
-    <line x1="3" y1="9" x2="21" y2="9" stroke="#7b7b7b" />
-    <rect x="14" y="13" width="4" height="3" rx="0.5" fill="#7b7b7b" stroke="none" />
+    <line x1="3" y1="9" x2="21" y2="9" stroke="#646566" />
+    <rect x="14" y="13" width="4" height="3" rx="0.5" fill="#646566" stroke="none" />
   </svg>
 );
 
 const GiftIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
     <rect x="3" y="10" width="18" height="11" rx="1" />
     <path d="M12 10v11" />
     <rect x="2" y="7" width="20" height="3" rx="0.5" />
