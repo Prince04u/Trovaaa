@@ -119,7 +119,7 @@ export default function RegisterForm() {
                 value={form.verificationCode}
                 onChange={handleChange}
                 placeholder="Verification Code"
-                className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none border-none h-full font-normal"
+                className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
               />
             </div>
             
@@ -152,7 +152,7 @@ export default function RegisterForm() {
               value={form.inviteCode}
               onChange={handleChange}
               placeholder="Recommendation Code"
-              className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none border-none h-full font-normal"
+              className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
             />
           </div>
 

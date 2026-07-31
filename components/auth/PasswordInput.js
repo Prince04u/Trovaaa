@@ -15,7 +15,7 @@ export default function PasswordInput({ id, name, value, onChange, placeholder =
         placeholder={placeholder}
         required={required}
         minLength={minLength}
-        className="flex-grow bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none border-none h-full font-normal"
+        className="flex-grow bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
       />
     </div>
   );

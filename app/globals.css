@@ -90,6 +90,21 @@ body {
     margin: 0;
     padding: 0;
   }
+  
+  input, input:focus, input:focus-visible, input:active, textarea:focus, select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #222222 !important;
+    caret-color: #222222 !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 body {
@@ -121,7 +136,7 @@ a {
   width: 100%;
   max-width: 420px;
   background: #121212;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(0, 150, 136, 0.2);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
@@ -159,8 +174,8 @@ a {
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: #E7C66A;
+  outline: none !important;
+  border-color: #009688;
 }
 
 .btn {
