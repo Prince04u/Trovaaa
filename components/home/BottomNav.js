@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, User } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home", Icon: Home, match: "home" },
-  { href: "/games", label: "Search", Icon: Search, match: "search" },
-  { href: "/account", label: "My", Icon: User, match: "my" },
+  { href: "/", label: "Home", iconName: "home", match: "home" },
+  { href: "/games", label: "Search", iconName: "search", match: "search" },
+  { href: "/account", label: "My", iconName: "person", match: "my" },
 ];
 
 export default function BottomNav() {
@@ -22,7 +21,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[64px] grid grid-cols-3 select-none">
-      {NAV_ITEMS.map(({ href, label, Icon, match }) => {
+      {NAV_ITEMS.map(({ href, label, iconName, match }) => {
         const active = isActive(match, href);
         return (
           <Link
@@ -32,8 +31,10 @@ export default function BottomNav() {
               active ? "text-[#00A091]" : "text-[#808080]"
             }`}
           >
-            <Icon size={22} strokeWidth={1.5} />
-            <span className="text-[12px] font-normal leading-none">
+            <span className="material-icons text-[24px] leading-none">
+              {iconName}
+            </span>
+            <span className="text-[12px] font-normal leading-none mt-[2px]">
               {label}
             </span>
           </Link>

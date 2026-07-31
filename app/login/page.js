@@ -40,19 +40,19 @@ export default function LoginPage() {
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
       {/* Full-width Teal Header Bar matching reference screenshot */}
-      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[10px] sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[24px] sticky top-0 z-40 select-none shadow-[0_2px_5px_rgba(0,0,0,0.22)] box-border">
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
+          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
           aria-label="Go back"
         >
-          <ChevronLeft size={30} strokeWidth={1.5} />
+          <span className="material-icons-outlined text-[24px]">arrow_back</span>
         </button>
-        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left">Login</h1>
+        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left leading-none flex items-center">Login</h1>
       </header>
 
       {/* Form Section with Responsive Desktop Spacing */}
-      <div className="w-full flex-1 px-[24px] pt-[120px] pb-12 flex flex-col justify-start box-border">
+      <div className="w-full flex-1 px-[24px] pt-[clamp(115px,15vh,130px)] pb-12 flex flex-col justify-start box-border">
         {error && (
           <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm font-medium">
             {error}

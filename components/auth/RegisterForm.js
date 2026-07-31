@@ -86,15 +86,15 @@ export default function RegisterForm() {
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
       {/* Full-width Teal Header Bar matching reference screenshot */}
-      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[10px] sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[24px] sticky top-0 z-40 select-none shadow-[0_2px_5px_rgba(0,0,0,0.22)] box-border">
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
+          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
           aria-label="Go back"
         >
-          <ChevronLeft size={30} strokeWidth={1.5} />
+          <span className="material-icons-outlined text-[24px]">arrow_back</span>
         </button>
-        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left">Register</h1>
+        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left leading-none flex items-center">Register</h1>
       </header>
 
       {/* Form Content with Responsive Spacing */}
@@ -110,10 +110,10 @@ export default function RegisterForm() {
           <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
 
           {/* Verification Code + OTP Button Row */}
-          <div className="grid grid-cols-[1fr_95px] gap-[14px] items-center w-full">
+          <div className="grid grid-cols-[minmax(0,1fr)_95px] gap-[14px] items-center w-full">
             <div className="flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
               <div className="w-[22px] flex items-center justify-center shrink-0">
-                <MessageSquare size={22} className="text-[#7d7d7d]" strokeWidth={1.5} />
+                <span className="material-icons text-[#7d7d7d] text-[22px]">chat</span>
               </div>
               <input
                 name="verificationCode"
@@ -147,7 +147,7 @@ export default function RegisterForm() {
           {/* Recommendation Code (Invite Code) */}
           <div className="w-full flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
             <div className="w-[22px] flex items-center justify-center shrink-0">
-              <Gift size={22} className="text-[#7d7d7d]" strokeWidth={1.5} />
+              <span className="material-icons-outlined text-[#7d7d7d] text-[22px]">card_giftcard</span>
             </div>
             <input
               id="inviteCode"

@@ -6,7 +6,7 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
   return (
     <div className="w-full flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
       <div className="w-[22px] flex items-center justify-center shrink-0">
-        <Smartphone size={22} className="text-[#7d7d7d]" strokeWidth={1.5} />
+        <span className="material-icons-outlined text-[#7d7d7d] text-[22px]">smartphone</span>
       </div>
       <input
         id={id}
