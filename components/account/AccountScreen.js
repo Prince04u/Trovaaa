@@ -132,7 +132,7 @@ export default function AccountScreen() {
             </strong>
             <span className="text-[15px] text-white opacity-95 mt-1.5">Balance</span>
             <Link 
-              href="/wallet/deposit" 
+              href="/recharge" 
               className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               Recharge
@@ -146,7 +146,7 @@ export default function AccountScreen() {
             </strong>
             <span className="text-[15px] text-white opacity-95 mt-1.5">Commission</span>
             <Link 
-              href="/referral" 
+              href="/reward" 
               className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               See
@@ -160,7 +160,7 @@ export default function AccountScreen() {
             </strong>
             <span className="text-[15px] text-white opacity-95 mt-1.5">Interest</span>
             <Link 
-              href="/referral" 
+              href="/interest" 
               className="mt-2.5 bg-[#2D98EE] text-white text-[13px] font-normal rounded-[2px] hover:opacity-90 select-none text-decoration-none shadow-sm flex items-center justify-center h-[28px] w-[80px] border-none outline-none"
             >
               See
@@ -186,7 +186,7 @@ export default function AccountScreen() {
 
         {/* Orders */}
         <Link
-          href="/games/history"
+          href="/orders"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -198,7 +198,7 @@ export default function AccountScreen() {
 
         {/* Promotion */}
         <Link
-          href="/referral"
+          href="/promotion"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -210,7 +210,7 @@ export default function AccountScreen() {
 
         {/* Red Envelope */}
         <Link
-          href="/account/gifts"
+          href="/redenvelope"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -222,7 +222,7 @@ export default function AccountScreen() {
 
         {/* Luck Draw */}
         <Link
-          href="/promo"
+          href="/luckDraw"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -251,19 +251,19 @@ export default function AccountScreen() {
           {walletOpen && (
             <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
               <Link
-                href="/wallet/deposit"
+                href="/recharge"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
               >
                 Recharge
               </Link>
               <Link
-                href="/wallet/withdraw"
+                href="/withdrawal"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
               >
                 Withdrawal
               </Link>
               <Link
-                href="/wallet/history"
+                href="/transactions"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
                 Transactions
@@ -274,7 +274,7 @@ export default function AccountScreen() {
 
         {/* Bank Card */}
         <Link
-          href="/wallet/withdraw/accounts"
+          href="/bankcard"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -286,7 +286,7 @@ export default function AccountScreen() {
 
         {/* Address */}
         <Link
-          href="/account/profile"
+          href="/address"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -315,7 +315,7 @@ export default function AccountScreen() {
           {securityOpen && (
             <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
               <Link
-                href="/account/security"
+                href="/forgotpass"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
                 Reset Password
@@ -355,7 +355,7 @@ export default function AccountScreen() {
 
         {/* Complaints & Suggestions */}
         <Link
-          href="/account/feedback"
+          href="/complaints"
           className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
         >
           <div className="w-[44px] flex items-center shrink-0">
@@ -384,13 +384,13 @@ export default function AccountScreen() {
           {aboutOpen && (
             <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
               <Link
-                href="/about"
+                href="/privacypolicy"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
               >
                 Privacy Policy
               </Link>
               <Link
-                href="/about"
+                href="/riskagreement"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
                 Risk Disclosure Agreement
