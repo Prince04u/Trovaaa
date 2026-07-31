@@ -1,7 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import BottomNav from "@/components/home/BottomNav";
 
 const PRODUCTS_DATA = {
@@ -42,7 +42,7 @@ const PRODUCTS_DATA = {
   }
 };
 
-export default function ProductPage() {
+function ProductDetailsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const goodsId = searchParams.get("goodsId") || "1";
@@ -115,5 +115,13 @@ export default function ProductPage() {
 
       <BottomNav />
     </main>
+  );
+}
+
+export default function ProductPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#fafafa] flex items-center justify-center text-gray-400">Loading...</div>}>
+      <ProductDetailsContent />
+    </Suspense>
   );
 }
