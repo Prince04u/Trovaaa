@@ -27,14 +27,19 @@ export default function BottomNav() {
           <Link
             key={href}
             href={href}
-            className={`flex flex-col items-center justify-center gap-[2px] text-decoration-none select-none transition-colors ${
-              active ? "text-[#00A091]" : "text-[#cccccc]"
-            }`}
+            style={{ color: active ? "#00A091" : "#999999" }}
+            className="flex flex-col items-center justify-center gap-[2px] text-decoration-none select-none transition-colors"
           >
-            <span className={`${iconClass} text-[24px] leading-none`}>
+            <span
+              className={`${iconClass} text-[24px] leading-none`}
+              style={{ color: active ? "#00A091" : "#999999" }}
+            >
               {iconName}
             </span>
-            <span className="text-[12px] font-normal leading-none mt-[2px]">
+            <span
+              className="text-[12px] font-normal leading-none mt-[2px]"
+              style={{ color: active ? "#00A091" : "#999999" }}
+            >
               {label}
             </span>
           </Link>
