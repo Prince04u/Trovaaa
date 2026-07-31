@@ -21,7 +21,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#E0E0E0] h-[54px] max-w-[480px] mx-auto grid grid-cols-3 select-none">
+    <nav className="fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#EEEEEE] shadow-[0_-2px_8px_rgba(0,0,0,0.04)] h-[52px] md:h-[56px] grid grid-cols-3 select-none">
       {NAV_ITEMS.map(({ href, label, Icon, match }) => {
         const active = isActive(match, href);
         return (
@@ -33,7 +33,7 @@ export default function BottomNav() {
             }`}
           >
             <Icon size={20} strokeWidth={1.75} />
-            <span className="text-[11px] font-normal leading-none">
+            <span className="text-[11px] md:text-[12px] font-normal leading-none">
               {label}
             </span>
           </Link>

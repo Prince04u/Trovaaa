@@ -38,28 +38,28 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white pb-20 flex flex-col max-w-[480px] mx-auto relative shadow-md">
-      {/* Teal Header Bar matching reference screenshot */}
-      <header className="bg-[#009688] text-white px-4 h-12 flex items-center gap-3 sticky top-0 z-40 select-none">
+    <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
+      {/* Full-width Teal Header Bar matching reference screenshot */}
+      <header className="w-full bg-[#009688] text-white px-4 md:px-6 h-12 md:h-[56px] flex items-center gap-3 sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-1 border-none bg-transparent text-white flex items-center justify-center"
+          className="hover:opacity-85 cursor-pointer p-1 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <ChevronLeft size={22} strokeWidth={2} />
+          <ChevronLeft size={24} strokeWidth={2} />
         </button>
-        <h1 className="text-[17px] font-normal tracking-wide text-white m-0">Login</h1>
+        <h1 className="text-[18px] md:text-[20px] font-normal tracking-wide text-white m-0 text-left">Login</h1>
       </header>
 
-      {/* Form Section */}
-      <div className="flex-1 px-4 py-8 flex flex-col justify-start">
+      {/* Form Section with Responsive Desktop Spacing */}
+      <div className="w-full flex-1 px-5 md:px-8 pt-12 md:pt-[100px] pb-12 flex flex-col justify-start">
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-xs font-medium">
+          <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[3px] text-xs md:text-sm font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6 md:gap-[32px]">
           {/* Mobile Number Field */}
           <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
 
@@ -72,28 +72,28 @@ export default function LoginPage() {
             placeholder="Password"
           />
 
-          {/* Centered Teal Login Submit Button */}
-          <div className="flex justify-center mt-4">
+          {/* Centered Teal Login Submit Button (~240px wide on desktop) */}
+          <div className="flex justify-center w-full mt-6 md:mt-[42px]">
             <button 
               type="submit" 
               disabled={loading}
-              className="w-[160px] h-[40px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-[4px] transition-colors cursor-pointer text-sm select-none border-0 outline-none flex items-center justify-center"
+              className="w-full max-w-[240px] md:w-[240px] h-[44px] md:h-[48px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-[3px] transition-colors cursor-pointer text-[14px] md:text-[15px] select-none border-0 outline-none flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.12)]"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
           </div>
 
-          {/* Registration & Forgot Password sub-buttons centered */}
-          <div className="flex justify-center items-center gap-3 mt-3 select-none">
+          {/* Registration & Forgot Password sub-buttons centered row */}
+          <div className="flex justify-center items-center gap-3 md:gap-4 mt-4 md:mt-[24px] select-none">
             <Link 
               href="/register" 
-              className="px-5 py-2 bg-[#EEEEEE] hover:bg-gray-200 text-[#333333] text-center font-normal rounded-[4px] text-[13px] text-decoration-none transition-colors"
+              className="h-[40px] md:h-[42px] px-6 bg-[#F5F5F5] hover:bg-[#E8E8E8] text-[#333333] border border-[#E5E5E5] shadow-[0_1px_2px_rgba(0,0,0,0.05)] rounded-[3px] text-[13px] md:text-[14px] text-decoration-none transition-colors flex items-center justify-center font-normal"
             >
               Register
             </Link>
             <Link 
               href="/support?form=password" 
-              className="px-4 py-2 bg-[#EEEEEE] hover:bg-gray-200 text-[#333333] text-center font-normal rounded-[4px] text-[13px] text-decoration-none transition-colors"
+              className="h-[40px] md:h-[42px] px-5 bg-[#F5F5F5] hover:bg-[#E8E8E8] text-[#333333] border border-[#E5E5E5] shadow-[0_1px_2px_rgba(0,0,0,0.05)] rounded-[3px] text-[13px] md:text-[14px] text-decoration-none transition-colors flex items-center justify-center font-normal"
             >
               Forgot Password?
             </Link>

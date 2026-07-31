@@ -84,42 +84,42 @@ export default function RegisterForm() {
   };
 
   return (
-    <main className="min-h-screen bg-white pb-20 flex flex-col max-w-[480px] mx-auto relative shadow-md">
-      {/* Teal Header Bar matching reference screenshot */}
-      <header className="bg-[#009688] text-white px-4 h-12 flex items-center gap-3 sticky top-0 z-40 select-none">
+    <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
+      {/* Full-width Teal Header Bar matching reference screenshot */}
+      <header className="w-full bg-[#009688] text-white px-4 md:px-6 h-12 md:h-[56px] flex items-center gap-3 sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-1 border-none bg-transparent text-white flex items-center justify-center"
+          className="hover:opacity-85 cursor-pointer p-1 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <ChevronLeft size={22} strokeWidth={2} />
+          <ChevronLeft size={24} strokeWidth={2} />
         </button>
-        <h1 className="text-[17px] font-normal tracking-wide text-white m-0">Register</h1>
+        <h1 className="text-[18px] md:text-[20px] font-normal tracking-wide text-white m-0 text-left">Register</h1>
       </header>
 
-      {/* Form Content */}
-      <div className="flex-1 px-4 py-8 flex flex-col justify-start">
+      {/* Form Content with Responsive Spacing */}
+      <div className="w-full flex-1 px-5 md:px-8 pt-6 md:pt-[28px] pb-12 flex flex-col justify-start">
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-xs font-medium">
+          <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[3px] text-xs md:text-sm font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6 md:gap-[32px]">
           {/* Mobile Number Field */}
           <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
 
           {/* Verification Code + OTP Button Row */}
-          <div className="grid grid-cols-12 gap-3 items-center">
-            <div className="col-span-8 flex items-center gap-3 border border-[#E0E0E0] rounded-[4px] bg-white px-3.5 py-2 h-[46px] focus-within:border-[#009688] transition-colors select-none">
-              <MessageSquare size={18} className="text-[#9E9E9E] shrink-0" strokeWidth={1.75} />
+          <div className="grid grid-cols-12 gap-3 md:gap-6 items-center w-full">
+            <div className="col-span-8 md:col-span-9 flex items-center gap-3.5 border border-[#E5E5E5] rounded-[2px] bg-white px-4 h-[48px] md:h-[52px] focus-within:border-[#009688] transition-colors select-none shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+              <MessageSquare size={20} className="text-[#8A8A8A] shrink-0" strokeWidth={1.75} />
               <input
                 name="verificationCode"
                 type="text"
                 value={form.verificationCode}
                 onChange={handleChange}
                 placeholder="Verification Code"
-                className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
+                className="flex-1 bg-transparent text-[15px] md:text-[16px] text-[#222222] placeholder-[#8A8A8A] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
               />
             </div>
             
@@ -127,7 +127,7 @@ export default function RegisterForm() {
               type="button"
               onClick={handleSendOtp}
               disabled={otpCountdown > 0}
-              className="col-span-4 h-[46px] bg-[#EEEEEE] hover:bg-gray-200 disabled:opacity-60 text-[#333333] text-center font-normal rounded-[4px] text-[13px] select-none cursor-pointer border-0 outline-none flex items-center justify-center"
+              className="col-span-4 md:col-span-3 h-[48px] md:h-[52px] bg-[#F5F5F5] hover:bg-[#E8E8E8] border border-[#E5E5E5] disabled:opacity-60 text-[#333333] text-center font-normal rounded-[2px] text-[13px] md:text-[14px] select-none cursor-pointer outline-none flex items-center justify-center shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors"
             >
               {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
             </button>
@@ -143,8 +143,8 @@ export default function RegisterForm() {
           />
 
           {/* Recommendation Code (Invite Code) */}
-          <div className="flex items-center gap-3 border border-[#E0E0E0] rounded-[4px] bg-white px-3.5 py-2 h-[46px] focus-within:border-[#009688] transition-colors select-none">
-            <Gift size={18} className="text-[#9E9E9E] shrink-0" strokeWidth={1.75} />
+          <div className="w-full flex items-center gap-3.5 border border-[#E5E5E5] rounded-[2px] bg-white px-4 h-[48px] md:h-[52px] focus-within:border-[#009688] transition-colors select-none shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+            <Gift size={20} className="text-[#8A8A8A] shrink-0" strokeWidth={1.75} />
             <input
               id="inviteCode"
               name="inviteCode"
@@ -152,28 +152,28 @@ export default function RegisterForm() {
               value={form.inviteCode}
               onChange={handleChange}
               placeholder="Recommendation Code"
-              className="flex-1 bg-transparent text-sm text-[#222222] placeholder-[#9E9E9E] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
+              className="flex-1 bg-transparent text-[15px] md:text-[16px] text-[#222222] placeholder-[#8A8A8A] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
             />
           </div>
 
-          {/* Privacy Policy Checkbox */}
-          <label className="flex items-center gap-2 px-1 cursor-pointer select-none mt-1">
+          {/* Privacy Policy Checkbox Row (Left-aligned) */}
+          <label className="flex items-center gap-2.5 px-1 cursor-pointer select-none mt-1 justify-start text-left">
             <input
               type="checkbox"
               checked={agree}
               onChange={(e) => setAgree(e.target.checked)}
-              className="accent-[#009688] w-4 h-4 rounded-[2px]"
+              className="accent-[#009688] w-4.5 h-4.5 rounded-[2px] cursor-pointer"
             />
-            <span className="text-[13px] text-[#333333] font-normal">
+            <span className="text-[13px] md:text-[14px] text-[#333333] font-normal">
               I agree <Link href="/privacy" target="_blank" className="text-[#009688] font-medium text-decoration-none">Privacy Policy</Link>
             </span>
           </label>
 
-          {/* Full-width Register Action Button */}
+          {/* Register Action Button (~64% width on desktop, 100% on mobile) */}
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full mt-4 h-[44px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-[4px] transition-colors cursor-pointer text-sm select-none border-0 outline-none flex items-center justify-center"
+            className="w-full md:w-[64%] md:max-w-[950px] mx-auto mt-4 md:mt-5 h-[44px] md:h-[48px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-[3px] transition-colors cursor-pointer text-[14px] md:text-[15px] select-none border-0 outline-none flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.12)]"
           >
             {loading ? "Registering..." : "Register"}
           </button>
