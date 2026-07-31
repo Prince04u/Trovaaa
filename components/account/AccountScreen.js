@@ -59,6 +59,46 @@ const AddressIcon = () => (
   </svg>
 );
 
+const AboutIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
+    <circle cx="12" cy="8" r="1" fill="#ffffff" />
+    <rect x="11" y="11" width="2" height="5" rx="0.5" fill="#ffffff" />
+  </svg>
+);
+
+const FeedbackIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
+    <rect x="7" y="8" width="10" height="2" rx="1" fill="#ffffff" />
+    <rect x="7" y="12" width="10" height="2" rx="1" fill="#ffffff" />
+  </svg>
+);
+
+const DownloadIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M12 3v10m0 0l-5-5m5 5l5-5" stroke="#7b7b7b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <rect x="4" y="18" width="16" height="2.5" rx="0.5" fill="#7b7b7b" />
+  </svg>
+);
+
+const SecurityIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12c4.16-1.26 8-6.45 8-12V5l-8-3z" />
+    <path d="M12 2v20c4.16-1.26 8-6.45 8-12V5l-8-3z" fill="#666666" />
+    <path d="M6 7.5h6V12H6z" fill="#ffffff" />
+    <path d="M12 12h6v4.5c0 2.5-1.5 5-3.5 6.2L12 22V12z" fill="#ffffff" />
+  </svg>
+);
+
+const BankCardIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <line x1="3" y1="9" x2="21" y2="9" stroke="#7b7b7b" />
+    <rect x="14" y="13" width="4" height="3" rx="0.5" fill="#7b7b7b" stroke="none" />
+  </svg>
+);
+
 export default function AccountScreen() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -115,12 +155,12 @@ export default function AccountScreen() {
     { label: "Red Envelope", href: "/account/gifts", customIcon: <PouchIcon />, hasChevron: false },
     { label: "Luck Draw", href: "/promo", customIcon: <PouchIcon />, hasChevron: true },
     { label: "Wallet", href: "/wallet", customIcon: <WalletIcon />, hasChevron: true },
-    { label: "Bank Card", href: "/wallet/withdraw/accounts", icon: "credit_card", isTealIcon: false, hasChevron: true },
+    { label: "Bank Card", href: "/wallet/withdraw/accounts", customIcon: <BankCardIcon />, hasChevron: true },
     { label: "Address", href: "/account/profile", customIcon: <AddressIcon />, hasChevron: true },
-    { label: "Account Security", href: "/account/security", icon: "security", isTealIcon: false, hasChevron: true },
-    { label: "App Download", href: "/account/guide", icon: "download", isTealIcon: false, hasChevron: true },
-    { label: "Complaints & Suggestions", href: "/account/feedback", icon: "feedback", isTealIcon: false, hasChevron: true },
-    { label: "About", href: "/about", icon: "info", isTealIcon: false, hasChevron: true },
+    { label: "Account Security", href: "/account/security", customIcon: <SecurityIcon />, hasChevron: true },
+    { label: "App Download", href: "/account/guide", customIcon: <DownloadIcon />, hasChevron: true },
+    { label: "Complaints & Suggestions", href: "/account/feedback", customIcon: <FeedbackIcon />, hasChevron: true },
+    { label: "About", href: "/about", customIcon: <AboutIcon />, hasChevron: true },
   ];
 
   return (
