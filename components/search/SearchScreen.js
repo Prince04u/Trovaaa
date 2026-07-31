@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import BottomNav from "./BottomNav";
+import BottomNav from "@/components/home/BottomNav";
 
-const PRODUCTS = [
+const ALL_PRODUCTS = [
   {
     id: 1,
     title: "Joyalukkas 18k (750) Rose Gold and Solitaire Pendant for Girls",
@@ -54,55 +55,39 @@ const PRODUCTS = [
   }
 ];
 
-export default function HomeScreen() {
+export default function SearchScreen() {
+  const [keywords, setKeywords] = useState("");
+
+  const filteredProducts = ALL_PRODUCTS.filter(p =>
+    p.title.toLowerCase().includes(keywords.toLowerCase())
+  );
+
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
-      {/* Top Banner Install App matching indexs.vue */}
-      <section className="bg-white border-b border-gray-200 h-12 px-4 flex items-center justify-between text-xs text-gray-500 font-normal select-none shadow-sm w-full">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-[#009688] text-white flex items-center justify-center font-bold text-xs">
-            B
-          </div>
-          <span className="text-[14px] text-[#333333]">Open with an app</span>
+      {/* Top Search Input Box matching bruzoo.games */}
+      <section className="bg-white p-3 border-b border-gray-200 sticky top-0 z-10 shadow-sm w-full">
+        <div className="bg-[#f0f0f0] rounded-[20px] px-4 py-2 flex items-center gap-2 border border-gray-200">
+          <span className="material-icons-outlined text-gray-400 text-[20px]">search</span>
+          <input
+            type="text"
+            placeholder="Search for goods"
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
+            className="bg-transparent border-none outline-none w-full text-[14px] text-[#333333]"
+          />
         </div>
-        <a
-          href="/bruzoo_1.0.0.apk"
-          download="app.apk"
-          className="text-[#4e4e4e] hover:text-black cursor-pointer p-1 text-decoration-none flex items-center gap-1"
-        >
-          <span className="material-icons-outlined text-[20px]">file_download</span>
-        </a>
       </section>
 
-      {/* Main welcome titles matching bruzoo.games indexs.vue */}
-      <section className="py-6 text-center select-none flex flex-col gap-1 bg-white w-full border-b border-gray-100">
-        <h1 className="text-[24px] font-normal leading-tight text-[#009688] m-0">
-          Welcome Back
-        </h1>
-        <span className="text-[14px] text-[#8A8A8A] font-normal leading-normal mt-1">
-          Quality Guarantee
-        </span>
-      </section>
-
-      {/* Image Banner Carousel */}
-      <section className="w-full aspect-[16/9] bg-gray-900 relative overflow-hidden select-none border-b border-gray-200">
-        <img
-          src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=80"
-          alt="Banner"
-          className="w-full h-full object-cover opacity-90"
-        />
-      </section>
-
-      {/* 2-Column Product Grid list matching indexs.vue */}
-      <section className="p-3 flex flex-col gap-3 w-full">
+      {/* 2-Column Product Grid Catalog */}
+      <section className="p-3 w-full">
         <div className="grid grid-cols-2 gap-3 w-full">
-          {PRODUCTS.map((p) => (
+          {filteredProducts.map((p) => (
             <Link
               key={p.id}
               href={`/product?goodsId=${p.id}`}
               className="bg-white border border-gray-200 rounded-[6px] p-2.5 flex flex-col gap-2 shadow-sm text-decoration-none hover:border-gray-300 transition-colors"
             >
-              <div
+              <div 
                 className="w-full aspect-square bg-[#FAFAFA] rounded-[4px] bg-cover bg-center border border-gray-100"
                 style={{ backgroundImage: `url(${p.image})` }}
               />
@@ -116,6 +101,12 @@ export default function HomeScreen() {
               </strong>
             </Link>
           ))}
+
+          {filteredProducts.length === 0 && (
+            <div className="col-span-2 text-center py-12 text-gray-400 text-[14px]">
+              No goods found matching "{keywords}"
+            </div>
+          )}
         </div>
       </section>
 
