@@ -2,10 +2,10 @@
 
 const ICONS = {
   hero: (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden stroke="var(--theme-gold, #D4AF37)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden stroke="var(--theme-gold, #009688)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 12V8H4v12h16v-4" />
       <rect x="16" y="12" width="6" height="4" rx="1" />
-      <circle cx="19" cy="14" r="1" fill="var(--theme-gold, #D4AF37)" />
+      <circle cx="19" cy="14" r="1" fill="var(--theme-gold, #009688)" />
     </svg>
   ),
   deposit: (

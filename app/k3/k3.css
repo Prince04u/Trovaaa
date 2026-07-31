@@ -391,7 +391,7 @@ body {
   position: relative;
   height: 132px;
   background: radial-gradient(120% 100% at 50% 0%, #16161a 0%, #0b0b0d 72%);
-  border: 2px solid #d4af37;
+  border: 2px solid #009688;
   border-radius: 18px;
   display: flex;
   justify-content: space-evenly;
@@ -541,7 +541,7 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #d4af37;
+  background: #009688;
   width: 24px;
   height: 36px;
   display: flex;
@@ -1134,7 +1134,7 @@ body {
 .wg-bet-sheet.theme-violet .wg-bet-chip.active { background: #8b5cf6; border-color: #8b5cf6; color: #fff; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
 .wg-bet-sheet.theme-red .wg-bet-chip.active { background: #ef4444; border-color: #ef4444; color: #fff; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 .wg-bet-sheet.theme-orange .wg-bet-chip.active { background: #ea580c; border-color: #ea580c; color: #fff; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
-.wg-bet-sheet.theme-blue .wg-bet-chip.active { background: var(--theme-gold-metal); border-color: #d4af37; color: #000; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3); }
+.wg-bet-sheet.theme-blue .wg-bet-chip.active { background: var(--theme-gold-metal); border-color: #009688; color: #000; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3); }
 .wg-bet-sheet.theme-v0 .wg-bet-chip.active,
 .wg-bet-sheet.theme-v5 .wg-bet-chip.active { background: #8b5cf6; border-color: #8b5cf6; color: #fff; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
 
@@ -1219,7 +1219,7 @@ body {
 .wg-bet-sheet.theme-violet .wg-bet-multi.active { background: #8b5cf6; border-color: #8b5cf6; color: #fff; }
 .wg-bet-sheet.theme-red .wg-bet-multi.active { background: #ef4444; border-color: #ef4444; color: #fff; }
 .wg-bet-sheet.theme-orange .wg-bet-multi.active { background: #ea580c; border-color: #ea580c; color: #fff; }
-.wg-bet-sheet.theme-blue .wg-bet-multi.active { background: var(--theme-gold-metal); border-color: #d4af37; color: #000; }
+.wg-bet-sheet.theme-blue .wg-bet-multi.active { background: var(--theme-gold-metal); border-color: #009688; color: #000; }
 .wg-bet-sheet.theme-v0 .wg-bet-multi.active,
 .wg-bet-sheet.theme-v5 .wg-bet-multi.active { background: #8b5cf6; border-color: #8b5cf6; color: #fff; }
 

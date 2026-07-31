@@ -304,7 +304,7 @@ export default function LobbyWidgets() {
           object-fit: cover;
           border: 2px solid;
         }
-        .place-1 .podium-avatar { border-color: #d4af37; width: 52px; height: 52px; }
+        .place-1 .podium-avatar { border-color: #009688; width: 52px; height: 52px; }
         .place-2 .podium-avatar { border-color: #60a5fa; }
         .place-3 .podium-avatar { border-color: #f472b6; }
         
@@ -322,7 +322,7 @@ export default function LobbyWidgets() {
           align-items: center;
           justify-content: center;
         }
-        .badge-1 { background: #d4af37; color: #111; }
+        .badge-1 { background: #009688; color: #111; }
         .badge-2 { background: #60a5fa; color: #fff; }
         .badge-3 { background: #f472b6; color: #fff; }
 
@@ -364,7 +364,7 @@ export default function LobbyWidgets() {
           font-size: 13px;
           font-weight: 800;
         }
-        .text-gold { color: #d4af37; }
+        .text-gold { color: #009688; }
         .text-gold-light { color: #ffeaa0; }
         .text-blue-light { color: #93c5fd; }
         .text-pink-light { color: #fbcfe8; }

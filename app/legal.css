@@ -211,7 +211,7 @@
 .club-promo-card:hover .club-promo-arrow {
   background: rgba(212, 175, 55, 0.2);
   border-color: rgba(212, 175, 55, 0.4);
-  color: #D4AF37;
+  color: #009688;
   transform: scale(1.05);
 }
 
@@ -298,7 +298,7 @@
   text-align: left;
 }
 .bullet-diamond {
-  color: #d4af37;
+  color: #009688;
   font-size: 12px;
   margin-top: 1px;
 }
@@ -321,7 +321,7 @@
   margin-top: 8px;
 }
 .promo-pill-btn {
-  background: linear-gradient(135deg, #d4af37, #b28e20);
+  background: linear-gradient(135deg, #009688, #b28e20);
   border: none;
   border-radius: 20px;
   padding: 10px 24px;

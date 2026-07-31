@@ -9,31 +9,31 @@ export default function PageLoader() {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      background: "#08090b",
+      background: "#ffffff",
       zIndex: 9999,
     }}>
       {/* Halo spinner container wrapping the logo */}
       <div style={{
         position: "relative",
-        width: "200px",
-        height: "200px",
+        width: "160px",
+        height: "160px",
         borderRadius: "50%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "rgba(255, 255, 255, 0.01)",
-        border: "3px solid rgba(212, 175, 55, 0.08)",
-        boxShadow: "0 0 30px rgba(0, 0, 0, 0.4)",
+        background: "rgba(0, 150, 136, 0.02)",
+        border: "3px solid rgba(0, 150, 136, 0.1)",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
         animation: "pulse 2s infinite ease-in-out"
       }}>
-        {/* Revolving gold border spinner */}
+        {/* Revolving teal border spinner */}
         <div style={{
           position: "absolute",
           inset: "-3px",
           borderRadius: "50%",
           border: "3px solid transparent",
-          borderTop: "3px solid #d4af37",
-          borderRight: "3px solid rgba(212, 175, 55, 0.2)",
+          borderTop: "3px solid #009688",
+          borderRight: "3px solid rgba(0, 150, 136, 0.3)",
           animation: "spin 1.2s linear infinite"
         }} />
 
@@ -42,9 +42,9 @@ export default function PageLoader() {
           src={BRAND_LOGO_SRC}
           alt={BRAND_NAME}
           style={{
-            width: "150px",
+            width: "120px",
             height: "auto",
-            maxHeight: "75px",
+            maxHeight: "60px",
             objectFit: "contain",
             zIndex: 2
           }}
@@ -57,8 +57,8 @@ export default function PageLoader() {
           100% { transform: rotate(360deg); }
         }
         @keyframes pulse {
-          0%, 100% { opacity: 0.8; transform: scale(0.97); }
-          50% { opacity: 1; transform: scale(1.02); }
+          0%, 100% { opacity: 0.9; transform: scale(0.98); }
+          50% { opacity: 1; transform: scale(1.01); }
         }
       `}</style>
     </div>

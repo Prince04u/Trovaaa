@@ -70,7 +70,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--theme-green-light, var(--theme-gold, #D4AF37));
+  color: var(--theme-green-light, var(--theme-gold, #009688));
 }
 
 .header h2 {
@@ -109,7 +109,7 @@
   margin: 0 0 0.625rem;
   font-size: 0.8125rem;
   font-weight: 800;
-  color: var(--theme-gold-bright, var(--theme-gold, #D4AF37));
+  color: var(--theme-gold-bright, var(--theme-gold, #009688));
   letter-spacing: 0.02em;
 }
 
@@ -155,7 +155,7 @@
 .tagViolet { background: #8b5cf6; }
 .tagOrange { background: #f97316; }
 .tagBlue { background: #3b82f6; }
-.tagGold { background: var(--theme-gold, #D4AF37); color: #000; }
+.tagGold { background: var(--theme-gold, #009688); color: #000; }
 
 .itemCopy {
   display: flex;

@@ -12,12 +12,12 @@ export default function WelcomeModal({ isOpen, onClose }) {
         <div style={{ textAlign: "center", paddingTop: "2rem", paddingBottom: "1rem", position: "relative" }}>
           <div style={{ fontSize: "10px", color: "#a1a1aa", letterSpacing: "4px", fontWeight: "700", marginBottom: "4px" }}>WELCOME TO</div>
           <div style={{ fontSize: "28px", fontWeight: "900", color: "#ffffff", letterSpacing: "1px" }}>
-            LUCKY<span style={{ color: "#d4af37" }}>NOVA</span>
+            LUCKY<span style={{ color: "#009688" }}>NOVA</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "8px" }}>
-            <div style={{ height: "1px", width: "40px", background: "linear-gradient(90deg, transparent, #d4af37)" }}></div>
-            <span style={{ color: "#d4af37", fontSize: "10px" }}>✦</span>
-            <div style={{ height: "1px", width: "40px", background: "linear-gradient(270deg, transparent, #d4af37)" }}></div>
+            <div style={{ height: "1px", width: "40px", background: "linear-gradient(90deg, transparent, #009688)" }}></div>
+            <span style={{ color: "#009688", fontSize: "10px" }}>✦</span>
+            <div style={{ height: "1px", width: "40px", background: "linear-gradient(270deg, transparent, #009688)" }}></div>
           </div>
         </div>
 
@@ -25,27 +25,27 @@ export default function WelcomeModal({ isOpen, onClose }) {
         <div style={{ padding: "0 1.5rem 1.5rem", color: "#d1d5db", fontSize: "13px", lineHeight: "1.6" }}>
           <p style={{ color: "#a1a1aa", marginBottom: "1.5rem", textAlign: "center" }}>
             A secure and rewarding gaming experience starts here.<br />
-            Please make sure you are accessing the official <span style={{ color: "#d4af37", fontWeight: "600" }}>LuckyNova</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#d4af37", fontWeight: "600" }}>LuckyNova</span>.
+            Please make sure you are accessing the official <span style={{ color: "#009688", fontWeight: "600" }}>LuckyNova</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#009688", fontWeight: "600" }}>LuckyNova</span>.
           </p>
 
           {/* Safety Section */}
           <div style={{ border: "1px solid rgba(212, 175, 55, 0.4)", borderRadius: "14px", padding: "16px", background: "rgba(0, 0, 0, 0.2)", marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#d4af37", fontWeight: "700", fontSize: "12px", marginBottom: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#009688", fontWeight: "700", fontSize: "12px", marginBottom: "12px" }}>
               <span>🛡️</span>
               <span>FOR YOUR SAFETY:</span>
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px", textAlign: "left" }}>
               <li style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#d1d5db" }}>
-                <span style={{ color: "#d4af37" }}>✓</span> Always verify our official website link
+                <span style={{ color: "#009688" }}>✓</span> Always verify our official website link
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#d1d5db" }}>
-                <span style={{ color: "#d4af37" }}>✓</span> Never share your login details or OTP with anyone
+                <span style={{ color: "#009688" }}>✓</span> Never share your login details or OTP with anyone
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#d1d5db" }}>
-                <span style={{ color: "#d4af37" }}>✓</span> Contact official support for any assistance
+                <span style={{ color: "#009688" }}>✓</span> Contact official support for any assistance
               </li>
               <li style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#d1d5db" }}>
-                <span style={{ color: "#d4af37" }}>✓</span> Play responsibly and stay secure
+                <span style={{ color: "#009688" }}>✓</span> Play responsibly and stay secure
               </li>
             </ul>
           </div>
@@ -79,7 +79,7 @@ export default function WelcomeModal({ isOpen, onClose }) {
             }}
           >
             <span>🌐</span>
-            <span>Official URL: <span style={{ color: "#d4af37", marginLeft: "4px" }}>&gt; CLICK HERE &lt;</span></span>
+            <span>Official URL: <span style={{ color: "#009688", marginLeft: "4px" }}>&gt; CLICK HERE &lt;</span></span>
           </a>
 
           {/* Confirm Button */}

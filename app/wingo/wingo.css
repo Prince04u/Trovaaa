@@ -15,7 +15,7 @@
 
 /* Available Balance Header */
 .wg-dashboard-header {
-  background-color: #43A047;
+  background-color: #009688;
   color: #FFFFFF;
   padding: 18px 16px;
   display: flex;
@@ -94,8 +94,8 @@
 }
 
 .wg-duration-tab.active {
-  color: #43A047;
-  border-bottom-color: #43A047;
+  color: #009688;
+  border-bottom-color: #009688;
 }
 
 /* Period & Countdown Row */
@@ -163,7 +163,7 @@
 }
 
 .wg-timer-colon {
-  color: #43A047;
+  color: #009688;
   font-weight: 500;
   padding: 0 2px;
 }
@@ -195,7 +195,7 @@
 }
 
 .wg-countdown-digit {
-  background-color: #43A047;
+  background-color: #009688;
   color: #FFFFFF;
   font-size: 48px;
   font-weight: 500;
@@ -230,7 +230,7 @@
 }
 
 .wg-color-btn.green {
-  background-color: #43A047;
+  background-color: #009688;
   box-shadow: 0 3px 6px rgba(67, 160, 71, 0.3);
 }
 
@@ -270,7 +270,7 @@
 }
 
 .wg-num-btn.green {
-  background-color: #43A047;
+  background-color: #009688;
 }
 
 .wg-num-btn.red {
@@ -282,7 +282,7 @@
 }
 
 .wg-num-btn.v5 {
-  background: linear-gradient(135deg, #8E24AA 50%, #43A047 50%);
+  background: linear-gradient(135deg, #8E24AA 50%, #009688 50%);
 }
 
 .wg-size-row {
@@ -302,7 +302,7 @@
 }
 
 .wg-size-btn.big {
-  background-color: #43A047;
+  background-color: #009688;
   box-shadow: 0 3px 6px rgba(67, 160, 71, 0.2);
 }
 
@@ -322,7 +322,7 @@
 }
 
 .wg-logs-title-bar {
-  border-bottom: 2px solid #43A047;
+  border-bottom: 2px solid #009688;
   padding: 12px;
   display: flex;
   align-items: center;
@@ -364,7 +364,7 @@
   font-size: 14px;
 }
 
-.wg-number-cell.green { color: #43A047; }
+.wg-number-cell.green { color: #009688; }
 .wg-number-cell.red { color: #F44336; }
 .wg-number-cell.violet { color: #8E24AA; }
 
@@ -377,7 +377,7 @@
 }
 
 .wg-result-chip.green {
-  background-color: #43A047;
+  background-color: #009688;
 }
 
 .wg-result-chip.red {
@@ -389,7 +389,7 @@
 }
 
 .wg-result-chip.violet-green {
-  background: linear-gradient(135deg, #8E24AA 50%, #43A047 50%);
+  background: linear-gradient(135deg, #8E24AA 50%, #009688 50%);
 }
 
 /* Slide up dialog sheet style rules */
@@ -422,7 +422,7 @@
   font-size: 15px;
 }
 
-.wg-sheet-header.green { background-color: #43A047; }
+.wg-sheet-header.green { background-color: #009688; }
 .wg-sheet-header.violet { background-color: #8E24AA; }
 .wg-sheet-header.red { background-color: #F44336; }
 .wg-sheet-header.blue { background-color: #2196F3; }
@@ -463,9 +463,9 @@
 }
 
 .wg-sheet-contract-btn.active {
-  border-color: #43A047;
+  border-color: #009688;
   background-color: rgba(67, 160, 71, 0.08);
-  color: #43A047;
+  color: #009688;
 }
 
 .wg-sheet-qty-row {
@@ -514,9 +514,9 @@
 }
 
 .wg-sheet-multi-btn.active {
-  background-color: #43A047;
+  background-color: #009688;
   color: #FFFFFF;
-  border-color: #43A047;
+  border-color: #009688;
 }
 
 .wg-sheet-total-wrap {
@@ -538,7 +538,7 @@
   font-weight: 500;
 }
 
-.wg-sheet-total-val.text-green { color: #43A047; }
+.wg-sheet-total-val.text-green { color: #009688; }
 .wg-sheet-total-val.text-violet { color: #8E24AA; }
 .wg-sheet-total-val.text-red { color: #F44336; }
 .wg-sheet-total-val.text-blue { color: #2196F3; }
@@ -553,11 +553,11 @@
 }
 
 .wg-sheet-agree input {
-  accent-color: #43A047;
+  accent-color: #009688;
 }
 
 .wg-sheet-link {
-  color: #43A047;
+  color: #009688;
   font-weight: 400;
   text-decoration: underline;
 }
@@ -591,7 +591,7 @@
   opacity: 0.6;
 }
 
-.wg-sheet-btn-submit.bg-green { background-color: #43A047; }
+.wg-sheet-btn-submit.bg-green { background-color: #009688; }
 .wg-sheet-btn-submit.bg-violet { background-color: #8E24AA; }
 .wg-sheet-btn-submit.bg-red { background-color: #F44336; }
 .wg-sheet-btn-submit.bg-blue { background-color: #2196F3; }

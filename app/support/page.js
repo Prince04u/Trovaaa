@@ -793,7 +793,7 @@ function SupportContent() {
 
               <div className="service-item" onClick={() => setSelectedForm("modifyupi")}>
                 <div className="item-left">
-                  <div className="item-icon text-icon" style={{ background: "rgba(212, 175, 55, 0.1)", color: "#d4af37", border: "1px solid rgba(212, 175, 55, 0.2)" }}>
+                  <div className="item-icon text-icon" style={{ background: "rgba(212, 175, 55, 0.1)", color: "#009688", border: "1px solid rgba(212, 175, 55, 0.2)" }}>
                     <span style={{ fontSize: "10px", fontWeight: "900" }}>UPI</span>
                   </div>
                   <span>Modify UPI</span>
@@ -881,7 +881,7 @@ function SupportContent() {
 
         .support-back {
           font-size: 28px;
-          color: #d4af37;
+          color: #009688;
           background: none;
           border: none;
           cursor: pointer;
@@ -905,11 +905,11 @@ function SupportContent() {
           gap: 4px;
           font-size: 13px;
           font-weight: 700;
-          color: #d4af37;
+          color: #009688;
         }
 
         .support-help-icon {
-          color: #d4af37;
+          color: #009688;
           cursor: pointer;
         }
 
@@ -997,7 +997,7 @@ function SupportContent() {
           justify-content: center;
           background: rgba(212, 175, 55, 0.08);
           border: 1px solid rgba(212, 175, 55, 0.18);
-          color: #d4af37;
+          color: #009688;
         }
 
         .item-icon.text-icon {
@@ -1014,7 +1014,7 @@ function SupportContent() {
 
         .arrow {
           font-size: 20px;
-          color: #d4af37;
+          color: #009688;
         }
 
         /* Form styling */
@@ -1060,14 +1060,14 @@ function SupportContent() {
         }
 
         .form-group input:focus {
-          border-color: #d4af37;
+          border-color: #009688;
         }
 
         .otp-btn {
           height: 48px;
           padding: 0 16px;
           background: #131313;
-          color: #d4af37;
+          color: #009688;
           border: 1px solid rgba(212, 175, 55, 0.3);
           border-radius: 8px;
           font-size: 13px;
@@ -1090,7 +1090,7 @@ function SupportContent() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          color: #d4af37;
+          color: #009688;
           cursor: pointer;
           background-size: cover;
           background-position: center;
@@ -1113,7 +1113,7 @@ function SupportContent() {
         .confirm-btn {
           width: 100%;
           height: 48px;
-          background: linear-gradient(135deg, #f4d77d 0%, #d4af37 100%);
+          background: linear-gradient(135deg, #f4d77d 0%, #009688 100%);
           color: #000000;
           border: none;
           border-radius: 24px;
@@ -1190,7 +1190,7 @@ function SupportContent() {
 export default function SupportPage() {
   return (
     <Suspense fallback={
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: "#080808", color: "#d4af37" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: "#080808", color: "#009688" }}>
         Loading Support Center...
       </div>
     }>

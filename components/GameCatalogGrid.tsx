@@ -145,7 +145,7 @@ function GameSection({ catKey, label, games, onComingSoon, limit = null }: GameS
     <div className="mb-8 animate-fade-in">
       <div className="club-section-header" style={{ display: "flex", alignItems: "center", marginBottom: "16px", padding: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ color: "var(--ln-gold, #d4af37)", display: "flex", alignItems: "center" }}>
+          <span style={{ color: "var(--ln-gold, #009688)", display: "flex", alignItems: "center" }}>
             <Art size={18} />
           </span>
           <h2 style={{ fontSize: "16px", fontWeight: "800", color: "#fff", margin: 0, letterSpacing: "0.2px" }}>{label}</h2>
@@ -180,7 +180,7 @@ function GameSection({ catKey, label, games, onComingSoon, limit = null }: GameS
 
               <div style={{ textAlign: "center", marginTop: "8px", padding: "0 2px" }}>
                 <span style={{ display: "block", color: "#fff", fontSize: "11px", fontWeight: "700", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{game.label}</span>
-                <span style={{ display: "block", color: "var(--ln-gold, #d4af37)", fontSize: "9px", fontWeight: "600", textTransform: "uppercase", marginTop: "2px" }}>{getCategoryLabel(game.category)}</span>
+                <span style={{ display: "block", color: "var(--ln-gold, #009688)", fontSize: "9px", fontWeight: "600", textTransform: "uppercase", marginTop: "2px" }}>{getCategoryLabel(game.category)}</span>
               </div>
             </>
           );

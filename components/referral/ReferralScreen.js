@@ -111,7 +111,7 @@ function ScrollWheel({ items, value, onChange }) {
             justifyContent: "center",
             fontSize: "16px",
             fontWeight: value === item ? "bold" : "normal",
-            color: value === item ? "#d4af37" : "#cccccc",
+            color: value === item ? "#009688" : "#cccccc",
             cursor: "pointer",
           }}
         >
@@ -582,29 +582,29 @@ export default function ReferralScreen() {
         >
           <div className="grid grid-cols-2 gap-y-4 text-center">
             <div style={{ borderRight: "1px solid rgba(212, 175, 55, 0.15)", paddingRight: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>{stats.depositNumber}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>{stats.depositNumber}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>Deposit number</span>
             </div>
             <div style={{ paddingLeft: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>₹{stats.depositAmount.toLocaleString("en-IN")}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>₹{stats.depositAmount.toLocaleString("en-IN")}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>Deposit amount</span>
             </div>
 
             <div style={{ borderTop: "1px solid rgba(212, 175, 55, 0.15)", borderRight: "1px solid rgba(212, 175, 55, 0.15)", paddingTop: "12px", paddingRight: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>{stats.bettorsNumber}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>{stats.bettorsNumber}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>Number of bettors</span>
             </div>
             <div style={{ borderTop: "1px solid rgba(212, 175, 55, 0.15)", paddingTop: "12px", paddingLeft: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>₹{stats.totalBetAmount.toLocaleString("en-IN")}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>₹{stats.totalBetAmount.toLocaleString("en-IN")}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>Total bet</span>
             </div>
 
             <div style={{ borderTop: "1px solid rgba(212, 175, 55, 0.15)", borderRight: "1px solid rgba(212, 175, 55, 0.15)", paddingTop: "12px", paddingRight: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>{stats.firstDepositCount}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>{stats.firstDepositCount}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>Number of people making first deposit</span>
             </div>
             <div style={{ borderTop: "1px solid rgba(212, 175, 55, 0.15)", paddingTop: "12px", paddingLeft: "4px" }}>
-              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#d4af37" }}>₹{stats.firstDepositSum.toLocaleString("en-IN")}</strong>
+              <strong style={{ display: "block", fontSize: "16px", fontWeight: "800", color: "#009688" }}>₹{stats.firstDepositSum.toLocaleString("en-IN")}</strong>
               <span style={{ fontSize: "9px", color: "rgba(255, 255, 255, 0.5)", display: "block", marginTop: "2px" }}>First deposit amount</span>
             </div>
           </div>
@@ -613,7 +613,7 @@ export default function ReferralScreen() {
         {/* DOWNLINE LIST */}
         <div className="flex justify-between items-center mb-3">
           <h2 style={{ fontSize: "13px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px", color: "rgba(255, 255, 255, 0.9)" }}>Invited downline</h2>
-          <span style={{ fontSize: "11px", color: "#d4af37", fontWeight: "600" }}>{filteredReferrals.length} members</span>
+          <span style={{ fontSize: "11px", color: "#009688", fontWeight: "600" }}>{filteredReferrals.length} members</span>
         </div>
 
         {filteredReferrals.length === 0 ? (
@@ -715,7 +715,7 @@ export default function ReferralScreen() {
               <button 
                 type="button" 
                 onClick={() => setLevelPickerOpen(false)}
-                style={{ border: "none", background: "none", color: "#d4af37", fontSize: "15px", cursor: "pointer" }}
+                style={{ border: "none", background: "none", color: "#009688", fontSize: "15px", cursor: "pointer" }}
               >
                 Cancel
               </button>
@@ -726,7 +726,7 @@ export default function ReferralScreen() {
                   setSelectedLevel(tempLevel);
                   setLevelPickerOpen(false);
                 }}
-                style={{ border: "none", background: "none", color: "#d4af37", fontSize: "15px", fontWeight: "bold", cursor: "pointer" }}
+                style={{ border: "none", background: "none", color: "#009688", fontSize: "15px", fontWeight: "bold", cursor: "pointer" }}
               >
                 Confirm
               </button>
@@ -789,7 +789,7 @@ export default function ReferralScreen() {
               <button 
                 type="button" 
                 onClick={() => setDatePickerOpen(false)}
-                style={{ border: "none", background: "none", color: "#d4af37", fontSize: "15px", cursor: "pointer" }}
+                style={{ border: "none", background: "none", color: "#009688", fontSize: "15px", cursor: "pointer" }}
               >
                 Cancel
               </button>
@@ -804,7 +804,7 @@ export default function ReferralScreen() {
                   setSelectedDate(`${tempYear}-${tempMonth}-${tempDay}`);
                   setDatePickerOpen(false);
                 }}
-                style={{ border: "none", background: "none", color: "#d4af37", fontSize: "15px", fontWeight: "bold", cursor: "pointer" }}
+                style={{ border: "none", background: "none", color: "#009688", fontSize: "15px", fontWeight: "bold", cursor: "pointer" }}
               >
                 Confirm
               </button>

@@ -8,10 +8,10 @@
   --border: #E0E0E0;
   --foreground: #222222;
   --muted: #666666;
-  --gold: #43A047;
-  --gold-2: #2E7D32;
+  --gold: #009688;
+  --gold-2: #00796b;
   --coin: #FF9800;
-  --green: #43A047;
+  --green: #009688;
   --red: #F44336;
   --violet: #8E24AA;
   --blue: #2196F3;
@@ -183,7 +183,7 @@ a {
   padding: 0.75rem 1rem;
   border: none;
   border-radius: 8px;
-  background: #D4AF37;
+  background: #009688;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
@@ -192,7 +192,7 @@ a {
 }
 
 .btn:hover {
-  background: #AA8122;
+  background: #00796b;
 }
 
 .btn:disabled {
@@ -242,7 +242,7 @@ a {
   display: inline-block;
   padding: 0.75rem 1.25rem;
   border-radius: 8px;
-  background: #D4AF37;
+  background: #009688;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
@@ -288,7 +288,7 @@ a {
 }
 
 .game-card:hover {
-  border-color: #D4AF37;
+  border-color: #009688;
   text-decoration: none;
 }
 
@@ -296,7 +296,7 @@ a {
   display: inline-block;
   padding: 0.75rem 1.25rem;
   border-radius: 8px;
-  background: #D4AF37;
+  background: #009688;
   color: #fff;
   font-weight: 600;
   opacity: 0.5;
@@ -338,7 +338,7 @@ a {
 }
 
 .wingo-balance-chip {
-  background: #D4AF37;
+  background: #009688;
   padding: 0.625rem 1rem;
   border-radius: 999px;
   font-weight: 700;
@@ -365,7 +365,7 @@ a {
 .countdown {
   font-size: 2rem;
   font-weight: 700;
-  color: #E7C66A;
+  color: #009688;
 }
 
 .status-pill {
@@ -434,8 +434,8 @@ a {
 }
 
 .amount-btn.active {
-  border-color: #D4AF37;
-  background: #AA8122;
+  border-color: #009688;
+  background: #00796b;
 }
 
 .color-bets, .size-bets {
@@ -686,7 +686,7 @@ a {
 
 .transaction-status.completed {
   background: rgba(56, 189, 248, 0.15);
-  color: #E7C66A;
+  color: #009688;
 }
 
 .transaction-status.pending {

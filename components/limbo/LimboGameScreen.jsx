@@ -950,7 +950,7 @@ const styles = {
     gap: 10,
   },
   backButton: {
-    color: "#D4AF37",
+    color: "#009688",
     textDecoration: "none",
     fontSize: "14px",
     fontWeight: "bold",
@@ -990,7 +990,7 @@ const styles = {
   walletAmount: {
     fontSize: "13px",
     fontWeight: "bold",
-    color: "#D4AF37",
+    color: "#009688",
   },
   content: {
     flex: 1,

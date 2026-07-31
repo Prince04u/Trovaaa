@@ -131,8 +131,8 @@
   --theme-glass-border-strong:rgba(67,160,71,.18);
   --theme-glass-blur:14px;
   --theme-gold-glow-strong:rgba(67,160,71,.22);
-  --theme-gold-metal: linear-gradient(135deg, #A5D6A7 0%, #43A047 50%, #2E7D32 100%);
-  --theme-gold-soft-metal: linear-gradient(135deg, #A5D6A7 0%, #43A047 100%);
+  --theme-gold-metal: linear-gradient(135deg, #80cbd4 0%, #009688 50%, #00796b 100%);
+  --theme-gold-soft-metal: linear-gradient(135deg, #80cbd4 0%, #009688 100%);
   --theme-dark-glow: 0 0 20px rgba(67, 160, 71, 0.05);
   --theme-card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
@@ -224,7 +224,7 @@
 
 .ln-recharge-popup-btn {
   width: 100%;
-  background: linear-gradient(135deg, #fbbf24 0%, #d4af37 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #009688 100%);
   color: #000;
   border: none;
   padding: 0.75rem;

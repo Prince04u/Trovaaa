@@ -1411,9 +1411,9 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
                           borderRadius: "6px",
                           fontSize: "12px",
                           fontWeight: "700",
-                          background: active ? "var(--ln-gold, #d4af37)" : "#212128",
+                          background: active ? "var(--ln-gold, #009688)" : "#212128",
                           color: active ? "#000" : "#ccc",
-                          border: active ? "1px solid var(--ln-gold, #d4af37)" : "1px solid rgba(255,255,255,0.08)",
+                          border: active ? "1px solid var(--ln-gold, #009688)" : "1px solid rgba(255,255,255,0.08)",
                           cursor: "pointer",
                           transition: "all 0.15s ease"
                         }}
@@ -1502,9 +1502,9 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
                           borderRadius: "6px",
                           fontSize: "12px",
                           fontWeight: "700",
-                          background: active ? "var(--ln-gold, #d4af37)" : "#212128",
+                          background: active ? "var(--ln-gold, #009688)" : "#212128",
                           color: active ? "#000" : "#ccc",
-                          border: active ? "1px solid var(--ln-gold, #d4af37)" : "1px solid rgba(255,255,255,0.08)",
+                          border: active ? "1px solid var(--ln-gold, #009688)" : "1px solid rgba(255,255,255,0.08)",
                           cursor: "pointer",
                           transition: "all 0.15s ease",
                           minWidth: "48px"
@@ -1522,10 +1522,10 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  style={{ accentColor: "var(--ln-gold, #d4af37)", width: "16px", height: "16px" }}
+                  style={{ accentColor: "var(--ln-gold, #009688)", width: "16px", height: "16px" }}
                 />
                 <span>I agree</span>
-                <button type="button" className="wg-bet-rules" onClick={() => {}} style={{ color: "#d4af37", background: "none", border: "none", padding: 0, textDecoration: "underline", cursor: "pointer", fontSize: "12px" }}>
+                <button type="button" className="wg-bet-rules" onClick={() => {}} style={{ color: "#009688", background: "none", border: "none", padding: 0, textDecoration: "underline", cursor: "pointer", fontSize: "12px" }}>
                   《Pre-sale rules》
                 </button>
               </label>
@@ -1564,7 +1564,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
                   flex: "2", 
                   padding: "12px", 
                   borderRadius: "12px", 
-                  background: "var(--ln-gold, #d4af37)", 
+                  background: "var(--ln-gold, #009688)", 
                   color: "#000", 
                   border: "none", 
                   fontWeight: "800",

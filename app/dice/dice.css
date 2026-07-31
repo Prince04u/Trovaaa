@@ -2,11 +2,11 @@
   --ln-bg-primary: #080808;
   --ln-bg-charcoal: #151518;
   --ln-bg-card: #1b1b20;
-  --ln-gold: #d4af37;
+  --ln-gold: #009688;
   --ln-gold-glow: rgba(212, 175, 55, 0.08);
   --ln-gold-border: rgba(212, 175, 55, 0.12);
   --ln-highlight: #f8d76a;
-  --ln-win: #2e7d32; /* Professional forest green */
+  --ln-win: #00796b; /* Professional forest green */
   --ln-loss: #c62828; /* Professional brick red */
   --ln-win-badge: #22c55e;
   --ln-loss-badge: #ef4444;
@@ -370,7 +370,7 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  background: var(--ln-gold, #d4af37);
+  background: var(--ln-gold, #009688);
   width: 36px;
   height: 36px;
   border-radius: 50%;

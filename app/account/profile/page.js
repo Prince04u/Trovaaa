@@ -191,10 +191,10 @@ function renderAvatarSvg(id) {
     case "7":
       return (
         <svg viewBox="0 0 100 100" width="44" height="44">
-          <circle cx="50" cy="50" r="50" fill="#A5D6A7"/>
+          <circle cx="50" cy="50" r="50" fill="#80cbd4"/>
           <circle cx="50" cy="36" r="18" fill="#F5CBA7"/>
           <path d="M36 44c0 10 8 16 14 16s14-6 14-16" fill="#5D4037"/>
-          <path d="M26 90a24 24 0 0 1 48 0" fill="#2E7D32"/>
+          <path d="M26 90a24 24 0 0 1 48 0" fill="#00796b"/>
         </svg>
       );
     case "8":

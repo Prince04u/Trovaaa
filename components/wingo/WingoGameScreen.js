@@ -587,7 +587,7 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
       <section className="wg-timer-card select-none">
         <div className="wg-period-info">
           <div className="wg-period-label">
-            <Trophy size={14} className="text-[#43A047]" />
+            <Trophy size={14} className="text-[#009688]" />
             <span>Period</span>
           </div>
           <strong className="wg-period-id">
@@ -701,7 +701,7 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
             key={tab.id}
             type="button"
             className={`flex-1 py-2 text-center text-xs font-bold rounded-lg border border-gray-200 bg-white transition-colors cursor-pointer ${
-              historyTab === tab.id ? "border-[#43A047] text-[#43A047] bg-[#43A047]/5" : "text-gray-500 hover:bg-gray-50"
+              historyTab === tab.id ? "border-[#009688] text-[#009688] bg-[#009688]/5" : "text-gray-500 hover:bg-gray-50"
             }`}
             onClick={() => {
               setHistoryTab(tab.id);
@@ -794,7 +794,7 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
             <div className="flex justify-between items-center text-xs text-gray-500 font-bold mb-3 border-b border-gray-100 pb-2">
               <span>Statistic (Recent 30 rounds)</span>
               <div className="flex gap-3">
-                <span className="text-[#43A047]">Green: {stats.green}</span>
+                <span className="text-[#009688]">Green: {stats.green}</span>
                 <span className="text-[#8E24AA]">Violet: {stats.violet}</span>
                 <span className="text-[#F44336]">Red: {stats.red}</span>
               </div>
@@ -811,8 +811,8 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
                         let cellBg = "bg-transparent";
                         if (active) {
                           cellBg = n === 0 ? "bg-gradient-to-tr from-[#8E24AA] to-[#F44336] text-white" :
-                                   n === 5 ? "bg-gradient-to-tr from-[#8E24AA] to-[#43A047] text-white" :
-                                   n % 2 === 1 ? "bg-[#43A047] text-white" : "bg-[#F44336] text-white";
+                                   n === 5 ? "bg-gradient-to-tr from-[#8E24AA] to-[#009688] text-white" :
+                                   n % 2 === 1 ? "bg-[#009688] text-white" : "bg-[#F44336] text-white";
                         }
                         return (
                           <div 
@@ -840,7 +840,7 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
               const isExpanded = expandedBetId === id;
               const betDisplayLabel = getBetSelectionLabel(bet.betType, bet.betValue);
               const dateStr = bet.createdAt ? new Date(bet.createdAt).toLocaleString("en-IN") : "";
-              const stateClass = bet.state === "won" ? "text-[#43A047] font-black" : bet.state === "lost" ? "text-gray-400 font-semibold" : "text-amber-500 font-semibold";
+              const stateClass = bet.state === "won" ? "text-[#009688] font-black" : bet.state === "lost" ? "text-gray-400 font-semibold" : "text-amber-500 font-semibold";
               
               return (
                 <div key={id} className="border border-gray-100 rounded-lg p-3 bg-gray-50 flex flex-col gap-2 text-xs">

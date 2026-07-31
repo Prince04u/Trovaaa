@@ -48,7 +48,7 @@ export default function AppError({ error, reset }) {
               border: "none",
               fontWeight: 600,
               cursor: "pointer",
-              background: "linear-gradient(135deg, #fbbf24 0%, #d4af37 100%)",
+              background: "linear-gradient(135deg, #fbbf24 0%, #009688 100%)",
               color: "#1a1a1a",
             }}
           >

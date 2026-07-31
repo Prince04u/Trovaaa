@@ -7,7 +7,7 @@ export default function PromoBanner() {
     <div className="flex flex-col select-none">
       {/* Welcome Title Block */}
       <div className="bg-white py-4 flex flex-col items-center justify-center border-b border-gray-100">
-        <h2 className="text-[22px] font-black text-[#43A047] tracking-tight leading-none">
+        <h2 className="text-[22px] font-black text-[#009688] tracking-tight leading-none">
           Welcome Back
         </h2>
         <span className="text-[12px] font-semibold text-gray-400 mt-1.5 uppercase tracking-wider">

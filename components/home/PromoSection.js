@@ -119,7 +119,7 @@ export default function PromoSection() {
   return (
     <section id="promo" className="club-promo-section" aria-label="Promotions">
       <div className="club-promo-heading">
-        <h2 style={{ fontSize: "1.25rem", color: "#D4AF37", borderLeft: "4px solid #D4AF37", paddingLeft: "8px" }}>
+        <h2 style={{ fontSize: "1.25rem", color: "#009688", borderLeft: "4px solid #009688", paddingLeft: "8px" }}>
           Promotions
         </h2>
       </div>
@@ -180,10 +180,10 @@ export default function PromoSection() {
           >
             {/* Header */}
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: "900", color: "#D4AF37", textTransform: "uppercase" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "900", color: "#009688", textTransform: "uppercase" }}>
                 {activePromo.title}
               </h3>
-              <div style={{ height: "2px", width: "60px", background: "linear-gradient(90deg, transparent, #D4AF37, transparent)", margin: "8px auto" }} />
+              <div style={{ height: "2px", width: "60px", background: "linear-gradient(90deg, transparent, #009688, transparent)", margin: "8px auto" }} />
             </div>
 
             {/* Summary */}
@@ -204,7 +204,7 @@ export default function PromoSection() {
                       padding: "8px 12px",
                       fontSize: "0.75rem",
                       fontWeight: "bold",
-                      color: "#E7C66A",
+                      color: "#009688",
                       textAlign: "center",
                     }}
                   >
@@ -221,7 +221,7 @@ export default function PromoSection() {
                   <thead>
                     <tr style={{ background: "#221C14", borderBottom: "1.5px solid rgba(212, 175, 55, 0.3)" }}>
                       {activePromo.details.tableHeaders.map((header, idx) => (
-                        <th key={idx} style={{ padding: "12px 14px", fontWeight: "800", color: "#D4AF37", textTransform: "uppercase" }}>
+                        <th key={idx} style={{ padding: "12px 14px", fontWeight: "800", color: "#009688", textTransform: "uppercase" }}>
                           {header}
                         </th>
                       ))}
@@ -241,7 +241,7 @@ export default function PromoSection() {
                             key={cellIdx}
                             style={{
                               padding: "12px 14px",
-                              color: cellIdx === 1 ? "#E7C66A" : "#FFFFFF",
+                              color: cellIdx === 1 ? "#009688" : "#FFFFFF",
                               fontWeight: cellIdx === 1 ? "700" : "normal"
                             }}
                           >
@@ -257,7 +257,7 @@ export default function PromoSection() {
 
             {/* Terms and Conditions List */}
             <div>
-              <h4 style={{ fontSize: "0.85rem", fontWeight: "800", color: "#D4AF37", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
+              <h4 style={{ fontSize: "0.85rem", fontWeight: "800", color: "#009688", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
                 📜 {activePromo.details.notesTitle}
               </h4>
               <ol style={{ paddingLeft: "16px", color: "#A9A9A9", fontSize: "0.78rem", lineHeight: "1.6", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -274,7 +274,7 @@ export default function PromoSection() {
               onClick={() => setActivePromo(null)}
               style={{
                 width: "100%",
-                background: "linear-gradient(135deg, #FFE8A3 0%, #D4AF37 100%)",
+                background: "linear-gradient(135deg, #FFE8A3 0%, #009688 100%)",
                 color: "#000000",
                 border: "none",
                 borderRadius: "12px",
