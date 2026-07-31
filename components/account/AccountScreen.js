@@ -14,6 +14,7 @@ export default function AccountScreen() {
   const [mounted, setMounted] = useState(false);
   const [user, setUserState] = useState(null);
   const [balance, setBalance] = useState(0);
+  const [showNotice, setShowNotice] = useState(false);
 
   const loadProfile = async () => {
     try {
@@ -76,15 +77,27 @@ export default function AccountScreen() {
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Profile Header Banner matching reference screenshot 1 */}
       <section className="bg-[#00A091] text-white px-[22px] pt-[17px] pb-[16px] min-h-[180px] flex flex-col justify-between relative select-none w-full box-border">
-        {/* User identification top left */}
-        <div className="flex items-center gap-[16px]">
-          <div className="w-[44px] h-[44px] rounded-full bg-[#1E88E5] text-white flex items-center justify-center font-normal text-[18px] shadow-sm shrink-0">
-            {avatarChar}
+        {/* User identification top bar with top-right bell button */}
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-[16px]">
+            <div className="w-[44px] h-[44px] rounded-full bg-[#1E88E5] text-white flex items-center justify-center font-normal text-[18px] shadow-sm shrink-0">
+              {avatarChar}
+            </div>
+            <div className="flex flex-col gap-[2px] justify-center">
+              <span className="text-[14px] font-normal text-white leading-tight">User: {displayName}</span>
+              <span className="text-[12px] text-white opacity-90 leading-tight">ID: {uid}</span>
+            </div>
           </div>
-          <div className="flex flex-col gap-[2px] justify-center">
-            <span className="text-[14px] font-normal text-white leading-tight">User: {displayName}</span>
-            <span className="text-[12px] text-white opacity-90 leading-tight">ID: {uid}</span>
-          </div>
+
+          {/* Top-right bell inside white circular button matching reference photo */}
+          <button 
+            type="button"
+            onClick={() => setShowNotice(true)} 
+            className="w-[36px] h-[36px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 text-gray-600 border-none cursor-pointer shrink-0 outline-none"
+            aria-label="Notifications"
+          >
+            <span className="material-icons-outlined text-[20px] text-[#555555]">notifications</span>
+          </button>
         </div>
 
         {/* 3 Stat Columns (Balance, Commission, Interest) spread across full width */}
@@ -165,6 +178,27 @@ export default function AccountScreen() {
           Logout
         </button>
       </section>
+
+      {/* Notice Modal Dialog matching reference photo 2 */}
+      {showNotice && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-[4px] w-full max-w-[480px] p-6 shadow-lg flex flex-col justify-between min-h-[160px]">
+            <div>
+              <h3 className="text-[20px] font-normal text-[#222222] m-0 mb-4">Notice</h3>
+              <p className="text-[14px] text-[#555555] m-0">no notice</p>
+            </div>
+            <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                onClick={() => setShowNotice(false)}
+                className="bg-transparent border-none text-[#00A091] font-medium text-[14px] tracking-wide cursor-pointer outline-none hover:opacity-80"
+              >
+                CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNav />
     </main>
