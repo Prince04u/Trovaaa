@@ -821,19 +821,19 @@ function SupportContent() {
                 <span className="arrow">›</span>
               </div>
 
-              <a href="https://t.me/luckynovaofficial" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
+              <a href="https://t.me/superwinofficial" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
                 <div className="item-left">
                   <div className="item-icon" style={{ background: "rgba(0, 136, 204, 0.1)", color: "#0088cc", border: "1px solid rgba(0, 136, 204, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", width: "28px", height: "28px" }}>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.73 7.59-3.25 3.61-1.48 4.36-1.74 4.85-1.75.11 0 .35.03.5.16.13.11.17.26.18.38.01.08.01.23 0 .32z"/>
                     </svg>
                   </div>
-                  <span>【LuckyNova】Official Channel</span>
+                  <span>【Superwin】Official Channel</span>
                 </div>
                 <span className="arrow">›</span>
               </a>
 
-              <a href="https://www.luckynova11.site" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
+              <a href="https://www.superwin.games" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
                 <div className="item-left">
                   <div className="item-icon" style={{ background: "rgba(34, 197, 94, 0.1)", color: "#22c55e", border: "1px solid rgba(34, 197, 94, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", width: "28px", height: "28px" }}>
                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2.5" fill="none">
@@ -841,7 +841,7 @@ function SupportContent() {
                       <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                   </div>
-                  <span>Check LuckyNova Official Website</span>
+                  <span>Check Superwin Official Website</span>
                 </div>
                 <span className="arrow">›</span>
               </a>

@@ -1,4 +1,4 @@
-process.env.NEXT_PUBLIC_API_URL = "https://11luckynova.vercel.app/api";
+process.env.NEXT_PUBLIC_API_URL = "https://superwin.vercel.app/api";
 import api from "./lib/api";
 import { getMyBets } from "./lib/k3Api";
 import { getBalance } from "./lib/walletApi";
@@ -15,7 +15,7 @@ async function main() {
     // Inject token to axios headers directly for testing
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     // Also mock the backend base URL since we want to hit the production API!
-    api.defaults.baseURL = "https://11luckynova.vercel.app/api";
+    api.defaults.baseURL = "https://superwin.vercel.app/api";
 
     console.log("Calling getBalance...");
     const balanceRes = await getBalance();

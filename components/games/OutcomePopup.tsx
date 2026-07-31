@@ -197,8 +197,8 @@ export default function OutcomePopup({
 
             <div className="ln-emblem-logo">
               <img
-                src="/images/logo-ln.png"
-                alt="Lucky Nova"
+                src="/brand/superwin-logo.png"
+                alt="Superwin"
                 style={{ filter: win ? "none" : "grayscale(0.85) brightness(1.15)" }}
               />
             </div>
@@ -308,8 +308,8 @@ export default function OutcomePopup({
 
           {/* Footer */}
           <div className="ln-pop-footer">
-            <img src="/images/logo-ln.png" alt="LN" />
-            <span>LUCKY NOVA</span>
+            <img src="/brand/superwin-logo.png" alt="LN" />
+            <span>SUPERWIN</span>
           </div>
         </div>
       </div>

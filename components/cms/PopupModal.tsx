@@ -18,7 +18,7 @@ export function PopupModal({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const seenKey = `luckynova:popup:${id}`;
+    const seenKey = `superwin:popup:${id}`;
     if (!sessionStorage.getItem(seenKey)) {
       setVisible(true);
       sessionStorage.setItem(seenKey, "1");

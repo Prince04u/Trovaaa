@@ -1,8 +1,8 @@
 import "./fived.css";
 
 export const metadata = {
-  title: "5D Lottery - LuckyNova",
-  description: "Play 5D Lottery on LuckyNova",
+  title: "5D Lottery - Superwin",
+  description: "Play 5D Lottery on Superwin",
 };
 
 export default function FiveDLayout({ children }: { children: React.ReactNode }) {

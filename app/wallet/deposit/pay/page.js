@@ -503,7 +503,7 @@ function DepositPayContent() {
                 const url = canvas.toDataURL("image/png");
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `luckynova_deposit_qr_${amountParam}.png`;
+                a.download = `deposit_qr_${amountParam}.png`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);

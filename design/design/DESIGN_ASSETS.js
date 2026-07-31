@@ -1,5 +1,5 @@
 /**
- * LUCKY NOVA — design assets catalog (single source of truth)
+ * SUPERWIN — design assets catalog (single source of truth)
  *
  * Screen mockups: docs/design/refs/
  * Reusable images: docs/design/assets/  (+ copies in frontend/public/design/)
@@ -21,7 +21,7 @@ export const DESIGN_ASSETS = {
   version: "1.0.0",
   updated: "2026-06-13",
   brand: {
-    name: "LUCKY NOVA",
+    name: "SUPERWIN",
     logoEmoji: "👑",
     maxWidth: 480,
     colors: {

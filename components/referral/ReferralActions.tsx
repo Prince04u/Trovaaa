@@ -44,7 +44,7 @@ export function InviteNowButton({ url, code }: { url: string; code: string }) {
   async function invite() {
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
-        await navigator.share({ title: "Join me on Lucky Nova", text: `Use my referral code ${code}`, url });
+        await navigator.share({ title: "Join me on Superwin", text: `Use my referral code ${code}`, url });
         return;
       } catch {
         // user cancelled the share sheet — fall through to clipboard copy

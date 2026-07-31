@@ -27,7 +27,7 @@ export function getRequestBaseUrl(request: NextRequest): string {
   }
 
   // 4. Ultimate fallback
-  return "https://11luckynova.vercel.app";
+  return "https://superwin.vercel.app";
 }
 
 /**

@@ -25,7 +25,7 @@ export default function WelcomeModal({ isOpen, onClose }) {
         <div style={{ padding: "0 1.5rem 1.5rem", color: "#d1d5db", fontSize: "13px", lineHeight: "1.6" }}>
           <p style={{ color: "#a1a1aa", marginBottom: "1.5rem", textAlign: "center" }}>
             A secure and rewarding gaming experience starts here.<br />
-            Please make sure you are accessing the official <span style={{ color: "#009688", fontWeight: "600" }}>LuckyNova</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#009688", fontWeight: "600" }}>LuckyNova</span>.
+            Please make sure you are accessing the official <span style={{ color: "#009688", fontWeight: "600" }}>Superwin</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#009688", fontWeight: "600" }}>Superwin</span>.
           </p>
 
           {/* Safety Section */}
@@ -51,13 +51,13 @@ export default function WelcomeModal({ isOpen, onClose }) {
           </div>
 
           <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-            <p style={{ color: "#c5a85c", fontWeight: "600", fontSize: "12px", marginBottom: "4px" }}>Thank you for choosing LuckyNova.</p>
+            <p style={{ color: "#c5a85c", fontWeight: "600", fontSize: "12px", marginBottom: "4px" }}>Thank you for choosing Superwin.</p>
             <p style={{ color: "#a1a1aa", fontSize: "12px" }}>We wish you a safe and enjoyable experience!</p>
           </div>
 
           {/* Official Link Button */}
           <a 
-            href="https://www.luckynova11.site" 
+            href="https://www.superwin.games" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="link-btn-glow"

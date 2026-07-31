@@ -21,7 +21,7 @@ type GameHeaderProps = {
 
 export function GameHeader({
   title,
-  subtitle = "LuckyNova Fair Games",
+  subtitle = "Superwin Fair Games",
   durations,
   activeDuration,
   durationHrefPrefix,
@@ -82,7 +82,7 @@ export function GameHeader({
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img
             src="/design/logo_header.png"
-            alt="LUCKY NOVA"
+            alt="SUPERWIN"
             style={{ height: "18px", width: "auto", objectFit: "contain" }}
           />
         </div>
