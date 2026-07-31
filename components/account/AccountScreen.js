@@ -9,105 +9,7 @@ import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
 import { disconnectSocket } from "@/lib/socket";
 
-// Exact Custom SVGs matching uploaded reference icons
-const PouchIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#00A091" className="shrink-0">
-    <path d="M12 2C10.5 3.2 9.5 3.8 8 4.2C7 4.5 5 3.8 5 3.8L6.8 7.5C3.5 10 2.5 13.5 3.5 17C4.5 20.5 7.5 22 12 22C16.5 22 19.5 20.5 20.5 17C21.5 13.5 20.5 10 17.2 7.5L19 3.8C19 3.8 17 4.5 16 4.2C14.5 3.8 13.5 3.2 12 2Z" />
-    <text x="12" y="15.5" fontSize="8" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="sans-serif">₹</text>
-  </svg>
-);
-
-const OrdersIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-    <rect x="3.5" y="3.5" width="17" height="17" rx="2" />
-    <circle cx="7.5" cy="8.5" r="0.75" fill="#646566" />
-    <line x1="10.5" y1="8.5" x2="17.5" y2="8.5" />
-    <circle cx="7.5" cy="12" r="0.75" fill="#646566" />
-    <line x1="10.5" y1="12" x2="17.5" y2="12" />
-    <circle cx="7.5" cy="15.5" r="0.75" fill="#646566" />
-    <line x1="10.5" y1="15.5" x2="17.5" y2="15.5" />
-  </svg>
-);
-
-const SignInIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-    <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
-    <line x1="8" y1="2.5" x2="8" y2="5.5" />
-    <line x1="16" y1="2.5" x2="16" y2="5.5" />
-    <line x1="3.5" y1="9" x2="20.5" y2="9" />
-    <path d="M8 14.5l2.8 2.8 5.2-5.2" />
-  </svg>
-);
-
-const WalletIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M4 4h14a2 2 0 0 1 2 2v2H12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h8v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
-    <path d="M12 10h10v4H12a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="#ffffff" />
-    <circle cx="16" cy="12" r="1" fill="#646566" />
-  </svg>
-);
-
-const AddressIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M9 2h6a1 1 0 0 1 1 1v18H8V3a1 1 0 0 1 1-1zM3 9h5v12H3a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1z" />
-    <rect x="11" y="5" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-    <rect x="11" y="8" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-    <rect x="11" y="11" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-    <rect x="11" y="14" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-    <rect x="4" y="11" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-    <rect x="4" y="14" width="2" height="1.5" rx="0.5" fill="#ffffff" />
-  </svg>
-);
-
-const AboutIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
-    <circle cx="12" cy="8" r="1" fill="#ffffff" />
-    <rect x="11" y="11" width="2" height="5" rx="0.5" fill="#ffffff" />
-  </svg>
-);
-
-const FeedbackIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M4 3h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z" />
-    <rect x="7" y="8" width="10" height="2" rx="1" fill="#ffffff" />
-    <rect x="7" y="12" width="10" height="2" rx="1" fill="#ffffff" />
-  </svg>
-);
-
-const DownloadIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M12 3v10m0 0l-5-5m5 5l5-5" stroke="#646566" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-    <rect x="4" y="18" width="16" height="2.5" rx="0.5" fill="#646566" />
-  </svg>
-);
-
-const SecurityIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#646566" className="shrink-0">
-    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12c4.16-1.26 8-6.45 8-12V5l-8-3z" />
-    <path d="M12 2v20c4.16-1.26 8-6.45 8-12V5l-8-3z" fill="#4f5051" />
-    <path d="M6 7.5h6V12H6z" fill="#ffffff" />
-    <path d="M12 12h6v4.5c0 2.5-1.5 5-3.5 6.2L12 22V12z" fill="#ffffff" />
-  </svg>
-);
-
-const BankCardIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-    <rect x="3" y="5" width="18" height="14" rx="2" />
-    <line x1="3" y1="9" x2="21" y2="9" stroke="#646566" />
-    <rect x="14" y="13" width="4" height="3" rx="0.5" fill="#646566" stroke="none" />
-  </svg>
-);
-
-const GiftIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#646566" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-    <rect x="3" y="10" width="18" height="11" rx="1" />
-    <path d="M12 10v11" />
-    <rect x="2" y="7" width="20" height="3" rx="0.5" />
-    <path d="M12 7c-1.5-1.5-3-2.5-4.5-1A2.5 2.5 0 0 0 11 9.5" fill="none" />
-    <path d="M12 7c1.5-1.5 3-2.5 4.5-1A2.5 2.5 0 0 1 13 9.5" fill="none" />
-  </svg>
-);
+import { REF_ICONS } from "./ReferenceIcons";
 
 export default function AccountScreen() {
   const router = useRouter();
@@ -159,18 +61,18 @@ export default function AccountScreen() {
   const avatarChar = displayName.charAt(0) || "P";
 
   const menuItems = [
-    { label: "Sign In", href: "/account/vip", customIcon: <SignInIcon />, hasChevron: true },
-    { label: "Orders", href: "/games/history", customIcon: <OrdersIcon />, hasChevron: true },
-    { label: "Promotion", href: "/referral", customIcon: <GiftIcon />, hasChevron: true },
-    { label: "Red Envelope", href: "/account/gifts", customIcon: <PouchIcon />, hasChevron: false },
-    { label: "Luck Draw", href: "/promo", customIcon: <PouchIcon />, hasChevron: true },
-    { label: "Wallet", href: "/wallet", customIcon: <WalletIcon />, hasChevron: true },
-    { label: "Bank Card", href: "/wallet/withdraw/accounts", customIcon: <BankCardIcon />, hasChevron: true },
-    { label: "Address", href: "/account/profile", customIcon: <AddressIcon />, hasChevron: true },
-    { label: "Account Security", href: "/account/security", customIcon: <SecurityIcon />, hasChevron: true },
-    { label: "App Download", href: "/account/guide", customIcon: <DownloadIcon />, hasChevron: true },
-    { label: "Complaints & Suggestions", href: "/account/feedback", customIcon: <FeedbackIcon />, hasChevron: true },
-    { label: "About", href: "/about", customIcon: <AboutIcon />, hasChevron: true },
+    { label: "Sign In", href: "/account/vip", iconSrc: REF_ICONS.signIn, hasChevron: true },
+    { label: "Orders", href: "/games/history", iconSrc: REF_ICONS.orders, hasChevron: true },
+    { label: "Promotion", href: "/referral", iconSrc: REF_ICONS.promotion, hasChevron: true },
+    { label: "Red Envelope", href: "/account/gifts", iconSrc: REF_ICONS.redEnvelope, hasChevron: false },
+    { label: "Luck Draw", href: "/promo", iconSrc: REF_ICONS.luckDraw, hasChevron: true },
+    { label: "Wallet", href: "/wallet", iconSrc: REF_ICONS.wallet, hasChevron: true },
+    { label: "Bank Card", href: "/wallet/withdraw/accounts", iconSrc: REF_ICONS.bankCard, hasChevron: true },
+    { label: "Address", href: "/account/profile", iconSrc: REF_ICONS.address, hasChevron: true },
+    { label: "Account Security", href: "/account/security", iconSrc: REF_ICONS.accountSecurity, hasChevron: true },
+    { label: "App Download", href: "/account/guide", iconSrc: REF_ICONS.appDownload, hasChevron: true },
+    { label: "Complaints & Suggestions", href: "/account/feedback", iconSrc: REF_ICONS.complaints, hasChevron: true },
+    { label: "About", href: "/about", iconSrc: REF_ICONS.about, hasChevron: true },
   ];
 
   return (
@@ -195,10 +97,10 @@ export default function AccountScreen() {
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 text-gray-600 border-none cursor-pointer shrink-0 outline-none"
+            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 border-none cursor-pointer shrink-0 outline-none p-0"
             aria-label="Notifications"
           >
-            <span className="material-icons-outlined text-[22px] text-[#555555]">notifications</span>
+            <img src={REF_ICONS.notice} alt="Notice" className="w-[24px] h-[24px] object-contain" />
           </button>
         </div>
 
@@ -257,16 +159,11 @@ export default function AccountScreen() {
             className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none group transition-colors w-full box-border border-b border-[#fafafa]"
           >
             <div className="w-[44px] flex items-center shrink-0">
-              {item.customIcon ? (
-                item.customIcon
-              ) : (
-                <span 
-                  className="material-icons-outlined text-[22px] shrink-0"
-                  style={{ color: item.isTealIcon ? "#00A091" : "#7b7b7b" }}
-                >
-                  {item.icon}
-                </span>
-              )}
+              <img 
+                src={item.iconSrc} 
+                alt={item.label} 
+                className="w-[24px] h-[24px] object-contain shrink-0" 
+              />
             </div>
             <span className="text-[16px] font-normal text-[#555555] group-hover:text-black transition-colors flex-grow">
               {item.label}
