@@ -9,6 +9,56 @@ import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
 import { disconnectSocket } from "@/lib/socket";
 
+// Exact Custom SVGs matching uploaded reference icons
+const PouchIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#00A091" className="shrink-0">
+    <path d="M12 2C10.5 3.2 9.5 3.8 8 4.2C7 4.5 5 3.8 5 3.8L6.8 7.5C3.5 10 2.5 13.5 3.5 17C4.5 20.5 7.5 22 12 22C16.5 22 19.5 20.5 20.5 17C21.5 13.5 20.5 10 17.2 7.5L19 3.8C19 3.8 17 4.5 16 4.2C14.5 3.8 13.5 3.2 12 2Z" />
+    <text x="12" y="15.5" fontSize="8" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="sans-serif">₹</text>
+  </svg>
+);
+
+const OrdersIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+    <rect x="3.5" y="3.5" width="17" height="17" rx="2" />
+    <circle cx="7.5" cy="8.5" r="0.75" fill="#7b7b7b" />
+    <line x1="10.5" y1="8.5" x2="17.5" y2="8.5" />
+    <circle cx="7.5" cy="12" r="0.75" fill="#7b7b7b" />
+    <line x1="10.5" y1="12" x2="17.5" y2="12" />
+    <circle cx="7.5" cy="15.5" r="0.75" fill="#7b7b7b" />
+    <line x1="10.5" y1="15.5" x2="17.5" y2="15.5" />
+  </svg>
+);
+
+const SignInIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b7b7b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+    <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+    <line x1="8" y1="2.5" x2="8" y2="5.5" />
+    <line x1="16" y1="2.5" x2="16" y2="5.5" />
+    <line x1="3.5" y1="9" x2="20.5" y2="9" />
+    <path d="M8 14.5l2.8 2.8 5.2-5.2" />
+  </svg>
+);
+
+const WalletIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M4 4h14a2 2 0 0 1 2 2v2H12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h8v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+    <path d="M12 10h10v4H12a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="#ffffff" />
+    <circle cx="16" cy="12" r="1" fill="#7b7b7b" />
+  </svg>
+);
+
+const AddressIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#7b7b7b" className="shrink-0">
+    <path d="M9 2h6a1 1 0 0 1 1 1v18H8V3a1 1 0 0 1 1-1zM3 9h5v12H3a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1z" />
+    <rect x="11" y="5" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+    <rect x="11" y="8" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+    <rect x="11" y="11" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+    <rect x="11" y="14" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+    <rect x="4" y="11" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+    <rect x="4" y="14" width="2" height="1.5" rx="0.5" fill="#ffffff" />
+  </svg>
+);
+
 export default function AccountScreen() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -59,14 +109,14 @@ export default function AccountScreen() {
   const avatarChar = displayName.charAt(0) || "P";
 
   const menuItems = [
-    { label: "Sign In", href: "/account/vip", icon: "event_available", isTealIcon: false, hasChevron: true },
-    { label: "Orders", href: "/games/history", icon: "assignment", isTealIcon: false, hasChevron: true },
+    { label: "Sign In", href: "/account/vip", customIcon: <SignInIcon />, hasChevron: true },
+    { label: "Orders", href: "/games/history", customIcon: <OrdersIcon />, hasChevron: true },
     { label: "Promotion", href: "/referral", icon: "card_giftcard", isTealIcon: false, hasChevron: true },
-    { label: "Red Envelope", href: "/account/gifts", icon: "monetization_on", isTealIcon: true, hasChevron: false },
-    { label: "Luck Draw", href: "/promo", icon: "monetization_on", isTealIcon: true, hasChevron: true },
-    { label: "Wallet", href: "/wallet", icon: "account_balance_wallet", isTealIcon: false, hasChevron: true },
+    { label: "Red Envelope", href: "/account/gifts", customIcon: <PouchIcon />, hasChevron: false },
+    { label: "Luck Draw", href: "/promo", customIcon: <PouchIcon />, hasChevron: true },
+    { label: "Wallet", href: "/wallet", customIcon: <WalletIcon />, hasChevron: true },
     { label: "Bank Card", href: "/wallet/withdraw/accounts", icon: "credit_card", isTealIcon: false, hasChevron: true },
-    { label: "Address", href: "/account/profile", icon: "location_city", isTealIcon: false, hasChevron: true },
+    { label: "Address", href: "/account/profile", customIcon: <AddressIcon />, hasChevron: true },
     { label: "Account Security", href: "/account/security", icon: "security", isTealIcon: false, hasChevron: true },
     { label: "App Download", href: "/account/guide", icon: "download", isTealIcon: false, hasChevron: true },
     { label: "Complaints & Suggestions", href: "/account/feedback", icon: "feedback", isTealIcon: false, hasChevron: true },
@@ -157,12 +207,16 @@ export default function AccountScreen() {
             className="flex items-center h-[50px] pl-[16px] pr-[18px] hover:bg-gray-50 text-decoration-none group transition-colors w-full box-border border-b border-[#fafafa]"
           >
             <div className="w-[44px] flex items-center shrink-0">
-              <span 
-                className="material-icons-outlined text-[22px] shrink-0"
-                style={{ color: item.isTealIcon ? "#00A091" : "#7b7b7b" }}
-              >
-                {item.icon}
-              </span>
+              {item.customIcon ? (
+                item.customIcon
+              ) : (
+                <span 
+                  className="material-icons-outlined text-[22px] shrink-0"
+                  style={{ color: item.isTealIcon ? "#00A091" : "#7b7b7b" }}
+                >
+                  {item.icon}
+                </span>
+              )}
             </div>
             <span className="text-[16px] font-normal text-[#555555] group-hover:text-black transition-colors flex-grow">
               {item.label}
