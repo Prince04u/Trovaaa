@@ -113,7 +113,7 @@ export default function RegisterForm() {
           <div className="grid grid-cols-[minmax(0,1fr)_95px] gap-[14px] items-center w-full">
             <div className="flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
               <div className="w-[22px] flex items-center justify-center shrink-0">
-                <span className="material-icons text-[#7d7d7d] text-[22px]">chat</span>
+                <span className="material-icons text-[#adadad] text-[22px]">chat</span>
               </div>
               <input
                 name="verificationCode"
@@ -147,7 +147,7 @@ export default function RegisterForm() {
           {/* Recommendation Code (Invite Code) */}
           <div className="w-full flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
             <div className="w-[22px] flex items-center justify-center shrink-0">
-              <span className="material-icons-outlined text-[#7d7d7d] text-[22px]">card_giftcard</span>
+              <span className="material-icons-outlined text-[#adadad] text-[22px]">card_giftcard</span>
             </div>
             <input
               id="inviteCode"
