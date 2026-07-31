@@ -1,27 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
-import { register as registerRequest } from "@/lib/authApi";
-import { saveAuth } from "@/lib/auth";
-import PhoneInput from "@/components/auth/PhoneInput";
-import PasswordInput from "@/components/auth/PasswordInput";
-import BottomNav from "@/components/home/BottomNav";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { changePassword } from "@/lib/authApi";
 
-function RegisterContent() {
+export default function ForgotPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
+  
   const [form, setForm] = useState({
     mobile: "",
-    password: "",
-    inviteCode: searchParams.get("ref")?.trim().toUpperCase() || "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,23 +27,26 @@ function RegisterContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
+
+    if (form.newPassword !== form.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const response = await registerRequest({
-        name: `Player${form.mobile.slice(-4) || "01"}`,
+      await changePassword({
         mobile: form.mobile,
-        password: form.password,
-        referralCode: form.inviteCode.trim().toUpperCase() || undefined,
+        password: form.newPassword
       });
-
-      saveAuth(response.data);
-      router.push("/");
+      setSuccess("Password reset successfully. You can now login.");
+      setTimeout(() => router.push("/login"), 2000);
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Registration failed. Please try again."
+          "Password reset failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -65,7 +64,7 @@ function RegisterContent() {
         >
           <span className="material-icons text-[24px]">arrow_back</span>
         </button>
-        <h1 className="text-[20px] font-medium tracking-wide text-white m-0 text-left leading-none flex items-center">Register</h1>
+        <h1 className="text-[20px] font-medium tracking-wide text-white m-0 text-left leading-none flex items-center">Forget Password</h1>
       </header>
 
       {/* Form Section */}
@@ -73,6 +72,11 @@ function RegisterContent() {
         {error && (
           <div className="w-full mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded text-sm text-center">
             {error}
+          </div>
+        )}
+        {success && (
+          <div className="w-full mb-6 p-3 bg-green-50 border border-green-200 text-green-600 rounded text-sm text-center">
+            {success}
           </div>
         )}
 
@@ -91,72 +95,60 @@ function RegisterContent() {
             />
           </div>
 
-          {/* Password Field */}
+          {/* New Password Field */}
           <div className="flex items-center gap-[12px] border-b border-[#ccc] bg-transparent py-2">
             <span className="material-icons text-[#888] text-[22px]">lock</span>
             <input
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={form.password}
+              name="newPassword"
+              type={showNewPassword ? "text" : "password"}
+              value={form.newPassword}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder="New password"
               required
               className="flex-1 bg-transparent text-[16px] text-[#333] placeholder-[#aaa] outline-none border-none p-0"
             />
             <button 
               type="button" 
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowNewPassword(!showNewPassword)}
               className="text-[#888] bg-transparent border-none p-0 flex items-center justify-center cursor-pointer hover:text-[#555]"
             >
-              <span className="material-icons text-[22px]">{showPassword ? "visibility" : "visibility_off"}</span>
+              <span className="material-icons text-[22px]">{showNewPassword ? "visibility" : "visibility_off"}</span>
+            </button>
+          </div>
+          
+          {/* Confirm Password Field */}
+          <div className="flex items-center gap-[12px] border-b border-[#ccc] bg-transparent py-2">
+            <span className="material-icons text-[#888] text-[22px]">lock</span>
+            <input
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={form.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm password"
+              required
+              className="flex-1 bg-transparent text-[16px] text-[#333] placeholder-[#aaa] outline-none border-none p-0"
+            />
+            <button 
+              type="button" 
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="text-[#888] bg-transparent border-none p-0 flex items-center justify-center cursor-pointer hover:text-[#555]"
+            >
+              <span className="material-icons text-[22px]">{showConfirmPassword ? "visibility" : "visibility_off"}</span>
             </button>
           </div>
 
-          {/* Invite Code Field */}
-          <div className="flex items-center gap-[12px] border-b border-[#ccc] bg-transparent py-2">
-            <span className="material-icons text-[#888] text-[22px]">card_giftcard</span>
-            <input
-              name="inviteCode"
-              type="text"
-              value={form.inviteCode}
-              onChange={handleChange}
-              placeholder="Invite code"
-              className="flex-1 bg-transparent text-[16px] text-[#333] placeholder-[#aaa] outline-none border-none p-0"
-            />
-          </div>
-
-          {/* Register Button */}
+          {/* Submit Button */}
           <div className="flex justify-center w-full mt-[30px]">
             <button 
               type="submit" 
               disabled={loading}
               className="w-[85%] max-w-[320px] h-[48px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-full transition-colors cursor-pointer text-[16px] border-0 outline-none flex items-center justify-center shadow-md mx-auto"
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Submitting..." : "Submit"}
             </button>
-          </div>
-
-          {/* Login Link */}
-          <div className="flex justify-center items-center mt-[10px]">
-            <Link 
-              href="/login" 
-              className="text-[#555] hover:text-[#333] text-[14px] flex items-center justify-center border border-[#ddd] px-10 py-2.5 rounded-full bg-white shadow-sm font-medium w-[160px]"
-            >
-              Login
-            </Link>
           </div>
         </form>
       </div>
-      
-      <BottomNav />
     </main>
-  );
-}
-
-export default function RegisterPage() {
-  return (
-    <Suspense fallback={<div className="w-full h-dvh flex items-center justify-center bg-[#fafafa]">Loading...</div>}>
-      <RegisterContent />
-    </Suspense>
   );
 }

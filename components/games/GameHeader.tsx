@@ -21,7 +21,7 @@ type GameHeaderProps = {
 
 export function GameHeader({
   title,
-  subtitle = "Superwin Fair Games",
+  subtitle = "Bruzoo Games",
   durations,
   activeDuration,
   durationHrefPrefix,
@@ -81,8 +81,8 @@ export function GameHeader({
         </button>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img
-            src="/design/logo_header.png"
-            alt="SUPERWIN"
+            src="/brand/logo.png"
+            alt="BRUZOO"
             style={{ height: "18px", width: "auto", objectFit: "contain" }}
           />
         </div>

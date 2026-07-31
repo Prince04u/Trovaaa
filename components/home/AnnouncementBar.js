@@ -7,7 +7,7 @@ import { BRAND_NAME } from "@/lib/brand";
 import AnnouncementsModal from "./AnnouncementsModal";
 
 const DEFAULT_MARQUEE = {
-  text: "Welcome To Superwin! Please Use The Official Superwin Website Only And Contact Support For Any Account Assistant.",
+  text: "Welcome To Bruzoo! Please Use The Official Bruzoo Website Only And Contact Support For Any Account Assistant.",
   link: "/wallet",
   linkLabel: "Detail",
 };

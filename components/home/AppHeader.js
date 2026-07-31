@@ -12,7 +12,7 @@ export default function AppHeader() {
           S
         </div>
         <span className="text-[17px] font-black text-[#222222] tracking-tight">
-          Superwin
+          Bruzoo
         </span>
       </Link>
 

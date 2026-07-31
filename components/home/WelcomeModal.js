@@ -12,7 +12,7 @@ export default function WelcomeModal({ isOpen, onClose }) {
         <div style={{ textAlign: "center", paddingTop: "2rem", paddingBottom: "1rem", position: "relative" }}>
           <div style={{ fontSize: "10px", color: "#a1a1aa", letterSpacing: "4px", fontWeight: "700", marginBottom: "4px" }}>WELCOME TO</div>
           <div style={{ fontSize: "28px", fontWeight: "900", color: "#ffffff", letterSpacing: "1px" }}>
-            LUCKY<span style={{ color: "#009688" }}>NOVA</span>
+            LUCKY<span style={{ color: "#009688" }}>BRUZOO</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "8px" }}>
             <div style={{ height: "1px", width: "40px", background: "linear-gradient(90deg, transparent, #009688)" }}></div>
@@ -25,7 +25,7 @@ export default function WelcomeModal({ isOpen, onClose }) {
         <div style={{ padding: "0 1.5rem 1.5rem", color: "#d1d5db", fontSize: "13px", lineHeight: "1.6" }}>
           <p style={{ color: "#a1a1aa", marginBottom: "1.5rem", textAlign: "center" }}>
             A secure and rewarding gaming experience starts here.<br />
-            Please make sure you are accessing the official <span style={{ color: "#009688", fontWeight: "600" }}>Superwin</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#009688", fontWeight: "600" }}>Superwin</span>.
+            Please make sure you are accessing the official <span style={{ color: "#009688", fontWeight: "600" }}>Bruzoo</span> website only. Beware of fake platforms, imitation websites, and unauthorized agents claiming to represent <span style={{ color: "#009688", fontWeight: "600" }}>Bruzoo</span>.
           </p>
 
           {/* Safety Section */}
@@ -51,13 +51,13 @@ export default function WelcomeModal({ isOpen, onClose }) {
           </div>
 
           <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-            <p style={{ color: "#c5a85c", fontWeight: "600", fontSize: "12px", marginBottom: "4px" }}>Thank you for choosing Superwin.</p>
+            <p style={{ color: "#c5a85c", fontWeight: "600", fontSize: "12px", marginBottom: "4px" }}>Thank you for choosing Bruzoo.</p>
             <p style={{ color: "#a1a1aa", fontSize: "12px" }}>We wish you a safe and enjoyable experience!</p>
           </div>
 
           {/* Official Link Button */}
           <a 
-            href="https://www.superwin.games" 
+            href="#" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="link-btn-glow"

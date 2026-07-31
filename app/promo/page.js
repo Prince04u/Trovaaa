@@ -5,7 +5,7 @@ import BottomNav from "@/components/home/BottomNav";
 
 export default function PromoPage() {
   return (
-    <main className="club-app" style={{ minHeight: "100vh", paddingBottom: "80px" }}>
+    <main className="" style={{ minHeight: "100vh", paddingBottom: "80px" }}>
       {/* Top spacing to match design headers */}
       <div style={{ height: "16px" }} />
       <PromoSection />

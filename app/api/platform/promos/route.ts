@@ -24,7 +24,7 @@ export async function GET(_req: NextRequest) {
 
     if (carousel.length === 0) {
       carousel.push(
-        { id: "slide-1", title: "Join Superwin", image: "/design/banners/wingo-payout.png", link: "/wingo/30s" },
+        { id: "slide-1", title: "Join Bruzoo", image: "/design/banners/wingo-payout.png", link: "/wingo/30s" },
         { id: "slide-2", title: "First Deposit Bonus", image: "/design/banners/first-deposit-bonus.png", link: "/wallet/deposit" },
         { id: "slide-3", title: "Login Reward Tier", image: "/design/banners/login-bonus.png", link: "/account/vip" }
       );

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Phone, Key, ChevronLeft } from "lucide-react";
 import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
@@ -15,6 +14,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ mobile: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -38,64 +38,87 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
-      {/* Full-width Teal Header Bar matching reference screenshot */}
-      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[24px] sticky top-0 z-40 select-none shadow-[0_2px_5px_rgba(0,0,0,0.22)] box-border">
+    <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
+      {/* Top Navbar */}
+      <header className="w-full bg-[#009688] text-white px-[16px] h-[56px] flex items-center gap-[24px] sticky top-0 z-40 select-none shadow-sm box-border">
         <button 
           onClick={() => router.back()} 
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
           aria-label="Go back"
         >
-          <span className="material-icons-outlined text-[24px]">arrow_back</span>
+          <span className="material-icons text-[24px]">arrow_back</span>
         </button>
-        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left leading-none flex items-center">Login</h1>
+        <h1 className="text-[20px] font-medium tracking-wide text-white m-0 text-left leading-none flex items-center">Login</h1>
       </header>
 
-      {/* Form Section with Responsive Desktop Spacing */}
-      <div className="w-full flex-1 px-[24px] pt-[clamp(115px,15vh,130px)] pb-12 flex flex-col justify-start box-border">
+      {/* Form Section */}
+      <div className="w-full flex-1 px-[24px] pt-[80px] pb-12 flex flex-col justify-start box-border">
         {error && (
-          <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm font-medium">
+          <div className="w-full mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded text-sm text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[34px]">
-          {/* Mobile Number Field */}
-          <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[24px]">
+          {/* Phone Field */}
+          <div className="flex items-center gap-[12px] border-b border-[#ccc] bg-transparent py-2">
+            <span className="material-icons text-[#888] text-[22px]">phone</span>
+            <input
+              name="mobile"
+              type="tel"
+              value={form.mobile}
+              onChange={handleChange}
+              placeholder="Phone number"
+              required
+              className="flex-1 bg-transparent text-[16px] text-[#333] placeholder-[#aaa] outline-none border-none p-0"
+            />
+          </div>
 
           {/* Password Field */}
-          <PasswordInput
-            id="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
+          <div className="flex items-center gap-[12px] border-b border-[#ccc] bg-transparent py-2">
+            <span className="material-icons text-[#888] text-[22px]">lock</span>
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Password"
+              required
+              className="flex-1 bg-transparent text-[16px] text-[#333] placeholder-[#aaa] outline-none border-none p-0"
+            />
+            <button 
+              type="button" 
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-[#888] bg-transparent border-none p-0 flex items-center justify-center cursor-pointer hover:text-[#555]"
+            >
+              <span className="material-icons text-[22px]">{showPassword ? "visibility" : "visibility_off"}</span>
+            </button>
+          </div>
 
-          {/* Centered Teal Login Submit Button */}
-          <div className="flex justify-center w-full mt-[15px]">
+          {/* Login Button */}
+          <div className="flex justify-center w-full mt-[30px]">
             <button 
               type="submit" 
               disabled={loading}
-              className="w-[58%] max-w-[240px] h-[44px] bg-[#00A091] hover:bg-[#008f81] disabled:opacity-60 text-white font-normal rounded-[2px] transition-colors cursor-pointer text-[14px] select-none border-0 outline-none flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.15)] mx-auto"
+              className="w-[85%] max-w-[320px] h-[48px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-full transition-colors cursor-pointer text-[16px] border-0 outline-none flex items-center justify-center shadow-md mx-auto"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
           </div>
 
-          {/* Registration & Forgot Password sub-buttons centered row */}
-          <div className="flex justify-center items-center gap-[12px] mt-[5px] select-none">
+          {/* Links Below */}
+          <div className="flex justify-center items-center gap-[16px] mt-[10px]">
             <Link 
               href="/register" 
-              className="w-[84px] h-[41px] bg-[#f9f9f9] hover:bg-[#f0f0f0] text-[#333333] border border-[#e4e4e4] shadow-[0_2px_4px_rgba(0,0,0,0.05)] rounded-[2px] text-[14px] text-decoration-none transition-colors flex items-center justify-center font-normal"
+              className="text-[#555] hover:text-[#333] text-[14px] flex items-center justify-center border border-[#ddd] px-8 py-2.5 rounded-full bg-white shadow-sm font-medium w-[140px]"
             >
               Register
             </Link>
             <Link 
-              href="/support?form=password" 
-              className="w-[145px] h-[41px] bg-[#f9f9f9] hover:bg-[#f0f0f0] text-[#333333] border border-[#e4e4e4] shadow-[0_2px_4px_rgba(0,0,0,0.05)] rounded-[2px] text-[14px] text-decoration-none transition-colors flex items-center justify-center font-normal"
+              href="/forgotpass" 
+              className="text-[#555] hover:text-[#333] text-[14px] flex items-center justify-center border border-[#ddd] px-8 py-2.5 rounded-full bg-white shadow-sm font-medium w-[140px]"
             >
-              Forgot Password?
+              Forgot password
             </Link>
           </div>
         </form>

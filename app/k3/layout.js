@@ -3,7 +3,7 @@ import "./dice3d.css";
 
 export const metadata = {
   title: "K3 Lottery",
-  description: "Play K3 Lottery on Superwin",
+  description: "Play K3 Lottery on Bruzoo",
 };
 
 export default function K3Layout({ children }) {
