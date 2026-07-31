@@ -28,7 +28,7 @@ export default function BottomNav() {
             key={href}
             href={href}
             className={`flex flex-col items-center justify-center gap-[2px] text-decoration-none select-none transition-colors ${
-              active ? "text-[#00A091]" : "text-[#adadad]"
+              active ? "text-[#00A091]" : "text-[#999999]"
             }`}
           >
             <span className={`${iconClass} text-[24px] leading-none`}>
