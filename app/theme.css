@@ -29,20 +29,20 @@
 
   /* ===== PRIMARY GREEN ===== */
 
-  --theme-green:#009688;
+  --theme-green:#00A091;
   --theme-green-light:#26a69a;
-  --theme-green-dark:#00796b;
+  --theme-green-dark:#008f81;
   --theme-green-deep:#004d40;
 
-  --theme-green-glow:rgba(0,150,136,.08);
-  --theme-green-border:rgba(0,150,136,.18);
-  --theme-green-soft-bg:rgba(0,150,136,.08);
+  --theme-green-glow:rgba(0,160,145,.08);
+  --theme-green-border:rgba(0,160,145,.18);
+  --theme-green-soft-bg:rgba(0,160,145,.08);
 
   /* ===== BRAND COLOR (MAPPED FROM GOLD) ===== */
 
-  --theme-gold:#009688;
+  --theme-gold:#00A091;
   --theme-gold-bright:#26a69a;
-  --theme-gold-muted:#00796b;
+  --theme-gold-muted:#008f81;
   --theme-gold-glow:rgba(67,160,71,.12);
 
   /* ===== COLORS ===== */

@@ -86,40 +86,42 @@ export default function RegisterForm() {
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#FAFAFA] pb-20 relative overflow-x-hidden">
       {/* Full-width Teal Header Bar matching reference screenshot */}
-      <header className="w-full bg-[#009688] text-white px-4 md:px-6 h-12 md:h-[56px] flex items-center gap-3 sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
+      <header className="w-full bg-[#00A091] text-white pl-[16px] pr-[16px] h-[56px] flex items-center gap-[10px] sticky top-0 z-40 select-none shadow-[0_1px_4px_rgba(0,0,0,0.12)]">
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-1 border-none bg-transparent text-white flex items-center justify-center shrink-0"
+          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <ChevronLeft size={24} strokeWidth={2} />
+          <ChevronLeft size={30} strokeWidth={1.5} />
         </button>
-        <h1 className="text-[18px] md:text-[20px] font-normal tracking-wide text-white m-0 text-left">Register</h1>
+        <h1 className="text-[20px] font-normal tracking-wide text-white m-0 text-left">Register</h1>
       </header>
 
       {/* Form Content with Responsive Spacing */}
-      <div className="w-full flex-1 px-5 md:px-8 pt-6 md:pt-[28px] pb-12 flex flex-col justify-start">
+      <div className="w-full flex-1 px-[24px] pt-[24px] pb-12 flex flex-col justify-start box-border">
         {error && (
-          <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[3px] text-xs md:text-sm font-medium">
+          <div className="w-full mb-6 p-3.5 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6 md:gap-[32px]">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[34px]">
           {/* Mobile Number Field */}
           <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
 
           {/* Verification Code + OTP Button Row */}
-          <div className="grid grid-cols-12 gap-3 md:gap-6 items-center w-full">
-            <div className="col-span-8 md:col-span-9 flex items-center gap-3.5 border border-[#E5E5E5] rounded-[2px] bg-white px-4 h-[48px] md:h-[52px] focus-within:border-[#009688] transition-colors select-none shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-              <MessageSquare size={20} className="text-[#8A8A8A] shrink-0" strokeWidth={1.75} />
+          <div className="grid grid-cols-[1fr_95px] gap-[14px] items-center w-full">
+            <div className="flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
+              <div className="w-[22px] flex items-center justify-center shrink-0">
+                <MessageSquare size={22} className="text-[#7d7d7d]" strokeWidth={1.5} />
+              </div>
               <input
                 name="verificationCode"
                 type="text"
                 value={form.verificationCode}
                 onChange={handleChange}
                 placeholder="Verification Code"
-                className="flex-1 bg-transparent text-[15px] md:text-[16px] text-[#222222] placeholder-[#8A8A8A] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
+                className="flex-1 bg-transparent text-[16px] text-[#222222] placeholder-[#adadad] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none p-0"
               />
             </div>
             
@@ -127,7 +129,7 @@ export default function RegisterForm() {
               type="button"
               onClick={handleSendOtp}
               disabled={otpCountdown > 0}
-              className="col-span-4 md:col-span-3 h-[48px] md:h-[52px] bg-[#F5F5F5] hover:bg-[#E8E8E8] border border-[#E5E5E5] disabled:opacity-60 text-[#333333] text-center font-normal rounded-[2px] text-[13px] md:text-[14px] select-none cursor-pointer outline-none flex items-center justify-center shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors"
+              className="w-full h-[48px] bg-[#f9f9f9] hover:bg-[#f0f0f0] border border-[#e4e4e4] disabled:opacity-60 text-[#222222] text-center font-normal rounded-[2px] text-[16px] select-none cursor-pointer outline-none flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.05)] transition-colors box-border"
             >
               {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
             </button>
@@ -143,8 +145,10 @@ export default function RegisterForm() {
           />
 
           {/* Recommendation Code (Invite Code) */}
-          <div className="w-full flex items-center gap-3.5 border border-[#E5E5E5] rounded-[2px] bg-white px-4 h-[48px] md:h-[52px] focus-within:border-[#009688] transition-colors select-none shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-            <Gift size={20} className="text-[#8A8A8A] shrink-0" strokeWidth={1.75} />
+          <div className="w-full flex items-center gap-[14px] border border-[#e4e4e4] rounded-[2px] bg-white pl-[12px] pr-[16px] h-[48px] focus-within:border-[#00A091] transition-colors select-none shadow-[0_2px_4px_rgba(0,0,0,0.20)] box-border">
+            <div className="w-[22px] flex items-center justify-center shrink-0">
+              <Gift size={22} className="text-[#7d7d7d]" strokeWidth={1.5} />
+            </div>
             <input
               id="inviteCode"
               name="inviteCode"
@@ -152,31 +156,33 @@ export default function RegisterForm() {
               value={form.inviteCode}
               onChange={handleChange}
               placeholder="Recommendation Code"
-              className="flex-1 bg-transparent text-[15px] md:text-[16px] text-[#222222] placeholder-[#8A8A8A] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none"
+              className="flex-1 bg-transparent text-[16px] text-[#222222] placeholder-[#adadad] outline-none focus:outline-none focus:ring-0 focus:border-none border-none h-full font-normal shadow-none p-0"
             />
           </div>
 
           {/* Privacy Policy Checkbox Row (Left-aligned) */}
-          <label className="flex items-center gap-2.5 px-1 cursor-pointer select-none mt-1 justify-start text-left">
-            <input
-              type="checkbox"
-              checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
-              className="accent-[#009688] w-4.5 h-4.5 rounded-[2px] cursor-pointer"
-            />
-            <span className="text-[13px] md:text-[14px] text-[#333333] font-normal">
-              I agree <Link href="/privacy" target="_blank" className="text-[#009688] font-medium text-decoration-none">Privacy Policy</Link>
-            </span>
-          </label>
+          <div className="flex flex-col">
+            <label className="flex items-center gap-[8px] cursor-pointer select-none text-left">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                className="accent-black w-[20px] h-[20px] rounded-none cursor-pointer"
+              />
+              <span className="text-[14px] text-[#666666] font-normal leading-none">
+                I agree <Link href="/privacy" target="_blank" className="text-[#00A091] font-normal text-decoration-none hover:underline">Privacy Policy</Link>
+              </span>
+            </label>
 
-          {/* Register Action Button (~64% width on desktop, 100% on mobile) */}
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="w-full md:w-[64%] md:max-w-[950px] mx-auto mt-4 md:mt-5 h-[44px] md:h-[48px] bg-[#009688] hover:bg-[#00796b] disabled:opacity-60 text-white font-medium rounded-[3px] transition-colors cursor-pointer text-[14px] md:text-[15px] select-none border-0 outline-none flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.12)]"
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
+            {/* Register Action Button */}
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-[58%] max-w-[240px] mx-auto mt-[15px] h-[44px] bg-[#00A091] hover:bg-[#008f81] disabled:opacity-60 text-white font-normal rounded-[2px] transition-colors cursor-pointer text-[14px] select-none border-0 outline-none flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+            >
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </div>
         </form>
       </div>
 
