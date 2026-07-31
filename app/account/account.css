@@ -1,7 +1,8 @@
 .account-page {
   min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   background: var(--theme-bg-soft);
   color: #fff;
   padding-bottom: 96px;
@@ -13,8 +14,9 @@
   content: "";
   position: fixed;
   inset: 0;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   background: var(--theme-bg-soft);
   pointer-events: none;
   z-index: 0;
