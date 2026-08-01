@@ -96,33 +96,33 @@ export default function AccountScreen() {
         <div className="w-full bg-[#009688] rounded-[2px] p-[12px_8px_8px] box-border">
         {/* User identification top bar */}
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-[18px]">
-            <div className="w-[44px] h-[44px] rounded-full bg-[#9DE3DF] text-white flex items-center justify-center font-normal text-[19px] shadow-sm shrink-0">
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px] rounded-full bg-[#424242] text-white flex items-center justify-center font-normal text-[19px] shrink-0 border-none shadow-[0px_3px_5px_-1px_rgba(0,0,0,0.2),0px_6px_10px_0px_rgba(0,0,0,0.14),0px_1px_18px_0px_rgba(0,0,0,0.12)] m-[0px_5px_0px_13px]">
               {avatarChar}
             </div>
-            <div className="flex flex-col gap-[2px] justify-center">
-              <span className="text-[16px] font-normal text-white leading-tight flex items-center gap-1">
+            <ul className="text-white text-[14px] ml-[15px] flex flex-col justify-center m-0 p-0 list-none">
+              <li className="leading-[22px] flex items-center">
                 User：
                 <button
                   type="button"
                   onClick={() => setShowNameModal(true)}
-                  className="bg-transparent border-none p-0 m-0 text-white border-b border-white/80 leading-tight cursor-pointer font-normal text-[16px] outline-none"
+                  className="bg-transparent border-none p-0 m-0 text-white leading-[22px] cursor-pointer font-normal text-[14px] outline-none border-b border-white/80"
                 >
                   {displayName}
                 </button>
-              </span>
-              <span className="text-[14px] text-white opacity-95 leading-tight">ID：{uid}</span>
-            </div>
+              </li>
+              <li className="leading-[22px]">ID：{uid}</li>
+            </ul>
           </div>
 
           {/* Top-right notice bell button */}
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-gray-50 border-none cursor-pointer shrink-0 outline-none p-0"
+            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
             aria-label="Notifications"
           >
-            <img src={REF_ICONS.notice} alt="Notice" className="w-[24px] h-[24px] object-contain" />
+            <img src={REF_ICONS.notice} alt="Notice" className="w-[20px] h-[20px] object-contain" />
           </button>
         </div>
 
@@ -130,13 +130,11 @@ export default function AccountScreen() {
         <div className="flex items-center justify-around text-white text-[16px] py-[20px] w-full text-center">
           {/* Balance */}
           <div className="flex flex-col items-center">
-            <strong className="text-[16px] font-normal text-white leading-none">
-              ₹ {Number(balance || 0).toFixed(2)}
-            </strong>
-            <span className="text-[15px] text-white opacity-95 mt-1.5">Balance</span>
+            <div className="mb-[5px]">₹ {Number(balance || 0).toFixed(2)}</div>
+            Balance
             <Link 
               href="/recharge" 
-              className="mt-2.5 bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[12px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center h-[34px] leading-[34px] px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
+              className="mt-[5px] bg-[#2196f3] text-white text-[14px] w-[80px] h-[34px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
             >
               Recharge
             </Link>
@@ -144,13 +142,11 @@ export default function AccountScreen() {
 
           {/* Commission */}
           <div className="flex flex-col items-center">
-            <strong className="text-[16px] font-normal text-white leading-none">
-              ₹ 0
-            </strong>
-            <span className="text-[15px] text-white opacity-95 mt-1.5">Commission</span>
+            <div className="mb-[5px]">₹ 0</div>
+            Commission
             <Link 
               href="/reward" 
-              className="mt-2.5 bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[12px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center h-[34px] leading-[34px] px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
+              className="mt-[5px] bg-[#2196f3] text-white text-[14px] w-[80px] h-[34px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
             >
               See
             </Link>
@@ -158,13 +154,11 @@ export default function AccountScreen() {
 
           {/* Interest */}
           <div className="flex flex-col items-center">
-            <strong className="text-[16px] font-normal text-white leading-none">
-              ₹ 0
-            </strong>
-            <span className="text-[15px] text-white opacity-95 mt-1.5">Interest</span>
+            <div className="mb-[5px]">₹ 0</div>
+            Interest
             <Link 
               href="/interest" 
-              className="mt-2.5 bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[12px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center h-[34px] leading-[34px] px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
+              className="mt-[5px] bg-[#2196f3] text-white text-[14px] w-[80px] h-[34px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[8px] border-none outline-none shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)]"
             >
               See
             </Link>
