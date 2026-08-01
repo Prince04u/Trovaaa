@@ -22,20 +22,21 @@
 .wg-dashboard-header {
   background-color: #009688;
   color: #FFFFFF;
-  margin: 12px 12px 0 12px;
-  padding: 14px 16px;
+  margin: 14px 14px 0 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .wg-btn-recharge {
-  background-color: #2196F3;
+  background-color: #1e88e5;
   color: #FFFFFF;
   font-weight: 400;
-  font-size: 13px;
-  padding: 6px 16px;
+  font-size: 13.5px;
+  padding: 6.5px 18px;
   border-radius: 2px;
   text-decoration: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
@@ -45,24 +46,24 @@
   background-color: #FFFFFF;
   color: #333;
   font-weight: 400;
-  font-size: 13px;
-  padding: 6px 16px;
+  font-size: 13.5px;
+  padding: 6.5px 18px;
   border-radius: 2px;
   border: 1px solid #E0E0E0;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* Durations Tab Bar */
 .wg-duration-bar {
   background-color: #FFFFFF;
-  border-bottom: 1px solid #009688;
-  margin-top: 12px;
+  border-bottom: 1.5px solid #009688;
+  margin-top: 14px;
   display: flex;
 }
 
 .wg-duration-tab {
-  padding: 10px 0;
+  padding: 12px 0;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
@@ -73,49 +74,50 @@
 /* Period & Countdown Row */
 .wg-timer-card {
   background-color: #FFFFFF;
-  padding: 12px 12px 0 12px;
+  padding: 14px 14px 0 14px;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .wg-period-label {
   font-size: 13px;
   font-weight: 400;
-  color: #888;
+  color: #777;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .wg-period-id {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 400;
   color: #333;
   line-height: 1.2;
   text-decoration: underline;
+  letter-spacing: 0.5px;
 }
 
 .wg-countdown-label {
   font-size: 13px;
   font-weight: 400;
-  color: #888;
+  color: #777;
 }
 
 .wg-timer-digits {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .wg-digit-box {
-  background-color: #F5F5F5;
-  color: #333;
+  background-color: #F2F2F2;
+  color: #222;
   font-weight: 500;
-  font-size: 16px;
-  width: 21px;
-  height: 25px;
+  font-size: 18px;
+  width: 23px;
+  height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,18 +129,18 @@
 .wg-timer-colon {
   color: #333;
   font-weight: 500;
-  font-size: 16px;
-  padding: 0 2px;
+  font-size: 18px;
+  padding: 0 1px;
 }
 
 /* Betting Board Grid */
 .wg-betting-board {
   background-color: #FFFFFF;
-  padding: 12px 12px;
+  padding: 14px 14px;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   position: relative;
 }
 
