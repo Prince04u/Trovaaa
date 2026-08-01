@@ -3,23 +3,29 @@
    ========================================================== */
 
 .wingo-game {
-  min-height: 100vh;
-  width: 100%;
   background-color: #FFFFFF;
+  min-height: 100vh;
+  padding: 24px 24px 80px 24px;
+  position: relative;
   color: #222222;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   letter-spacing: 0.1px;
-  padding-bottom: 74px;
+}
+
+/* Base resets */
+.wingo-game * {
+  box-sizing: border-box;
 }
 
 /* Available Balance Header */
 .wg-dashboard-header {
   background-color: #009688;
   color: #FFFFFF;
-  padding: 16px 20px;
+  padding: 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  border-radius: 6px;
 }
 
 .wg-btn-recharge {
