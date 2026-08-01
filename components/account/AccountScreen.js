@@ -92,48 +92,48 @@ export default function AccountScreen() {
   return (
     <main className="min-h-screen bg-[#fafafa] pb-[64px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Profile Header Banner matching reference site bruzoo.games */}
-      <section className="w-full bg-[#009688] pt-[20px] pb-[10px] px-[15px] box-border">
+      <section className="w-full bg-[#009688] pt-[20px] pb-[10px] px-[20px] box-border text-white shadow-[0px_2px_4px_-1px_rgba(0,0,0,0.2),0px_4px_5px_0px_rgba(0,0,0,0.14),0px_1px_10px_0px_rgba(0,0,0,0.12)]">
         {/* User identification top bar */}
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-start justify-between w-full h-[60px]">
           <div className="flex items-center">
-            <div className="w-[44px] h-[44px] rounded-full bg-[#9DE3DF] text-white flex items-center justify-center font-normal text-[20px] shrink-0 border-none m-[0px_5px_0px_0px]">
+            <div className="w-[45px] h-[45px] rounded-full bg-[#424242] text-white flex items-center justify-center font-normal text-[20px] shrink-0 border border-white/20 shadow-[0px_3px_5px_-1px_rgba(0,0,0,0.2),0px_6px_10px_0px_rgba(0,0,0,0.14),0px_1px_18px_0px_rgba(0,0,0,0.12)] mr-[10px]">
               {avatarChar}
             </div>
-            <ul className="text-white text-[14px] ml-[15px] flex flex-col justify-center m-0 p-0 list-none">
-              <li className="leading-[22px] flex items-center">
+            <div className="flex flex-col text-[14px] leading-[22px]">
+              <div className="flex items-center font-light tracking-wide">
                 User：
                 <button
                   type="button"
                   onClick={() => setShowNameModal(true)}
-                  className="bg-transparent border-none p-0 m-0 text-white leading-[22px] cursor-pointer font-normal text-[14px] outline-none border-b border-white/80"
+                  className="bg-transparent border-none p-0 m-0 text-white cursor-pointer font-light outline-none"
                 >
                   {displayName}
                 </button>
-              </li>
-              <li className="leading-[22px]">ID：{uid}</li>
-            </ul>
+              </div>
+              <div className="font-light tracking-wide">ID：{uid}</div>
+            </div>
           </div>
 
           {/* Top-right notice bell button */}
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
+            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0 shadow-sm mt-1"
             aria-label="Notifications"
           >
-            <img src={REF_ICONS.notice} alt="Notice" className="w-[20px] h-[20px] object-contain" />
+            <img src={REF_ICONS.notice} alt="Notice" className="w-[20px] h-[20px] object-contain opacity-80" />
           </button>
         </div>
 
         {/* 3 Stat Columns (Balance, Commission, Interest) */}
-        <div className="flex items-center justify-around text-white text-[16px] py-[25px] w-full text-center">
+        <div className="flex items-center justify-around w-full mt-[10px] pb-[10px]">
           {/* Balance */}
           <div className="flex flex-col items-center">
-            <div className="mb-[5px] font-normal text-[15px]">₹ {Number(balance || 0).toFixed(2)}</div>
-            <span className="text-[14px]">Balance</span>
+            <div className="mb-[2px] font-normal text-[14px]">₹ {Number(balance || 0).toFixed(2)}</div>
+            <span className="text-[13px] font-light tracking-wide mb-[5px]">Balance</span>
             <Link 
               href="/recharge" 
-              className="mt-[8px] bg-[#2196f3] text-white text-[13px] w-[70px] h-[30px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[4px] border-none outline-none shadow-none"
+              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
             >
               Recharge
             </Link>
@@ -141,11 +141,11 @@ export default function AccountScreen() {
 
           {/* Commission */}
           <div className="flex flex-col items-center">
-            <div className="mb-[5px] font-normal text-[15px]">₹ 0</div>
-            <span className="text-[14px]">Commission</span>
+            <div className="mb-[2px] font-normal text-[14px]">₹ 0</div>
+            <span className="text-[13px] font-light tracking-wide mb-[5px]">Commission</span>
             <Link 
               href="/reward" 
-              className="mt-[8px] bg-[#2196f3] text-white text-[13px] w-[70px] h-[30px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[4px] border-none outline-none shadow-none"
+              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
             >
               See
             </Link>
@@ -153,11 +153,11 @@ export default function AccountScreen() {
 
           {/* Interest */}
           <div className="flex flex-col items-center">
-            <div className="mb-[5px] font-normal text-[15px]">₹ 0</div>
-            <span className="text-[14px]">Interest</span>
+            <div className="mb-[2px] font-normal text-[14px]">₹ 0</div>
+            <span className="text-[13px] font-light tracking-wide mb-[5px]">Interest</span>
             <Link 
               href="/interest" 
-              className="mt-[8px] bg-[#2196f3] text-white text-[13px] w-[70px] h-[30px] font-normal rounded-[2px] select-none text-decoration-none flex items-center justify-center px-[4px] border-none outline-none shadow-none"
+              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
             >
               See
             </Link>
