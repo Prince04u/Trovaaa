@@ -522,8 +522,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       {/* Solid Green Available Balance Banner */}
       <section className="wg-dashboard-header">
-        <div className="flex items-center w-full">
-          <div className="flex items-center gap-1.5 text-white">
+        <div className="flex items-center w-full mt-1">
+          <div className="flex items-baseline gap-2 text-white">
             <span className="text-[15px] opacity-90">Available balance:</span>
             <span className="text-[15px]">₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
@@ -531,7 +531,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <button 
             type="button" 
             onClick={loadData}
-            className="text-white hover:opacity-80 ml-auto"
+            className="text-white hover:opacity-80 ml-auto mr-1"
             aria-label="Refresh balance"
           >
             <svg 
@@ -542,7 +542,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className={`w-[16px] h-[16px] ${refreshing ? "animate-spin" : ""}`}
+              className={`w-[18px] h-[18px] ${refreshing ? "animate-spin" : ""}`}
             >
               <polyline points="23 4 23 10 17 10" />
               <polyline points="1 20 1 14 7 14" />
@@ -551,7 +551,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
         </div>
 
-        <div className="flex items-center gap-[12px]">
+        <div className="flex items-center gap-[16px]">
           <Link href="/wallet/deposit" className="wg-btn-recharge">
             Recharge
           </Link>
@@ -575,19 +575,19 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Period & Count Down Card */}
       <section className="wg-timer-card select-none">
         <div className="flex justify-between w-full">
-          <div className="flex flex-col gap-[6px]">
+          <div className="flex flex-col gap-1">
             <div className="wg-period-label">
               <Trophy size={16} className="text-gray-400" strokeWidth={2} />
               <span>Period</span>
             </div>
-            <strong className="wg-period-id">
+            <strong className="wg-period-id mt-1">
               {period?.periodId || "—"}
             </strong>
           </div>
           
-          <div className="flex flex-col items-end gap-[6px]">
+          <div className="flex flex-col items-end gap-1">
             <span className="wg-countdown-label">Count Down</span>
-            <div className="wg-timer-digits">
+            <div className="wg-timer-digits mt-1">
               {(() => {
                 const minDigits = timer.mm.split("");
                 const secDigits = timer.ss.split("");
@@ -616,28 +616,26 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         )}
 
         {/* Color Buttons row */}
-        <div className="grid grid-cols-5 gap-x-[4%] mb-5 px-1">
+        <div className="flex justify-between items-center mb-6 px-1">
           <button 
             type="button" 
-            className="wg-color-btn green w-full !px-0" 
+            className="wg-color-btn green w-[110px]" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "green")}
           >
             Join Green
           </button>
-          <div />
           <button 
             type="button" 
-            className="wg-color-btn violet w-full !px-0" 
+            className="wg-color-btn violet w-[110px]" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "violet")}
           >
             Join Violet
           </button>
-          <div />
           <button 
             type="button" 
-            className="wg-color-btn red w-full !px-0" 
+            className="wg-color-btn red w-[110px]" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "red")}
           >
@@ -665,8 +663,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       <section className="wg-logs-card">
         {historyTab === "game" && (
           <>
-            <div className="flex flex-col items-center justify-center py-4 border-b border-[#009688] text-[#333] font-medium">
-              <Trophy size={18} className="text-gray-500 mb-1" />
+            <div className="flex flex-col items-center justify-center pt-6 pb-4 border-b border-[#009688] text-[#333] font-medium">
+              <Trophy size={18} className="text-gray-500 mb-2" />
               <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
             </div>
             <div className="overflow-x-auto select-none">

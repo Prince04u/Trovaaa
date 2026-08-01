@@ -27,10 +27,10 @@
   color: #FFFFFF;
   font-weight: 400;
   font-size: 14px;
-  padding: 6px 16px;
+  padding: 8px 20px;
   border-radius: 2px;
   text-decoration: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 .wg-btn-trend {
@@ -38,11 +38,11 @@
   color: #333;
   font-weight: 400;
   font-size: 14px;
-  padding: 6px 16px;
+  padding: 8px 20px;
   border-radius: 2px;
   border: 1px solid #E0E0E0;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* Durations Tab Bar */
@@ -95,7 +95,7 @@
 .wg-timer-digits {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .wg-digit-box {
@@ -103,12 +103,12 @@
   color: #333;
   font-weight: 500;
   font-size: 20px;
-  width: 26px;
-  height: 32px;
+  width: 24px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid #E0E0E0;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
@@ -140,7 +140,7 @@
   border-radius: 2px;
   cursor: pointer;
   transition: opacity 0.15s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 .wg-color-btn:hover {
@@ -163,7 +163,7 @@
   color: #FFFFFF;
   font-size: 16px;
   font-weight: 400;
-  height: 40px;
+  height: 44px;
   border: none;
   border-radius: 2px;
   cursor: pointer;
@@ -171,7 +171,7 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.1s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 4px rgba(33,150,243,0.3);
 }
 
 .wg-num-btn:active {
@@ -206,7 +206,7 @@
 }
 
 .wg-history-table td {
-  padding: 16px 4px;
+  padding: 14px 4px;
   text-align: center;
   color: #333;
   font-weight: 500;
