@@ -9,6 +9,7 @@ const PlatformStatusContext = createContext({
   blockedActions: [],
   loading: true,
   refresh: () => {},
+  blocksAction: () => false,
 });
 
 const POLL_MS = 30000;

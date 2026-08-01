@@ -3,8 +3,9 @@
 export default function PhoneInput({ value, onChange, id = "mobile", name = "mobile", placeholder = "Mobile Number", required = true }) {
   return (
     <div className="van-card-input">
-      <div className="w-[20px] flex items-center justify-center shrink-0 mr-[12px]">
-        <span className="material-icons-outlined text-[20px] text-[#888888]">smartphone</span>
+      <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
+        <img src="/img/sjh.png" alt="Phone" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+        <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>smartphone</span>
       </div>
       <input
         id={id}
@@ -14,7 +15,8 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="flex-1 bg-transparent text-[14px] text-[#222222] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+        className="flex-1 bg-transparent text-[16px] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+        style={{ color: 'rgba(0,0,0,.87)' }}
       />
     </div>
   );

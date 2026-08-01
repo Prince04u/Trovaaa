@@ -59,21 +59,23 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
-      {/* Top Teal Navbar */}
-      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border shadow-sm">
+    <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden">
+      {/* Top Teal Navbar — exact bruzoo.games reference */}
+      <header className="w-full bg-[#009688] text-white px-[15px] h-[56px] flex items-center gap-[30px] sticky top-0 z-40 select-none box-border"
+        style={{ boxShadow: '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)' }}>
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
+          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <span className="material-icons-outlined text-[24px]">arrow_back</span>
+          <img src="/img/fh.png" alt="Back" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+          <span className="material-icons-outlined text-[20px]" style={{display:'none'}}>arrow_back</span>
         </button>
-        <h1 className="text-[18px] font-normal tracking-wide text-white m-0 text-left leading-none flex items-center">Forget Password</h1>
+        <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Reset Password</span>
       </header>
 
-      {/* Form Content */}
-      <div className="w-full flex-1 px-[16px] pt-[20px] pb-12 flex flex-col justify-start box-border">
+      {/* Form Content — recharge_box from reference */}
+      <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}
@@ -85,15 +87,18 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[16px]">
-          {/* Mobile Number Field */}
-          <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
+        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+          {/* Mobile Number Field — 35px margin-bottom */}
+          <div style={{ marginBottom: '35px' }}>
+            <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
+          </div>
 
-          {/* Verification Code + OTP Button Row */}
-          <div className="flex items-center gap-[12px] w-full">
-            <div className="van-card-input flex-1">
-              <div className="w-[20px] flex items-center justify-center shrink-0 mr-[12px]">
-                <span className="material-icons-outlined text-[20px] text-[#888888]">chat_bubble_outline</span>
+          {/* Verification Code + OTP Button Row — special_box from reference */}
+          <div className="w-full flex flex-row justify-between" style={{ marginBottom: '35px' }}>
+            <div className="van-card-input" style={{ width: '72%' }}>
+              <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
+                <img src="/img/yzm.png" alt="OTP" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>chat_bubble_outline</span>
               </div>
               <input
                 name="verificationCode"
@@ -101,7 +106,8 @@ export default function ForgotPasswordPage() {
                 value={form.verificationCode}
                 onChange={handleChange}
                 placeholder="Verification Code"
-                className="flex-1 bg-transparent text-[14px] text-[#222222] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+                className="flex-1 bg-transparent text-[16px] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+                style={{ color: 'rgba(0,0,0,.87)' }}
               />
             </div>
             
@@ -115,21 +121,24 @@ export default function ForgotPasswordPage() {
             </button>
           </div>
 
-          {/* New Password Field */}
-          <PasswordInput
-            id="newPassword"
-            name="newPassword"
-            value={form.newPassword}
-            onChange={handleChange}
-            placeholder="New Password"
-          />
+          {/* New Password Field — 35px margin-bottom */}
+          <div style={{ marginBottom: '35px' }}>
+            <PasswordInput
+              id="newPassword"
+              name="newPassword"
+              value={form.newPassword}
+              onChange={handleChange}
+              placeholder="New Password"
+            />
+          </div>
 
-          {/* Submit Action Button */}
-          <div className="flex justify-center w-full mt-[12px]">
+          {/* Submit Action Button — 65% width from reference */}
+          <div className="flex justify-center w-full" style={{ padding: '15px 0 0 0' }}>
             <button 
               type="submit" 
               disabled={loading}
-              className="van-btn-teal w-[160px] mx-auto"
+              className="van-btn-teal"
+              style={{ width: '65%', maxWidth: '640px' }}
             >
               {loading ? "Submitting..." : "Submit"}
             </button>

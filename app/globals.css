@@ -740,43 +740,45 @@ a {
   }
 }
 
-/* Bruzoo.games / Vant UI Form Styles (Card Boxes & Shadows) */
+/* Bruzoo.games / Vant UI Form Styles — exact Material Design values from reference */
 .van-card-input {
   width: 100%;
   height: 48px;
   background-color: #ffffff;
-  border: 1px solid #dcdcdc;
+  border: 0;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 0 12px;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  line-height: 48px;
+  transition: background 0.3s cubic-bezier(.25,.8,.5,1);
 }
 
 .van-card-input:focus-within {
-  border-color: #00A091;
-  box-shadow: 0 1px 4px rgba(0, 160, 145, 0.2);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 
 .van-otp-btn {
-  height: 48px;
-  width: 28%;
-  min-width: 120px;
+  height: 46px;
+  width: 26%;
+  min-width: 100px;
   max-width: 280px;
-  background-color: #f7f7f7;
-  border: 1px solid #dcdcdc;
+  background-color: #f5f5f5;
+  border: 0;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  color: #333333;
-  font-size: 14px;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  color: rgba(0,0,0,.87);
+  font-size: 16px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-sizing: border-box;
+  line-height: 46px;
+  text-align: center;
   transition: background-color 0.2s ease;
 }
 
@@ -786,38 +788,43 @@ a {
 
 .van-btn-teal {
   height: 44px;
-  background-color: #00A091;
+  background-color: #009688;
   color: #ffffff;
-  border: none;
+  border: 0;
   border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   font-size: 14px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  text-align: center;
+  line-height: 44px;
+  transition: 0.3s cubic-bezier(.25,.8,.5,1), color 1ms;
 }
 
 .van-btn-teal:hover {
-  background-color: #008f81;
+  background-color: #00897b;
 }
 
 .van-btn-sub {
-  height: 36px;
-  background-color: #f7f7f7;
-  border: 1px solid #dcdcdc;
+  height: 40px;
+  background-color: #f5f5f5;
+  border: 0;
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  color: #333333;
-  font-size: 13px;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  color: rgba(0,0,0,.87);
+  font-size: 14px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  padding: 0 15px;
+  line-height: 40px;
+  text-align: center;
+  transition: 0.3s cubic-bezier(.25,.8,.5,1), color 1ms;
 }
 
 .van-btn-sub:hover {

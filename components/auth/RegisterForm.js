@@ -78,36 +78,41 @@ export default function RegisterForm() {
   };
 
   return (
-    <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
-      {/* Top Teal Navbar matching bruzoo.games reference image 4 */}
-      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border shadow-sm">
+    <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden">
+      {/* Top Teal Navbar — exact bruzoo.games reference */}
+      <header className="w-full bg-[#009688] text-white px-[15px] h-[56px] flex items-center gap-[30px] sticky top-0 z-40 select-none box-border"
+        style={{ boxShadow: '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)' }}>
         <button 
           onClick={() => router.back()} 
-          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
+          className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <span className="material-icons-outlined text-[24px]">arrow_back</span>
+          <img src="/img/fh.png" alt="Back" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+          <span className="material-icons-outlined text-[20px]" style={{display:'none'}}>arrow_back</span>
         </button>
-        <h1 className="text-[18px] font-normal tracking-wide text-white m-0 text-left leading-none flex items-center">Register</h1>
+        <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Register</span>
       </header>
 
-      {/* Form Content */}
-      <div className="w-full flex-1 px-[16px] pt-[30px] pb-12 flex flex-col justify-start box-border">
+      {/* Form Content — recharge_box from reference */}
+      <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[16px]">
-          {/* Mobile Number Field */}
-          <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
+        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+          {/* Mobile Number Field — 35px margin-bottom */}
+          <div style={{ marginBottom: '35px' }}>
+            <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
+          </div>
 
-          {/* Verification Code + OTP Button Row */}
-          <div className="flex items-center gap-[12px] w-full">
-            <div className="van-card-input flex-1">
-              <div className="w-[20px] flex items-center justify-center shrink-0 mr-[12px]">
-                <span className="material-icons-outlined text-[20px] text-[#888888]">chat_bubble_outline</span>
+          {/* Verification Code + OTP Button Row — special_box from reference */}
+          <div className="w-full flex flex-row justify-between" style={{ marginBottom: '24px' }}>
+            <div className="van-card-input" style={{ width: '72%' }}>
+              <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
+                <img src="/img/yzm.png" alt="OTP" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>chat_bubble_outline</span>
               </div>
               <input
                 name="verificationCode"
@@ -115,7 +120,8 @@ export default function RegisterForm() {
                 value={form.verificationCode}
                 onChange={handleChange}
                 placeholder="Verification Code"
-                className="flex-1 bg-transparent text-[14px] text-[#222222] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+                className="flex-1 bg-transparent text-[16px] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+                style={{ color: 'rgba(0,0,0,.87)' }}
               />
             </div>
             
@@ -129,33 +135,39 @@ export default function RegisterForm() {
             </button>
           </div>
 
-          {/* Password Field */}
-          <PasswordInput
-            id="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
-
-          {/* Recommendation Code (Invite Code) */}
-          <div className="van-card-input">
-            <div className="w-[20px] flex items-center justify-center shrink-0 mr-[12px]">
-              <span className="material-icons-outlined text-[20px] text-[#888888]">card_giftcard</span>
-            </div>
-            <input
-              id="inviteCode"
-              name="inviteCode"
-              type="text"
-              value={form.inviteCode}
+          {/* Password Field — 35px margin-bottom */}
+          <div style={{ marginBottom: '35px' }}>
+            <PasswordInput
+              id="password"
+              name="password"
+              value={form.password}
               onChange={handleChange}
-              placeholder="Recommendation Code"
-              className="flex-1 bg-transparent text-[14px] text-[#222222] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+              placeholder="Password"
             />
           </div>
 
-          {/* Privacy Policy Checkbox Row */}
-          <div className="flex items-center gap-[8px] mt-[4px] mb-[12px] select-none">
+          {/* Recommendation Code (Invite Code) — 35px margin-bottom */}
+          <div style={{ marginBottom: '35px' }}>
+            <div className="van-card-input">
+              <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
+                <img src="/img/yqm.png" alt="Invite" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
+                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>card_giftcard</span>
+              </div>
+              <input
+                id="inviteCode"
+                name="inviteCode"
+                type="text"
+                value={form.inviteCode}
+                onChange={handleChange}
+                placeholder="Recommendation Code"
+                className="flex-1 bg-transparent text-[16px] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
+                style={{ color: 'rgba(0,0,0,.87)' }}
+              />
+            </div>
+          </div>
+
+          {/* Privacy Policy Checkbox Row — agree_box from reference */}
+          <div className="flex items-center gap-[8px] select-none" style={{ marginBottom: '15px' }}>
             <input
               type="checkbox"
               id="privacy-agree"
@@ -163,17 +175,18 @@ export default function RegisterForm() {
               onChange={(e) => setAgree(e.target.checked)}
               className="w-[16px] h-[16px] accent-[#111111] cursor-pointer"
             />
-            <label htmlFor="privacy-agree" className="text-[13px] text-[#333333] cursor-pointer">
-              I agree <Link href="/privacy" className="text-[#00A091] hover:underline font-medium">Privacy Policy</Link>
+            <label htmlFor="privacy-agree" className="cursor-pointer" style={{ fontSize: '14px', color: 'rgba(0,0,0,.54)' }}>
+              I agree <Link href="/privacy" className="hover:underline" style={{ color: '#009688', fontWeight: 400 }}>Privacy Policy</Link>
             </label>
           </div>
 
-          {/* Register Action Button - matches 62% width from bruzoo reference image 4 */}
-          <div className="flex justify-center w-full mt-[10px]">
+          {/* Register Action Button — 65% width from reference */}
+          <div className="flex justify-center w-full" style={{ padding: '15px 0 0 0' }}>
             <button 
               type="submit" 
               disabled={loading}
-              className="van-btn-teal w-[62%] max-w-[640px] mx-auto"
+              className="van-btn-teal"
+              style={{ width: '65%', maxWidth: '640px' }}
             >
               {loading ? "Registering..." : "Register"}
             </button>

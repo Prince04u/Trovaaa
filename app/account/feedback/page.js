@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import AccountSubHeader from "@/components/account/AccountSubHeader";
-import { getToken } from "@/lib/auth";
-import { submitFeedback } from "@/lib/userApi";
+import AccountSubHeader from "../../../components/account/AccountSubHeader";
+import { getToken } from "../../../lib/auth.js";
+import { submitFeedback } from "../../../lib/userApi";
 
 const CATEGORIES = [
   { id: "account", label: "Account" },

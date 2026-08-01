@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { getToken } from "@/lib/auth";
-import { redeemGiftCode, getRedemptionHistory } from "@/lib/giftsApi";
+import { getToken } from "../../../lib/auth.js";
+import { redeemGiftCode, getRedemptionHistory } from "../../../lib/giftsApi";
 
 const formatMoney = (value) => `₹${Number(value || 0).toFixed(2)}`;
 
