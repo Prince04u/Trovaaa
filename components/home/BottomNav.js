@@ -42,10 +42,11 @@ export default function BottomNav() {
     <nav className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[56px] grid ${gridClass} select-none`}>
       {visibleItems.map(({ href, label, activeIcon, inactiveIcon, match }) => {
         const active = isActive(match, href);
+        const finalHref = (!isLogged && match === "my") ? "/login" : href;
         return (
           <Link
-            key={href}
-            href={href}
+            key={match}
+            href={finalHref}
             className="flex flex-col items-center justify-center gap-[2px] text-decoration-none select-none transition-colors"
           >
             <img
