@@ -567,48 +567,28 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         </div>
       </section>
 
-      {/* Category Tabs */}
+      {/* Category Tabs (Showing only active or all but styled minimally) */}
       <section className="wg-duration-bar">
-        <Link 
-          href="/wingo/parity" 
-          className={`wg-duration-tab ${duration === "parity" ? "active" : ""}`}
-        >
-          Parity
-        </Link>
-        <Link 
-          href="/wingo/sapre" 
-          className={`wg-duration-tab ${duration === "sapre" ? "active" : ""}`}
-        >
-          Sapre
-        </Link>
-        <Link 
-          href="/wingo/bcone" 
-          className={`wg-duration-tab ${duration === "bcone" ? "active" : ""}`}
-        >
-          Bcone
-        </Link>
-        <Link 
-          href="/wingo/emerd" 
-          className={`wg-duration-tab ${duration === "emerd" ? "active" : ""}`}
-        >
-          Emerd
-        </Link>
+        <div className="wg-duration-tab active mx-auto w-full text-center py-3 text-[#333] font-medium text-[15px] border-b-2 border-[#009688]">
+          {duration.charAt(0).toUpperCase() + duration.slice(1)}
+        </div>
       </section>
 
       {/* Period & Count Down Card */}
       <section className="wg-timer-card select-none">
-        <div className="wg-period-info">
+        <div className="flex justify-between w-full mb-2">
           <div className="wg-period-label">
-            <Trophy size={14} className="text-[#009688]" />
+            <Trophy size={16} className="text-gray-500" />
             <span>Period</span>
           </div>
+          <span className="wg-countdown-label">Count Down</span>
+        </div>
+        
+        <div className="flex justify-between w-full items-end">
           <strong className="wg-period-id">
             {period?.periodId || "—"}
           </strong>
-        </div>
 
-        <div className="wg-countdown-info">
-          <span className="wg-countdown-label">Count Down</span>
           <div className="wg-timer-digits">
             {(() => {
               const minDigits = timer.mm.split("");
@@ -670,9 +650,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             <button
               key={num}
               type="button"
-              className={`wg-num-btn ${
-                num === 0 ? "v0" : num === 5 ? "v5" : num % 2 === 1 ? "green" : "red"
-              }`}
+              className="wg-num-btn blue"
               disabled={bettingLocked}
               onClick={() => openBetSheet("number", num)}
             >
@@ -680,40 +658,20 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             </button>
           ))}
         </div>
-
-        {/* Size row */}
-        <div className="wg-size-row">
-          <button 
-            type="button" 
-            className="wg-size-btn big" 
-            disabled={bettingLocked} 
-            onClick={() => openBetSheet("big_small", "big")}
-          >
-            Big
-          </button>
-          <button 
-            type="button" 
-            className="wg-size-btn small" 
-            disabled={bettingLocked} 
-            onClick={() => openBetSheet("big_small", "small")}
-          >
-            Small
-          </button>
-        </div>
       </section>
 
       {/* History and Tabs lists */}
       <div className="px-3 flex gap-2 mb-2 select-none">
         {[
-          { id: "game", label: duration === "bcone" ? "Bcone Record" : "Parity Record" },
+          { id: "game", label: `${duration.charAt(0).toUpperCase() + duration.slice(1)} Record` },
           { id: "chart", label: "Chart" },
           { id: "my", label: "My History" },
         ].map((tab) => (
           <button
             key={tab.id}
             type="button"
-            className={`flex-1 py-2 text-center text-xs font-bold rounded-lg border border-gray-200 bg-white transition-colors cursor-pointer ${
-              historyTab === tab.id ? "border-[#009688] text-[#009688] bg-[#009688]/5" : "text-gray-500 hover:bg-gray-50"
+            className={`flex-1 py-2 text-center text-[13px] font-medium rounded-md border transition-colors cursor-pointer ${
+              historyTab === tab.id ? "border-[#009688] text-[#009688] bg-white" : "border-gray-100 text-gray-500 bg-white hover:bg-gray-50"
             }`}
             onClick={() => {
               setHistoryTab(tab.id);
@@ -729,6 +687,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       <section className="wg-logs-card">
         {historyTab === "game" && (
           <>
+            <div className="flex flex-col items-center justify-center py-4 border-b-2 border-[#009688] text-[#333] font-medium">
+              <Trophy size={18} className="text-gray-500 mb-1" />
+              <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
+            </div>
             <div className="overflow-x-auto select-none">
               <table className="wg-history-table">
                 <thead>
