@@ -171,7 +171,7 @@ export default function AccountScreen() {
         <button
           type="button"
           onClick={() => setShowSignInModal(true)}
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#f0f0f0] cursor-pointer outline-none"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.signIn} alt="Sign In" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -185,7 +185,7 @@ export default function AccountScreen() {
         {/* Orders */}
         <Link
           href="/orders"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.orders} alt="Orders" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -199,7 +199,7 @@ export default function AccountScreen() {
         {/* Promotion */}
         <Link
           href="/promotion"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.promotion} alt="Promotion" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -213,7 +213,7 @@ export default function AccountScreen() {
         {/* Red Envelope */}
         <Link
           href="/redenvelope"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -227,7 +227,7 @@ export default function AccountScreen() {
         {/* Luck Draw */}
         <Link
           href="/luckDraw"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.luckDraw} alt="Luck Draw" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -243,7 +243,7 @@ export default function AccountScreen() {
           <button
             type="button"
             onClick={() => setWalletOpen(!walletOpen)}
-            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#f0f0f0] cursor-pointer outline-none"
+            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
               <img src={REF_ICONS.wallet} alt="Wallet" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -283,7 +283,7 @@ export default function AccountScreen() {
         {/* Bank Card */}
         <Link
           href="/bankcard"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -297,7 +297,7 @@ export default function AccountScreen() {
         {/* Address */}
         <Link
           href="/address"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.address} alt="Address" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -312,7 +312,7 @@ export default function AccountScreen() {
           <button
             type="button"
             onClick={() => setSecurityOpen(!securityOpen)}
-            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#f0f0f0] cursor-pointer outline-none"
+            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
               <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -341,7 +341,7 @@ export default function AccountScreen() {
           <button
             type="button"
             onClick={() => setDownloadOpen(!downloadOpen)}
-            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#f0f0f0] cursor-pointer outline-none"
+            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
               <img src={REF_ICONS.appDownload} alt="App Download" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -370,7 +370,7 @@ export default function AccountScreen() {
         {/* Complaints & Suggestions */}
         <Link
           href="/complaints"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#f0f0f0]"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
           <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
             <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
@@ -385,7 +385,7 @@ export default function AccountScreen() {
           <button
             type="button"
             onClick={() => setAboutOpen(!aboutOpen)}
-            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#f0f0f0] cursor-pointer outline-none"
+            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
               <img src={REF_ICONS.about} alt="About" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
