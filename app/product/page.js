@@ -7,37 +7,96 @@ import BottomNav from "@/components/home/BottomNav";
 const PRODUCTS_DATA = {
   1: {
     id: 1,
-    title: "Joyalukkas 18k (750) Rose Gold and Solitaire Pendant for Girls",
-    price: "38576.00",
-    images: ["https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80"],
+    title: "【 Now 】 Series White 18K Gold Pair Ring",
+    price: "38570.00",
+    images: ["https://picsum.photos/seed/ring1/600/600"],
     specs: {
-      "Brand": "Joyalukkas",
-      "Collection": "Solitaire",
-      "Material": "Rose Gold",
-      "Metal Stamp": "18k (750)",
-      "Metal": "Rose Gold",
-      "Purity": "18k",
-      "Model Number": "JOY-18K-ROSE-01",
+      "Brand": "Now",
+      "Material": "18K Gold",
       "Qty": "1",
-      "Warranty Description": "1 Year Brand Warranty",
-      "Warranty Type": "Manufacturer Warranty"
+      "Warranty Description": "1 Year Brand Warranty"
     }
   },
   2: {
     id: 2,
-    title: "Ratnavali Jewels American Diamond Traditional Fashion Jewellery Green Necklace Pendant Set with Earring",
+    title: "【Cute Pet】 Series Rose 18K Gold Pearl Pendant",
     price: "2899.00",
-    images: ["https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80"],
+    images: ["https://picsum.photos/seed/pendant1/600/600"],
     specs: {
-      "Brand": "Ratnavali Jewels",
-      "Collection": "Traditional",
-      "Stone": "American Diamond",
-      "Stone Shape": "Round",
-      "Stone Colour": "Green",
-      "Material": "Brass",
-      "Model Number": "RJ-AD-GRN-02",
-      "Qty": "1 Set",
+      "Brand": "Cute Pet",
+      "Material": "Rose 18K Gold",
+      "Stone": "Pearl",
+      "Qty": "1",
       "Warranty Description": "6 Months Manufacturer Warranty"
+    }
+  },
+  3: {
+    id: 3,
+    title: "18K Gold Diamond Ruby Deer Horn Collar Chain",
+    price: "4559.00",
+    images: ["https://picsum.photos/seed/chain1/600/600"],
+    specs: {
+      "Material": "18K Gold",
+      "Stone": "Diamond, Ruby",
+      "Qty": "1"
+    }
+  },
+  4: {
+    id: 4,
+    title: "Enzo Jewelry 14k Gold Seven Colored Gemstone Pendant",
+    price: "5599.00",
+    images: ["https://picsum.photos/seed/gemstone1/600/600"],
+    specs: {
+      "Brand": "Enzo",
+      "Material": "14k Gold",
+      "Stone": "Gemstone",
+      "Qty": "1"
+    }
+  },
+  5: {
+    id: 5,
+    title: "Sukkhi Gleaming Pearl Gold Plated Wedding Jewellery Kundan Peacock Meenakari Multi-String Necklace",
+    price: "1745.00",
+    images: ["https://picsum.photos/seed/necklace1/600/600"],
+    specs: {
+      "Brand": "Sukkhi",
+      "Material": "Gold Plated",
+      "Stone": "Pearl, Kundan",
+      "Qty": "1",
+      "Warranty Description": "6 Months Manufacturer Warranty"
+    }
+  },
+  6: {
+    id: 6,
+    title: "Ananth Jewels 925 Sterling Silver BIS Hallmarked Heart Bracelet for Women",
+    price: "9000.00",
+    images: ["https://picsum.photos/seed/bracelet1/600/600"],
+    specs: {
+      "Brand": "Ananth Jewels",
+      "Material": "925 Sterling Silver",
+      "Qty": "1"
+    }
+  },
+  7: {
+    id: 7,
+    title: "Handicraft Kottage ® 1gm 22Ct Gold Plated Pendant and Chain for Men/Women/Girls",
+    price: "999.00",
+    images: ["https://picsum.photos/seed/pendant2/600/600"],
+    specs: {
+      "Brand": "Handicraft Kottage",
+      "Material": "Gold Plated",
+      "Qty": "1"
+    }
+  },
+  8: {
+    id: 8,
+    title: "Mansiyaorange Combo of Two Party One Gram Gold Forming Long Haram and Choker Set",
+    price: "3199.00",
+    images: ["https://picsum.photos/seed/choker1/600/600"],
+    specs: {
+      "Brand": "Mansiyaorange",
+      "Material": "Gold Forming",
+      "Qty": "2 Sets"
     }
   }
 };
