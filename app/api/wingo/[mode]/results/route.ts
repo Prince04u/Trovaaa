@@ -10,6 +10,10 @@ const DURATION_MAP: Record<string, WingoMode> = {
   "1m": "M1",
   "3m": "M3",
   "5m": "M5",
+  "parity": "PARITY",
+  "bcone": "BCONE",
+  "sapre": "M3",
+  "emerd": "M5",
 };
 
 export async function GET(

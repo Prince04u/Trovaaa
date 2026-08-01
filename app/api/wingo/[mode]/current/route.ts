@@ -12,6 +12,8 @@ const DURATION_MAP: Record<string, WingoMode> = {
   "5m": "M5",
   "parity": "PARITY",
   "bcone": "BCONE",
+  "sapre": "M3", // Maps Sapre to M3 Mode
+  "emerd": "M5", // Maps Emerd to M5 Mode
 };
 
 const ALL_MODES: WingoMode[] = ["S30", "M1", "M3", "M5", "PARITY", "BCONE"];

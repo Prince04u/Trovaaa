@@ -17,6 +17,8 @@ const REVERSE_DURATION_MAP: Record<string, string> = {
   M1: "1m",
   M3: "3m",
   M5: "5m",
+  PARITY: "parity",
+  BCONE: "bcone",
 };
 
 export async function GET(req: NextRequest) {
