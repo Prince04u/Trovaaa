@@ -144,17 +144,25 @@
   border: none;
   border-radius: 2px;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.wg-color-btn:hover {
+.wg-color-btn:hover:not(:disabled) {
   opacity: 0.9;
 }
 
 .wg-color-btn.green { background-color: #4CAF50; }
 .wg-color-btn.violet { background-color: #9C27B0; }
 .wg-color-btn.red { background-color: #F44336; }
+
+.wg-color-btn:disabled {
+  background-color: #D3D3D3 !important;
+  color: #FFFFFF;
+  cursor: not-allowed;
+  box-shadow: none;
+  background-image: none !important;
+}
 
 /* Number grid */
 .wg-number-grid {
@@ -175,16 +183,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, background-color 0.15s ease;
   box-shadow: 0 3px 6px rgba(33,150,243,0.3);
 }
 
-.wg-num-btn:active {
+.wg-num-btn:active:not(:disabled) {
   transform: scale(0.95);
 }
 
 .wg-num-btn.blue {
   background-color: #2196F3;
+}
+
+.wg-num-btn:disabled {
+  background-color: #D3D3D3 !important;
+  color: #FFFFFF;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* History logs section */

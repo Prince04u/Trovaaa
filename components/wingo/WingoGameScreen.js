@@ -308,12 +308,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     }
   }, [duration, syncPeriod, results]);
 
+  const [isAuthInitialized, setIsAuthInitialized] = useState(false);
+  
   useEffect(() => {
     if (!getToken()) {
       router.replace("/login");
-      return undefined;
+      return;
     }
-
+    setIsAuthInitialized(true);
     loadData();
     getWingoConfig()
       .then((res) => {
@@ -374,6 +376,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       if (remaining === 0 && refreshedPeriodRef.current !== period?.periodId) {
         refreshedPeriodRef.current = period?.periodId;
         const endedPeriodId = period?.periodId;
+        
+        // Optimistically update endsAtRef to seamlessly start the next countdown
+        // instead of hanging at 00:00 while the server responds.
+        endsAtRef.current = Date.now() + offset + DURATION_SEC[duration] * 1000;
+        
         loadData();
 
         clearInterval(pollTimerRef.current);
@@ -518,6 +525,27 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     return 15000 + periodNum + offset;
   };
 
+  if (!isAuthInitialized) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="#009688" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          className="w-10 h-10 animate-spin"
+        >
+          <polyline points="23 4 23 10 17 10" />
+          <polyline points="1 20 1 14 7 14" />
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+        </svg>
+      </div>
+    );
+  }
+
   return (
     <main className="wingo-game">
       {/* Solid Green Available Balance Banner */}
@@ -608,14 +636,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       {/* Betting Board Section */}
       <section className="wg-betting-board">
-        {showCountdownOverlay && (
-          <div className="wg-countdown-overlay">
-            <div className="wg-countdown-digit">{countdownDigits[0]}</div>
-            <div className="wg-countdown-digit">{countdownDigits[1]}</div>
-          </div>
-        )}
-
         {/* Color Buttons row */}
+
         <div className="flex justify-between items-center mb-8 px-1">
           <button 
             type="button" 
