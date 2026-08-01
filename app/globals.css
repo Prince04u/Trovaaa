@@ -762,7 +762,9 @@ a {
 
 .van-otp-btn {
   height: 48px;
-  width: 140px;
+  width: 28%;
+  min-width: 120px;
+  max-width: 280px;
   background-color: #f7f7f7;
   border: 1px solid #dcdcdc;
   border-radius: 2px;
@@ -821,6 +823,7 @@ a {
 .van-btn-sub:hover {
   background-color: #ededed;
 }
+
 
 
 
