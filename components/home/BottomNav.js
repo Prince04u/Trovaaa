@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ICONS } from "./NavIcons";
 
+import { useState, useEffect } from "react";
+import { getToken } from "@/lib/auth";
+
 const NAV_ITEMS = [
   { href: "/", label: "Home", activeIcon: NAV_ICONS.homeActive, inactiveIcon: NAV_ICONS.homeInactive, match: "home" },
   { href: "/search", label: "Search", activeIcon: NAV_ICONS.searchActive, inactiveIcon: NAV_ICONS.searchInactive, match: "search" },
@@ -13,6 +16,13 @@ const NAV_ITEMS = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [isLogged, setIsLogged] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setIsLogged(!!getToken());
+    setMounted(true);
+  }, []);
 
   const isActive = (match, href) => {
     if (match === "home") return pathname === "/";
@@ -22,9 +32,15 @@ export default function BottomNav() {
     return pathname === href;
   };
 
+  const visibleItems = mounted 
+    ? NAV_ITEMS.filter(item => isLogged || item.label !== "Win")
+    : NAV_ITEMS.filter(item => item.label !== "Win"); // Default to non-logged in view before hydration
+
+  const gridClass = visibleItems.length === 3 ? "grid-cols-3" : "grid-cols-4";
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[56px] grid grid-cols-4 select-none">
-      {NAV_ITEMS.map(({ href, label, activeIcon, inactiveIcon, match }) => {
+    <nav className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[56px] grid ${gridClass} select-none`}>
+      {visibleItems.map(({ href, label, activeIcon, inactiveIcon, match }) => {
         const active = isActive(match, href);
         return (
           <Link

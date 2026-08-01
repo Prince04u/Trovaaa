@@ -51,11 +51,13 @@ export default function AccountScreen() {
     const init = async () => {
       if (getToken()) {
         await Promise.all([loadProfile(), loadBalance()]);
+        setMounted(true);
+      } else {
+        router.replace("/login");
       }
-      setMounted(true);
     };
     init();
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     disconnectSocket();
