@@ -51,7 +51,7 @@ export default function LoginPage() {
       </header>
 
       {/* Form Section */}
-      <div className="w-full flex-1 px-[16px] pt-[20px] pb-12 flex flex-col justify-start box-border">
+      <div className="w-full flex-1 px-[16px] pt-[30px] pb-12 flex flex-col justify-start box-border">
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}

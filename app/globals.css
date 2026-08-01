@@ -745,9 +745,9 @@ a {
   width: 100%;
   height: 48px;
   background-color: #ffffff;
-  border: 1px solid #e4e4e4;
+  border: 1px solid #dcdcdc;
   border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   padding: 0 14px;
@@ -757,14 +757,14 @@ a {
 
 .van-card-input:focus-within {
   border-color: #00A091;
-  box-shadow: 0 2px 6px rgba(0, 160, 145, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 160, 145, 0.2);
 }
 
 .van-otp-btn {
   height: 48px;
-  width: 130px;
+  width: 140px;
   background-color: #f7f7f7;
-  border: 1px solid #e4e4e4;
+  border: 1px solid #dcdcdc;
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   color: #333333;
@@ -779,7 +779,7 @@ a {
 }
 
 .van-otp-btn:hover {
-  background-color: #efefef;
+  background-color: #ededed;
 }
 
 .van-btn-teal {
@@ -788,7 +788,7 @@ a {
   color: #ffffff;
   border: none;
   border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   font-weight: 400;
   display: flex;
@@ -803,9 +803,9 @@ a {
 }
 
 .van-btn-sub {
-  height: 38px;
-  background-color: #f9f9f9;
-  border: 1px solid #e4e4e4;
+  height: 36px;
+  background-color: #f7f7f7;
+  border: 1px solid #dcdcdc;
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   color: #333333;
@@ -819,7 +819,8 @@ a {
 }
 
 .van-btn-sub:hover {
-  background-color: #f0f0f0;
+  background-color: #ededed;
 }
+
 
 

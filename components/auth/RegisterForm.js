@@ -79,7 +79,7 @@ export default function RegisterForm() {
 
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
-      {/* Top Teal Navbar matching bruzoo.games reference image 1 */}
+      {/* Top Teal Navbar matching bruzoo.games reference image 4 */}
       <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border shadow-sm">
         <button 
           onClick={() => router.back()} 
@@ -92,7 +92,7 @@ export default function RegisterForm() {
       </header>
 
       {/* Form Content */}
-      <div className="w-full flex-1 px-[16px] pt-[20px] pb-12 flex flex-col justify-start box-border">
+      <div className="w-full flex-1 px-[16px] pt-[30px] pb-12 flex flex-col justify-start box-border">
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}
@@ -168,12 +168,12 @@ export default function RegisterForm() {
             </label>
           </div>
 
-          {/* Register Action Button */}
-          <div className="flex justify-center w-full">
+          {/* Register Action Button - matches 62% width from bruzoo reference image 4 */}
+          <div className="flex justify-center w-full mt-[10px]">
             <button 
               type="submit" 
               disabled={loading}
-              className="van-btn-teal w-[62%] max-w-[280px] mx-auto"
+              className="van-btn-teal w-[62%] max-w-[640px] mx-auto"
             >
               {loading ? "Registering..." : "Register"}
             </button>
