@@ -548,184 +548,135 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
   return (
     <main className="wingo-game">
-      {/* Solid Green Available Balance Banner */}
-      <section className="wg-dashboard-header">
-        <div className="flex items-center w-full">
-          <div className="flex items-center gap-1.5 text-white">
-            <span className="text-[16px] font-normal">Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-[12px]">
-            <Link href="/wallet/deposit" className="wg-btn-recharge">
-              Recharge
-            </Link>
-            <button 
-              type="button"
-              onClick={() => setHistoryTab("chart")}
-              className="wg-btn-trend"
-            >
-              Trend
-            </button>
-          </div>
-          
-          <button 
-            type="button" 
-            onClick={loadData}
-            className="text-white hover:opacity-80"
-            aria-label="Refresh balance"
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              className={`w-[20px] h-[20px] ${refreshing ? "animate-spin" : ""}`}
-            >
-              <polyline points="23 4 23 10 17 10" />
-              <polyline points="1 20 1 14 7 14" />
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-            </svg>
-          </button>
-        </div>
-      </section>
-
-      {/* Category Tabs (Showing only active or all but styled minimally) */}
-      <section className="wg-duration-bar">
-        <div className="wg-duration-tab mx-auto w-full text-center text-[#333]">
-          {duration.charAt(0).toUpperCase() + duration.slice(1)}
-        </div>
-      </section>
-
-      {/* Period & Count Down Card */}
-      <section className="wg-timer-card select-none">
-        <div className="flex justify-between w-full">
-          <div className="flex flex-col gap-1">
-            <div className="wg-period-label">
-              <Trophy size={16} className="text-gray-400" strokeWidth={2} />
-              <span>Period</span>
+      <div className="win">
+        {/* Solid Green Available Balance Banner */}
+        <div className="mine_top">
+          <div className="mine_info">
+            <div className="balance">
+              Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="wg-period-id mt-0 underline">
-              {period?.periodId || "—"}
-            </div>
-          </div>
-          
-          <div className="flex flex-col items-end gap-1">
-            <span className="wg-countdown-label">Count Down</span>
-            <div className="wg-timer-digits mt-0">
-              {(() => {
-                const minDigits = timer.mm.split("");
-                const secDigits = timer.ss.split("");
-                return (
-                  <>
-                    <div className="wg-digit-box">{minDigits[0]}</div>
-                    <div className="wg-digit-box">{minDigits[1]}</div>
-                    <span className="wg-timer-colon">:</span>
-                    <div className="wg-digit-box">{secDigits[0]}</div>
-                    <div className="wg-digit-box">{secDigits[1]}</div>
-                  </>
-                );
-              })()}
+            <div className="mine_info_btn">
+              <div className="btn">
+                <button type="button" className="one_btn" onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" onClick={() => setHistoryTab("chart")}>Trend</button>
+              </div>
+              <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  className={refreshing ? "animate-spin text-white" : "text-white"}
+                  style={{ width: "22px", height: "22px" }}
+                >
+                  <polyline points="23 4 23 10 17 10" />
+                  <polyline points="1 20 1 14 7 14" />
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Betting Board Section */}
-      <section className="wg-betting-board">
-        {/* Color Buttons row */}
-        <div className="flex justify-between items-center gap-[10px] w-full">
-          <button 
-            type="button" 
-            className="wg-color-btn green flex-1" 
-            disabled={bettingLocked} 
-            onClick={() => openBetSheet("color", "green")}
-          >
-            Join Green
-          </button>
-          <button 
-            type="button" 
-            className="wg-color-btn violet flex-1" 
-            disabled={bettingLocked} 
-            onClick={() => openBetSheet("color", "violet")}
-          >
-            Join Violet
-          </button>
-          <button 
-            type="button" 
-            className="wg-color-btn red flex-1" 
-            disabled={bettingLocked} 
-            onClick={() => openBetSheet("color", "red")}
-          >
-            Join Red
-          </button>
+        {/* Category Tabs */}
+        <div className="main">
+          <ul className="main_nav">
+            <li className={duration === "parity" ? "active" : ""} onClick={() => router.push("/wingo/parity")}>Parity</li>
+            <li className={duration === "sapre" ? "active" : ""} onClick={() => router.push("/wingo/sapre")}>Sapre</li>
+            <li className={duration === "bcone" ? "active" : ""} onClick={() => router.push("/wingo/bcone")}>Bcone</li>
+            <li className={duration === "emerd" ? "active" : ""} onClick={() => router.push("/wingo/emerd")}>Emerd</li>
+          </ul>
         </div>
 
-        {/* Numbers Grid */}
-        <div className="wg-number-grid">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-            <button
-               key={num}
-               type="button"
-               className="wg-num-btn blue"
-               disabled={bettingLocked}
-               onClick={() => openBetSheet("number", num)}
-             >
-               {num}
-             </button>
-          ))}
-        </div>
-      </section>
+        {/* Period & Count Down Card */}
+        <div className="center_text select-none">
+          <ul className="center_top">
+            <li>
+              <ul className="top_ol">
+                <Trophy size={16} strokeWidth={2} style={{marginRight: "10px", color: "#7d7d7d"}} />
+                <span>Period</span>
+              </ul>
+              <ul className="bot_ol">
+                <span style={{textDecoration: "underline"}}>{period?.periodId || "—"}</span>
+              </ul>
+            </li>
+            <li className="right_li">
+              <ul className="top_ol">Count Down</ul>
+              <ul className="bot_ol">
+                <div className="countdown">
+                  <div className="van-count-down">
+                    <span className="span">{timer.mm[0]}</span>
+                    <span className="span">{timer.mm[1]}</span>
+                    <span>:</span>
+                    <span className="span">{timer.ss[0]}</span>
+                    <span className="span">{timer.ss[1]}</span>
+                  </div>
+                </div>
+              </ul>
+            </li>
+          </ul>
 
-      {/* History and Tabs lists */}
-      <section className="wg-logs-card bg-white">
-        <div className="flex flex-col items-center justify-center pt-5 pb-3 border-b-2 border-[#009688] text-[#333] font-normal text-[15px]">
-          <Trophy size={18} className="text-gray-500 mb-1" />
-          <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
-        </div>
-        <div className="overflow-x-auto select-none">
-          <table className="wg-history-table w-full">
-            <thead>
-              <tr>
-                <th>Period</th>
-                <th>Price</th>
-                <th>Number</th>
-                <th>Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
-                const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
-                const numberClass = r.resultNumber % 2 === 1 ? "green" : "red";
+          <div className="btn_center">
+            <button className="back_one" disabled={bettingLocked} onClick={() => openBetSheet("color", "green")}>Join Green</button>
+            <button className="back_two" disabled={bettingLocked} onClick={() => openBetSheet("color", "violet")}>Join Violet</button>
+            <button className="back_three" disabled={bettingLocked} onClick={() => openBetSheet("color", "red")}>Join Red</button>
+          </div>
 
-                return (
-                  <tr key={r.periodId}>
-                    <td className="wg-period-cell text-gray-700 underline">{r.displayPeriodId}</td>
-                    <td className="text-gray-400">{getPrice(r)}</td>
-                    <td className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</td>
-                    <td>
-                      <div className="flex items-center justify-center gap-1">
-                        {dots.map((color, idx) => (
-                          <span key={idx} className={`wg-result-dot ${color.toLowerCase()}`} />
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-              {results.length === 0 && (
-                <tr>
-                  <td colSpan={4} className="py-8 text-center text-gray-400">
-                    No history records found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <ul className="center_notes">
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+              <li key={num}>
+                <button type="button" disabled={bettingLocked} onClick={() => openBetSheet("number", num)}>
+                  {num}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* History and Tabs lists */}
+        <div className="content">
+          <div className="content_con select-none">
+            <div className="content_title">
+              <Trophy size={18} className="text-gray-500 mb-1" />
+              <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
+            </div>
+            
+            <ul className="list_head">
+              <li>Period</li>
+              <li>Price</li>
+              <li>Number</li>
+              <li>Result</li>
+            </ul>
+            
+            {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
+              const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
+              const numberClass = r.resultNumber % 2 === 1 ? "green" : "red";
+              
+              return (
+                <ul className="list_con" key={r.periodId}>
+                  <li className="wg-period-cell">{r.displayPeriodId}</li>
+                  <li style={{color: "#a6a6a6"}}>{getPrice(r)}</li>
+                  <li className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</li>
+                  <li>
+                    <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                      {dots.map((color, idx) => (
+                        <span key={idx} className={`wg-result-dot ${color.toLowerCase()}`} />
+                      ))}
+                    </div>
+                  </li>
+                </ul>
+              );
+            })}
+            
+            {results.length === 0 && (
+              <div className="py-8 text-center text-gray-400">
+                No history records found
+              </div>
+            )}
+          </div>
         </div>
 
         {gameHistoryPageCount > 1 && (
@@ -752,16 +703,15 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center py-6 border-t border-[#dddddd] text-[#888] text-[14px]">
+        <div className="flex flex-col items-center justify-center py-6 border-t border-[#dddddd] text-[#888] text-[14px]" onClick={() => setHistoryTab("my")} style={{cursor: "pointer"}}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-60">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="9" y1="9" x2="15" y2="9"></line>
             <line x1="9" y1="13" x2="15" y2="13"></line>
             <line x1="9" y1="17" x2="15" y2="17"></line>
           </svg>
-          <span>My Record</span>
+          <span style={{ color: historyTab === "my" ? "#009688" : "inherit" }}>My Record</span>
         </div>
-
 
         {historyTab === "chart" && (
           <div className="p-4 select-none">
@@ -884,14 +834,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             )}
           </div>
         )}
-      </section>
+      </div>
 
       {/* Slide-Up Betting Dialog Ticket */}
       {betSheet && (
-        <div className="wg-sheet-mask" onClick={() => setBetSheet(null)}>
+        <div className="wg-sheet-mask select-none" onClick={() => setBetSheet(null)}>
           <div className="wg-sheet" onClick={(e) => e.stopPropagation()}>
             <div className={`wg-sheet-header ${betTheme}`}>
-              <h3>Join {getBetSelectionLabel(betSheet.betType, betSheet.betValue)}</h3>
+              <h3 style={{ margin: 0, padding: 0 }}>Join {getBetSelectionLabel(betSheet.betType, betSheet.betValue)}</h3>
             </div>
 
             <div className="wg-sheet-body">
