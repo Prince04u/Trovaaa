@@ -8,6 +8,7 @@ import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
 import { login as loginRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
+import { BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function LoginPage() {
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <img src="/img/fh.png" alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+          <img src={BACK_ICON_B64} alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
         </button>
         <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Login</span>
       </header>

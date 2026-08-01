@@ -1,10 +1,12 @@
 "use client";
 
+import { KEY_ICON_B64 } from "@/components/auth/AuthIconsData";
+
 export default function PasswordInput({ id = "password", name = "password", value, onChange, placeholder = "Password", required = true, minLength }) {
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <img src="/img/mm.png" alt="Password" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+        <img src={KEY_ICON_B64} alt="Password" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
       </div>
       <input
         id={id}
@@ -21,5 +23,6 @@ export default function PasswordInput({ id = "password", name = "password", valu
     </div>
   );
 }
+
 
 

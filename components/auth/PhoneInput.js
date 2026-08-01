@@ -1,10 +1,12 @@
 "use client";
 
+import { PHONE_ICON_B64 } from "@/components/auth/AuthIconsData";
+
 export default function PhoneInput({ value, onChange, id = "mobile", name = "mobile", placeholder = "Mobile Number", required = true }) {
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <img src="/img/sjh.png" alt="Phone" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+        <img src={PHONE_ICON_B64} alt="Mobile Number" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
       </div>
       <input
         id={id}
@@ -20,5 +22,6 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
     </div>
   );
 }
+
 
 

@@ -8,6 +8,7 @@ import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
 import { register as registerRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
+import { CHAT_ICON_B64, GIFT_ICON_B64, BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -87,7 +88,7 @@ export default function RegisterForm() {
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <img src="/img/fh.png" alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+          <img src={BACK_ICON_B64} alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
         </button>
         <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Register</span>
       </header>
@@ -110,7 +111,7 @@ export default function RegisterForm() {
           <div className="w-full flex flex-row justify-between" style={{ marginBottom: '24px' }}>
             <div className="van-card-input" style={{ width: '72%' }}>
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img src="/img/yzm.png" alt="Verification Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+                <img src={CHAT_ICON_B64} alt="Verification Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
               </div>
               <input
                 name="verificationCode"
@@ -148,7 +149,7 @@ export default function RegisterForm() {
           <div style={{ marginBottom: '35px' }}>
             <div className="van-card-input">
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img src="/img/yqm.png" alt="Recommendation Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+                <img src={GIFT_ICON_B64} alt="Recommendation Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
               </div>
               <input
                 id="inviteCode"
@@ -195,3 +196,4 @@ export default function RegisterForm() {
     </main>
   );
 }
+

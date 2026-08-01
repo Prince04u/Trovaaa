@@ -6,6 +6,7 @@ import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
 import { changePassword } from "@/lib/authApi";
+import { BACK_ICON_B64, CHAT_ICON_B64 } from "@/components/auth/AuthIconsData";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -68,7 +69,7 @@ export default function ForgotPasswordPage() {
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <img src="/img/fh.png" alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
+          <img src={BACK_ICON_B64} alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
         </button>
         <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Reset Password</span>
       </header>
@@ -96,8 +97,7 @@ export default function ForgotPasswordPage() {
           <div className="w-full flex flex-row justify-between" style={{ marginBottom: '35px' }}>
             <div className="van-card-input" style={{ width: '72%' }}>
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img src="/img/yzm.png" alt="OTP" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>chat_bubble_outline</span>
+                <img src={CHAT_ICON_B64} alt="Verification Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
               </div>
               <input
                 name="verificationCode"
