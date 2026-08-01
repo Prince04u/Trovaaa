@@ -7,7 +7,7 @@ import * as wingo from "@/lib/wingo/rounds";
 import * as k3 from "@/lib/k3/rounds";
 import * as fived from "@/lib/fived/rounds";
 
-const MODE_MAP = { s30: "S30", m1: "M1", m3: "M3", m5: "M5", m10: "M10", parity: "PARITY", bcone: "BCONE" } as const;
+const MODE_MAP = { s30: "S30", m1: "M1", m3: "M3", m5: "M5", m10: "M10", parity: "PARITY", bcone: "BCONE", sapre: "M1", emerd: "M5" } as const;
 
 /** Canonical dice combos per sum — non-triples preferred so ANY_TRIPLE bets lose. */
 const K3_COMBOS: Record<number, [number, number, number]> = {

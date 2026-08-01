@@ -10,7 +10,7 @@ import { getToken } from "@/lib/auth";
 const NAV_ITEMS = [
   { href: "/", label: "Home", activeIcon: NAV_ICONS.homeActive, inactiveIcon: NAV_ICONS.homeInactive, match: "home" },
   { href: "/search", label: "Search", activeIcon: NAV_ICONS.searchActive, inactiveIcon: NAV_ICONS.searchInactive, match: "search" },
-  { href: "/wingo/30s", label: "Win", activeIcon: NAV_ICONS.winActive, inactiveIcon: NAV_ICONS.winInactive, match: "win" },
+  { href: "/win", label: "Win", activeIcon: NAV_ICONS.winActive, inactiveIcon: NAV_ICONS.winInactive, match: "win" },
   { href: "/account", label: "My", activeIcon: NAV_ICONS.myActive, inactiveIcon: NAV_ICONS.myInactive, match: "my" },
 ];
 

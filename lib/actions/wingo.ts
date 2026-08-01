@@ -7,7 +7,7 @@ import { requireUser } from "@/lib/actions/auth";
 import { getRoundNumber, getRoundWindow } from "@/lib/wingo/rounds";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 
-const MODE_MAP: Record<string, WingoMode> = { s30: "S30", m1: "M1", m3: "M3", m5: "M5", parity: "PARITY", bcone: "BCONE" };
+const MODE_MAP: Record<string, WingoMode> = { s30: "S30", m1: "M1", m3: "M3", m5: "M5", parity: "PARITY", bcone: "BCONE", sapre: "M1", emerd: "M5" };
 
 const NUMBER_SELECTIONS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 const COLOR_SELECTIONS = new Set(["RED", "GREEN", "VIOLET"]);

@@ -20,6 +20,8 @@ const MODE_MAP: Record<string, WingoMode> = {
   "5min": "M5",
   parity: "PARITY",
   bcone: "BCONE",
+  sapre: "M1",
+  emerd: "M5",
 };
 
 // Global cache for recent wingo results to prevent database read spikes under high traffic

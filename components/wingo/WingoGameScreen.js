@@ -30,10 +30,10 @@ import OutcomePopup from "@/components/games/OutcomePopup";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 
-export default function WingoGameScreen({ initialPeriod = null, initialResults = [] }) {
+export default function WingoGameScreen({ duration: propDuration, initialPeriod = null, initialResults = [] }) {
   const params = useParams();
   const router = useRouter();
-  const duration = params.duration;
+  const duration = propDuration || params.duration || "parity";
   const { maintenanceMode, blocksAction } = usePlatformStatus();
   const { push, toasts } = useToasts();
 
@@ -433,7 +433,7 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
     setBalance(prev => Math.max(0, prev - deductedAmount));
     const { betType, betValue } = betSheet;
     const generatedId = `opt-${Date.now()}`;
-    const durationSecs = duration === "parity" || duration === "bcone" ? 180 : duration === "30s" ? 30 : duration === "1m" ? 60 : duration === "3m" ? 180 : duration === "5m" ? 300 : 600;
+    const durationSecs = duration === "parity" || duration === "bcone" ? 180 : duration === "sapre" ? 60 : duration === "emerd" ? 300 : duration === "30s" ? 30 : duration === "1m" ? 60 : duration === "3m" ? 180 : duration === "5m" ? 300 : 600;
     
     const optimisticBet = {
       _id: generatedId,
@@ -576,10 +576,22 @@ export default function WingoGameScreen({ initialPeriod = null, initialResults =
           Parity
         </Link>
         <Link 
+          href="/wingo/sapre" 
+          className={`wg-duration-tab ${duration === "sapre" ? "active" : ""}`}
+        >
+          Sapre
+        </Link>
+        <Link 
           href="/wingo/bcone" 
           className={`wg-duration-tab ${duration === "bcone" ? "active" : ""}`}
         >
           Bcone
+        </Link>
+        <Link 
+          href="/wingo/emerd" 
+          className={`wg-duration-tab ${duration === "emerd" ? "active" : ""}`}
+        >
+          Emerd
         </Link>
       </section>
 
