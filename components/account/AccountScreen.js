@@ -173,77 +173,89 @@ export default function AccountScreen() {
         <button
           type="button"
           onClick={() => setShowSignInModal(true)}
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#fafafa] cursor-pointer outline-none"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border border-b border-[#dcdcdc] cursor-pointer outline-none ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.signIn} alt="Sign In" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.signIn} alt="Sign In" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Sign In</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Sign In</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </button>
 
         {/* Orders */}
         <Link
           href="/orders"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.orders} alt="Orders" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.orders} alt="Orders" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Orders</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Orders</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Promotion */}
         <Link
           href="/promotion"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.promotion} alt="Promotion" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.promotion} alt="Promotion" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Promotion</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Promotion</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Red Envelope */}
         <Link
           href="/redenvelope"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Red Envelope</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Red Envelope</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Luck Draw */}
         <Link
           href="/luckDraw"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.luckDraw} alt="Luck Draw" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.luckDraw} alt="Luck Draw" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Luck Draw</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Luck Draw</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Wallet (Accordion) */}
-        <div className="flex flex-col border-b border-[#fafafa]">
+        <div className="flex flex-col border-b border-[#dcdcdc] ml-[15px]">
           <button
             type="button"
             onClick={() => setWalletOpen(!walletOpen)}
-            className="flex items-center p-[12px_15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
+            className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex items-center shrink-0 mr-[20px]">
-              <img src={REF_ICONS.wallet} alt="Wallet" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <div className="flex justify-center items-center shrink-0 w-[18%]">
+              <img src={REF_ICONS.wallet} alt="Wallet" className="w-[40px] h-[40px] object-contain shrink-0" />
             </div>
-            <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Wallet</span>
-            <span className={`material-icons-outlined text-[16px] text-[#757575] shrink-0 transition-transform duration-200 ${walletOpen ? "rotate-180" : ""}`}>
-              keyboard_arrow_down
-            </span>
+            <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Wallet</span>
+            <div className="flex justify-center items-center w-[10%]">
+              <span className={`material-icons-outlined text-[24px] text-[#757575] transition-transform duration-200 ${walletOpen ? "rotate-180" : ""}`}>
+                keyboard_arrow_down
+              </span>
+            </div>
           </button>
 
           {walletOpen && (
@@ -273,41 +285,47 @@ export default function AccountScreen() {
         {/* Bank Card */}
         <Link
           href="/bankcard"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Bank Card</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Bank Card</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Address */}
         <Link
           href="/address"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.address} alt="Address" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.address} alt="Address" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Address</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Address</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* Account Security (Accordion) */}
-        <div className="flex flex-col border-b border-[#fafafa]">
+        <div className="flex flex-col border-b border-[#dcdcdc] ml-[15px]">
           <button
             type="button"
             onClick={() => setSecurityOpen(!securityOpen)}
-            className="flex items-center p-[12px_15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
+            className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex items-center shrink-0 mr-[20px]">
-              <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <div className="flex justify-center items-center shrink-0 w-[18%]">
+              <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[40px] h-[40px] object-contain shrink-0" />
             </div>
-            <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Account Security</span>
-            <span className={`material-icons-outlined text-[16px] text-[#757575] shrink-0 transition-transform duration-200 ${securityOpen ? "rotate-180" : ""}`}>
-              keyboard_arrow_down
-            </span>
+            <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Account Security</span>
+            <div className="flex justify-center items-center w-[10%]">
+              <span className={`material-icons-outlined text-[24px] text-[#757575] transition-transform duration-200 ${securityOpen ? "rotate-180" : ""}`}>
+                keyboard_arrow_down
+              </span>
+            </div>
           </button>
 
           {securityOpen && (
@@ -323,19 +341,21 @@ export default function AccountScreen() {
         </div>
 
         {/* App Download (Accordion) */}
-        <div className="flex flex-col border-b border-[#fafafa]">
+        <div className="flex flex-col border-b border-[#dcdcdc] ml-[15px]">
           <button
             type="button"
             onClick={() => setDownloadOpen(!downloadOpen)}
-            className="flex items-center p-[12px_15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
+            className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex items-center shrink-0 mr-[20px]">
-              <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <div className="flex justify-center items-center shrink-0 w-[18%]">
+              <img src={REF_ICONS.appDownload} alt="App Download" className="w-[40px] h-[40px] object-contain shrink-0" />
             </div>
-            <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">App Download</span>
-            <span className={`material-icons-outlined text-[16px] text-[#757575] shrink-0 transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
-              keyboard_arrow_down
-            </span>
+            <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">App Download</span>
+            <div className="flex justify-center items-center w-[10%]">
+              <span className={`material-icons-outlined text-[24px] text-[#757575] transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
+                keyboard_arrow_down
+              </span>
+            </div>
           </button>
 
           {downloadOpen && (
@@ -354,29 +374,33 @@ export default function AccountScreen() {
         {/* Complaints & Suggestions */}
         <Link
           href="/complaints"
-          className="flex items-center p-[12px_15px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#fafafa]"
+          className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border border-b border-[#dcdcdc] ml-[15px]"
         >
-          <div className="flex items-center shrink-0 mr-[20px]">
-            <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[24px] h-[24px] object-contain shrink-0" />
+          <div className="flex justify-center items-center shrink-0 w-[18%]">
+            <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[40px] h-[40px] object-contain shrink-0" />
           </div>
-          <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">Complaints & Suggestions</span>
-          <span className="material-icons-outlined text-[16px] text-[#757575] shrink-0">keyboard_arrow_down</span>
+          <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">Complaints & Suggestions</span>
+          <div className="flex justify-center items-center w-[10%]">
+            <span className="material-icons-outlined text-[24px] text-[#757575]">keyboard_arrow_down</span>
+          </div>
         </Link>
 
         {/* About (Accordion) */}
-        <div className="flex flex-col border-b border-[#fafafa]">
+        <div className="flex flex-col border-b border-[#dcdcdc] ml-[15px]">
           <button
             type="button"
             onClick={() => setAboutOpen(!aboutOpen)}
-            className="flex items-center p-[12px_15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
+            className="flex items-center p-[15px_10px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex items-center shrink-0 mr-[20px]">
-              <img src={REF_ICONS.about} alt="About" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <div className="flex justify-center items-center shrink-0 w-[18%]">
+              <img src={REF_ICONS.about} alt="About" className="w-[40px] h-[40px] object-contain shrink-0" />
             </div>
-            <span className="text-[16px] font-normal text-[#4e4e4e] flex-grow">About</span>
-            <span className={`material-icons-outlined text-[16px] text-[#757575] shrink-0 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}>
-              keyboard_arrow_down
-            </span>
+            <span className="text-[16px] font-normal text-[#212529] flex-grow w-[72%]">About</span>
+            <div className="flex justify-center items-center w-[10%]">
+              <span className={`material-icons-outlined text-[24px] text-[#757575] transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}>
+                keyboard_arrow_down
+              </span>
+            </div>
           </button>
 
           {aboutOpen && (
