@@ -4,8 +4,12 @@ export default function PasswordInput({ id = "password", name = "password", valu
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <img src="/img/mm.png" alt="Password" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-        <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>vpn_key</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="6.5" cy="12" r="3.5" />
+          <path d="M10 12H19" />
+          <path d="M15 12V15" />
+          <path d="M18 12V15" />
+        </svg>
       </div>
       <input
         id={id}
@@ -22,3 +26,4 @@ export default function PasswordInput({ id = "password", name = "password", valu
     </div>
   );
 }
+

@@ -111,8 +111,12 @@ export default function RegisterForm() {
           <div className="w-full flex flex-row justify-between" style={{ marginBottom: '24px' }}>
             <div className="van-card-input" style={{ width: '72%' }}>
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img src="/img/yzm.png" alt="OTP" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>chat_bubble_outline</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <circle cx="9" cy="10" r="1" fill="#757575" />
+                  <circle cx="12" cy="10" r="1" fill="#757575" />
+                  <circle cx="15" cy="10" r="1" fill="#757575" />
+                </svg>
               </div>
               <input
                 name="verificationCode"
@@ -150,8 +154,13 @@ export default function RegisterForm() {
           <div style={{ marginBottom: '35px' }}>
             <div className="van-card-input">
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img src="/img/yqm.png" alt="Invite" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-                <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>card_giftcard</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12" />
+                  <rect x="2" y="7" width="20" height="5" />
+                  <line x1="12" y1="22" x2="12" y2="7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
               </div>
               <input
                 id="inviteCode"

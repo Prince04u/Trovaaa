@@ -4,8 +4,10 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <img src="/img/sjh.png" alt="Phone" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-        <span className="material-icons-outlined text-[20px] text-[#888888]" style={{display:'none'}}>smartphone</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="7" y="3" width="10" height="18" rx="2" />
+          <line x1="11" y1="18" x2="13" y2="18" />
+        </svg>
       </div>
       <input
         id={id}
@@ -21,3 +23,4 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
     </div>
   );
 }
+
