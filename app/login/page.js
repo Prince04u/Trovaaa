@@ -9,6 +9,7 @@ import BottomNav from "@/components/home/BottomNav";
 import { login as loginRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
 import { BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -110,6 +111,7 @@ export default function LoginPage() {
       </div>
 
       <BottomNav />
+      <LoadingDialog visible={loading} />
     </main>
 
   );

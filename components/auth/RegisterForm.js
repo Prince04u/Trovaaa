@@ -9,6 +9,7 @@ import BottomNav from "@/components/home/BottomNav";
 import { register as registerRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
 import { CHAT_ICON_B64, GIFT_ICON_B64, BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -193,6 +194,7 @@ export default function RegisterForm() {
       </div>
 
       <BottomNav />
+      <LoadingDialog visible={loading} />
     </main>
   );
 }
