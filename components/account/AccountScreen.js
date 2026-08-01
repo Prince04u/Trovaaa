@@ -83,9 +83,9 @@ export default function AccountScreen() {
     );
   }
 
-  const displayName = user?.name || user?.mobile || "9341225312";
-  const uid = user?.uid || user?.id?.slice(-8).toUpperCase() || "202007";
-  const avatarChar = displayName.charAt(0) || "P";
+  const displayName = user?.name || user?.mobile || "";
+  const uid = user?.uid || user?.id?.slice(-8).toUpperCase() || "";
+  const avatarChar = displayName ? displayName.charAt(0).toUpperCase() : "P";
 
   return (
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">

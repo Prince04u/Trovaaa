@@ -1,15 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/home/BottomNav";
+import { getProfile } from "@/lib/userApi";
 
 export default function PromotionPage() {
   const [copied, setCopied] = useState(false);
-  const referralCode = "202007";
-  const referralLink = `https://bruzoo.games/#/register?code=${referralCode}`;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getProfile()
+      .then((res) => {
+        if (res?.success) setUser(res.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const referralCode = user?.uid || user?.id?.slice(-8).toUpperCase() || "";
+  const referralLink = typeof window !== "undefined" && referralCode 
+    ? `${window.location.origin}/register?ref=${referralCode}` 
+    : "";
 
   const copyLink = () => {
+    if (!referralLink) return;
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
