@@ -109,7 +109,7 @@ body {
 }
 
 body {
-  font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Arial, Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   letter-spacing: 0.1px;
   background: var(--background);
   color: var(--foreground);

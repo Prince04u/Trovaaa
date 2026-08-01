@@ -19,7 +19,7 @@
 
     background:#050505;
     color:#ffffff;
-    font-family: Roboto, Arial, Helvetica, sans-serif;
+    font-family: inherit;
     letter-spacing: 0.1px;
 }
 
