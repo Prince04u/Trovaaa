@@ -68,8 +68,7 @@ export default function ForgotPasswordPage() {
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
-          <img src="/img/fh.png" alt="Back" width="20" height="20" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='inline'; }} />
-          <span className="material-icons-outlined text-[20px]" style={{display:'none'}}>arrow_back</span>
+          <img src="/img/fh.png" alt="Back" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
         </button>
         <span className="text-[20px] font-medium tracking-[0.02em] text-white leading-[56px]">Reset Password</span>
       </header>
