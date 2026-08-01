@@ -619,7 +619,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         <div className="flex justify-between items-center mb-8 px-1">
           <button 
             type="button" 
-            className="wg-color-btn green w-[140px]" 
+            className="wg-color-btn green px-6 py-2.5" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "green")}
           >
@@ -627,7 +627,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
           <button 
             type="button" 
-            className="wg-color-btn violet w-[140px]" 
+            className="wg-color-btn violet px-6 py-2.5" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "violet")}
           >
@@ -635,7 +635,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
           <button 
             type="button" 
-            className="wg-color-btn red w-[140px]" 
+            className="wg-color-btn red px-6 py-2.5" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "red")}
           >
@@ -660,84 +660,91 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       </section>
 
       {/* History and Tabs lists */}
-      <section className="wg-logs-card">
-        {historyTab === "game" && (
-          <>
-            <div className="flex flex-col items-center justify-center pt-8 pb-5 border-b border-[#009688] text-[#333] font-medium text-[16px]">
-              <Trophy size={22} className="text-gray-500 mb-2" />
-              <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
-            </div>
-            <div className="overflow-x-auto select-none">
-              <table className="wg-history-table">
-                <thead>
-                  <tr>
-                    <th>Period</th>
-                    <th>Price</th>
-                    <th>Number</th>
-                    <th>Result</th>
+      <section className="wg-logs-card bg-white">
+        <div className="flex flex-col items-center justify-center pt-6 pb-4 border-b border-[#dddddd] text-[#333] font-medium text-[16px]">
+          <Trophy size={20} className="text-gray-500 mb-1" />
+          <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
+        </div>
+        <div className="overflow-x-auto select-none">
+          <table className="wg-history-table w-full">
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Price</th>
+                <th>Number</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
+                const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
+                const numberClass = r.resultNumber === 0 || r.resultNumber === 5 ? "violet" : r.resultNumber % 2 === 1 ? "green" : "red";
+                
+                let chipClass = "green";
+                if (dots.includes("green") && dots.includes("violet")) {
+                  chipClass = "violet-green";
+                } else if (dots.includes("red") && dots.includes("violet")) {
+                  chipClass = "violet-red";
+                } else if (dots.includes("red")) {
+                  chipClass = "red";
+                }
+
+                return (
+                  <tr key={r.periodId}>
+                    <td className="wg-period-cell text-gray-500">{r.displayPeriodId}</td>
+                    <td className="text-gray-400">{getPrice(r)}</td>
+                    <td className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</td>
+                    <td>
+                      <span className={`wg-result-chip ${chipClass}`} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
-                    const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
-                    const numberClass = r.resultNumber === 0 || r.resultNumber === 5 ? "violet" : r.resultNumber % 2 === 1 ? "green" : "red";
-                    
-                    let chipClass = "green";
-                    if (dots.includes("green") && dots.includes("violet")) {
-                      chipClass = "violet-green";
-                    } else if (dots.includes("red") && dots.includes("violet")) {
-                      chipClass = "violet-red";
-                    } else if (dots.includes("red")) {
-                      chipClass = "red";
-                    }
+                );
+              })}
+              {results.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-gray-400">
+                    No history records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-                    return (
-                      <tr key={r.periodId}>
-                        <td className="wg-period-cell text-gray-500">{r.displayPeriodId}</td>
-                        <td className="text-gray-400">{getPrice(r)}</td>
-                        <td className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</td>
-                        <td>
-                          <span className={`wg-result-chip ${chipClass}`} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {results.length === 0 && (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-gray-400">
-                        No history records found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+        {gameHistoryPageCount > 1 && (
+          <div className="flex items-center justify-center gap-10 py-4 text-[#888] select-none text-[13px]">
+            <span>1-10 of {results.length}</span>
+            <div className="flex items-center gap-8">
+              <button
+                type="button"
+                className="disabled:opacity-30 cursor-pointer"
+                disabled={gameHistoryPage === 1}
+                onClick={() => setGameHistoryPage((p) => p - 1)}
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                type="button"
+                className="disabled:opacity-30 cursor-pointer"
+                disabled={gameHistoryPage === gameHistoryPageCount}
+                onClick={() => setGameHistoryPage((p) => p + 1)}
+              >
+                <ArrowRight size={16} />
+              </button>
             </div>
-
-            {gameHistoryPageCount > 1 && (
-              <div className="flex items-center justify-center gap-4 py-3 border-t border-gray-100 bg-[#F9F9F9] select-none">
-                <button
-                  type="button"
-                  className="p-1 px-2.5 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
-                  disabled={gameHistoryPage === 1}
-                  onClick={() => setGameHistoryPage((p) => p - 1)}
-                >
-                  <ArrowLeft size={14} />
-                </button>
-                <span className="text-xs font-bold text-gray-600">
-                  {gameHistoryPage} / {gameHistoryPageCount}
-                </span>
-                <button
-                  type="button"
-                  className="p-1 px-2.5 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
-                  disabled={gameHistoryPage === gameHistoryPageCount}
-                  onClick={() => setGameHistoryPage((p) => p + 1)}
-                >
-                  <ArrowRight size={14} />
-                </button>
-              </div>
-            )}
-          </>
+          </div>
         )}
+
+        <div className="flex flex-col items-center justify-center py-6 border-t border-[#dddddd] text-[#888] text-[14px]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-60">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="9"></line>
+            <line x1="9" y1="13" x2="15" y2="13"></line>
+            <line x1="9" y1="17" x2="15" y2="17"></line>
+          </svg>
+          <span>My Record</span>
+        </div>
+
 
         {historyTab === "chart" && (
           <div className="p-4 select-none">
