@@ -9,7 +9,7 @@ const PRODUCTS_DATA = {
     id: 1,
     title: "【 Now 】 Series White 18K Gold Pair Ring",
     price: "38570.00",
-    images: ["https://picsum.photos/seed/ring1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/51iEBQzCL5L._UL1500_.jpg"],
     specs: {
       "Brand": "Now",
       "Material": "18K Gold",
@@ -21,7 +21,7 @@ const PRODUCTS_DATA = {
     id: 2,
     title: "【Cute Pet】 Series Rose 18K Gold Pearl Pendant",
     price: "2899.00",
-    images: ["https://picsum.photos/seed/pendant1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/71JvL64Y3cL._UY695_.jpg"],
     specs: {
       "Brand": "Cute Pet",
       "Material": "Rose 18K Gold",
@@ -34,7 +34,7 @@ const PRODUCTS_DATA = {
     id: 3,
     title: "18K Gold Diamond Ruby Deer Horn Collar Chain",
     price: "4559.00",
-    images: ["https://picsum.photos/seed/chain1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/71YWzTc2omL._UY695_.jpg"],
     specs: {
       "Material": "18K Gold",
       "Stone": "Diamond, Ruby",
@@ -45,7 +45,7 @@ const PRODUCTS_DATA = {
     id: 4,
     title: "Enzo Jewelry 14k Gold Seven Colored Gemstone Pendant",
     price: "5599.00",
-    images: ["https://picsum.photos/seed/gemstone1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/4.jpg"],
     specs: {
       "Brand": "Enzo",
       "Material": "14k Gold",
@@ -57,7 +57,7 @@ const PRODUCTS_DATA = {
     id: 5,
     title: "Sukkhi Gleaming Pearl Gold Plated Wedding Jewellery Kundan Peacock Meenakari Multi-String Necklace",
     price: "1745.00",
-    images: ["https://picsum.photos/seed/necklace1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/5.jpg"],
     specs: {
       "Brand": "Sukkhi",
       "Material": "Gold Plated",
@@ -70,7 +70,7 @@ const PRODUCTS_DATA = {
     id: 6,
     title: "Ananth Jewels 925 Sterling Silver BIS Hallmarked Heart Bracelet for Women",
     price: "9000.00",
-    images: ["https://picsum.photos/seed/bracelet1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/6.jpg"],
     specs: {
       "Brand": "Ananth Jewels",
       "Material": "925 Sterling Silver",
@@ -81,7 +81,7 @@ const PRODUCTS_DATA = {
     id: 7,
     title: "Handicraft Kottage ® 1gm 22Ct Gold Plated Pendant and Chain for Men/Women/Girls",
     price: "999.00",
-    images: ["https://picsum.photos/seed/pendant2/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/7.jpg"],
     specs: {
       "Brand": "Handicraft Kottage",
       "Material": "Gold Plated",
@@ -92,7 +92,7 @@ const PRODUCTS_DATA = {
     id: 8,
     title: "Mansiyaorange Combo of Two Party One Gram Gold Forming Long Haram and Choker Set",
     price: "3199.00",
-    images: ["https://picsum.photos/seed/choker1/600/600"],
+    images: ["https://art.apex-king.com/uploads/images/8.jpg"],
     specs: {
       "Brand": "Mansiyaorange",
       "Material": "Gold Forming",
