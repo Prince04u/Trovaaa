@@ -522,18 +522,16 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       {/* Solid Green Available Balance Banner */}
       <section className="wg-dashboard-header">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-1">
-            <span className="wg-balance-label">Available balance:</span>
-            <strong className="wg-balance-value">
-              ₹{Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </strong>
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[14px] opacity-90">Available balance:</span>
+            <span className="text-[14px]">₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
           
           <button 
             type="button" 
             onClick={loadData}
-            className="wg-refresh-btn"
+            className="text-white hover:opacity-80"
             aria-label="Refresh balance"
           >
             <svg 
@@ -544,7 +542,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               strokeWidth="2.5" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className={`w-5 h-5 ${refreshing ? "animate-spin" : ""}`}
+              className={`w-[18px] h-[18px] ${refreshing ? "animate-spin" : ""}`}
             >
               <polyline points="23 4 23 10 17 10" />
               <polyline points="1 20 1 14 7 14" />
@@ -553,14 +551,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
         </div>
 
-        <div className="wg-header-buttons">
-          <Link href="/wallet/deposit" className="wg-btn-recharge text-decoration-none">
+        <div className="flex items-center gap-3">
+          <Link href="/wallet/deposit" className="bg-[#2196F3] text-white font-medium text-[13px] px-[14px] py-[6px] rounded-[2px]">
             Recharge
           </Link>
           <button 
             type="button"
             onClick={() => setHistoryTab("chart")}
-            className="wg-btn-trend"
+            className="bg-white text-[#333] font-medium text-[13px] px-[14px] py-[6px] rounded-[2px]"
           >
             Trend
           </button>
@@ -618,26 +616,28 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         )}
 
         {/* Color Buttons row */}
-        <div className="wg-color-row">
+        <div className="grid grid-cols-5 gap-x-[4%] mb-5 px-1">
           <button 
             type="button" 
-            className="wg-color-btn green" 
+            className="wg-color-btn green w-full !px-0" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "green")}
           >
             Join Green
           </button>
+          <div />
           <button 
             type="button" 
-            className="wg-color-btn violet" 
+            className="wg-color-btn violet w-full !px-0" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "violet")}
           >
             Join Violet
           </button>
+          <div />
           <button 
             type="button" 
-            className="wg-color-btn red" 
+            className="wg-color-btn red w-full !px-0" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "red")}
           >

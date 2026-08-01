@@ -70,10 +70,9 @@
   padding: 6px;
 }
 
-/* Durations Tab Bar */
 .wg-duration-bar {
   background-color: #FFFFFF;
-  border-bottom: 1px solid #009688;
+  border-bottom: 2px solid #009688;
   display: flex;
 }
 
@@ -81,7 +80,7 @@
   padding: 12px 0;
   text-align: center;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #333;
   text-decoration: none;
 }
@@ -112,8 +111,8 @@
 }
 
 .wg-period-id {
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 24px;
+  font-weight: 500;
   color: #333;
 }
 
@@ -137,12 +136,11 @@
 }
 
 .wg-digit-box {
-  background-color: #F5F5F5;
+  background-color: transparent;
   color: #333;
-  font-weight: 400;
-  font-size: 18px;
-  padding: 4px 10px;
-  border-radius: 4px;
+  font-weight: 500;
+  font-size: 20px;
+  padding: 0;
 }
 
 .wg-timer-colon {
