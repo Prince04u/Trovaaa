@@ -661,33 +661,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       </section>
 
       {/* History and Tabs lists */}
-      <div className="px-3 flex gap-2 mb-2 select-none">
-        {[
-          { id: "game", label: `${duration.charAt(0).toUpperCase() + duration.slice(1)} Record` },
-          { id: "chart", label: "Chart" },
-          { id: "my", label: "My History" },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            className={`flex-1 py-2 text-center text-[13px] font-medium rounded-md border transition-colors cursor-pointer ${
-              historyTab === tab.id ? "border-[#009688] text-[#009688] bg-white" : "border-gray-100 text-gray-500 bg-white hover:bg-gray-50"
-            }`}
-            onClick={() => {
-              setHistoryTab(tab.id);
-              setGameHistoryPage(1);
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Panels */}
       <section className="wg-logs-card">
         {historyTab === "game" && (
           <>
-            <div className="flex flex-col items-center justify-center py-4 border-b-2 border-[#009688] text-[#333] font-medium">
+            <div className="flex flex-col items-center justify-center py-4 border-b border-[#009688] text-[#333] font-medium">
               <Trophy size={18} className="text-gray-500 mb-1" />
               <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
             </div>
