@@ -569,40 +569,41 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       {/* Category Tabs (Showing only active or all but styled minimally) */}
       <section className="wg-duration-bar">
-        <div className="wg-duration-tab active mx-auto w-full text-center py-3 text-[#333] font-medium text-[15px] border-b-2 border-[#009688]">
+        <div className="wg-duration-tab mx-auto w-full text-center py-4 text-[#333] text-[15px]">
           {duration.charAt(0).toUpperCase() + duration.slice(1)}
         </div>
       </section>
 
       {/* Period & Count Down Card */}
       <section className="wg-timer-card select-none">
-        <div className="flex justify-between w-full mb-2">
-          <div className="wg-period-label">
-            <Trophy size={16} className="text-gray-500" />
-            <span>Period</span>
+        <div className="flex justify-between w-full mb-4">
+          <div className="flex flex-col gap-1">
+            <div className="wg-period-label">
+              <Trophy size={18} className="text-gray-400" />
+              <span className="text-[15px]">Period</span>
+            </div>
+            <strong className="wg-period-id mt-1">
+              {period?.periodId || "—"}
+            </strong>
           </div>
-          <span className="wg-countdown-label">Count Down</span>
-        </div>
-        
-        <div className="flex justify-between w-full items-end">
-          <strong className="wg-period-id">
-            {period?.periodId || "—"}
-          </strong>
-
-          <div className="wg-timer-digits">
-            {(() => {
-              const minDigits = timer.mm.split("");
-              const secDigits = timer.ss.split("");
-              return (
-                <>
-                  <span className="wg-digit-box">{minDigits[0]}</span>
-                  <span className="wg-digit-box">{minDigits[1]}</span>
-                  <span className="wg-timer-colon">:</span>
-                  <span className="wg-digit-box">{secDigits[0]}</span>
-                  <span className="wg-digit-box">{secDigits[1]}</span>
-                </>
-              );
-            })()}
+          
+          <div className="flex flex-col items-end gap-1">
+            <span className="wg-countdown-label text-[15px]">Count Down</span>
+            <div className="wg-timer-digits mt-1">
+              {(() => {
+                const minDigits = timer.mm.split("");
+                const secDigits = timer.ss.split("");
+                return (
+                  <>
+                    <span className="wg-digit-box">{minDigits[0]}</span>
+                    <span className="wg-digit-box">{minDigits[1]}</span>
+                    <span className="wg-timer-colon">:</span>
+                    <span className="wg-digit-box">{secDigits[0]}</span>
+                    <span className="wg-digit-box">{secDigits[1]}</span>
+                  </>
+                );
+              })()}
+            </div>
           </div>
         </div>
       </section>

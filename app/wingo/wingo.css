@@ -16,7 +16,7 @@
 .wg-dashboard-header {
   background-color: #009688;
   color: #FFFFFF;
-  padding: 18px 24px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -24,13 +24,13 @@
 
 .wg-balance-label {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   opacity: 0.95;
 }
 
 .wg-balance-value {
   font-size: 26px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.02em;
 }
 
@@ -45,22 +45,20 @@
   color: #FFFFFF;
   font-weight: 500;
   font-size: 14px;
-  padding: 8px 18px;
+  padding: 6px 16px;
   border-radius: 4px;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
 }
 
 .wg-btn-trend {
   background-color: #FFFFFF;
-  color: #222222;
+  color: #333;
   font-weight: 500;
   font-size: 14px;
-  padding: 8px 18px;
+  padding: 6px 16px;
   border-radius: 4px;
   border: 1px solid #E0E0E0;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .wg-refresh-btn {
@@ -75,7 +73,7 @@
 /* Durations Tab Bar */
 .wg-duration-bar {
   background-color: #FFFFFF;
-  border-bottom: 1px solid #E0E0E0;
+  border-bottom: 1px solid #009688;
   display: flex;
 }
 
@@ -83,22 +81,15 @@
   padding: 12px 0;
   text-align: center;
   font-size: 14px;
-  font-weight: 500;
-  color: #888888;
+  font-weight: 400;
+  color: #333;
   text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.wg-duration-tab.active {
-  color: #009688;
-  border-bottom-color: #009688;
 }
 
 /* Period & Countdown Row */
 .wg-timer-card {
   background-color: #FFFFFF;
-  padding: 14px 24px;
+  padding: 16px 24px 0 24px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -112,9 +103,9 @@
 }
 
 .wg-period-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+  color: #888;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -134,41 +125,40 @@
 }
 
 .wg-countdown-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
-  color: #666;
+  color: #888;
 }
 
 .wg-timer-digits {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .wg-digit-box {
-  background-color: #FFFFFF;
+  background-color: #F5F5F5;
   color: #333;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 4px 8px;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid #E0E0E0;
 }
 
 .wg-timer-colon {
   color: #333;
   font-weight: 500;
-  padding: 0 2px;
+  padding: 0;
 }
 
 /* Betting Board Grid */
 .wg-betting-board {
   background-color: #FFFFFF;
-  padding: 0 14px 14px 14px;
+  padding: 16px 24px;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   position: relative;
 }
 
@@ -204,8 +194,8 @@
 .wg-color-btn {
   color: #FFFFFF;
   font-weight: 400;
-  font-size: 13px;
-  padding: 8px 16px;
+  font-size: 14px;
+  padding: 8px 32px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -232,16 +222,16 @@
 .wg-number-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px 16px;
+  gap: 16px 4%;
 }
 
 .wg-num-btn {
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
-  height: 36px;
+  height: 40px;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -262,46 +252,45 @@
   background-color: #FFFFFF;
   margin: 0;
   overflow: hidden;
+  padding-bottom: 32px;
 }
 
 .wg-history-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .wg-history-table th {
   background-color: #FFFFFF;
-  border-bottom: 2px solid #009688;
+  border-bottom: 1px solid #009688;
   color: #333;
   font-weight: 500;
-  padding: 16px 8px;
+  padding: 12px 4px;
   text-align: center;
 }
 
 .wg-history-table td {
-  border-bottom: 1px solid #F0F0F0;
-  padding: 10px 8px;
+  padding: 16px 4px;
   text-align: center;
-  color: #222222;
+  color: #333;
+  font-weight: 700;
 }
 
 .wg-period-cell {
-  font-weight: 400;
+  color: #333 !important;
 }
 
 .wg-number-cell {
-  font-weight: 500;
   font-size: 14px;
 }
-
-.wg-number-cell.green { color: #009688; }
+.wg-number-cell.green { color: #4CAF50; }
 .wg-number-cell.red { color: #F44336; }
-.wg-number-cell.violet { color: #8E24AA; }
+.wg-number-cell.violet { color: #9C27B0; }
 
 .wg-result-chip {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
