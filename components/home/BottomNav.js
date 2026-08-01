@@ -39,7 +39,7 @@ export default function BottomNav() {
   const gridClass = visibleItems.length === 3 ? "grid-cols-3" : "grid-cols-4";
 
   return (
-    <nav className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[56px] grid ${gridClass} select-none`}>
+    <nav className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[64px] grid ${gridClass} select-none`}>
       {visibleItems.map(({ href, label, activeIcon, inactiveIcon, match }) => {
         const active = isActive(match, href);
         const finalHref = (!isLogged && match === "my") ? "/login" : href;
@@ -52,10 +52,10 @@ export default function BottomNav() {
             <img
               src={active ? activeIcon : inactiveIcon}
               alt={label}
-              className="w-[24px] h-[24px] object-contain"
+              className="w-[28px] h-[28px] object-contain"
             />
             <span
-              className="text-[11px] font-normal leading-none mt-[2px]"
+              className="text-[13px] font-normal leading-none mt-[2px]"
               style={{ color: active ? "#009688" : "#999999" }}
             >
               {label}
