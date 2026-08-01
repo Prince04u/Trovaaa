@@ -94,30 +94,31 @@ export default function HomeScreen() {
       </section>
 
       {/* 2-Column Product Grid list matching indexs.vue */}
-      <section className="p-1 flex flex-col gap-2 w-full">
-        <div className="grid grid-cols-2 gap-2 w-full px-1">
+      <section className="w-full bg-white p-[15px] box-border" style={{ boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px" }}>
+        <div className="flex flex-wrap w-full">
           {PRODUCTS.map((p) => (
-            <Link
-              key={p.id}
-              href={`/product?goodsId=${p.id}`}
-              className="bg-white rounded-[2px] flex flex-col text-decoration-none transition-colors"
-              style={{ boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px" }}
-            >
-              <div className="p-2 w-full">
-                <div
-                  className="w-full aspect-square bg-[#fff] bg-cover bg-center"
-                  style={{ backgroundImage: `url(${p.image})` }}
-                />
-              </div>
+            <div key={p.id} className="w-1/2 p-[4px] box-border">
+              <Link
+                href={`/product?goodsId=${p.id}`}
+                className="bg-white rounded-[2px] flex flex-col text-decoration-none transition-colors overflow-hidden"
+                style={{ boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px" }}
+              >
+                <div className="w-full h-[200px] p-[8px] box-border">
+                  <div
+                    className="w-full h-full bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${p.image})` }}
+                  />
+                </div>
 
-              <h3 className="text-[14px] text-[rgba(0,0,0,0.87)] font-normal line-clamp-3 leading-tight select-none overflow-hidden text-ellipsis m-0 px-2 pb-1">
-                {p.title}
-              </h3>
+                <div className="h-[58px] overflow-hidden p-[8px] text-[14px] text-center box-border text-[rgba(0,0,0,0.87)] leading-tight">
+                  {p.title}
+                </div>
 
-              <strong className="text-[14px] text-[#f39839] font-medium select-none leading-none px-2 pb-2">
-                ₹ {p.price}
-              </strong>
-            </Link>
+                <div className="inline-block text-[#f39839] p-[8px] text-[14px] box-border leading-none font-medium">
+                  ₹ {p.price}
+                </div>
+              </Link>
+            </div>
           ))}
         </div>
       </section>
