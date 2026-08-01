@@ -584,10 +584,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         {/* Category Tabs */}
         <div className="main">
           <ul className="main_nav">
-            <li className={duration === "parity" ? "active" : ""} onClick={() => router.push("/wingo/parity")}>Parity</li>
-            <li className={duration === "sapre" ? "active" : ""} onClick={() => router.push("/wingo/sapre")}>Sapre</li>
-            <li className={duration === "bcone" ? "active" : ""} onClick={() => router.push("/wingo/bcone")}>Bcone</li>
-            <li className={duration === "emerd" ? "active" : ""} onClick={() => router.push("/wingo/emerd")}>Emerd</li>
+            <li className="active text-center">{duration.charAt(0).toUpperCase() + duration.slice(1)}</li>
           </ul>
         </div>
 
@@ -596,11 +593,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <ul className="center_top">
             <li>
               <ul className="top_ol">
-                <Trophy size={16} strokeWidth={2} style={{marginRight: "10px", color: "#7d7d7d"}} />
+                <Trophy strokeWidth={2} />
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
-                <span style={{textDecoration: "underline"}}>{period?.periodId || "—"}</span>
+                <span className="period-id">{period?.periodId || "—"}</span>
               </ul>
             </li>
             <li className="right_li">
@@ -610,7 +607,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                   <div className="van-count-down">
                     <span className="span">{timer.mm[0]}</span>
                     <span className="span">{timer.mm[1]}</span>
-                    <span>:</span>
+                    <span className="colon">:</span>
                     <span className="span">{timer.ss[0]}</span>
                     <span className="span">{timer.ss[1]}</span>
                   </div>
@@ -640,7 +637,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         <div className="content">
           <div className="content_con select-none">
             <div className="content_title">
-              <Trophy size={18} className="text-gray-500 mb-1" />
+              <Trophy />
               <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
             </div>
             
@@ -658,7 +655,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               return (
                 <ul className="list_con" key={r.periodId}>
                   <li className="wg-period-cell">{r.displayPeriodId}</li>
-                  <li style={{color: "#a6a6a6"}}>{getPrice(r)}</li>
+                  <li>{getPrice(r)}</li>
                   <li className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</li>
                   <li>
                     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
