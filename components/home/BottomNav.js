@@ -32,11 +32,8 @@ export default function BottomNav() {
     return pathname === href;
   };
 
-  const visibleItems = mounted 
-    ? NAV_ITEMS.filter(item => isLogged || item.label !== "Win")
-    : NAV_ITEMS.filter(item => item.label !== "Win"); // Default to non-logged in view before hydration
-
-  const gridClass = visibleItems.length === 3 ? "grid-cols-3" : "grid-cols-4";
+  const visibleItems = NAV_ITEMS;
+  const gridClass = "grid-cols-4";
 
   return (
     <nav className={`fixed bottom-0 left-0 right-0 w-full z-50 bg-white border-t border-[#dddddd] h-[64px] grid ${gridClass} select-none`}>

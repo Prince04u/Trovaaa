@@ -552,7 +552,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       <section className="wg-dashboard-header">
         <div className="flex items-center w-full">
           <div className="flex items-center gap-1.5 text-white">
-            <span className="text-[18px]">Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <span className="text-[16px] font-normal">Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
         </div>
 
@@ -609,9 +609,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               <Trophy size={16} className="text-gray-400" strokeWidth={2} />
               <span>Period</span>
             </div>
-            <strong className="wg-period-id mt-0">
+            <div className="wg-period-id mt-0">
               {period?.periodId || "—"}
-            </strong>
+            </div>
           </div>
           
           <div className="flex flex-col items-end gap-1">
@@ -638,10 +638,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Betting Board Section */}
       <section className="wg-betting-board">
         {/* Color Buttons row */}
-        <div className="flex justify-between items-center mb-0 px-0">
+        <div className="flex justify-between items-center gap-[10px] w-full">
           <button 
             type="button" 
-            className="wg-color-btn green flex-1 mx-1" 
+            className="wg-color-btn green flex-1" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "green")}
           >
@@ -649,7 +649,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
           <button 
             type="button" 
-            className="wg-color-btn violet flex-1 mx-1" 
+            className="wg-color-btn violet flex-1" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "violet")}
           >
@@ -657,7 +657,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
           <button 
             type="button" 
-            className="wg-color-btn red flex-1 mx-1" 
+            className="wg-color-btn red flex-1" 
             disabled={bettingLocked} 
             onClick={() => openBetSheet("color", "red")}
           >
@@ -683,8 +683,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       {/* History and Tabs lists */}
       <section className="wg-logs-card bg-white">
-        <div className="flex flex-col items-center justify-center pt-6 pb-4 border-b-2 border-[#009688] text-[#333] font-medium text-[16px]">
-          <Trophy size={20} className="text-gray-500 mb-1" />
+        <div className="flex flex-col items-center justify-center pt-5 pb-3 border-b-2 border-[#009688] text-[#333] font-normal text-[15px]">
+          <Trophy size={18} className="text-gray-500 mb-1" />
           <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
         </div>
         <div className="overflow-x-auto select-none">
@@ -700,7 +700,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             <tbody>
               {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
                 const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
-                const numberClass = r.resultNumber === 0 || r.resultNumber === 5 ? "violet" : r.resultNumber % 2 === 1 ? "green" : "red";
+                const numberClass = r.resultNumber % 2 === 1 ? "green" : "red";
 
                 return (
                   <tr key={r.periodId}>
