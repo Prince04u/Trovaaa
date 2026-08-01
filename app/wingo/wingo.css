@@ -22,57 +22,33 @@
   gap: 16px;
 }
 
-.wg-balance-label {
-  font-size: 14px;
-  font-weight: 400;
-  opacity: 0.95;
-}
-
-.wg-balance-value {
-  font-size: 26px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.wg-header-buttons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .wg-btn-recharge {
   background-color: #2196F3;
   color: #FFFFFF;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   padding: 6px 16px;
-  border-radius: 4px;
+  border-radius: 2px;
   text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .wg-btn-trend {
   background-color: #FFFFFF;
   color: #333;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   padding: 6px 16px;
-  border-radius: 4px;
+  border-radius: 2px;
   border: 1px solid #E0E0E0;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
-.wg-refresh-btn {
-  margin-left: auto;
-  color: #FFFFFF;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-}
-
+/* Durations Tab Bar */
 .wg-duration-bar {
   background-color: #FFFFFF;
-  border-bottom: 2px solid #009688;
+  border-bottom: 1px solid #009688;
   display: flex;
 }
 
@@ -80,7 +56,7 @@
   padding: 12px 0;
   text-align: center;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   color: #333;
   text-decoration: none;
 }
@@ -95,12 +71,6 @@
   gap: 16px;
 }
 
-.wg-period-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .wg-period-label {
   font-size: 14px;
   font-weight: 400;
@@ -112,15 +82,8 @@
 
 .wg-period-id {
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 400;
   color: #333;
-}
-
-.wg-countdown-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
 }
 
 .wg-countdown-label {
@@ -132,21 +95,29 @@
 .wg-timer-digits {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .wg-digit-box {
-  background-color: transparent;
+  background-color: #FFFFFF;
   color: #333;
   font-weight: 500;
   font-size: 20px;
-  padding: 0;
+  width: 26px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .wg-timer-colon {
   color: #333;
   font-weight: 500;
-  padding: 0;
+  font-size: 20px;
+  padding: 0 2px;
 }
 
 /* Betting Board Grid */
@@ -156,74 +127,39 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   position: relative;
-}
-
-.wg-countdown-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(255, 255, 255, 0.85);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.wg-countdown-digit {
-  background-color: #009688;
-  color: #FFFFFF;
-  font-size: 48px;
-  font-weight: 500;
-  width: 70px;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-}
-
-.wg-color-row {
-  display: flex;
-  justify-content: space-between;
 }
 
 .wg-color-btn {
   color: #FFFFFF;
   font-weight: 400;
   font-size: 14px;
-  padding: 8px 32px;
+  padding: 8px 0;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
   transition: opacity 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .wg-color-btn:hover {
   opacity: 0.9;
 }
 
-.wg-color-btn.green {
-  background-color: #4CAF50;
-}
-
-.wg-color-btn.violet {
-  background-color: #9C27B0;
-}
-
-.wg-color-btn.red {
-  background-color: #F44336;
-}
+.wg-color-btn.green { background-color: #4CAF50; }
+.wg-color-btn.violet { background-color: #9C27B0; }
+.wg-color-btn.red { background-color: #F44336; }
 
 /* Number grid */
 .wg-number-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px 4%;
+  gap: 16px 24px;
 }
 
 .wg-num-btn {
+  background-color: #2196F3;
   color: #FFFFFF;
   font-size: 16px;
   font-weight: 400;
@@ -235,6 +171,7 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .wg-num-btn:active {
@@ -262,8 +199,8 @@
 .wg-history-table th {
   background-color: #FFFFFF;
   border-bottom: 1px solid #009688;
-  color: #333;
-  font-weight: 500;
+  color: #888;
+  font-weight: 400;
   padding: 12px 4px;
   text-align: center;
 }
@@ -272,15 +209,18 @@
   padding: 16px 4px;
   text-align: center;
   color: #333;
-  font-weight: 700;
+  font-weight: 500;
+  border-bottom: 1px solid #F5F5F5;
 }
 
 .wg-period-cell {
   color: #333 !important;
+  font-weight: 500;
 }
 
 .wg-number-cell {
   font-size: 14px;
+  font-weight: 600;
 }
 .wg-number-cell.green { color: #4CAF50; }
 .wg-number-cell.red { color: #F44336; }

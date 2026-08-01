@@ -522,16 +522,16 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       {/* Solid Green Available Balance Banner */}
       <section className="wg-dashboard-header">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[14px] opacity-90">Available balance:</span>
-            <span className="text-[14px]">₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        <div className="flex items-center w-full">
+          <div className="flex items-center gap-1.5 text-white">
+            <span className="text-[15px] opacity-90">Available balance:</span>
+            <span className="text-[15px]">₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
           
           <button 
             type="button" 
             onClick={loadData}
-            className="text-white hover:opacity-80"
+            className="text-white hover:opacity-80 ml-auto"
             aria-label="Refresh balance"
           >
             <svg 
@@ -539,10 +539,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="currentColor" 
-              strokeWidth="2.5" 
+              strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className={`w-[18px] h-[18px] ${refreshing ? "animate-spin" : ""}`}
+              className={`w-[16px] h-[16px] ${refreshing ? "animate-spin" : ""}`}
             >
               <polyline points="23 4 23 10 17 10" />
               <polyline points="1 20 1 14 7 14" />
@@ -551,14 +551,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </button>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link href="/wallet/deposit" className="bg-[#2196F3] text-white font-medium text-[13px] px-[14px] py-[6px] rounded-[2px]">
+        <div className="flex items-center gap-[12px]">
+          <Link href="/wallet/deposit" className="wg-btn-recharge">
             Recharge
           </Link>
           <button 
             type="button"
             onClick={() => setHistoryTab("chart")}
-            className="bg-white text-[#333] font-medium text-[13px] px-[14px] py-[6px] rounded-[2px]"
+            className="wg-btn-trend"
           >
             Trend
           </button>
@@ -567,37 +567,37 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       {/* Category Tabs (Showing only active or all but styled minimally) */}
       <section className="wg-duration-bar">
-        <div className="wg-duration-tab mx-auto w-full text-center py-4 text-[#333] text-[15px]">
+        <div className="wg-duration-tab mx-auto w-full text-center text-[#333]">
           {duration.charAt(0).toUpperCase() + duration.slice(1)}
         </div>
       </section>
 
       {/* Period & Count Down Card */}
       <section className="wg-timer-card select-none">
-        <div className="flex justify-between w-full mb-4">
-          <div className="flex flex-col gap-1">
+        <div className="flex justify-between w-full">
+          <div className="flex flex-col gap-[6px]">
             <div className="wg-period-label">
-              <Trophy size={18} className="text-gray-400" />
-              <span className="text-[15px]">Period</span>
+              <Trophy size={16} className="text-gray-400" strokeWidth={2} />
+              <span>Period</span>
             </div>
-            <strong className="wg-period-id mt-1">
+            <strong className="wg-period-id">
               {period?.periodId || "—"}
             </strong>
           </div>
           
-          <div className="flex flex-col items-end gap-1">
-            <span className="wg-countdown-label text-[15px]">Count Down</span>
-            <div className="wg-timer-digits mt-1">
+          <div className="flex flex-col items-end gap-[6px]">
+            <span className="wg-countdown-label">Count Down</span>
+            <div className="wg-timer-digits">
               {(() => {
                 const minDigits = timer.mm.split("");
                 const secDigits = timer.ss.split("");
                 return (
                   <>
-                    <span className="wg-digit-box">{minDigits[0]}</span>
-                    <span className="wg-digit-box">{minDigits[1]}</span>
+                    <div className="wg-digit-box">{minDigits[0]}</div>
+                    <div className="wg-digit-box">{minDigits[1]}</div>
                     <span className="wg-timer-colon">:</span>
-                    <span className="wg-digit-box">{secDigits[0]}</span>
-                    <span className="wg-digit-box">{secDigits[1]}</span>
+                    <div className="wg-digit-box">{secDigits[0]}</div>
+                    <div className="wg-digit-box">{secDigits[1]}</div>
                   </>
                 );
               })()}
