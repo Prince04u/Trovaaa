@@ -609,7 +609,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               <Trophy size={16} className="text-gray-400" strokeWidth={2} />
               <span>Period</span>
             </div>
-            <div className="wg-period-id mt-0">
+            <div className="wg-period-id mt-0 underline">
               {period?.periodId || "—"}
             </div>
           </div>
@@ -704,7 +704,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
                 return (
                   <tr key={r.periodId}>
-                    <td className="wg-period-cell text-gray-500">{r.displayPeriodId}</td>
+                    <td className="wg-period-cell text-gray-700 underline">{r.displayPeriodId}</td>
                     <td className="text-gray-400">{getPrice(r)}</td>
                     <td className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</td>
                     <td>
