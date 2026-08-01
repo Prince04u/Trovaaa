@@ -552,14 +552,28 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       <section className="wg-dashboard-header">
         <div className="flex items-center w-full">
           <div className="flex items-center gap-1.5 text-white">
-            <span className="text-[15px] opacity-100">Available balance: ₹</span>
-            <span className="text-[15px] opacity-100">{Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <span className="text-[18px]">Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-[12px]">
+            <Link href="/wallet/deposit" className="wg-btn-recharge">
+              Recharge
+            </Link>
+            <button 
+              type="button"
+              onClick={() => setHistoryTab("chart")}
+              className="wg-btn-trend"
+            >
+              Trend
+            </button>
           </div>
           
           <button 
             type="button" 
             onClick={loadData}
-            className="text-white hover:opacity-80 ml-auto"
+            className="text-white hover:opacity-80"
             aria-label="Refresh balance"
           >
             <svg 
@@ -567,28 +581,15 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="currentColor" 
-              strokeWidth="2" 
+              strokeWidth="2.5" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className={`w-[18px] h-[18px] ${refreshing ? "animate-spin" : ""}`}
+              className={`w-[20px] h-[20px] ${refreshing ? "animate-spin" : ""}`}
             >
               <polyline points="23 4 23 10 17 10" />
               <polyline points="1 20 1 14 7 14" />
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
             </svg>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-[12px]">
-          <Link href="/wallet/deposit" className="wg-btn-recharge">
-            Recharge
-          </Link>
-          <button 
-            type="button"
-            onClick={() => setHistoryTab("chart")}
-            className="wg-btn-trend"
-          >
-            Trend
           </button>
         </div>
       </section>
@@ -668,21 +669,21 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         <div className="wg-number-grid">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <button
-              key={num}
-              type="button"
-              className="wg-num-btn blue"
-              disabled={bettingLocked}
-              onClick={() => openBetSheet("number", num)}
-            >
-              {num}
-            </button>
+               key={num}
+               type="button"
+               className="wg-num-btn blue"
+               disabled={bettingLocked}
+               onClick={() => openBetSheet("number", num)}
+             >
+               {num}
+             </button>
           ))}
         </div>
       </section>
 
       {/* History and Tabs lists */}
       <section className="wg-logs-card bg-white">
-        <div className="flex flex-col items-center justify-center pt-6 pb-4 border-b border-[#dddddd] text-[#333] font-medium text-[16px]">
+        <div className="flex flex-col items-center justify-center pt-6 pb-4 border-b-2 border-[#009688] text-[#333] font-medium text-[16px]">
           <Trophy size={20} className="text-gray-500 mb-1" />
           <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
         </div>
@@ -700,15 +701,6 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
                 const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
                 const numberClass = r.resultNumber === 0 || r.resultNumber === 5 ? "violet" : r.resultNumber % 2 === 1 ? "green" : "red";
-                
-                let chipClass = "green";
-                if (dots.includes("green") && dots.includes("violet")) {
-                  chipClass = "violet-green";
-                } else if (dots.includes("red") && dots.includes("violet")) {
-                  chipClass = "violet-red";
-                } else if (dots.includes("red")) {
-                  chipClass = "red";
-                }
 
                 return (
                   <tr key={r.periodId}>
@@ -716,7 +708,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                     <td className="text-gray-400">{getPrice(r)}</td>
                     <td className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</td>
                     <td>
-                      <span className={`wg-result-chip ${chipClass}`} />
+                      <div className="flex items-center justify-center gap-1">
+                        {dots.map((color, idx) => (
+                          <span key={idx} className={`wg-result-dot ${color.toLowerCase()}`} />
+                        ))}
+                      </div>
                     </td>
                   </tr>
                 );

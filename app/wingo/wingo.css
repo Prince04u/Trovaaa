@@ -172,23 +172,23 @@
 .wg-number-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px 14px;
+  gap: 8px 10px;
 }
 
 .wg-num-btn {
   background-color: #2196F3;
   color: #FFFFFF;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  height: 40px;
+  height: 38px;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.1s ease, background-color 0.15s ease;
-  box-shadow: 0 2px 4px rgba(33,150,243,0.3);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 1px 1px rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
 }
 
 .wg-num-btn:active:not(:disabled) {
@@ -222,7 +222,7 @@
 
 .wg-history-table th {
   background-color: #FFFFFF;
-  border-bottom: 1px solid #009688;
+  border-bottom: 1px solid #E0E0E0;
   color: #888;
   font-weight: 400;
   padding: 12px 4px;
@@ -252,23 +252,16 @@
 .wg-number-cell.red { color: #F44336; }
 .wg-number-cell.violet { color: #9C27B0; }
 
-.wg-result-chip {
+.wg-result-dot {
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  margin: 0 3px;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 
-.wg-result-chip.green { background-color: #4CAF50; }
-.wg-result-chip.red { background-color: #F44336; }
-.wg-result-chip.violet-green {
-  background: linear-gradient(135deg, #9C27B0 50%, #4CAF50 50%);
-}
-.wg-result-chip.violet-red {
-  background: linear-gradient(135deg, #9C27B0 50%, #F44336 50%);
-}
+.wg-result-dot.green { background-color: #4CAF50; }
+.wg-result-dot.red { background-color: #F44336; }
+.wg-result-dot.violet { background-color: #9C27B0; }
 
 /* Slide up dialog sheet style rules */
 .wg-sheet-mask {
