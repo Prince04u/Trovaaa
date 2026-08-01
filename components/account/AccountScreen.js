@@ -94,18 +94,18 @@ export default function AccountScreen() {
       {/* Profile Header Banner matching reference site bruzoo.games */}
       <section className="w-full bg-[#009688] pt-[20px] pb-[10px] px-[20px] box-border text-white shadow-[0px_2px_4px_-1px_rgba(0,0,0,0.2),0px_4px_5px_0px_rgba(0,0,0,0.14),0px_1px_10px_0px_rgba(0,0,0,0.12)]">
         {/* User identification top bar */}
-        <div className="flex items-start justify-between w-full h-[60px]">
+        <div className="flex items-center justify-between w-full h-[60px]">
           <div className="flex items-center">
-            <div className="w-[45px] h-[45px] rounded-full bg-[#424242] text-white flex items-center justify-center font-normal text-[20px] shrink-0 border border-white/20 shadow-[0px_3px_5px_-1px_rgba(0,0,0,0.2),0px_6px_10px_0px_rgba(0,0,0,0.14),0px_1px_18px_0px_rgba(0,0,0,0.12)] mr-[10px]">
+            <div className="w-[45px] h-[45px] rounded-full bg-[#9DE3DF] text-white flex items-center justify-center font-normal text-[20px] shrink-0 border border-white/20 mr-[15px]">
               {avatarChar}
             </div>
             <div className="flex flex-col text-[14px] leading-[22px]">
-              <div className="flex items-center font-light tracking-wide">
+              <div className="flex items-center font-light tracking-wide mb-[2px]">
                 User：
                 <button
                   type="button"
                   onClick={() => setShowNameModal(true)}
-                  className="bg-transparent border-none p-0 m-0 text-white cursor-pointer font-light outline-none"
+                  className="bg-transparent border-none p-0 m-0 text-white cursor-pointer font-light outline-none ml-[4px]"
                 >
                   {displayName}
                 </button>
@@ -133,7 +133,7 @@ export default function AccountScreen() {
             <span className="text-[13px] font-light tracking-wide mb-[5px]">Balance</span>
             <Link 
               href="/recharge" 
-              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
+              className="bg-[#2196f3] text-white text-[13px] px-[16px] py-[3px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
             >
               Recharge
             </Link>
@@ -145,7 +145,7 @@ export default function AccountScreen() {
             <span className="text-[13px] font-light tracking-wide mb-[5px]">Commission</span>
             <Link 
               href="/reward" 
-              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
+              className="bg-[#2196f3] text-white text-[13px] px-[22px] py-[3px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
             >
               See
             </Link>
@@ -157,7 +157,7 @@ export default function AccountScreen() {
             <span className="text-[13px] font-light tracking-wide mb-[5px]">Interest</span>
             <Link 
               href="/interest" 
-              className="bg-[#2196f3] text-white text-[13px] w-[80px] h-[28px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border border-[#1976d2] outline-none shadow-[0px_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#1e88e5] transition-colors"
+              className="bg-[#2196f3] text-white text-[13px] px-[22px] py-[3px] rounded-[2px] select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
             >
               See
             </Link>
@@ -174,11 +174,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.signIn} alt="Sign In" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.signIn} alt="Sign In" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Sign In</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_right</span>
+            <span className="text-[15px] font-light text-[#333333]">Sign In</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </button>
 
@@ -188,11 +188,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.orders} alt="Orders" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.orders} alt="Orders" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Orders</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_right</span>
+            <span className="text-[15px] font-light text-[#333333]">Orders</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -202,11 +202,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.promotion} alt="Promotion" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.promotion} alt="Promotion" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Promotion</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_right</span>
+            <span className="text-[15px] font-light text-[#333333]">Promotion</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -219,8 +219,8 @@ export default function AccountScreen() {
             <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[24px] h-[24px] object-contain shrink-0" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Red Envelope</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_right</span>
+            <span className="text-[15px] font-light text-[#333333]">Red Envelope</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -233,8 +233,8 @@ export default function AccountScreen() {
             <img src={REF_ICONS.luckDraw} alt="Luck Draw" className="w-[24px] h-[24px] object-contain shrink-0" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Luck Draw</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_right</span>
+            <span className="text-[15px] font-light text-[#333333]">Luck Draw</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -246,12 +246,12 @@ export default function AccountScreen() {
             className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-              <img src={REF_ICONS.wallet} alt="Wallet" className="w-[24px] h-[24px] object-contain shrink-0" />
+              <img src={REF_ICONS.wallet} alt="Wallet" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
             </div>
             <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-              <span className="text-[15px] font-normal text-[#333333]">Wallet</span>
-              <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${walletOpen ? "rotate-90" : "keyboard_arrow_right"}`}>
-                {walletOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"}
+              <span className="text-[15px] font-light text-[#333333]">Wallet</span>
+              <span className={`material-icons-outlined text-[20px] text-[#999999] font-light transition-transform duration-200 ${walletOpen ? "rotate-180" : ""}`}>
+                keyboard_arrow_down
               </span>
             </div>
           </button>
@@ -286,11 +286,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Bank Card</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_down</span>
+            <span className="text-[15px] font-light text-[#333333]">Bank Card</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -300,11 +300,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.address} alt="Address" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.address} alt="Address" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Address</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_down</span>
+            <span className="text-[15px] font-light text-[#333333]">Address</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -316,11 +316,11 @@ export default function AccountScreen() {
             className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-              <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[24px] h-[24px] object-contain shrink-0" />
+              <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
             </div>
             <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-              <span className="text-[15px] font-normal text-[#333333]">Account Security</span>
-              <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${securityOpen ? "rotate-180" : ""}`}>
+              <span className="text-[15px] font-light text-[#333333]">Account Security</span>
+              <span className={`material-icons-outlined text-[20px] text-[#999999] font-light transition-transform duration-200 ${securityOpen ? "rotate-180" : ""}`}>
                 keyboard_arrow_down
               </span>
             </div>
@@ -346,11 +346,11 @@ export default function AccountScreen() {
             className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-              <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0" />
+              <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
             </div>
             <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-              <span className="text-[15px] font-normal text-[#333333]">App Download</span>
-              <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
+              <span className="text-[15px] font-light text-[#333333]">App Download</span>
+              <span className={`material-icons-outlined text-[20px] text-[#999999] font-light transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
                 keyboard_arrow_down
               </span>
             </div>
@@ -375,11 +375,11 @@ export default function AccountScreen() {
           className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-decoration-none w-full box-border ml-[15px]"
         >
           <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-            <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[24px] h-[24px] object-contain shrink-0" />
+            <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
           </div>
           <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-            <span className="text-[15px] font-normal text-[#333333]">Complaints & Suggestions</span>
-            <span className="material-icons-outlined text-[20px] text-[#999999]">keyboard_arrow_down</span>
+            <span className="text-[15px] font-light text-[#333333]">Complaints & Suggestions</span>
+            <span className="material-icons-outlined text-[20px] text-[#999999] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -391,11 +391,11 @@ export default function AccountScreen() {
             className="flex items-center p-[15px_15px_15px_0px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
             <div className="flex justify-center items-center shrink-0 w-[40px] mr-[10px]">
-              <img src={REF_ICONS.about} alt="About" className="w-[24px] h-[24px] object-contain shrink-0" />
+              <img src={REF_ICONS.about} alt="About" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80" />
             </div>
             <div className="flex-grow flex items-center justify-between border-b border-[#f0f0f0] pb-[15px] -mb-[15px]">
-              <span className="text-[15px] font-normal text-[#333333]">About</span>
-              <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}>
+              <span className="text-[15px] font-light text-[#333333]">About</span>
+              <span className={`material-icons-outlined text-[20px] text-[#999999] font-light transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}>
                 keyboard_arrow_down
               </span>
             </div>
@@ -430,6 +430,12 @@ export default function AccountScreen() {
           Logout
         </button>
       </section>
+
+      {/* Floating Customer Service Button (Online) */}
+      <Link href="/customer-service" className="fixed right-[10px] top-[40%] bg-white rounded-full w-[60px] h-[60px] shadow-[0px_2px_10px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center z-50 text-decoration-none">
+        <span className="material-icons-outlined text-[#009688] text-[28px] mb-[2px]">support_agent</span>
+        <span className="text-[#999] text-[12px] font-light">Online</span>
+      </Link>
 
       {/* Notice Modal Dialog */}
       {showNotice && (
