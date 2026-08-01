@@ -170,7 +170,6 @@ export default function AccountScreen() {
             </Link>
           </div>
         </div>
-          </div>
         </div>
       </section>
 
