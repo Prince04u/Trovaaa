@@ -740,3 +740,86 @@ a {
   }
 }
 
+/* Bruzoo.games / Vant UI Form Styles (Card Boxes & Shadows) */
+.van-card-input {
+  width: 100%;
+  height: 48px;
+  background-color: #ffffff;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.van-card-input:focus-within {
+  border-color: #00A091;
+  box-shadow: 0 2px 6px rgba(0, 160, 145, 0.15);
+}
+
+.van-otp-btn {
+  height: 48px;
+  width: 130px;
+  background-color: #f7f7f7;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  color: #333333;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+.van-otp-btn:hover {
+  background-color: #efefef;
+}
+
+.van-btn-teal {
+  height: 44px;
+  background-color: #00A091;
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.van-btn-teal:hover {
+  background-color: #008f81;
+}
+
+.van-btn-sub {
+  height: 38px;
+  background-color: #f9f9f9;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  color: #333333;
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.van-btn-sub:hover {
+  background-color: #f0f0f0;
+}
+
+

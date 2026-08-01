@@ -39,7 +39,7 @@ export default function LoginPage() {
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
       {/* Top Teal Navbar - matching reference bruzoo.games */}
-      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border">
+      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border shadow-sm">
         <button 
           onClick={() => router.back()} 
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
@@ -71,12 +71,12 @@ export default function LoginPage() {
             placeholder="Password"
           />
 
-          {/* Centered Teal Login Button - sharp rectangular rounded-[2px] */}
+          {/* Centered Teal Login Button */}
           <div className="flex justify-center w-full mt-[12px]">
             <button 
               type="submit" 
               disabled={loading}
-              className="w-[160px] h-[42px] bg-[#00A091] hover:bg-[#008f81] disabled:opacity-60 text-white font-normal rounded-[2px] transition-colors cursor-pointer text-[14px] border-0 outline-none flex items-center justify-center shadow-none mx-auto"
+              className="van-btn-teal w-[160px] mx-auto"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -86,13 +86,13 @@ export default function LoginPage() {
           <div className="flex justify-center items-center gap-[12px] mt-[10px] select-none">
             <Link 
               href="/register" 
-              className="w-[84px] h-[38px] bg-[#f9f9f9] hover:bg-[#f0f0f0] text-[#333333] border border-[#e4e4e4] rounded-[2px] text-[13px] text-decoration-none transition-colors flex items-center justify-center font-normal"
+              className="van-btn-sub w-[84px]"
             >
               Register
             </Link>
             <Link 
               href="/forgotpass" 
-              className="w-[145px] h-[38px] bg-[#f9f9f9] hover:bg-[#f0f0f0] text-[#333333] border border-[#e4e4e4] rounded-[2px] text-[13px] text-decoration-none transition-colors flex items-center justify-center font-normal"
+              className="van-btn-sub w-[145px]"
             >
               Forgot Password?
             </Link>

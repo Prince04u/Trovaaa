@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden text-[#333]">
       {/* Top Teal Navbar */}
-      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border">
+      <header className="w-full bg-[#00A091] text-white px-[16px] h-[50px] flex items-center gap-[16px] sticky top-0 z-40 select-none box-border shadow-sm">
         <button 
           onClick={() => router.back()} 
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0 w-[24px]"
@@ -91,8 +91,8 @@ export default function ForgotPasswordPage() {
 
           {/* Verification Code + OTP Button Row */}
           <div className="flex items-center gap-[12px] w-full">
-            <div className="flex-1 flex items-center gap-[12px] border border-[#e4e4e4] rounded-[2px] bg-white px-[14px] h-[48px] focus-within:border-[#00A091] transition-colors select-none box-border">
-              <div className="w-[20px] flex items-center justify-center shrink-0">
+            <div className="van-card-input flex-1">
+              <div className="w-[20px] flex items-center justify-center shrink-0 mr-[12px]">
                 <span className="material-icons-outlined text-[20px] text-[#888888]">chat_bubble_outline</span>
               </div>
               <input
@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
               type="button"
               onClick={handleSendOtp}
               disabled={otpCountdown > 0}
-              className="w-[130px] shrink-0 h-[48px] bg-[#f9f9f9] hover:bg-[#f0f0f0] border border-[#e4e4e4] disabled:opacity-60 text-[#333333] text-center font-normal rounded-[2px] text-[14px] select-none cursor-pointer outline-none flex items-center justify-center transition-colors box-border"
+              className="van-otp-btn shrink-0"
             >
               {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
             </button>
@@ -129,7 +129,7 @@ export default function ForgotPasswordPage() {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-[160px] h-[42px] bg-[#00A091] hover:bg-[#008f81] disabled:opacity-60 text-white font-normal rounded-[2px] transition-colors cursor-pointer text-[14px] select-none border-0 outline-none flex items-center justify-center shadow-none mx-auto"
+              className="van-btn-teal w-[160px] mx-auto"
             >
               {loading ? "Submitting..." : "Submit"}
             </button>
