@@ -980,30 +980,6 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Outcome popups */}
       <OutcomePopup popup={outcomePopup} onClose={() => setOutcomePopup(null)} />
 
-      {/* Headset floating online service button matching Screenshot 4 */}
-      <Link
-        href="/support"
-        className="fixed right-4 bottom-20 bg-white rounded-full border border-emerald-500/20 shadow-lg p-1.5 flex flex-col items-center justify-center select-none z-50 text-decoration-none hover:bg-gray-50 transition-colors"
-        style={{ width: "56px", height: "56px" }}
-      >
-        <div className="text-emerald-600 bg-emerald-50 rounded-full p-1 flex items-center justify-center shrink-0">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            className="w-5 h-5 text-[#009688]"
-          >
-            <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-          </svg>
-        </div>
-        <span className="text-[10px] font-black text-[#009688] tracking-tight mt-0.5">Online</span>
-      </Link>
-
       <ToastStack toasts={toasts} />
     </main>
   );
