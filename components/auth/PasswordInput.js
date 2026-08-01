@@ -4,12 +4,7 @@ export default function PasswordInput({ id = "password", name = "password", valu
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#757575" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="6.5" cy="12" r="3.5" />
-          <path d="M10 12H19" />
-          <path d="M15 12V15" />
-          <path d="M18 12V15" />
-        </svg>
+        <img src="/img/mm.png" alt="Password" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
       </div>
       <input
         id={id}
@@ -26,4 +21,5 @@ export default function PasswordInput({ id = "password", name = "password", valu
     </div>
   );
 }
+
 
