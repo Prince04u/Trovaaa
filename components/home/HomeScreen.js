@@ -79,12 +79,12 @@ export default function HomeScreen() {
         </span>
       </section>
 
-      {/* Image Banner Carousel */}
-      <section className="w-full aspect-[16/9] bg-gray-900 relative overflow-hidden select-none border-b border-gray-200">
+      {/* Image Banner */}
+      <section className="w-full bg-white relative select-none border-b border-gray-200 flex justify-center">
         <img
           src="https://apex-king.com/img/img1.a0c0ceb8.jpg"
           alt="Banner"
-          className="w-full h-full object-cover opacity-90"
+          className="w-full h-auto block"
         />
       </section>
 
