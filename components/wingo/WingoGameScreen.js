@@ -28,8 +28,6 @@ import { usePlatformStatus } from "@/components/platform/PlatformStatusProvider"
 import PreSaleRulesModal from "@/components/wingo/PreSaleRulesModal";
 import OutcomePopup from "@/components/games/OutcomePopup";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
-import { toast } from "react-hot-toast";
-
 export const formatPeriodId = (id) => {
   if (!id) return "";
   const str = String(id);
