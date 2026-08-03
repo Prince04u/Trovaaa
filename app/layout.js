@@ -7,8 +7,8 @@ export const metadata = {
   title: `${BRAND_NAME} — Shopping Mall`,
   description: "Quality Guarantee",
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
+    icon: '/logo.jpg',
+    apple: '/logo.jpg',
   },
 };
 
