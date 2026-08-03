@@ -563,8 +563,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             </div>
             <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
               <div className="btn">
-                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => router.push("/product?id=1")}>Prepay</button>
-                <button type="button" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => setHistoryTab("chart")}>Trend</button>
+                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "4px 16px" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "4px 16px" }} onClick={() => setHistoryTab("chart")}>Trend</button>
               </div>
               <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
@@ -840,8 +840,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                           className="bg-[#009688] text-white px-3 py-1 text-[13px] rounded-sm border-none cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setHistoryTab("chart");
-                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            router.push("/product?id=1");
                           }}
                         >
                           Pre Pay

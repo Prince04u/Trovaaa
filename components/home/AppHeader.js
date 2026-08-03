@@ -8,9 +8,7 @@ export default function AppHeader() {
     <header className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-200 h-14 sticky top-0 z-40">
       {/* Brand Logo & Name */}
       <Link href="/" className="flex items-center gap-2 text-decoration-none">
-        <div className="w-8 h-8 rounded-full bg-[#009688] flex items-center justify-center text-white font-black text-sm shadow-sm">
-          S
-        </div>
+        <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover shadow-sm" />
         <span className="text-[17px] font-black text-[#222222] tracking-tight">
           Luvomall
         </span>

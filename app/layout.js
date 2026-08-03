@@ -6,6 +6,10 @@ import { BRAND_NAME } from "@/lib/brand";
 export const metadata = {
   title: `${BRAND_NAME} — Shopping Mall`,
   description: "Quality Guarantee",
+  icons: {
+    icon: '/logo.jpg',
+    apple: '/logo.jpg',
+  },
 };
 
 export default async function RootLayout({ children }) {
