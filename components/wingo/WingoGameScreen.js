@@ -763,12 +763,19 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
               const stateColor = bet.state === "won" ? "text-[#4caf50]" : "text-[#f44336]";
               const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
+              const formatPeriodId = (id) => {
+                if (!id) return "";
+                const str = String(id);
+                if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+                return str;
+              };
+              const displayPeriodId = formatPeriodId(bet.periodId);
               
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
                   <div className="flex justify-between items-center px-4 py-3 cursor-pointer bg-white" onClick={() => setExpandedBetId(isExpanded ? null : id)}>
                     <div className="flex items-center text-[14px]">
-                      <span className="text-[#333] mr-4">{bet.periodId}</span>
+                      <span className="text-[#333] mr-4">{displayPeriodId}</span>
                       <span className={`${stateColor} mr-4`}>{stateText}</span>
                       <span className={stateColor}>{amountStr}</span>
                     </div>
@@ -784,7 +791,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                       <div className="font-medium text-[#009688] mb-1">Period Detail</div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Period</span>
-                        <span>{bet.periodId}</span>
+                        <span>{displayPeriodId}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Contract Money</span>
@@ -834,7 +841,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                         <span>Bcone</span>
                       </div>
                       <div className="flex justify-end mt-2 mb-2">
-                        <button className="bg-[#009688] text-white px-3 py-1 text-[13px] rounded-sm border-none cursor-pointer">
+                        <button 
+                          className="bg-[#009688] text-white px-3 py-1 text-[13px] rounded-sm border-none cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setHistoryTab("chart");
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                        >
                           Pre Pay
                         </button>
                       </div>
