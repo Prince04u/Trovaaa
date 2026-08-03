@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Trophy, ArrowLeft, ArrowRight } from "lucide-react";
+import { Trophy, ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getToken, getUser } from "@/lib/auth";
 import { getSocket } from "@/lib/socket";
@@ -642,10 +642,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         {/* History and Tabs lists */}
         <div className="content">
           <div className="content_con select-none">
-            <div className="content_title">
-              <Trophy />
-              <span>{duration.charAt(0).toUpperCase() + duration.slice(1)} Record</span>
+            <div className="flex flex-col items-center justify-center pt-4 pb-2 bg-white text-[#666] text-[14px]">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38JENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStpQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" width="24" height="24" className="mb-1 opacity-60" alt="Trophy" />
+              <span className="font-light">{duration === 'bcone' ? 'Bcone Record' : duration === 'parity' ? 'Parity Record' : duration.charAt(0).toUpperCase() + duration.slice(1) + ' Record'}</span>
             </div>
+            <div className="h-[1px] w-full bg-[#009688]" />
             
             <ul className="list_head">
               <li>Period</li>
@@ -751,13 +752,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         )}
 
         <div className="flex flex-col bg-[#f5f5f5] mt-2">
-          <div className="flex flex-col items-center justify-center pt-4 pb-2 bg-white">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#009688] mb-1">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span className="text-[#009688] text-[15px] font-medium">My Record</span>
+          <div className="flex flex-col items-center justify-center pt-4 pb-2 bg-white text-[#666] text-[14px]">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAB6ElEQVRoQ+2asUoDQRCGZyBPYKeV1r6EPoKgQsBGIYKN1Y1CGrU7bg4uYGvAxiCm8Q2Sh7ASCytLsRNygZGDPTkuF3PLJZtzs6nCMMPONzP7J3t7CJZ80BIOcCB16+TMjniet1OHpMMwHP6Vx1QQIroAgDMA2KwDiIi8AkAvDMObonwKQYioCwAndQAoyOGQmft5+wRIu91ej+P4o6YQSVrvzLw1EyTZE4g4SB1F5LoOUIj4m4eI7Ob3zERHikCmzaUpQM/zrhxIdrRcR+Y0e2608qpVNFqqSqcAMBiPx60oir6TBmTsG7oNEZFuo9Hwfd9/y8YutCNE9AIA22rBO2ZuJd9zdl2WxP+cmW9NgvQAoKkWPGbmewWStWuDIOJeEATPJkGaIrKPiMNsBYkota/pUiBifzQa9TqdzpcxEN0kq/gvdI9USUw31oGUkV/dqlbxdx0p05GMOs1VteI4foyi6NOYahHREwAcqAUvmTlQvyNZu/ZEIeJREAQPDiStQNmDlTWjpT0zFQKcapVRrQoF1g51HVmpjixKtYz/jSciaw5Wdhx1rXn4oK2hFQKc/K6U/FaYFO1QN1pWXPRYc/Wmjqv//zI03YlWXE/nDv7/+4UBbY1ccsDMVziWnF/p5R1I6VIZcvwBChr8Ue16BMAAAAAASUVORK5CYII=" width="24" height="24" className="mb-1 opacity-60" alt="My Record" />
+            <span className="font-light">My Record</span>
           </div>
-          <div className="h-[2px] w-full bg-[#009688]" />
+          <div className="h-[1px] w-full bg-[#009688]" />
           
           <div className="p-0 select-none flex flex-col bg-white">
             {myBetsForDuration.slice(0, 30).map((bet) => {
@@ -772,15 +771,13 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
                   <div className="flex justify-between items-center px-4 py-3 cursor-pointer bg-white" onClick={() => setExpandedBetId(isExpanded ? null : id)}>
-                    <div className="flex items-center text-[14px]">
-                      <span className="text-[#333] mr-4">{displayPeriodId}</span>
+                    <div className="flex items-center text-[13px] font-light">
+                      <span className="text-[#999] mr-8">{displayPeriodId}</span>
                       <span className={`${stateColor} mr-4`}>{stateText}</span>
                       <span className={stateColor}>{amountStr}</span>
                     </div>
                     <div className="flex items-center">
-                      <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}>
-                        keyboard_arrow_down
-                      </span>
+                      <ChevronDown size={16} strokeWidth={1.5} className={`text-[#ccc] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
                     </div>
                   </div>
 
