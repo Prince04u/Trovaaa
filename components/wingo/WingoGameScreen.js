@@ -562,9 +562,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
-              <div className="btn">
-                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
-                <button type="button" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box" }} onClick={() => setHistoryTab("chart")}>Trend</button>
+              <div className="btn" style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" className="bg-[#2196f3] text-white rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" className="bg-white text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "1px solid #dcdfe6", outline: "none", cursor: "pointer" }} onClick={() => setHistoryTab("chart")}>Trend</button>
               </div>
               <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
