@@ -1,0 +1,268 @@
+:root {
+    --primary: #00ff88;
+    --primary-glow: rgba(0, 255, 136, 0.4);
+    --bg-dark: #0a0f16;
+    --glass-bg: rgba(20, 25, 35, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Background Animations */
+.background-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.glow-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.4;
+    animation: float 12s infinite ease-in-out alternate;
+}
+
+.glow-circle.green {
+    width: 450px;
+    height: 450px;
+    background: #00ff88;
+    top: -150px;
+    right: -100px;
+}
+
+.glow-circle.blue {
+    width: 350px;
+    height: 350px;
+    background: #0088ff;
+    bottom: -100px;
+    left: -100px;
+    animation-delay: -6s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 60px) scale(1.15); }
+}
+
+/* Glassmorphism Container */
+.container {
+    width: 90%;
+    max-width: 580px;
+    padding: 45px 40px;
+    border-radius: 28px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    margin: 40px 0;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+}
+
+/* Logo Styling */
+.logo-container {
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.avatar-glow {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 30px var(--primary-glow);
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar-glow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fallback-logo {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00ff88, #0088ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: absolute;
+}
+
+/* Typography */
+.main-heading {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 18px;
+    letter-spacing: -1px;
+}
+
+.highlight {
+    background: linear-gradient(135deg, #00ff88, #0088ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 17px;
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+/* Feature Cards */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 45px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 20px 10px;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.feature-card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.feature-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Telegram Button */
+.telegram-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #2AABEE, #229ED9);
+    color: white;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 700;
+    padding: 18px 36px;
+    border-radius: 50px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(42, 171, 238, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.telegram-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.6s ease;
+}
+
+.telegram-btn:hover {
+    transform: scale(1.03) translateY(-3px);
+    box-shadow: 0 15px 35px rgba(42, 171, 238, 0.5);
+}
+
+.telegram-btn:hover::before {
+    left: 100%;
+}
+
+.tg-icon {
+    width: 26px;
+    height: 26px;
+}
+
+/* Footer / Meta Trust elements */
+.secure-text {
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.footer-links {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #475569;
+}
+
+.footer-links a {
+    color: #475569;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .features {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .main-heading {
+        font-size: 32px;
+    }
+    .container {
+        padding: 35px 25px;
+    }
+    .feature-card {
+        padding: 15px 10px;
+    }
+}

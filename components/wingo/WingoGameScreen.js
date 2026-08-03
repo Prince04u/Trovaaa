@@ -755,80 +755,107 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         )}
 
         {historyTab === "my" && (
-          <div className="p-2 select-none flex flex-col gap-2.5">
+          <div className="p-0 select-none flex flex-col bg-white">
             {myBetsForDuration.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((bet) => {
               const id = bet._id || bet.id;
               const isExpanded = expandedBetId === id;
-              const betDisplayLabel = getBetSelectionLabel(bet.betType, bet.betValue);
               const dateStr = bet.createdAt ? new Date(bet.createdAt).toLocaleString("en-IN") : "";
-              const stateClass = bet.state === "won" ? "text-[#009688] font-black" : bet.state === "lost" ? "text-gray-400 font-semibold" : "text-amber-500 font-semibold";
+              const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
+              const stateColor = bet.state === "won" ? "text-[#4caf50]" : "text-[#f44336]";
+              const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
               
               return (
-                <div key={id} className="border border-gray-100 rounded-lg p-3 bg-gray-50 flex flex-col gap-2 text-xs">
-                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setExpandedBetId(isExpanded ? null : id)}>
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-gray-800">{bet.periodId}</span>
-                      <span className="text-gray-400">({betDisplayLabel})</span>
+                <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
+                  <div className="flex justify-between items-center px-4 py-3 cursor-pointer bg-white" onClick={() => setExpandedBetId(isExpanded ? null : id)}>
+                    <div className="flex items-center text-[14px]">
+                      <span className="text-[#333] mr-4">{bet.periodId}</span>
+                      <span className={`${stateColor} mr-4`}>{stateText}</span>
+                      <span className={stateColor}>{amountStr}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className={stateClass}>
-                        {bet.state === "pending"
-                          ? "Pending"
-                          : bet.state === "won"
-                          ? `+₹${Number(bet.winAmount).toFixed(2)}`
-                          : `-₹${Number(bet.amount).toFixed(2)}`}
+                    <div className="flex items-center">
+                      <span className={`material-icons-outlined text-[20px] text-[#999999] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}>
+                        keyboard_arrow_down
                       </span>
-                      <span className={`w-1.5 h-1.5 border-r border-b border-gray-400 transform transition-transform ${
-                        isExpanded ? "rotate-225" : "rotate-45"
-                      }`} />
                     </div>
                   </div>
 
                   {isExpanded && (
-                    <div className="mt-2 pt-2 border-t border-dashed border-gray-200 flex flex-col gap-1.5 text-gray-500">
-                      <div className="flex justify-between"><span>Amount:</span><strong>₹{Number(bet.amount).toFixed(2)}</strong></div>
-                      <div className="flex justify-between"><span>Fee:</span><strong>₹{Number(bet.fee).toFixed(2)}</strong></div>
-                      {bet.state !== "pending" && (
-                        <div className="flex justify-between">
-                          <span>Result Number:</span>
-                          <strong className="text-gray-800 font-black">{bet.resultNumber != null ? bet.resultNumber : "—"}</strong>
+                    <div className="px-4 py-2 bg-white flex flex-col gap-3 text-[13px] text-[#333]">
+                      <div className="font-medium text-[#009688] mb-1">Period Detail</div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Period</span>
+                        <span>{bet.periodId}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Contract Money</span>
+                        <span>10</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Contract Count</span>
+                        <span>1</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Delivery</span>
+                        <span className="text-[#ff9800]">9.50</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Fee</span>
+                        <span>0.50</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Open Price</span>
+                        <span>44777</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Result</span>
+                        <div>
+                          <span className="text-[#2196f3] mr-1">7</span>
+                          <span className="text-[#4caf50]">green</span>
                         </div>
-                      )}
-                      <div className="flex justify-between"><span>Time:</span><span>{dateStr}</span></div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Select</span>
+                        <span className="text-[#2196f3]">5</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Status</span>
+                        <span className={stateColor}>{stateText}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Amount</span>
+                        <span className={stateColor}>{amountStr}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Create Time</span>
+                        <span>2026-04-20 20:05</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#333]">Type</span>
+                        <span>Bcone</span>
+                      </div>
+                      <div className="flex justify-end mt-2 mb-2">
+                        <button className="bg-[#009688] text-white px-3 py-1 text-[13px] rounded-sm border-none cursor-pointer">
+                          Pre Pay
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
               );
             })}
             {myBetsForDuration.length === 0 && (
-              <div className="py-8 text-center text-gray-400 text-xs">
+              <div className="py-8 text-center text-gray-400 text-xs bg-white">
                 No betting records found
               </div>
             )}
 
-            {Math.ceil(myBetsForDuration.length / 10) > 1 && (
-              <div className="flex items-center justify-center gap-4 py-2 mt-2 select-none">
-                <button
-                  type="button"
-                  className="p-1 px-2.5 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
-                  disabled={gameHistoryPage === 1}
-                  onClick={() => setGameHistoryPage((p) => p - 1)}
-                >
-                  <ArrowLeft size={14} />
-                </button>
-                <span className="text-xs font-bold text-gray-600">
-                  {gameHistoryPage} / {Math.ceil(myBetsForDuration.length / 10)}
-                </span>
-                <button
-                  type="button"
-                  className="p-1 px-2.5 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
-                  disabled={gameHistoryPage === Math.ceil(myBetsForDuration.length / 10)}
-                  onClick={() => setGameHistoryPage((p) => p + 1)}
-                >
-                  <ArrowRight size={14} />
-                </button>
+            <div className="flex items-center justify-between px-4 py-3 bg-white text-[13px] text-[#999]">
+              <div>1-10 of {myBetsForDuration.length}</div>
+              <div className="flex gap-4">
+                <span className="material-icons-outlined text-[18px] text-[#ccc] cursor-pointer">keyboard_arrow_left</span>
+                <span className="material-icons-outlined text-[18px] text-[#999] cursor-pointer">keyboard_arrow_right</span>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
