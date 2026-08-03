@@ -28,7 +28,14 @@ import { usePlatformStatus } from "@/components/platform/PlatformStatusProvider"
 import PreSaleRulesModal from "@/components/wingo/PreSaleRulesModal";
 import OutcomePopup from "@/components/games/OutcomePopup";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
+import { toast } from "react-hot-toast";
 
+export const formatPeriodId = (id) => {
+  if (!id) return "";
+  const str = String(id);
+  if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+  return str;
+};
 
 export default function WingoGameScreen({ duration: propDuration, initialPeriod = null, initialResults = [] }) {
   const params = useParams();
@@ -39,6 +46,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
   // Seeded from the last known balance in localStorage so the wallet card
   // never flashes ₹0.00 while the client's own fetch is still in flight.
+  // never flashes ₹0.00 while the client's own fetch is in flight.
   const [balance, setBalance] = useState(() => {
     if (typeof window === "undefined") return 0;
     const cached = Number(window.localStorage.getItem("lastBalance"));
@@ -597,7 +605,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
-                <span className="period-id">{period?.periodId || "—"}</span>
+                <span className="period-id">{period?.periodId ? formatPeriodId(period.periodId) : "—"}</span>
               </ul>
             </li>
             <li className="right_li">
@@ -654,7 +662,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               
               return (
                 <ul className="list_con" key={r.periodId}>
-                  <li className="wg-period-cell">{r.displayPeriodId}</li>
+                  <li className="wg-period-cell">{formatPeriodId(r.displayPeriodId || r.periodId)}</li>
                   <li>{getPrice(r)}</li>
                   <li className={`wg-number-cell ${numberClass}`}>{r.resultNumber}</li>
                   <li>
@@ -763,12 +771,6 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
               const stateColor = bet.state === "won" ? "text-[#4caf50]" : "text-[#f44336]";
               const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
-              const formatPeriodId = (id) => {
-                if (!id) return "";
-                const str = String(id);
-                if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
-                return str;
-              };
               const displayPeriodId = formatPeriodId(bet.periodId);
               
               return (
