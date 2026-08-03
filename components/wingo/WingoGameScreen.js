@@ -706,18 +706,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </div>
         )}
 
-        <div className="flex flex-col items-center justify-center py-6 border-t border-[#dddddd] text-[#888] text-[14px]" onClick={() => setHistoryTab("my")} style={{cursor: "pointer"}}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-60">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="9" y1="9" x2="15" y2="9"></line>
-            <line x1="9" y1="13" x2="15" y2="13"></line>
-            <line x1="9" y1="17" x2="15" y2="17"></line>
-          </svg>
-          <span style={{ color: historyTab === "my" ? "#009688" : "inherit" }}>My Record</span>
-        </div>
-
         {historyTab === "chart" && (
-          <div className="p-4 select-none">
+          <div className="p-4 select-none bg-white">
             <div className="flex justify-between items-center text-xs text-gray-500 font-bold mb-3 border-b border-gray-100 pb-2">
               <span>Statistic (Recent 30 rounds)</span>
               <div className="flex gap-3">
@@ -760,14 +750,22 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </div>
         )}
 
-        {historyTab === "my" && (
+        <div className="flex flex-col bg-[#f5f5f5] mt-2">
+          <div className="flex flex-col items-center justify-center pt-4 pb-2 bg-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#009688] mb-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span className="text-[#009688] text-[15px] font-medium">My Record</span>
+          </div>
+          <div className="h-[2px] w-full bg-[#009688]" />
+          
           <div className="p-0 select-none flex flex-col bg-white">
-            {myBetsForDuration.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((bet) => {
+            {myBetsForDuration.slice(0, 30).map((bet) => {
               const id = bet._id || bet.id;
               const isExpanded = expandedBetId === id;
               const dateStr = bet.createdAt ? new Date(bet.createdAt).toLocaleString("en-IN") : "";
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
-              const stateColor = bet.state === "won" ? "text-[#4caf50]" : "text-[#f44336]";
+              const stateColor = bet.state === "won" ? "text-[#4caf50]" : bet.state === "pending" ? "text-[#ff9800]" : "text-[#f44336]";
               const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
               const displayPeriodId = formatPeriodId(bet.periodId);
               
@@ -871,7 +869,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Slide-Up Betting Dialog Ticket */}
