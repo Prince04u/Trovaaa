@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
         <p>For the purposes of this Privacy Policy:</p>
         <ul className="list-disc pl-5 flex flex-col gap-2 mt-2">
           <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
-          <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Bruzoo Games.</li>
+          <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Luvomall Games.</li>
           <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party.</li>
         </ul>
       </div>

@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <main className="w-full min-h-dvh flex flex-col bg-[#fafafa] pb-20 relative overflow-x-hidden">
-      {/* Top Teal Navbar — exact bruzoo.games reference */}
+      {/* Top Teal Navbar — exact luvomall.games reference */}
       <header className="w-full bg-[#009688] text-white px-[15px] h-[56px] flex items-center gap-[30px] sticky top-0 z-40 select-none box-border"
         style={{ boxShadow: '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)' }}>
         <button 

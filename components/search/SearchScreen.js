@@ -64,7 +64,7 @@ export default function SearchScreen() {
 
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
-      {/* Top Search Input Box matching bruzoo.games */}
+      {/* Top Search Input Box matching luvomall.games */}
       <section className="bg-white p-3 border-b border-gray-200 sticky top-0 z-10 shadow-sm w-full">
         <div className="bg-[#f0f0f0] rounded-[20px] px-4 py-2 flex items-center gap-2 border border-gray-200">
           <span className="material-icons-outlined text-gray-400 text-[20px]">search</span>

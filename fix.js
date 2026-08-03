@@ -1,1 +1,9 @@
-const fs = require('fs'); const files = ['app/api/fived/[mode]/state/route.ts', 'app/api/k3/[mode]/current/route.ts', 'app/api/k3/[mode]/results/route.ts', 'app/api/k3/[mode]/state/route.ts', 'app/api/wingo/[mode]/current/route.ts', 'app/api/wingo/[mode]/results/route.ts', 'app/api/wingo/[mode]/state/route.ts']; files.forEach(f => { try { let c = fs.readFileSync(f, 'utf8'); if (!c.includes('force-dynamic')) { c = 'export const dynamic = " force-dynamic\;\n' + c; fs.writeFileSync(f, c); console.log('Fixed ' + f); } } catch(e){} });
+const fs = require('fs');
+const execSync = require('child_process').execSync;
+const files = execSync('git grep -il "luvomall"').toString().split('\n').filter(Boolean);
+files.forEach(f => {
+  if(f.includes('scratch/') || f.includes('compare.js') || f.includes('package')) return;
+  let text = fs.readFileSync(f, 'utf8');
+  text = text.replace(/Luvomall/g, 'Luvomall').replace(/luvomall/g, 'luvomall').replace(/LUVOMALL/g, 'LUVOMALL');
+  fs.writeFileSync(f, text);
+});

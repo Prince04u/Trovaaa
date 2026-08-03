@@ -19,9 +19,9 @@ export async function sendOtpEmail(email: string, otp: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Bruzoo <noreply@bruzoo.games>",
+      from: "Luvomall <noreply@luvomall.games>",
       to: [email],
-      subject: "Your Bruzoo password reset code",
+      subject: "Your Luvomall password reset code",
       html: `<p>Your password reset code is <strong>${otp}</strong>. It expires in 10 minutes.</p>`,
     }),
   });

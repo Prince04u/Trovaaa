@@ -66,7 +66,7 @@ export default function HomeScreen() {
           <span className="text-[14px] text-[#333333]">Open with an app</span>
         </div>
         <a
-          href="/bruzoo_1.0.0.apk"
+          href="/luvomall_1.0.0.apk"
           download="app.apk"
           className="text-[#4e4e4e] hover:text-black cursor-pointer p-1 text-decoration-none flex items-center gap-1"
         >
@@ -74,7 +74,7 @@ export default function HomeScreen() {
         </a>
       </section>
 
-      {/* Main welcome titles matching bruzoo.games indexs.vue */}
+      {/* Main welcome titles matching luvomall.games indexs.vue */}
       <section className="py-6 text-center select-none flex flex-col gap-1 bg-white w-full border-b border-gray-100">
         <h1 className="text-[24px] font-normal leading-tight text-[#009688] m-0">
           Welcome Back

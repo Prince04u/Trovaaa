@@ -91,7 +91,7 @@ export default function AccountScreen() {
 
   return (
     <main className="min-h-screen bg-[#fafafa] pb-[64px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
-      {/* Profile Header Banner matching reference site bruzoo.games */}
+      {/* Profile Header Banner matching reference site luvomall.games */}
       <section className="w-full bg-[#009688] pt-[20px] pb-[15px] px-[20px] box-border text-white">
         {/* User identification top bar */}
         <div className="flex items-center justify-between w-full h-[60px]">
@@ -165,7 +165,7 @@ export default function AccountScreen() {
         </div>
       </section>
 
-      {/* Menu List - Continuous Flat Surface matching Vue vant-collapse in bruzoo.games */}
+      {/* Menu List - Continuous Flat Surface matching Vue vant-collapse in luvomall.games */}
       <section className="bg-white w-full flex flex-col pl-[15px]">
         {/* Sign In */}
         <button
@@ -357,7 +357,7 @@ export default function AccountScreen() {
           {downloadOpen && (
             <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
               <a
-                href="/bruzoo_1.0.0.apk"
+                href="/luvomall_1.0.0.apk"
                 download="app.apk"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#4e4e4e] hover:text-black hover:bg-gray-100 text-decoration-none"
               >

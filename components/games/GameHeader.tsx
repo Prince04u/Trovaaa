@@ -21,7 +21,7 @@ type GameHeaderProps = {
 
 export function GameHeader({
   title,
-  subtitle = "Bruzoo Games",
+  subtitle = "Luvomall Games",
   durations,
   activeDuration,
   durationHrefPrefix,
@@ -82,7 +82,7 @@ export function GameHeader({
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img
             src="/brand/logo.png"
-            alt="BRUZOO"
+            alt="LUVOMALL"
             style={{ height: "18px", width: "auto", objectFit: "contain" }}
           />
         </div>

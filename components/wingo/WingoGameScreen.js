@@ -563,7 +563,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             </div>
             <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
               <div className="btn">
-                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => router.push("/product?id=1")}>Prepay</button>
                 <button type="button" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => setHistoryTab("chart")}>Trend</button>
               </div>
               <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>

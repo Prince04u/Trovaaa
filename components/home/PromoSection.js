@@ -21,9 +21,9 @@ const PROMOTIONS_DATA = [
       notesTitle: "TERMS & CONDITIONS (1x Bonus Flow)",
       notes: [
         "The offer and rewards are settled in USDT, based on the Singapore Standard Time Zone (UTC+8).",
-        "If any agent or member is found to have duplicate accounts, use multiple accounts, engage in fraudulent activities, abuse policies, or make unauthorized withdrawals, Bruzoo reserves the right to revoke all benefits and profits, terminate participation, and freeze or suspend the account along with all associated balances.",
-        "In the event of a dispute, Bruzoo may require users to provide valid identification and supporting documents as a mandatory condition to receive any benefits or event rewards.",
-        "Bruzoo reserves the full right to interpret, modify, or terminate the event without prior notice. All final decisions rest with Bruzoo."
+        "If any agent or member is found to have duplicate accounts, use multiple accounts, engage in fraudulent activities, abuse policies, or make unauthorized withdrawals, Luvomall reserves the right to revoke all benefits and profits, terminate participation, and freeze or suspend the account along with all associated balances.",
+        "In the event of a dispute, Luvomall may require users to provide valid identification and supporting documents as a mandatory condition to receive any benefits or event rewards.",
+        "Luvomall reserves the full right to interpret, modify, or terminate the event without prior notice. All final decisions rest with Luvomall."
       ]
     }
   },
@@ -50,7 +50,7 @@ const PROMOTIONS_DATA = [
         "If your team has no profit, only 1-3% of salaries will be issued. No profit within 10 days means no salary, only betting commissions.",
         "New agents have a 7-day support period.",
         "If the agent does not recruit new members within 3 days, they will lose their daily salary qualification. When the conditions are met, the salary can be paid.",
-        "Advertising support is for new agents only, for 15 days. If agents fail to bring any profit, Bruzoo reserves the right to modify or cancel the salary model."
+        "Advertising support is for new agents only, for 15 days. If agents fail to bring any profit, Luvomall reserves the right to modify or cancel the salary model."
       ]
     }
   },
@@ -72,7 +72,7 @@ const PROMOTIONS_DATA = [
         "This offer uses USDT as the payment currency and follows Singapore Standard Time (UTC+8).",
         "The bonus must be wagered once before withdrawal.",
         "Each account and each IP address is eligible to receive the bonus only once.",
-        "If any bonus abuse or fraudulent activity is detected, the bonus will be confiscated and withdrawals will not be processed. Bruzoo reserves the right of final interpretation of this event.",
+        "If any bonus abuse or fraudulent activity is detected, the bonus will be confiscated and withdrawals will not be processed. Luvomall reserves the right of final interpretation of this event.",
         "Please contact the agent on end of the week to claim the bonus. Late claims will be considered void."
       ]
     }
@@ -94,10 +94,10 @@ const PROMOTIONS_DATA = [
       notes: [
         "The offer uses USDT as the payment currency, Singapore Standard Time Zone (UTC+8).",
         "Members are required to link complete information.",
-        "If the agent engages in duplicate registration or registers multiple accounts, Bruzoo reserves the right to cancel or revoke benefits, profits, or delete the agent's rights.",
-        "The offer is specifically designed for members. If any individual is found to withdraw rewards or engage in dishonest behavior, such as abusing Bruzoo's benefits, Bruzoo reserves the right to freeze or cancel the account and its balance.",
-        "In the case of a dispute between members regarding the event, Bruzoo officials have the right to request that members provide complete and valid documents to verify whether they are entitled to the privilege, in order to ensure the rights of both parties and prevent identity theft.",
-        "Bruzoo reserves the right to have the final explanation regarding the event, as well as the right to modify and terminate the event without prior notice."
+        "If the agent engages in duplicate registration or registers multiple accounts, Luvomall reserves the right to cancel or revoke benefits, profits, or delete the agent's rights.",
+        "The offer is specifically designed for members. If any individual is found to withdraw rewards or engage in dishonest behavior, such as abusing Luvomall's benefits, Luvomall reserves the right to freeze or cancel the account and its balance.",
+        "In the case of a dispute between members regarding the event, Luvomall officials have the right to request that members provide complete and valid documents to verify whether they are entitled to the privilege, in order to ensure the rights of both parties and prevent identity theft.",
+        "Luvomall reserves the right to have the final explanation regarding the event, as well as the right to modify and terminate the event without prior notice."
       ]
     }
   }

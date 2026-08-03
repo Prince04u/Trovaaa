@@ -9,7 +9,7 @@ export default function TermsSection() {
   const handleAddToDesktop = () => {
     pushToast({
       title: "Add to Desktop",
-      message: "To add Bruzoo to your desktop, click the Share button in your browser and select 'Add to Home Screen'.",
+      message: "To add Luvomall to your desktop, click the Share button in your browser and select 'Add to Home Screen'.",
       variant: "success",
     });
   };
@@ -21,7 +21,7 @@ export default function TermsSection() {
         <div className="badge-btn-round age-18">+18</div>
       </div>
 
-      {/* Lobby Description Text customized for Bruzoo */}
+      {/* Lobby Description Text customized for Luvomall */}
       <div className="terms-flat-content">
         <ul className="terms-flat-list-v2">
           <li>
@@ -30,17 +30,17 @@ export default function TermsSection() {
           </li>
           <li>
             <ChevronRight className="w-4 h-4 text-gold mt-1 shrink-0" />
-            <span>Bruzoo works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.</span>
+            <span>Luvomall works with more than 10,000 online live game dealers and slot games, all of which are verified fair games.</span>
           </li>
           <li>
             <ChevronRight className="w-4 h-4 text-gold mt-1 shrink-0" />
-            <span>Bruzoo supports fast deposit and withdrawal, and looks forward to your visit.</span>
+            <span>Luvomall supports fast deposit and withdrawal, and looks forward to your visit.</span>
           </li>
         </ul>
 
         <div className="terms-flat-warning-text-v2">
           <p className="warning-addiction">Gambling can be addictive, please play rationally.</p>
-          <p className="warning-age-limit">Bruzoo only accepts customers above the age of 18.</p>
+          <p className="warning-age-limit">Luvomall only accepts customers above the age of 18.</p>
         </div>
 
 
