@@ -60,9 +60,7 @@ export default function HomeScreen() {
       {/* Top Banner Install App matching indexs.vue */}
       <section className="bg-white border-b border-gray-200 h-12 px-4 flex items-center justify-between text-xs text-gray-500 font-normal select-none shadow-sm w-full">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-[#009688] text-white flex items-center justify-center font-bold text-xs">
-            B
-          </div>
+          <img src="/logo.jpg" alt="Logo" className="w-6 h-6 rounded object-cover shadow-sm" />
           <span className="text-[14px] text-[#333333]">Open with an app</span>
         </div>
         <a

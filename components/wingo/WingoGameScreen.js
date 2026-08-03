@@ -563,8 +563,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             </div>
             <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
               <div className="btn">
-                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "4px 16px" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
-                <button type="button" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "4px 16px" }} onClick={() => setHistoryTab("chart")}>Trend</button>
+                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box" }} onClick={() => setHistoryTab("chart")}>Trend</button>
               </div>
               <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
