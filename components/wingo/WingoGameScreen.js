@@ -232,8 +232,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     });
   }, []);
 
-  const loadData = useCallback(async () => {
-    setRefreshing(true);
+  const loadData = useCallback(async (opts = {}) => {
+    const showSpinner = opts?.showSpinner ?? true;
+    if (showSpinner) setRefreshing(true);
     try {
       const publicFetch = Promise.all([getCurrentPeriod(duration), getRecentResults(duration, 50)]);
       const privateFetch = getToken()
@@ -310,7 +311,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         } catch {}
       }
     } finally {
-      setRefreshing(false);
+      if (showSpinner) setRefreshing(false);
     }
   }, [duration, syncPeriod, results]);
 
@@ -387,7 +388,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         // instead of hanging at 00:00 while the server responds.
         endsAtRef.current = Date.now() + offset + DURATION_SEC[duration] * 1000;
         
-        loadData();
+        loadData({ showSpinner: false });
 
         clearInterval(pollTimerRef.current);
         pollTimerRef.current = setInterval(async () => {
@@ -397,7 +398,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             const isSettled = latest.some(r => String(r.periodId) === String(endedPeriodId));
             if (isSettled) {
               clearInterval(pollTimerRef.current);
-              loadData();
+              loadData({ showSpinner: false });
             }
           } catch (e) {
             console.error(e);
@@ -413,7 +414,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   }, [duration, loadData, period?.periodId]);
 
   useEffect(() => {
-    const refreshInterval = setInterval(() => { loadData(); }, 4000);
+    const refreshInterval = setInterval(() => { loadData({ showSpinner: false }); }, 4000);
     return () => clearInterval(refreshInterval);
   }, [loadData]);
 
@@ -555,16 +556,15 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   return (
     <main className="wingo-game">
       <div className="win">
-        {/* Solid Green Available Balance Banner */}
         <div className="mine_top">
-          <div className="mine_info">
+          <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent" }}>
             <div className="balance">
               Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="mine_info_btn">
+            <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
               <div className="btn">
-                <button type="button" className="one_btn" onClick={() => router.push("/wallet/deposit")}>Recharge</button>
-                <button type="button" onClick={() => setHistoryTab("chart")}>Trend</button>
+                <button type="button" className="one_btn" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                <button type="button" style={{ WebkitTapHighlightColor: "transparent" }} onClick={() => setHistoryTab("chart")}>Trend</button>
               </div>
               <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
