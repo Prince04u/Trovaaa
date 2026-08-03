@@ -58,15 +58,15 @@ export default function HomeScreen() {
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Top Banner Install App matching indexs.vue */}
-      <section className="bg-[#F2F2F2] border-b border-gray-300 h-[50px] flex items-center justify-center text-xs font-normal select-none w-full relative">
-        <img src="/logo.jpg" alt="Logo" className="h-[40px] w-auto max-w-[120px] object-contain absolute left-2" />
+      <section className="bg-[#f2f2f2] h-[50px] flex items-center justify-center text-xs font-normal select-none w-full relative z-10" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }}>
+        <img src="/logo.jpg" alt="Logo" className="h-[40px] w-[40px] object-contain absolute left-2" />
         <span className="text-[14px] text-[#666666]">Open with an app</span>
         <a
           href="/luvomall_1.0.0.apk"
           download="app.apk"
-          className="text-[#666666] hover:text-black cursor-pointer p-1 text-decoration-none flex items-center absolute right-3"
+          className="text-[#333333] hover:text-black cursor-pointer p-1 text-decoration-none flex items-center absolute right-3"
         >
-          <span className="material-icons-outlined text-[24px]">file_download</span>
+          <span className="material-icons text-[24px]">file_download</span>
         </a>
       </section>
 
