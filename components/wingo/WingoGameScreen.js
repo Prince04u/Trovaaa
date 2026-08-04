@@ -771,8 +771,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
                   <div className="flex justify-between items-center px-4 py-3 cursor-pointer bg-white" onClick={() => setExpandedBetId(isExpanded ? null : id)}>
-                    <div className="flex items-center text-[13px] font-light">
-                      <span className="text-[#999] mr-8">{displayPeriodId}</span>
+                    <div className="flex items-center text-[13px] font-normal">
+                      <span className="text-[#333] mr-8">{displayPeriodId}</span>
                       <span className={`${stateColor} mr-4`}>{stateText}</span>
                       <span className={stateColor}>{amountStr}</span>
                     </div>
@@ -863,6 +863,15 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                 <span className="material-icons-outlined text-[18px] text-[#ccc] cursor-pointer">keyboard_arrow_left</span>
                 <span className="material-icons-outlined text-[18px] text-[#999] cursor-pointer">keyboard_arrow_right</span>
               </div>
+            </div>
+            
+            <div className="flex justify-center bg-white pb-6 pt-2 border-t border-gray-100">
+              <button 
+                onClick={() => router.push("/orders")}
+                className="bg-[#2196f3] text-white px-8 py-2 rounded-[2px] shadow-sm text-[14px] border-none outline-none cursor-pointer"
+              >
+                My Orders
+              </button>
             </div>
           </div>
         </div>
