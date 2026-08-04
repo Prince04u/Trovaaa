@@ -52,10 +52,10 @@ ul, ol, li, p {
 	justify-content: space-between;
 	align-items: flex-end
 }
-.mine_info_btn .btn {
+.mine_info_btn .btn_group {
     display: flex;
 }
-.mine_info_btn .btn button {
+.mine_info_btn .btn_group button {
 	padding: 0 16px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 	color: rgba(0,0,0,.87);
@@ -68,7 +68,7 @@ ul, ol, li, p {
 	margin-right: 12px;
     cursor: pointer;
 }
-.mine_info_btn .btn button.one_btn {
+.mine_info_btn .btn_group button.one_btn {
 	background: #2196f3!important;
 	color: #fff!important
 }
