@@ -140,9 +140,7 @@ export async function GET(request: NextRequest) {
           amount: amount,
           currency: "INR",
           method: "upi",
-          customer_name: user.displayName || "User",
-          customer_phone: user.phone || undefined,
-          customer_email: user.email || undefined,
+          customer_name: "User",
           notify_url: notifyUrl,
         });
 
