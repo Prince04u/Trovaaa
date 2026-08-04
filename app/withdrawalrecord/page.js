@@ -34,17 +34,25 @@ export default function WithdrawalRecordPage() {
   const totalPages = Math.max(1, Math.ceil(records.length / pageSize));
   const displayRecords = records.slice((page - 1) * pageSize, page * pageSize);
 
-  const getStatusDisplay = (status) => {
-    switch (status) {
-      case "completed":
-      case "approved":
-        return <span className="text-[#4caf50]">Success</span>;
-      case "rejected":
-        return <span className="text-[#f44336]">Failed</span>;
-      case "pending":
-      default:
-        return <span className="text-[#9c27b0]">Withdrawing</span>;
+  const getStatusDisplay = (status, noteStr) => {
+    let note = {};
+    try {
+      note = JSON.parse(noteStr || "{}");
+    } catch (e) {}
+
+    if (status === "rejected" || status === "REJECTED") {
+      return <span className="text-[#f44336]">Failed</span>;
     }
+    if (status === "pending" || status === "PENDING") {
+      return <span className="text-[#ff9800]">Pending</span>;
+    }
+    if (status === "approved" || status === "APPROVED") {
+      if (note.gatewayStatus === "success") {
+        return <span className="text-[#9c27b0]">Withdrawing</span>;
+      }
+      return <span className="text-[#4caf50]">Agree</span>;
+    }
+    return <span className="text-[#ff9800]">Pending</span>;
   };
 
   return (
@@ -67,7 +75,7 @@ export default function WithdrawalRecordPage() {
               <div key={r.id || i} className="flex flex-col py-3 px-4 border-b border-[#f5f5f5]">
                 <div className="flex justify-between items-center mb-[4px]">
                   <span className="text-[#666] text-[14px]">₹ {Number(r.amount).toFixed(2)}</span>
-                  <span className="text-[13px]">{getStatusDisplay(r.status)}</span>
+                  <span className="text-[13px]">{getStatusDisplay(r.status, r.note)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-[4px]">
                   <span className="text-[#999] text-[12px] font-mono uppercase break-all mr-2">L1WS{r.id.replace(/-/g, "").slice(0, 16)}</span>
