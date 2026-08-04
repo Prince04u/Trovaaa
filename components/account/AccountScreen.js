@@ -225,19 +225,7 @@ export default function AccountScreen() {
           </div>
         </Link>
 
-        {/* Luck Draw */}
-        <Link
-          href="/luckDraw"
-          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
-        >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.luckDraw} alt="Luck Draw" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
-          <div className="flex-grow flex items-center justify-between">
-            <span className="text-[15px] font-normal text-[#333333]">Luck Draw</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
-          </div>
-        </Link>
+
 
         {/* Wallet (Accordion) */}
         <div className="flex flex-col">
