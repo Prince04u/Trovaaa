@@ -9,6 +9,17 @@ import Link from "next/link";
 
 export default function AppError({ error, reset }) {
   useEffect(() => {
+    // Handle NEXT_REDIRECT errors — redirect() throws a special error that
+    // error boundaries must NOT swallow. If we catch one, perform the
+    // redirect on the client side instead of showing "Something went wrong".
+    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+      const parts = error.digest.split(";");
+      const url = parts[2]; // e.g. "/login"
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+    }
     // Surface the real cause in the console / monitoring for diagnosis.
     console.error("App route error:", error);
   }, [error]);
