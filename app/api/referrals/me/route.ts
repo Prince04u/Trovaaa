@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount, waterRewards] = await Promise.all([
+    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount, waterRewards, waterRewardsAgg] = await Promise.all([
       user.referredById
         ? prisma.user.findUnique({
             where: { id: user.referredById },
@@ -53,9 +53,13 @@ export async function GET(req: NextRequest) {
       prisma.ledgerEntry.findMany({
         where: { wallet: { userId: user.id }, type: "WATER_REWARD", ...dateFilter },
       }),
+      prisma.ledgerEntry.aggregate({
+        where: { wallet: { userId: user.id }, type: "WATER_REWARD" },
+        _sum: { amount: true },
+      }),
     ]);
     
-    const totalWalletEarnings = (walletEarningsAgg._sum.amount ?? 0) + waterRewards.reduce((sum, wr) => sum + Math.abs(wr.amount), 0);
+    const totalWalletEarnings = (walletEarningsAgg._sum.amount ?? 0) + Math.abs(waterRewardsAgg._sum.amount ?? 0);
 
     // Recursively fetch referred users down to Tier 6
     interface ReferralUser {
