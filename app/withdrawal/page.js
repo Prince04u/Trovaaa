@@ -105,14 +105,14 @@ export default function WithdrawalPage() {
 
         {/* Input */}
         <div>
-          <div className="flex items-center bg-white rounded-md p-3 border border-gray-100" style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
-            <span className="material-icons-outlined text-gray-500 mr-2 text-[20px]">credit_card</span>
+          <div className="flex items-center bg-white rounded-[4px] p-3" style={{ boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px", height: "48px" }}>
+            <span className="material-icons-outlined text-gray-500 mr-2 text-[22px]">credit_card</span>
             <input
               type="number"
               placeholder="Enter withdrawal amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none"
+              className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none w-full"
             />
           </div>
           <div className="text-sm text-[#333] mt-4 ml-1">Fee: 0,to account 0</div>

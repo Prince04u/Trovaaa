@@ -131,14 +131,14 @@ export default function RechargePage() {
         </div>
 
         {/* Input */}
-        <div className="flex items-center bg-white rounded-md p-3 border border-gray-100" style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
-          <span className="material-icons-outlined text-gray-500 mr-2 text-[20px]">account_balance_wallet</span>
+        <div className="flex items-center bg-white rounded-[4px] p-3" style={{ boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px", height: "48px" }}>
+          <span className="material-icons-outlined text-gray-500 mr-2 text-[22px]">account_balance_wallet</span>
           <input
             type="number"
             placeholder="Enter or Select recharge amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none"
+            className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none w-full"
           />
         </div>
 
@@ -149,8 +149,12 @@ export default function RechargePage() {
               key={val}
               type="button"
               onClick={() => setAmount(String(val))}
-              className={`py-3 rounded-md text-sm cursor-pointer border-none font-normal bg-[#fafafa] transition-colors`}
-              style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.08)", color: amount === String(val) ? "#009688" : "#333" }}
+              className={`py-3 rounded-[4px] text-sm cursor-pointer border-none font-normal transition-colors`}
+              style={{
+                boxShadow: "rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px",
+                background: amount === String(val) ? "#009688" : "#fafafa",
+                color: amount === String(val) ? "#fff" : "#333",
+              }}
             >
               ₹ {val}
             </button>
