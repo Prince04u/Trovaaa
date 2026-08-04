@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
-import { getBalance } from "@/lib/walletApi";
+import { getBalance, requestWithdraw } from "@/lib/walletApi";
+import { fetchWithdrawAccountsState } from "@/lib/withdrawAccounts";
 import { parseWalletBalance } from "@/lib/walletBalance";
-import { getBankAccounts, submitWithdrawal } from "@/lib/platformApi";
 import { getToken } from "@/lib/auth";
 import PageLoader from "@/components/brand/PageLoader";
 
@@ -28,8 +28,8 @@ export default function WithdrawalPage() {
       const { available } = parseWalletBalance(balRes);
       setBalance(available);
 
-      const bankRes = await getBankAccounts();
-      const accounts = bankRes?.data || [];
+      const state = await fetchWithdrawAccountsState();
+      const accounts = state?.bank || [];
       setBanks(accounts);
       if (accounts.length > 0) {
         setBankAccountId(accounts[0].id);
@@ -68,12 +68,7 @@ export default function WithdrawalPage() {
     
     setSubmitLoading(true);
     try {
-      await submitWithdrawal({
-        amount: Number(amount),
-        type: "bank",
-        accountId: bankAccountId,
-        password: password,
-      });
+      await requestWithdraw(Number(amount), "bank", bankAccountId, password);
       alert(`Withdrawal request for ₹${amount} submitted!`);
       router.push("/withdrawalrecord");
     } catch (err) {
