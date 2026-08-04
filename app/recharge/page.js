@@ -47,25 +47,25 @@ export default function RechargePage() {
     loadBalance();
     
     getDepositOptions().then((res) => {
-      const opts = res?.data?.channels?.filter(c => c.enabled) || [];
+      // Override backend channels with the exact names requested by user
+      const opts = [
+        { id: "sunpay_winpay", label: "WinPay", min: 100, max: 50000, type: "upi" },
+        { id: "sunpay_3qpay", label: "3QPay", min: 100, max: 50000, type: "upi" },
+        { id: "nowpayments_trc20", label: "Tron pay(trc20)", min: 100, max: 100000, type: "crypto" },
+        { id: "nowpayments_bep20", label: "Binance pay (bep20)", min: 100, max: 100000, type: "crypto" }
+      ];
       setChannels(opts);
-      if (opts.length > 0) {
-        setPaymentType(opts[0].id);
-      } else {
-        // Fallback to dummy data if API returns none, to match the UI screenshot
-        setChannels([
-          { id: "winpay", label: "WinPay", min: 100, max: 50000 },
-          { id: "dypay", label: "Dypay", min: 100, max: 50000 }
-        ]);
-        setPaymentType("winpay");
-      }
+      setPaymentType(opts[0].id);
       setLoading(false);
     }).catch(() => {
-      setChannels([
-        { id: "winpay", label: "WinPay", min: 100, max: 50000 },
-        { id: "dypay", label: "Dypay", min: 100, max: 50000 }
-      ]);
-      setPaymentType("winpay");
+      const opts = [
+        { id: "sunpay_winpay", label: "WinPay", min: 100, max: 50000, type: "upi" },
+        { id: "sunpay_3qpay", label: "3QPay", min: 100, max: 50000, type: "upi" },
+        { id: "nowpayments_trc20", label: "Tron pay(trc20)", min: 100, max: 100000, type: "crypto" },
+        { id: "nowpayments_bep20", label: "Binance pay (bep20)", min: 100, max: 100000, type: "crypto" }
+      ];
+      setChannels(opts);
+      setPaymentType(opts[0].id);
       setLoading(false);
     });
   }, [router, loadBalance]);
@@ -89,12 +89,17 @@ export default function RechargePage() {
       // Find method for this channel if any
       const methodId = paymentType; // Fallback
       
-      const paymentRes = await getDepositPayment(paymentType, parsedAmount);
+      let amountToSend = parsedAmount;
+      if (selectedChannel.type === "crypto") {
+        amountToSend = parsedAmount / 95; // 1$ = 95 INR
+      }
+      
+      const paymentRes = await getDepositPayment(paymentType, amountToSend);
       const paymentData = paymentRes?.data || null;
 
       if (!paymentData) throw new Error("Failed to initialize payment details");
 
-      sessionStorage.setItem("deposit_amount", String(parsedAmount));
+      sessionStorage.setItem("deposit_amount", String(amountToSend));
       sessionStorage.setItem("deposit_method", methodId);
       sessionStorage.setItem("deposit_channel", paymentType);
       sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));

@@ -196,7 +196,7 @@ export async function GET(request: NextRequest) {
     const isCrypto = typeLower.includes("crypto") || typeLower.includes("usdt");
 
     if (isCrypto) {
-      const usdtRate = 102; // stable exchange rate fallback
+      const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);
       const priceAmountInr = amountInr; // Pass INR amount directly since NowPayments helper uses 'inr' as price_currency
 
