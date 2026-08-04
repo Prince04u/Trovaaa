@@ -117,10 +117,11 @@ export async function GET(request: NextRequest) {
       channel.channelKey.toLowerCase().includes("upixqr") ||
       channel.label.toLowerCase().includes("sunpay") ||
       channel.label.toLowerCase().includes("paytmx") ||
-      channel.label.toLowerCase().includes("upixqr") ||
-      (channel.channelType.toUpperCase() === "UPI" && (!channel.detail || !channel.detail.includes("@")));
+      channel.label.toLowerCase().includes("upixqr");
 
-    if (isSunpays) {
+    // Only route to Sunpays if we actually have the API keys configured,
+    // otherwise fallback to Manual UPI flow so Telegram notifications still work
+    if (isSunpays && process.env.SUNPAYS_PAYIN_API_KEY) {
       // 1. Create a PENDING deposit request in database
       const depositRequest = await prisma.depositRequest.create({
         data: {
