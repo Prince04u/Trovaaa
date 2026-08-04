@@ -89,7 +89,7 @@ export default async function AdminResultsPage() {
                 <div key={o.id} className="py-2.5 flex items-center justify-between">
                   <div>
                     <p>
-                      {o.mode} · #{o.roundNumber} → <span className="text-gold font-semibold">{o.number}</span>
+                      {o.mode} · #{o.roundNumber.toString()} → <span className="text-gold font-semibold">{o.number}</span>
                     </p>
                     <p className="text-xs text-muted">
                       {o.createdBy.displayName} · {format(new Date(o.createdAt), "d MMM, h:mm a")}
@@ -111,7 +111,7 @@ export default async function AdminResultsPage() {
                 <div key={o.id} className="py-2.5 flex items-center justify-between">
                   <div>
                     <p>
-                      {o.mode} · #{o.roundNumber} →{" "}
+                      {o.mode} · #{o.roundNumber.toString()} →{" "}
                       <span className="text-gold font-semibold">
                         {o.dice1}-{o.dice2}-{o.dice3}
                       </span>{" "}
@@ -137,7 +137,7 @@ export default async function AdminResultsPage() {
                 <div key={o.id} className="py-2.5 flex items-center justify-between">
                   <div>
                     <p>
-                      {o.mode} · #{o.roundNumber} →{" "}
+                      {o.mode} · #{o.roundNumber.toString()} →{" "}
                       <span className="text-gold font-semibold font-mono">
                         {o.a}
                         {o.b}

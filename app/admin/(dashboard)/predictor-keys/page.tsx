@@ -19,7 +19,7 @@ export default async function AdminPredictorKeysPage() {
       {/* Create Key Card */}
       <section className="card-surface rounded-2xl p-6">
         <h2 className="font-semibold mb-4 text-gold">Issue New Predictor Key</h2>
-        <form action={createPredictorKeyAction} className="flex flex-col gap-4 max-w-md">
+        <form action={async (fd) => { "use server"; await createPredictorKeyAction(fd); }} className="flex flex-col gap-4 max-w-md">
           <TextField 
             label="User Name / Purpose (e.g. Test Account)" 
             name="description" 
@@ -73,7 +73,7 @@ export default async function AdminPredictorKeysPage() {
                       </td>
                       <td className="px-6 py-4 flex gap-2">
                         {/* Toggle Status Action */}
-                        <form action={togglePredictorKeyAction}>
+                        <form action={async (fd) => { "use server"; await togglePredictorKeyAction(fd); }}>
                           <input type="hidden" name="id" value={k.id} />
                           <button 
                             type="submit" 
@@ -85,7 +85,7 @@ export default async function AdminPredictorKeysPage() {
 
                         {/* Delete Action */}
                         <form 
-                          action={deletePredictorKeyAction}
+                          action={async (fd) => { "use server"; await deletePredictorKeyAction(fd); }}
                           onSubmit={(e) => {
                             if (!confirm("Are you sure you want to permanently delete this predictor access key?")) {
                               e.preventDefault();

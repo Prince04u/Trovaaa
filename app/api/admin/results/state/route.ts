@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
       selections[b.selection].count += 1;
     }
 
-    return NextResponse.json({ game, mode: modeParam, roundNumber, endsAt, serverTime: now, totalStake, betCount: bets.length, options, selections });
+    return NextResponse.json({ game, mode: modeParam, roundNumber: roundNumber.toString(), endsAt, serverTime: now, totalStake, betCount: bets.length, options, selections });
   }
 
   if (game === "k3") {
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
       selections[b.selection].count += 1;
     }
 
-    return NextResponse.json({ game, mode: modeParam, roundNumber, endsAt, serverTime: now, totalStake, betCount: bets.length, options, selections });
+    return NextResponse.json({ game, mode: modeParam, roundNumber: roundNumber.toString(), endsAt, serverTime: now, totalStake, betCount: bets.length, options, selections });
   }
 
   if (game === "fived") {
@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
       selections[b.selection].count += 1;
     }
 
-    return NextResponse.json({ game, mode: modeParam, roundNumber, endsAt, serverTime: now, totalStake, betCount: bets.length, positions, selections });
+    return NextResponse.json({ game, mode: modeParam, roundNumber: roundNumber.toString(), endsAt, serverTime: now, totalStake, betCount: bets.length, positions, selections });
   }
 
   return NextResponse.json({ error: "Invalid game" }, { status: 400 });
