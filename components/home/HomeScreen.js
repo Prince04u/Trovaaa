@@ -58,7 +58,7 @@ export default function HomeScreen() {
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       <section className="bg-[#f2f2f2] h-[50px] flex items-center justify-between text-xs font-normal select-none w-full relative z-10 px-[15px]" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }}>
-        <img src="/logo.png" alt="Logo" className="h-[74px] w-auto object-contain" />
+        <img src="/logo.png" alt="Logo" className="h-[62px] w-auto object-contain" />
         <span className="text-[14px] text-[#666666] absolute left-1/2 -translate-x-1/2">Open with an app</span>
         <a
           href="/luvomall_1.0.0.apk"
