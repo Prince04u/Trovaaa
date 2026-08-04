@@ -28,13 +28,13 @@ ul, ol, li, p {
 }
 .mine_top {
 	width: 100%;
-	padding: 0;
+	padding: 15px;
 	box-sizing: border-box;
 }
 .mine_top .mine_info {
 	width: 100%;
 	background: #009688;
-	border-radius: 0;
+	border-radius: 6px;
 	padding: 15px;
 	box-sizing: border-box;
 }
