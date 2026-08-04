@@ -48,10 +48,10 @@ export default function RechargeRecordPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none">
-      <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-sm">
-        <Link href="/my" className="text-white flex items-center">
-          <ChevronLeft size={24} />
+    <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none font-sans">
+      <nav className="bg-[#009688] text-white h-[46px] px-3 flex items-center gap-4 sticky top-0 z-10 w-full">
+        <Link href="/my" className="text-white flex items-center text-decoration-none">
+          <span className="material-icons-outlined text-[20px]">arrow_back_ios</span>
         </Link>
         <span className="text-[17px] font-normal text-white">Recharge Record</span>
       </nav>
@@ -65,13 +65,13 @@ export default function RechargeRecordPage() {
           <div className="flex flex-col">
             {displayRecords.map((r, i) => (
               <div key={r.id || i} className="flex flex-col py-3 px-4 border-b border-[#f5f5f5]">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[#666] text-[15px]">₹ {(r.amount / 100).toFixed(2)}</span>
+                <div className="flex justify-between items-center mb-[4px]">
+                  <span className="text-[#666] text-[14px]">₹ {(r.amount / 100).toFixed(2)}</span>
                   <span className="text-[13px]">{getStatusDisplay(r.status)}</span>
                 </div>
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[#999] text-[12px] font-mono">{r.txHash || r.id}</span>
-                  <span className="text-[#999] text-[12px]">{(r.channel && r.channel.includes('_') ? r.channel.split('_').pop() : r.channel) || "pay"}</span>
+                <div className="flex justify-between items-center mb-[4px]">
+                  <span className="text-[#999] text-[12px] break-all mr-2">{r.txHash || r.id}</span>
+                  <span className="text-[#999] text-[12px] whitespace-nowrap">{(r.channel && r.channel.includes('_') ? r.channel.split('_').pop() : r.channel) || "pay"}</span>
                 </div>
                 <div className="flex justify-start">
                   <span className="text-[#999] text-[12px]">
