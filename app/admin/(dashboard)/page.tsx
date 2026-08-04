@@ -27,7 +27,9 @@ export default async function AdminDashboardPage({
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-300">Dashboard Overview</h1>
+      </div>
 
       {deniedLabel && (
         <div className="rounded-xl border border-red/40 bg-red/10 px-4 py-3 text-sm text-red">
@@ -37,9 +39,10 @@ export default async function AdminDashboardPage({
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((card) => {
           const content = (
-            <div className="card-surface rounded-2xl p-6">
-              <p className="text-muted text-sm">{card.label}</p>
-              <p className="text-3xl font-semibold text-gold mt-1">{card.value}</p>
+            <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/10 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 rounded-2xl p-6 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#009688]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <p className="text-muted text-sm relative z-10">{card.label}</p>
+              <p className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-300 mt-2 relative z-10">{card.value}</p>
             </div>
           );
           return card.href ? (

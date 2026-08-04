@@ -76,8 +76,8 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
     <div className="flex flex-col flex-1">
       <header className="border-b border-border sticky top-0 z-40 bg-background/90 backdrop-blur">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 gap-4">
-          <Link href={prefix} className="font-semibold tracking-tight shrink-0 pl-10 lg:pl-0">
-            Lucky<span className="text-gold">Nova</span> <span className="text-muted text-sm">Admin</span>
+          <Link href={prefix} className="font-semibold tracking-tight shrink-0 pl-10 lg:pl-0 text-xl">
+            Luvomall <span className="text-muted text-sm font-normal">Admin</span>
           </Link>
           <div className="flex items-center gap-3 shrink-0">
             <span className="text-xs text-muted hidden sm:inline">

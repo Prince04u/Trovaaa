@@ -36,7 +36,7 @@ export function AdminSidebar({ groups }: { groups: NavGroup[] }) {
                 className={clsx(
                   "rounded-lg px-3 py-2 text-sm transition",
                   isActive(item.href)
-                    ? "bg-gold/10 border border-gold/40 text-gold font-medium"
+                    ? "bg-teal-500/10 border border-teal-500/40 text-teal-400 font-medium"
                     : "text-muted border border-transparent hover:text-foreground hover:bg-surface"
                 )}
               >

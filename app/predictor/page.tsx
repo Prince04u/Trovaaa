@@ -429,7 +429,7 @@ export default function PredictorPage() {
                       <tbody className="divide-y divide-white/[0.02]">
                         {history.length === 0 ? (
                           <tr>
-                            <td colspan={5} className="px-4 py-6 text-center text-slate-500">
+                            <td colSpan={5} className="px-4 py-6 text-center text-slate-500">
                               No history analyzed yet this session.
                             </td>
                           </tr>
