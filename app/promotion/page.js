@@ -96,9 +96,9 @@ export default function PromotionPage() {
       </nav>
 
       {/* Bonus Stats Header */}
-      <div className="bg-white flex flex-col pt-8 pb-6">
+      <div className="bg-white flex flex-col pt-8 pb-6 border-b border-[#f0f0f0]">
         <div className="flex justify-center text-[20px] font-normal mb-8 text-[#333]">
-          Bonus:? {data?.summary?.walletEarnings?.toFixed(2) || "0"}
+          Bonus:₹ {data?.summary?.walletEarnings?.toFixed(2) || "0"}
         </div>
         <div className="flex w-full">
           <div className="flex-1 flex flex-col items-center">
@@ -107,23 +107,28 @@ export default function PromotionPage() {
           </div>
           <div className="flex-1 flex flex-col items-center">
             <span className="text-[13px] text-gray-500 mb-1">Contribution</span>
-            <span className="text-[16px] text-[#333] font-medium">? {data?.summary?.walletEarnings?.toFixed(2) || "0"}</span>
+            <span className="text-[16px] text-[#333] font-medium">₹ {data?.summary?.walletEarnings?.toFixed(2) || "0"}</span>
           </div>
         </div>
       </div>
 
       {/* Referral Link & Code Section */}
-      <div className="bg-white px-4 py-3 border-t border-[#f5f5f5]">
+      <div className="bg-white px-4 py-3">
         <div className="text-[12px] text-gray-500 mb-1 mt-2">My Promotion Code</div>
-        <div className="text-[13px] text-[#333] mb-4 font-normal">{referralCode}</div>
-        <div className="text-[12px] text-gray-500 mb-1">My Promotion Link</div>
-        <div className="text-[13px] text-[#333] break-all">{referralLink}</div>
+        <div className="text-[13px] text-[#333] mb-3 font-normal">{referralCode}</div>
       </div>
+      <div className="h-[1px] w-full bg-[#f0f0f0]"></div>
+      
+      <div className="bg-white px-4 py-3">
+        <div className="text-[12px] text-gray-500 mb-1">My Promotion Link</div>
+        <div className="text-[13px] text-[#333] break-all mb-2">{referralLink}</div>
+      </div>
+      <div className="h-[1px] w-full bg-[#f0f0f0]"></div>
 
       <div className="bg-white px-4 py-4 flex justify-center">
         <button 
           onClick={copyLink} 
-          className="w-full max-w-[340px] bg-[#f8f8f8] border border-gray-200 text-[#333] text-[13px] py-2 rounded-[4px] cursor-pointer"
+          className="w-full max-w-[340px] bg-[#f8f8f8] border border-gray-200 text-[#333] text-[13px] py-2.5 rounded-[4px] cursor-pointer"
         >
           {copied ? "Copied!" : "Copy Link"}
         </button>
@@ -145,15 +150,17 @@ export default function PromotionPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-[#fafafa] p-2 flex items-center">
-        <span className="material-icons-outlined text-gray-400 text-[18px] ml-2 absolute">search</span>
-        <input 
-          type="text" 
-          placeholder="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-transparent border border-transparent border-b-[#e5e5e5] outline-none text-[13px] py-2 pl-8"
-        />
+      <div className="bg-[#fafafa] px-4 py-2 flex items-center border-b border-[#f5f5f5]">
+        <div className="flex items-center w-full bg-[#f0f0f0] rounded-[2px] px-2 py-1">
+          <span className="material-icons-outlined text-gray-400 text-[18px]">search</span>
+          <input 
+            type="text" 
+            placeholder="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 bg-transparent border-none outline-none text-[13px] py-1 pl-2"
+          />
+        </div>
       </div>
 
       {/* Table Headers */}
