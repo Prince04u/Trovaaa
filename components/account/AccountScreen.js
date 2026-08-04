@@ -9,7 +9,6 @@ import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
 import { disconnectSocket } from "@/lib/socket";
 import { REF_ICONS } from "./ReferenceIcons";
-import BankCardModal from "./BankCardModal";
 import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function AccountScreen() {
