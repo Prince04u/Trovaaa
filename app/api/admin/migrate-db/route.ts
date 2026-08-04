@@ -3,10 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // We execute the missing migrations manually using raw SQL because Vercel 
-    // prevents database migrations during the build phase.
-    
-    // 1. Create K3ResultOverride table (using BIGINT for roundNumber to prevent overflow)
+    // 1. Create K3ResultOverride table
     await prisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "K3ResultOverride" (
           "id" TEXT NOT NULL,
@@ -21,7 +18,7 @@ export async function GET() {
       );
     `);
 
-    // 2. Create FiveDResultOverride table (using BIGINT for roundNumber)
+    // 2. Create FiveDResultOverride table
     await prisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "FiveDResultOverride" (
           "id" TEXT NOT NULL,
@@ -38,41 +35,26 @@ export async function GET() {
       );
     `);
 
-    // 3. Create Indexes safely
+    // 3. Create ResultOverride table
     await prisma.$executeRawUnsafe(`
-      CREATE INDEX IF NOT EXISTS "K3ResultOverride_mode_roundNumber_idx" ON "K3ResultOverride"("mode", "roundNumber");
+      CREATE TABLE IF NOT EXISTS "ResultOverride" (
+          "id" TEXT NOT NULL,
+          "mode" "WingoMode" NOT NULL,
+          "roundNumber" BIGINT NOT NULL,
+          "number" INTEGER NOT NULL,
+          "createdById" TEXT NOT NULL,
+          "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT "ResultOverride_pkey" PRIMARY KEY ("id")
+      );
     `);
 
-    await prisma.$executeRawUnsafe(`
-      CREATE INDEX IF NOT EXISTS "FiveDResultOverride_mode_roundNumber_idx" ON "FiveDResultOverride"("mode", "roundNumber");
-    `);
+    // Create Indexes
+    await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "K3ResultOverride_mode_roundNumber_idx" ON "K3ResultOverride"("mode", "roundNumber");`);
+    await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "FiveDResultOverride_mode_roundNumber_idx" ON "FiveDResultOverride"("mode", "roundNumber");`);
+    await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "ResultOverride_mode_roundNumber_idx" ON "ResultOverride"("mode", "roundNumber");`);
 
-    // 4. Create Foreign Keys safely (Postgres doesn't have IF NOT EXISTS for constraints, so we catch errors)
-    try {
-      await prisma.$executeRawUnsafe(`
-        ALTER TABLE "K3ResultOverride" ADD CONSTRAINT "K3ResultOverride_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-      `);
-    } catch (e: any) {
-      if (!e.message.includes("already exists")) {
-        console.error(e);
-      }
-    }
-
-    try {
-      await prisma.$executeRawUnsafe(`
-        ALTER TABLE "FiveDResultOverride" ADD CONSTRAINT "FiveDResultOverride_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-      `);
-    } catch (e: any) {
-      if (!e.message.includes("already exists")) {
-        console.error(e);
-      }
-    }
-
-    return NextResponse.json({ success: true, message: "Database tables K3ResultOverride and FiveDResultOverride created successfully!" });
+    return NextResponse.json({ success: true, message: "Missing tables successfully created!" });
   } catch (err: any) {
-    return NextResponse.json({ 
-      success: false, 
-      error: err.message, 
-    });
+    return NextResponse.json({ success: false, error: err.message });
   }
 }
