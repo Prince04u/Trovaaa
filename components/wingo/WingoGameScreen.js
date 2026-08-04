@@ -164,7 +164,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   const timer = formatTimer(period?.remainingSeconds ?? 0);
   const remainingSeconds = period?.remainingSeconds ?? 0;
   const showCountdownOverlay = remainingSeconds > 0 && remainingSeconds <= 5;
-  const bettingLocked = showCountdownOverlay || loading || maintenanceMode || blocksAction("bet");
+  const bettingLocked = (remainingSeconds > 0 && remainingSeconds <= 30) || loading || maintenanceMode || blocksAction("bet");
   const countdownDigits = timer.ss.split("");
   const totalAmount = baseAmount * (Number(quantity) || 0);
   const betTheme = betSheet ? getBetTheme(betSheet.betType, betSheet.betValue) : "green";

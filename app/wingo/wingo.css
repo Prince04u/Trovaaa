@@ -211,7 +211,9 @@ ul, ol, li, p {
     opacity: 0.8;
 }
 .btn_center button:disabled {
-    opacity: 0.6;
+    background: #e0e0e0;
+    color: #666;
+    opacity: 1;
     cursor: not-allowed;
 }
 .back_one {
@@ -255,7 +257,8 @@ ul, ol, li, p {
     transform: scale(0.95);
 }
 .center_notes li button:disabled {
-    background: #d3d3d3;
+    background: #e0e0e0;
+    color: #666;
     cursor: not-allowed;
     box-shadow: none;
 }

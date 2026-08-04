@@ -9,7 +9,7 @@ export const MODE_DURATIONS_SECONDS: Record<WingoMode, number> = {
   BCONE: 180,
 };
 
-export const LOCK_SECONDS = 5;
+export const LOCK_SECONDS = 30;
 
 const T_0 = 1783728000000; // 2026-07-11 00:00:00 UTC in ms
 
