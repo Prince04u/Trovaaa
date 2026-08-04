@@ -21,8 +21,8 @@ export async function createSunpaysPayin(payload: {
   notify_url_2?: string;
   metadata?: any;
 }) {
-  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.replace(/\s/g, '')?.replace(/^"|"$/g, '');
-  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.replace(/\s/g, '')?.replace(/^"|"$/g, '');
+  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.replace(/[^a-f0-9]/gi, '');
+  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.replace(/[^a-f0-9]/gi, '');
   const baseUrl = process.env.SUNPAYS_BASE_URL?.replace(/\s/g, '')?.replace(/^"|"$/g, '') || "https://cashier.sunpaytm.site";
 
   if (!apiKey || !apiSecret) {
@@ -46,7 +46,7 @@ export async function createSunpaysPayin(payload: {
     const errorText = await response.text();
     const mKey = apiKey.substring(0, 4) + '...' + apiKey.substring(apiKey.length - 4);
     const mSec = apiSecret.substring(0, 4) + '...' + apiSecret.substring(apiSecret.length - 4);
-    throw new Error(`Sunpays pay-in failed: ${response.status} ${errorText} | Debug Key=${mKey} Sec=${mSec} Body=${body}`);
+    throw new Error(`Sunpays pay-in failed: ${response.status} ${errorText} | Debug Sig=${signature} Key=${mKey} Sec=${mSec} Body=${body}`);
   }
 
   return response.json();
