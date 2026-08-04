@@ -148,7 +148,7 @@ function ProductDetailsContent() {
         <p className="text-[20px] text-[#E65100] font-bold m-0">₹ {product.price}</p>
         <button
           type="button"
-          onClick={() => router.push('/wallet/deposit')}
+          onClick={() => router.push('/recharge')}
           className="mt-2 bg-[#2196f3] text-white py-3 rounded font-medium text-[15px] border-none w-full cursor-pointer"
         >
           Buy Now

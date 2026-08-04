@@ -109,7 +109,7 @@ export default function RechargePage() {
       sessionStorage.setItem("deposit_channel", paymentType);
       sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
       
-      router.push("/wallet/deposit/pay");
+      router.push("/recharge");
     } catch (err) {
       alert(err.response?.data?.error || err.response?.data?.message || err.message || "Failed to submit recharge.");
     } finally {

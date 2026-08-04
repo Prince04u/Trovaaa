@@ -14,8 +14,8 @@ const STEPS = [
     title: "Add funds",
     body: "Open Wallet → Deposit, choose a channel, pay via UPI, then enter UTR and upload payment proof.",
     links: [
-      { href: "/wallet/deposit", label: "Deposit" },
-      { href: "/wallet/deposit/history", label: "Deposit history" },
+      { href: "/recharge", label: "Deposit" },
+      { href: "/rechargerecord", label: "Deposit history" },
     ],
   },
   {

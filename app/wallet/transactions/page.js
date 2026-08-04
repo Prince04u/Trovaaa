@@ -130,7 +130,7 @@ export default function TransactionHistoryPage() {
             </svg>
           </div>
           <p>No transactions found</p>
-          <Link href="/wallet/deposit" className="deposit-empty-link">Make a deposit</Link>
+          <Link href="/recharge" className="deposit-empty-link">Make a deposit</Link>
         </div>
       ) : (
         <ul className="txn-history-list">
