@@ -10,6 +10,7 @@ import { register as registerRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
 import { CHAT_ICON_B64, GIFT_ICON_B64, BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 import LoadingDialog from "@/components/auth/LoadingDialog";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
+  const { toasts, push: pushToast } = useToasts();
 
   useEffect(() => {
     if (otpCountdown === 0) return;
@@ -68,13 +70,15 @@ export default function RegisterForm() {
       });
 
       saveAuth(response.data);
-      router.push("/");
+      pushToast("Success");
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
     } catch (err) {
       setError(
         err.response?.data?.message ||
           "Registration failed. Please try again."
       );
-    } finally {
       setLoading(false);
     }
   };
@@ -195,6 +199,7 @@ export default function RegisterForm() {
 
       <BottomNav />
       <LoadingDialog visible={loading} />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

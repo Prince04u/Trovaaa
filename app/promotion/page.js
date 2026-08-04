@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import LoadingDialog from "@/components/auth/LoadingDialog";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function PromotionPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function PromotionPage() {
   const [activeLevel, setActiveLevel] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [showNotice, setShowNotice] = useState(false);
+  const { toasts, push: pushToast } = useToasts();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -62,6 +64,7 @@ export default function PromotionPage() {
     if (!referralLink) return;
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
+    pushToast("Success");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -224,6 +227,7 @@ export default function PromotionPage() {
 
       <BottomNav />
       <LoadingDialog visible={loading} />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

@@ -10,12 +10,14 @@ import { login as loginRequest } from "@/lib/authApi";
 import { saveAuth } from "@/lib/auth";
 import { BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 import LoadingDialog from "@/components/auth/LoadingDialog";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ mobile: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { toasts, push: pushToast } = useToasts();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,10 +32,12 @@ export default function LoginPage() {
     try {
       const response = await loginRequest(form);
       saveAuth(response.data);
-      router.push("/");
+      pushToast("Success");
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
     } catch (err) {
       setError(err.response?.data?.message || "Login failed.");
-    } finally {
       setLoading(false);
     }
   };
@@ -112,6 +116,7 @@ export default function LoginPage() {
 
       <BottomNav />
       <LoadingDialog visible={loading} />
+      <ToastStack toasts={toasts} />
     </main>
 
   );

@@ -1,8 +1,8 @@
+
 "use client";
 
 import { useCallback, useRef, useState } from "react";
 import clsx from "clsx";
-import { CheckCircle, XCircle } from "lucide-react";
 
 export type ToastItem = { id: number; message: string; type: "success" | "error" };
 
@@ -10,7 +10,7 @@ export function useToasts() {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const idRef = useRef(0);
 
-  const push = useCallback((message: string, type: ToastItem["type"] = "success", duration: number = 2500) => {
+  const push = useCallback((message: string, type: ToastItem["type"] = "success", duration: number = 2000) => {
     const id = ++idRef.current;
     setToasts((t) => [...t, { id, message, type }]);
     setTimeout(() => {
@@ -24,19 +24,25 @@ export function useToasts() {
 export function ToastStack({ toasts }: { toasts: ToastItem[] }) {
   if (toasts.length === 0) return null;
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 items-center px-4 w-full max-w-sm pointer-events-none">
+    <div className="fixed inset-0 pointer-events-none z-[100] flex flex-col items-center justify-center gap-2">
+      <style>{`
+        @keyframes wgToastIn {
+          0% { transform: scale(0.9); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+      `}</style>
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={clsx(
-            "toast-in w-full rounded-xl px-4 py-3 text-sm font-semibold flex items-center justify-center gap-1.5 shadow-lg",
-            t.type === "success" ? "bg-gold text-black" : "bg-red text-white"
-          )}
+          className="bg-[rgba(0,0,0,0.7)] text-white px-8 py-3 rounded-[4px] text-[15px] font-normal"
+          style={{
+            animation: "wgToastIn 0.15s ease-out forwards",
+          }}
         >
-          {t.type === "success" ? <CheckCircle size={16} /> : <XCircle size={16} />}
           {t.message}
         </div>
       ))}
     </div>
   );
 }
+
