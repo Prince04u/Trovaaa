@@ -99,6 +99,11 @@ export default function RechargePage() {
 
       if (!paymentData) throw new Error("Failed to initialize payment details");
 
+      if (paymentData.checkoutUrl) {
+        window.location.href = paymentData.checkoutUrl;
+        return;
+      }
+
       sessionStorage.setItem("deposit_amount", String(amountToSend));
       sessionStorage.setItem("deposit_method", methodId);
       sessionStorage.setItem("deposit_channel", paymentType);

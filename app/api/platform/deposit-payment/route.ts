@@ -119,9 +119,8 @@ export async function GET(request: NextRequest) {
       channel.label.toLowerCase().includes("paytmx") ||
       channel.label.toLowerCase().includes("upixqr");
 
-    // Only route to Sunpays if we actually have the API keys configured,
-    // otherwise fallback to Manual UPI flow so Telegram notifications still work
-    if (isSunpays && process.env.SUNPAYS_PAYIN_API_KEY) {
+    // Strictly route to Sunpays so the user is forced into the official gateway checkout.
+    if (isSunpays) {
       // 1. Create a PENDING deposit request in database
       const depositRequest = await prisma.depositRequest.create({
         data: {
@@ -223,12 +222,12 @@ export async function GET(request: NextRequest) {
 
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
 
-      // 2. Request address and amount from NOWPayments gateway
+      // 2. Request invoice from NOWPayments gateway
       console.log(`Calling NOWPayments for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
-      const npPayment = await createNowPaymentsPayment(
+      const npPayment = await createNowPaymentsInvoice(
         priceAmountInr,
-        payCurrency,
         depositRequest.id,
+        payCurrency,
         ipnCallbackUrl
       );
 
@@ -252,13 +251,8 @@ export async function GET(request: NextRequest) {
 
       // 4. Save NOWPayments response details and telegram message ID in database note
       const updatedNote = JSON.stringify({
-        paymentId: npPayment.payment_id,
-        payAddress: npPayment.pay_address,
-        payAmount: npPayment.pay_amount,
-        payCurrency: npPayment.pay_currency,
-        priceAmount: npPayment.price_amount,
-        priceCurrency: npPayment.price_currency,
-        expirationEstimateDate: npPayment.expiration_estimate_date,
+        paymentId: npPayment.id,
+        checkoutUrl: npPayment.invoice_url,
         telegramMessageId: telegramMessageId || undefined,
       });
 
@@ -267,17 +261,15 @@ export async function GET(request: NextRequest) {
         data: { note: updatedNote },
       });
 
-      // 5. Return details to user payment screen
+      // 5. Return details to user payment screen (with checkoutUrl to skip manual pay screen)
       return NextResponse.json({
         success: true,
         data: {
           type: "crypto",
           depositId: depositRequest.id,
-          walletAddress: npPayment.pay_address,
-          payAmount: npPayment.pay_amount,
+          checkoutUrl: npPayment.invoice_url,
           usdtRate,
           channelLabel: channel.label,
-          expirationEstimateDate: npPayment.expiration_estimate_date,
         },
       });
     } else {

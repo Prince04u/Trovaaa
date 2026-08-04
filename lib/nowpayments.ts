@@ -67,6 +67,39 @@ export async function createNowPaymentsPayment(
   return response.json();
 }
 
+export async function createNowPaymentsInvoice(
+  priceAmount: number,
+  orderId: string,
+  payCurrency: string,
+  ipnCallbackUrl?: string
+): Promise<{ invoice_url: string; id: string }> {
+  const headers = {
+    "x-api-key": getNowpaymentsApiKey(),
+    "Content-Type": "application/json",
+  };
+
+  const body = {
+    price_amount: priceAmount,
+    price_currency: "inr",
+    pay_currency: payCurrency,
+    order_id: orderId,
+    ipn_callback_url: ipnCallbackUrl || undefined,
+  };
+
+  const response = await fetch(`${NOWPAYMENTS_BASE_URL}/invoice`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`NOWPayments invoice creation failed: ${response.status} ${errorText}`);
+  }
+
+  return response.json();
+}
+
 export async function getNowPaymentsPaymentStatus(paymentId: string): Promise<PaymentStatusResponse> {
   const headers = {
     "x-api-key": getNowpaymentsApiKey(),
