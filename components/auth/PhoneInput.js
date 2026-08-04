@@ -14,6 +14,11 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
         type="tel"
         value={value}
         onChange={onChange}
+        onFocus={(e) => {
+          if (!value && onChange) {
+            onChange({ target: { name, value: "+91" } });
+          }
+        }}
         placeholder={placeholder}
         required={required}
         className="flex-1 bg-transparent text-[16px] placeholder-[#adadad] outline-none border-none h-full font-normal shadow-none p-0"
