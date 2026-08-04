@@ -603,39 +603,21 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             </li>
           </ul>
 
-            <div className="btn_center" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 15px', gap: '10px' }}>
-              <button disabled={bettingLocked} onClick={() => openBetSheet("color", "green")} className="bg-[#4caf50] text-white flex-1 py-2 rounded-md font-medium shadow-sm active:scale-95 transition-transform" style={{ border: 'none', outline: 'none' }}>Join Green</button>
-              <button disabled={bettingLocked} onClick={() => openBetSheet("color", "violet")} className="bg-[#9c27b0] text-white flex-1 py-2 rounded-md font-medium shadow-sm active:scale-95 transition-transform" style={{ border: 'none', outline: 'none' }}>Join Violet</button>
-              <button disabled={bettingLocked} onClick={() => openBetSheet("color", "red")} className="bg-[#f44336] text-white flex-1 py-2 rounded-md font-medium shadow-sm active:scale-95 transition-transform" style={{ border: 'none', outline: 'none' }}>Join Red</button>
-            </div>
+          <div className="btn_center">
+            <button className="back_one" disabled={bettingLocked} onClick={() => openBetSheet("color", "green")}>Join Green</button>
+            <button className="back_two" disabled={bettingLocked} onClick={() => openBetSheet("color", "violet")}>Join Violet</button>
+            <button className="back_three" disabled={bettingLocked} onClick={() => openBetSheet("color", "red")}>Join Red</button>
+          </div>
   
-            <div className="grid grid-cols-5 gap-3 p-4 bg-[#f8f8f8] m-3 rounded-lg shadow-inner">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
-                let bgStyle = {};
-                if (num === 0) {
-                  bgStyle = { background: 'linear-gradient(to bottom right, #f44336 50%, #9c27b0 50%)' };
-                } else if (num === 5) {
-                  bgStyle = { background: 'linear-gradient(to bottom right, #4caf50 50%, #9c27b0 50%)' };
-                } else if ([1, 3, 7, 9].includes(num)) {
-                  bgStyle = { backgroundColor: '#4caf50' };
-                } else {
-                  bgStyle = { backgroundColor: '#f44336' };
-                }
-                
-                return (
-                  <button 
-                    key={num}
-                    type="button" 
-                    disabled={bettingLocked} 
-                    onClick={() => openBetSheet("number", num)}
-                    className="w-12 h-12 mx-auto rounded-full text-white text-lg font-bold shadow-md active:scale-90 transition-transform flex items-center justify-center select-none"
-                    style={{ ...bgStyle, border: 'none', outline: 'none' }}
-                  >
-                    {num}
-                  </button>
-                );
-              })}
-            </div>
+          <ul className="center_notes">
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+              <li key={num}>
+                <button type="button" disabled={bettingLocked} onClick={() => openBetSheet("number", num)}>
+                  {num}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* History and Tabs lists */}
