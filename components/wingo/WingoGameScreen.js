@@ -233,7 +233,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   }, []);
 
   const loadData = useCallback(async (opts = {}) => {
-    const showSpinner = opts?.showSpinner ?? true;
+    const showSpinner = opts?.showSpinner === true;
     if (showSpinner) setRefreshing(true);
     try {
       const publicFetch = Promise.all([getCurrentPeriod(duration), getRecentResults(duration, 50)]);
@@ -318,12 +318,16 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
   
   useEffect(() => {
-    if (!getToken()) {
-      router.replace("/login");
-      return;
+    if (!isAuthInitialized) {
+      if (!getToken()) {
+        router.replace("/login");
+        setIsAuthInitialized(true);
+        return;
+      }
+      setIsAuthInitialized(true);
+      loadData({ showSpinner: false });
     }
-    setIsAuthInitialized(true);
-    loadData();
+    
     getWingoConfig()
       .then((res) => {
         if (res?.data?.minBetAmount != null || res?.data?.maxBetAmount != null) {
@@ -538,16 +542,16 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       <div className="win">
         <div className="mine_top">
-            <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent", WebkitTouchCallout: "none", userSelect: "none", display: "flex", flexDirection: "column", padding: "10px 15px 15px 15px", outline: "none", cursor: "default" }}>
-              <div className="balance" style={{ padding: "0 0 12px 0", boxSizing: "border-box", width: "100%", outline: "none", cursor: "default" }}>
+            <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent", WebkitTouchCallout: "none", userSelect: "none", outline: "none", cursor: "default" }}>
+              <div className="balance" style={{ padding: "0 0 12px 0", boxSizing: "border-box", width: "100%", outline: "none", cursor: "default", color: "white" }}>
                 Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
               <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent", WebkitTouchCallout: "none", userSelect: "none", outline: "none", background: "transparent", padding: "0", width: "100%", boxSizing: "border-box", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "default" }}>
                 <div className="btn_group" style={{ display: 'flex', gap: '10px', outline: "none", margin: 0 }}>
-                  <button type="button" className="one_btn bg-[#2196f3] text-white rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", margin: 0 }} onClick={() => router.push("/recharge")}>Recharge</button>
-                  <button type="button" className="bg-[#f5f5f5] text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", margin: 0 }} onClick={() => router.push(`/trend?type=${duration}`)}>Trend</button>
+                  <button type="button" className="one_btn bg-[#2196f3] text-white" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", margin: 0, borderRadius: "2px" }} onClick={() => router.push("/recharge")}>Recharge</button>
+                  <button type="button" className="bg-[#f5f5f5] text-[#333]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", margin: 0, borderRadius: "2px" }} onClick={() => router.push(`/trend?type=${duration}`)}>Trend</button>
                 </div>
-                <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center", outline: "none", WebkitTapHighlightColor: "transparent", padding: 0 }}>
+                <div className="refresh" onClick={() => loadData({ showSpinner: true })} style={{ cursor: "pointer", display: "flex", alignItems: "center", outline: "none", WebkitTapHighlightColor: "transparent", padding: 0 }}>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 24 24" 

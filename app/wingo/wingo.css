@@ -28,15 +28,16 @@ ul, ol, li, p {
 }
 .mine_top {
 	width: 100%;
-	padding: 15px;
+	padding: 0;
 	box-sizing: border-box;
 }
 .mine_top .mine_info {
 	width: 100%;
 	background: #009688;
-	border-radius: 6px;
+	border-radius: 0;
 	padding: 15px;
 	box-sizing: border-box;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 .balance {
 	padding: 8px 0 15px;
