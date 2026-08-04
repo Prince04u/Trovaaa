@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount] = await Promise.all([
+    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount, waterRewards] = await Promise.all([
       user.referredById
         ? prisma.user.findUnique({
             where: { id: user.referredById },
@@ -50,7 +50,12 @@ export async function GET(req: NextRequest) {
       prisma.reward.count({
         where: { userId: user.id, type: "REFERRAL", status: "AVAILABLE" },
       }),
+      prisma.ledgerEntry.findMany({
+        where: { wallet: { userId: user.id }, type: "WATER_REWARD", ...dateFilter },
+      }),
     ]);
+    
+    const totalWalletEarnings = (walletEarningsAgg._sum.amount ?? 0) + waterRewards.reduce((sum, wr) => sum + Math.abs(wr.amount), 0);
 
     // Recursively fetch referred users down to Tier 6
     interface ReferralUser {
@@ -151,12 +156,18 @@ export async function GET(req: NextRequest) {
     addBets(minesGames);
     addBets(wheelSpins);
 
-    // Sum commission (referral rewards) by user
+    // Sum commission (referral rewards and water rewards) by user
     const commissionByUser = new Map<string, number>();
     for (const r of referralRewards) {
       const referredId = (r.meta as Record<string, unknown> | null)?.referredUserId as string | undefined;
       if (referredId) {
         commissionByUser.set(referredId, (commissionByUser.get(referredId) || 0) + r.amount);
+      }
+    }
+    for (const wr of waterRewards) {
+      const sourceId = (wr.meta as Record<string, unknown> | null)?.sourceUserId as string | undefined;
+      if (sourceId) {
+        commissionByUser.set(sourceId, (commissionByUser.get(sourceId) || 0) + Math.abs(wr.amount));
       }
     }
 
@@ -205,9 +216,9 @@ export async function GET(req: NextRequest) {
         stats: {
           directPlayers,
           totalDownlinePlayers: downlineAgents.length,
-          totalCommissionEarned: walletEarningsAgg._sum.amount ?? 0,
+          totalCommissionEarned: totalWalletEarnings,
         },
-        commission: { eventCount: referralRewards.filter((r) => r.status === "CLAIMED").length },
+        commission: { eventCount: referralRewards.filter((r) => r.status === "CLAIMED").length + waterRewards.length },
       };
     }
 
@@ -221,7 +232,7 @@ export async function GET(req: NextRequest) {
         inviteType: agent ? "agent" : "user",
         summary: {
           totalReferrals,
-          walletEarnings: walletEarningsAgg._sum.amount ?? 0,
+          walletEarnings: totalWalletEarnings,
           pendingBonuses: pendingCount,
         },
         referredBy: referredBy ? { name: referredBy.displayName, referralCode: referredBy.referralCode } : null,
