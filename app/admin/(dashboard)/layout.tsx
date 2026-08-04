@@ -35,6 +35,7 @@ const NAV_GROUPS = [
       { href: "/payouts", label: "Withdrawals Payout", permission: "wallet.view" },
       { href: "/deposit-channels", label: "Deposit channels", permission: "wallet.approve" },
       { href: "/bonuses", label: "Bonuses & rewards", permission: "bonuses.manage" },
+      { href: "/commission-settings", label: "Commission Settings", permission: "bonuses.manage" },
     ],
   },
   {
