@@ -106,6 +106,11 @@ export async function placeBetAction(input: {
   checkAndAwardReferralReward(user.id).catch((err) => {
     console.error("5D bet placement referral reward check failed:", err);
   });
+  
+  const { distributeWaterReward } = await import("./commissions");
+  distributeWaterReward(user.id, amount, `5D ${mode}`).catch((err) => {
+    console.error("Failed to distribute water reward:", err);
+  });
 
   return { success: true, betId: bet.id };
 }

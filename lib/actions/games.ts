@@ -64,6 +64,9 @@ export async function playDiceAction(input: {
       return wallet?.balance ?? 0;
     });
 
+    const { distributeWaterReward } = await import("./commissions");
+    distributeWaterReward(user.id, amount, "Dice").catch(console.error);
+
     return { won, roll, multiplier, payout, balance };
   } catch (err) {
     if (insufficient(err)) return { error: "Insufficient balance" };
@@ -99,6 +102,9 @@ export async function playWheelAction(input: { amount: number }): Promise<WheelR
       const wallet = await tx.wallet.findUnique({ where: { userId: user.id } });
       return wallet?.balance ?? 0;
     });
+
+    const { distributeWaterReward } = await import("./commissions");
+    distributeWaterReward(user.id, amount, "Lucky Wheel").catch(console.error);
 
     return { segmentIndex, multiplier, payout, balance };
   } catch (err) {
@@ -142,6 +148,10 @@ export async function startMinesAction(input: { amount: number; mineCount: numbe
         data: { userId: user.id, amount, mineCount, minePositions, revealed: [], multiplier: 1 },
       });
     });
+    
+    const { distributeWaterReward } = await import("./commissions");
+    distributeWaterReward(user.id, amount, "Mines").catch(console.error);
+
     return { gameId: game.id };
   } catch (err) {
     if (insufficient(err)) return { error: "Insufficient balance" };
@@ -237,6 +247,10 @@ export async function startCrashAction(input: { amount: number }): Promise<Start
         data: { userId: user.id, amount: parsed.data.amount, crashPoint },
       });
     });
+    
+    const { distributeWaterReward } = await import("./commissions");
+    distributeWaterReward(user.id, parsed.data.amount, "Crash").catch(console.error);
+
     return { gameId: game.id, startedAt: game.createdAt.getTime(), serverTime: Date.now() };
   } catch (err) {
     if (insufficient(err)) return { error: "Insufficient balance" };

@@ -30,6 +30,7 @@ enum LedgerType {
   ADMIN_ADJUST
   REWARD_CLAIMED
   GIFT_CODE_REDEEMED
+  WATER_REWARD
 }
 
 enum RequestStatus {

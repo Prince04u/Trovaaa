@@ -98,6 +98,11 @@ export async function placeBetAction(input: {
     checkAndAwardReferralReward(user.id).catch((err) => {
       console.error("K3 bet placement referral reward check failed:", err);
     });
+    
+    const { distributeWaterReward } = await import("./commissions");
+    distributeWaterReward(user.id, amount, `K3 ${mode}`).catch((err) => {
+      console.error("Failed to distribute water reward:", err);
+    });
 
     return { success: true, betId: bet.id };
   } catch (error: any) {
