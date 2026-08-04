@@ -1,21 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
+import { getBalance } from "@/lib/walletApi";
+import { parseWalletBalance } from "@/lib/walletBalance";
+import { getBankAccounts, submitWithdrawal } from "@/lib/platformApi";
+import { getToken } from "@/lib/auth";
+import PageLoader from "@/components/brand/PageLoader";
 
 export default function WithdrawalPage() {
+  const router = useRouter();
   const [amount, setAmount] = useState("");
   const [password, setPassword] = useState("");
+  const [banks, setBanks] = useState([]);
+  const [bankAccountId, setBankAccountId] = useState("");
 
-  const handleWithdrawal = (e) => {
+  const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const balRes = await getBalance();
+      const { available } = parseWalletBalance(balRes);
+      setBalance(available);
+
+      const bankRes = await getBankAccounts();
+      const accounts = bankRes?.data || [];
+      setBanks(accounts);
+      if (accounts.length > 0) {
+        setBankAccountId(accounts[0].id);
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        router.replace("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!getToken()) {
+      router.replace("/login");
+      return;
+    }
+    loadData();
+  }, [router, loadData]);
+
+  const handleWithdrawal = async (e) => {
     e.preventDefault();
     if (!amount || Number(amount) <= 0) {
       alert("Enter valid withdrawal amount");
       return;
     }
-    alert(`Withdrawal request for ₹${amount} submitted!`);
+    if (!bankAccountId) {
+      alert("Please add a bank account first");
+      return;
+    }
+    if (!password) {
+      alert("Please enter password");
+      return;
+    }
+    
+    setSubmitLoading(true);
+    try {
+      await submitWithdrawal({
+        amount: Number(amount),
+        type: "bank",
+        accountId: bankAccountId,
+        password: password,
+      });
+      alert(`Withdrawal request for ₹${amount} submitted!`);
+      router.push("/withdrawalrecord");
+    } catch (err) {
+      alert(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
+    } finally {
+      setSubmitLoading(false);
+    }
   };
+
+  if (loading) return <PageLoader />;
+
+  const selectedBank = banks.find((b) => b.id === bankAccountId);
 
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333]">
@@ -35,7 +105,7 @@ export default function WithdrawalPage() {
       <div className="p-4 flex flex-col gap-5 w-full max-w-xl mx-auto mt-2">
         {/* Balance Display */}
         <div className="text-center">
-          <span className="text-xl text-[#333]">Balance: ₹ </span>
+          <span className="text-xl text-[#333]">Balance: ₹ {balance.toFixed(2)}</span>
         </div>
 
         {/* Input */}
@@ -70,7 +140,7 @@ export default function WithdrawalPage() {
           <Link href="/addbankcard" className="flex items-center justify-between py-4 text-decoration-none text-[#333]" style={{ borderBottom: "1px solid #f0f0f0" }}>
             <div className="flex items-center gap-3">
               <span className="material-icons-outlined text-gray-500 text-[22px]">credit_card</span>
-              <span className="text-[14px]">Select Bank Card</span>
+              <span className="text-[14px]">{selectedBank ? `${selectedBank.bankName} - ${selectedBank.accountNumber.slice(-4)}` : "Select Bank Card"}</span>
             </div>
             <span className="material-icons-outlined text-gray-400 text-[20px]">chevron_right</span>
           </Link>
@@ -90,9 +160,10 @@ export default function WithdrawalPage() {
         <button
           type="button"
           onClick={handleWithdrawal}
-          className="mt-6 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full"
+          disabled={submitLoading}
+          className="mt-6 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full disabled:opacity-50"
         >
-          Withdrawal
+          {submitLoading ? "Processing..." : "Withdrawal"}
         </button>
       </div>
 

@@ -1,23 +1,113 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
+import { getBalance } from "@/lib/walletApi";
+import { parseWalletBalance } from "@/lib/walletBalance";
+import { getDepositOptions, getDepositPayment } from "@/lib/platformApi";
+import { getToken } from "@/lib/auth";
+import PageLoader from "@/components/brand/PageLoader";
 
 export default function RechargePage() {
+  const router = useRouter();
   const [amount, setAmount] = useState("");
-  const [paymentType, setPaymentType] = useState("WinPay");
+  const [paymentType, setPaymentType] = useState("");
+  const [channels, setChannels] = useState([]);
+  
+  const [balance, setBalance] = useState(0);
+  const [balanceLoading, setBalanceLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const PRESETS = [500, 1000, 2000, 5000, 10000, 49999];
 
-  const handleRecharge = (e) => {
+  const loadBalance = useCallback(async () => {
+    setBalanceLoading(true);
+    try {
+      const res = await getBalance();
+      const { available } = parseWalletBalance(res);
+      setBalance(available);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        router.replace("/login");
+      }
+    } finally {
+      setBalanceLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!getToken()) {
+      router.replace("/login");
+      return;
+    }
+    
+    loadBalance();
+    
+    getDepositOptions().then((res) => {
+      const opts = res?.data?.channels?.filter(c => c.enabled) || [];
+      setChannels(opts);
+      if (opts.length > 0) {
+        setPaymentType(opts[0].id);
+      } else {
+        // Fallback to dummy data if API returns none, to match the UI screenshot
+        setChannels([
+          { id: "winpay", label: "WinPay", min: 100, max: 50000 },
+          { id: "dypay", label: "Dypay", min: 100, max: 50000 }
+        ]);
+        setPaymentType("winpay");
+      }
+      setLoading(false);
+    }).catch(() => {
+      setChannels([
+        { id: "winpay", label: "WinPay", min: 100, max: 50000 },
+        { id: "dypay", label: "Dypay", min: 100, max: 50000 }
+      ]);
+      setPaymentType("winpay");
+      setLoading(false);
+    });
+  }, [router, loadBalance]);
+
+  const handleRecharge = async (e) => {
     e.preventDefault();
-    if (!amount || Number(amount) <= 0) {
+    const parsedAmount = Number(amount);
+    if (!amount || parsedAmount <= 0) {
       alert("Enter or Select recharge amount");
       return;
     }
-    alert(`Recharge request for ₹${amount} via ${paymentType} submitted!`);
+    
+    const selectedChannel = channels.find(c => c.id === paymentType);
+    if (selectedChannel && (parsedAmount < selectedChannel.min || parsedAmount > selectedChannel.max)) {
+      alert(`Amount must be between ₹${selectedChannel.min} and ₹${selectedChannel.max}`);
+      return;
+    }
+
+    setSubmitLoading(true);
+    try {
+      // Find method for this channel if any
+      const methodId = paymentType; // Fallback
+      
+      const paymentRes = await getDepositPayment(paymentType, parsedAmount);
+      const paymentData = paymentRes?.data || null;
+
+      if (!paymentData) throw new Error("Failed to initialize payment details");
+
+      sessionStorage.setItem("deposit_amount", String(parsedAmount));
+      sessionStorage.setItem("deposit_method", methodId);
+      sessionStorage.setItem("deposit_channel", paymentType);
+      sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
+      
+      router.push("/wallet/deposit/pay");
+    } catch (err) {
+      alert(err.response?.data?.message || err.message || "Failed to submit recharge.");
+    } finally {
+      setSubmitLoading(false);
+    }
   };
+
+  if (loading) return <PageLoader />;
 
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333]">
@@ -37,7 +127,7 @@ export default function RechargePage() {
       <div className="p-4 flex flex-col gap-6 w-full max-w-xl mx-auto mt-2">
         {/* Balance Display */}
         <div className="text-center">
-          <span className="text-xl text-[#333]">Balance: ₹ </span>
+          <span className="text-xl text-[#333]">Balance: ₹ {balanceLoading ? "..." : balance.toFixed(2)}</span>
         </div>
 
         {/* Input */}
@@ -71,45 +161,32 @@ export default function RechargePage() {
         <div className="flex flex-col mt-2">
           <span className="text-sm text-gray-500 mb-4 ml-1">Payment</span>
           
-          <label className="flex items-center gap-8 py-3 cursor-pointer">
-            <div className="w-5 flex justify-center">
-              {paymentType === "WinPay" ? (
-                <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
-              ) : null}
-            </div>
-            <span className="text-[15px] text-[#333]">WinPay</span>
-            <input
-              type="radio"
-              name="payment"
-              checked={paymentType === "WinPay"}
-              onChange={() => setPaymentType("WinPay")}
-              className="hidden"
-            />
-          </label>
-          
-          <label className="flex items-center gap-8 py-3 cursor-pointer">
-            <div className="w-5 flex justify-center">
-              {paymentType === "Dypay" ? (
-                <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
-              ) : null}
-            </div>
-            <span className="text-[15px] text-[#333]">Dypay</span>
-            <input
-              type="radio"
-              name="payment"
-              checked={paymentType === "Dypay"}
-              onChange={() => setPaymentType("Dypay")}
-              className="hidden"
-            />
-          </label>
+          {channels.map((ch) => (
+            <label key={ch.id} className="flex items-center gap-8 py-3 cursor-pointer">
+              <div className="w-5 flex justify-center">
+                {paymentType === ch.id ? (
+                  <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
+                ) : null}
+              </div>
+              <span className="text-[15px] text-[#333]">{ch.label}</span>
+              <input
+                type="radio"
+                name="payment"
+                checked={paymentType === ch.id}
+                onChange={() => setPaymentType(ch.id)}
+                className="hidden"
+              />
+            </label>
+          ))}
         </div>
 
         <button
           type="button"
           onClick={handleRecharge}
-          className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full"
+          disabled={submitLoading}
+          className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full disabled:opacity-50"
         >
-          Recharge
+          {submitLoading ? "Processing..." : "Recharge"}
         </button>
       </div>
 
