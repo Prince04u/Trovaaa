@@ -1,5 +1,5 @@
 function getNowpaymentsApiKey(): string {
-  const apiKey = process.env.NOWPAYMENTS_API_KEY;
+  const apiKey = process.env.NOWPAYMENTS_API_KEY?.trim().replace(/^"|"$/g, '');
   if (!apiKey) {
     throw new Error("CRITICAL SECURITY ERROR: NOWPAYMENTS_API_KEY environment variable is not defined!");
   }

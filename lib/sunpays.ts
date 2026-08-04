@@ -21,9 +21,9 @@ export async function createSunpaysPayin(payload: {
   notify_url_2?: string;
   metadata?: any;
 }) {
-  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.trim();
-  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.trim();
-  const baseUrl = process.env.SUNPAYS_BASE_URL?.trim() || "https://cashier.sunpaytm.site";
+  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.trim().replace(/^"|"$/g, '');
+  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.trim().replace(/^"|"$/g, '');
+  const baseUrl = process.env.SUNPAYS_BASE_URL?.trim().replace(/^"|"$/g, '') || "https://cashier.sunpaytm.site";
 
   if (!apiKey || !apiSecret) {
     throw new Error("SUNPAYS_PAYIN_API_KEY or SUNPAYS_PAYIN_API_SECRET is not configured in .env");
