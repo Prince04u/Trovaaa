@@ -21,9 +21,9 @@ export async function createSunpaysPayin(payload: {
   notify_url_2?: string;
   metadata?: any;
 }) {
-  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.trim().replace(/^"|"$/g, '');
-  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.trim().replace(/^"|"$/g, '');
-  const baseUrl = process.env.SUNPAYS_BASE_URL?.trim().replace(/^"|"$/g, '') || "https://cashier.sunpaytm.site";
+  const apiKey = process.env.SUNPAYS_PAYIN_API_KEY?.replace(/\s/g, '')?.replace(/^"|"$/g, '');
+  const apiSecret = process.env.SUNPAYS_PAYIN_API_SECRET?.replace(/\s/g, '')?.replace(/^"|"$/g, '');
+  const baseUrl = process.env.SUNPAYS_BASE_URL?.replace(/\s/g, '')?.replace(/^"|"$/g, '') || "https://cashier.sunpaytm.site";
 
   if (!apiKey || !apiSecret) {
     throw new Error("SUNPAYS_PAYIN_API_KEY or SUNPAYS_PAYIN_API_SECRET is not configured in .env");
@@ -43,8 +43,10 @@ export async function createSunpaysPayin(payload: {
   });
 
   if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Sunpays pay-in failed: ${response.status} ${errText}`);
+    const errorText = await response.text();
+    const mKey = apiKey.substring(0, 4) + '...' + apiKey.substring(apiKey.length - 4);
+    const mSec = apiSecret.substring(0, 4) + '...' + apiSecret.substring(apiSecret.length - 4);
+    throw new Error(`Sunpays pay-in failed: ${response.status} ${errorText} | Debug Key=${mKey} Sec=${mSec} Body=${body}`);
   }
 
   return response.json();
