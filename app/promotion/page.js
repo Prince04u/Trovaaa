@@ -1,23 +1,61 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import { getProfile } from "@/lib/userApi";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function PromotionPage() {
+  const router = useRouter();
   const [copied, setCopied] = useState(false);
-  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeLevel, setActiveLevel] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showNotice, setShowNotice] = useState(false);
 
   useEffect(() => {
-    getProfile()
-      .then((res) => {
-        if (res?.success) setUser(res.data);
+    // Check if notice has been shown before
+    if (typeof window !== "undefined") {
+      const noticeShown = localStorage.getItem("promotion_notice_shown");
+      if (!noticeShown) {
+        setShowNotice(true);
+      }
+    }
+
+    let mounted = true;
+    setLoading(true);
+
+    fetch("/api/referrals/me?date=all", {
+      headers: {
+        "Authorization": `Bearer ${typeof window !== "undefined" ? localStorage.getItem("token") : ""}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (mounted && res?.success) {
+          setData(res.data);
+        }
       })
-      .catch(() => {});
+      .catch(err => console.error("Failed to fetch referrals:", err))
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => { mounted = false; };
   }, []);
 
-  const referralCode = user?.uid || user?.id?.slice(-8).toUpperCase() || "";
+  const closeNotice = () => {
+    setShowNotice(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("promotion_notice_shown", "true");
+    }
+  };
+
+  const referralCode = data?.referralCode || "";
   const referralLink = typeof window !== "undefined" && referralCode 
     ? `${window.location.origin}/register?ref=${referralCode}` 
     : "";
@@ -29,60 +67,146 @@ export default function PromotionPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const referrals = data?.referrals || [];
+  
+  const levelCounts = {
+    1: referrals.filter(r => r.level === 1).length,
+    2: referrals.filter(r => r.level === 2).length,
+    3: referrals.filter(r => r.level === 3).length,
+  };
+
+  const filteredReferrals = referrals
+    .filter(r => r.level === activeLevel)
+    .filter(r => {
+      if (!searchQuery) return true;
+      return String(r.uid || "").includes(searchQuery) || String(r.phoneMasked || "").includes(searchQuery);
+    });
+
   return (
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Top Navbar */}
-      <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
+      <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 w-full">
         <div className="flex items-center gap-3">
-          <Link href="/account" className="text-white text-decoration-none flex items-center">
+          <button onClick={() => router.back()} className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0">
             <span className="material-icons-outlined text-[24px]">arrow_back</span>
-          </Link>
+          </button>
           <span className="text-[17px] font-normal text-white">Promotion</span>
         </div>
-        <Link href="/reward" className="text-white text-decoration-none text-sm">
-          Explain
-        </Link>
+        <button className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0">
+          <span className="material-icons-outlined text-[24px]">menu</span>
+        </button>
       </nav>
 
       {/* Bonus Stats Header */}
-      <div className="bg-[#009688] text-white p-6 flex flex-col items-center justify-center gap-2">
-        <span className="text-sm opacity-90">Bonus</span>
-        <strong className="text-3xl font-bold">₹ 0.00</strong>
-      </div>
-
-      {/* Stats Summary */}
-      <div className="grid grid-cols-2 gap-4 p-4 bg-white m-4 rounded shadow-sm text-center">
-        <div>
-          <span className="text-xs text-gray-500 block mb-1">Total People</span>
-          <strong className="text-lg text-[#333]">0</strong>
+      <div className="bg-white flex flex-col pt-8 pb-4">
+        <div className="flex justify-center text-[22px] font-normal mb-8 text-[#333]">
+          Bonus:? {data?.summary?.walletEarnings?.toFixed(2) || "0"}
         </div>
-        <div>
-          <span className="text-xs text-gray-500 block mb-1">Contribution</span>
-          <strong className="text-lg text-[#333]">₹ 0.00</strong>
+        <div className="flex w-full">
+          <div className="flex-1 flex flex-col items-center">
+            <span className="text-[14px] text-gray-500 mb-1">Total People</span>
+            <span className="text-[18px] text-[#333]">{data?.summary?.totalReferrals || 0}</span>
+          </div>
+          <div className="flex-1 flex flex-col items-center">
+            <span className="text-[14px] text-gray-500 mb-1">Contribution</span>
+            <span className="text-[18px] text-[#333]">? {data?.summary?.walletEarnings?.toFixed(2) || "0"}</span>
+          </div>
         </div>
       </div>
 
       {/* Referral Link & Code Section */}
-      <div className="p-4 bg-white m-4 rounded shadow-sm flex flex-col gap-3">
-        <p className="text-sm font-medium text-gray-700 m-0">My Promotion Code: <strong className="text-[#009688]">{referralCode}</strong></p>
-        <div className="flex items-center gap-2 bg-gray-50 p-2.5 rounded border border-gray-200">
-          <input
-            type="text"
-            readOnly
-            value={referralLink}
-            className="bg-transparent border-none text-xs text-gray-600 flex-grow outline-none"
-          />
-          <button
-            type="button"
-            onClick={copyLink}
-            className="bg-[#009688] text-white text-xs px-3 py-1.5 rounded border-none cursor-pointer"
-          >
-            {copied ? "Copied!" : "Copy Link"}
-          </button>
-        </div>
+      <div className="bg-white px-4 py-3 border-t border-[#f5f5f5]">
+        <div className="text-[13px] text-gray-500 mb-1 mt-2">My Promotion Code</div>
+        <div className="text-[14px] text-[#333] mb-4 font-medium">{referralCode}</div>
+        <div className="text-[13px] text-gray-500 mb-1">My Promotion Link</div>
+        <div className="text-[14px] text-[#333] break-all">{referralLink}</div>
       </div>
 
+      <div className="bg-[#f5f5f5] px-4 py-6">
+        <button 
+          onClick={copyLink} 
+          className="w-full bg-[#fcfcfc] border border-gray-200 text-[#333] text-[15px] py-2.5 rounded-[2px] shadow-sm active:bg-gray-100 cursor-pointer"
+        >
+          {copied ? "Copied!" : "Copy Link"}
+        </button>
+      </div>
+
+      {/* Level Tabs */}
+      <div className="flex w-full">
+        {[1, 2, 3].map((level) => (
+          <div 
+            key={level}
+            onClick={() => setActiveLevel(level)}
+            className={`flex-1 text-center py-3 text-[14px] cursor-pointer transition-colors ${
+              activeLevel === level ? "bg-[#e0e0e0] text-[#333]" : "bg-white text-gray-500"
+            }`}
+          >
+            Level {level} ({levelCounts[level] || 0})
+          </div>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="bg-white p-2 border-b border-[#f5f5f5] flex items-center gap-2">
+        <span className="material-icons-outlined text-gray-400 text-[18px] ml-1">search</span>
+        <input 
+          type="text" 
+          placeholder="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1 bg-transparent border-none outline-none text-[13px] py-1"
+        />
+      </div>
+
+      {/* Table Headers */}
+      <div className="flex bg-white py-3 border-b border-[#f5f5f5] text-[12px] text-[#333] font-medium text-center">
+        <div className="flex-1">ID</div>
+        <div className="flex-1">Phone</div>
+        <div className="flex-1">Water reward</div>
+        <div className="flex-1">First reward</div>
+      </div>
+
+      {/* Table Content */}
+      <div className="bg-white flex flex-col">
+        {filteredReferrals.length === 0 ? (
+          <div className="py-8 text-center text-gray-400 text-[12px]">No data</div>
+        ) : (
+          filteredReferrals.map((r, i) => (
+            <div key={i} className="flex bg-white py-3 border-b border-[#f5f5f5] text-[12px] text-gray-500 text-center items-center">
+              <div className="flex-1">{r.uid || r.id.substring(0, 8)}</div>
+              <div className="flex-1">{r.phoneMasked}</div>
+              <div className="flex-1">?{Number(r.commission || 0).toFixed(2)}</div>
+              <div className="flex-1">?{Number(r.firstDepositAmount || 0).toFixed(2)}</div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Notice Modal */}
+      {showNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white w-full max-w-[340px] rounded-[4px] flex flex-col relative overflow-hidden shadow-xl">
+            <div className="px-6 pt-6 pb-2">
+              <h3 className="text-[18px] font-normal m-0 text-black">Notice</h3>
+            </div>
+            <div className="px-6 py-2 text-[14px] text-[#333] leading-relaxed max-h-[60vh] overflow-y-auto">
+              When your friends trade, you will also receive a 30% commission. Therefore, the more friends you invite, the higher your commission. There is a fixed income every day, the commission is permanent, but the reward is only onceWhen they make money, they will invite their friends to join them, and then you can get a 20% commission. In this way, your team can spread quickly. Therefore, I hope everyone can use our platform to make money, make money, and make money!When they make money, they will invite their friends to join them, and then you can get a 20% commission. In this way, your team can spread quickly. Therefore, I hope everyone can use our platform to make money, make money, and make money!Level 1 commission: Friends who join through your own link belong to your level, when they trade, you will get 30% commission.Tier 2 commission: Friends who join through your friend link belong to your secondary commission. When they trade, you can get 20% commission.Level 3 commission: Friends who join through friends of friends belong to your level 3. When they trade, you get 10% commission.Promotional rewards: 10% bonus amount for the first recharge after the first-level lower level joins. If your friend joins through your invitation and recharges 1000 for the first time, you will get 200
+            </div>
+            <div className="flex justify-end px-6 py-4">
+              <button 
+                onClick={closeNotice} 
+                className="text-[#009688] text-[15px] font-medium uppercase bg-transparent border-none outline-none cursor-pointer"
+              >
+                CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <BottomNav />
+      <LoadingDialog visible={loading} />
     </main>
   );
 }
+

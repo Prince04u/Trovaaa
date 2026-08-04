@@ -16,6 +16,13 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [expandedBetId, setExpandedBetId] = useState(null);
 
+  const formatPeriodId = (id) => {
+    if (!id) return "";
+    const str = String(id);
+    if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+    return str;
+  };
+
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -83,7 +90,7 @@ export default function OrdersPage() {
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
               const stateColor = bet.state === "won" ? "text-[#4caf50]" : bet.state === "pending" ? "text-[#ff9800]" : "text-[#f44336]";
               const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
-              const displayPeriodId = bet.periodId;
+              const displayPeriodId = formatPeriodId(bet.periodId);
               
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
