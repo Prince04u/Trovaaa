@@ -9,6 +9,6 @@ export default defineConfig({
   },
   datasource: {
     // Migrate/introspection need the direct (non-pooled) connection.
-    url: process.env.DIRECT_URL,
+    url: process.env.DIRECT_URL || process.env.DATABASE_URL,
   },
 });
