@@ -246,7 +246,7 @@ export default async function WithdrawalsPayoutPage({
                 return (
                   <tr key={w.id} className="border-b border-border/50 hover:bg-surface-2/10 transition-colors">
                     <td className="py-3 pr-4">
-                      <p className="font-medium text-white">{w.user.displayName}</p>
+                      <p className="font-medium text-zinc-900">{w.user.displayName}</p>
                       <p className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
                         <span>UID: {w.user.uid}</span>
                         {w.user.adminNote && (
@@ -267,20 +267,20 @@ export default async function WithdrawalsPayoutPage({
                       <div className="text-xs space-y-0.5">
                         <p className="font-semibold text-gold">{method}</p>
                         {method === "UPI" && (
-                          <p className="text-muted">UPI ID: <span className="text-white mono select-all font-medium">{accountDetails.upiId}</span></p>
+                          <p className="text-muted">UPI ID: <span className="text-zinc-900 mono select-all font-bold">{accountDetails.upiId}</span></p>
                         )}
                         {method === "BANK" && (
                           <>
-                            <p className="text-muted">Bank: <span className="text-white font-medium">{accountDetails.bankName}</span></p>
-                            <p className="text-muted">A/C: <span className="text-white mono select-all font-medium">{accountDetails.accountNumber}</span></p>
-                            <p className="text-muted">IFSC: <span className="text-white mono select-all font-medium">{accountDetails.ifsc}</span></p>
-                            <p className="text-muted">Name: <span className="text-white font-medium">{accountDetails.accountName}</span></p>
+                            <p className="text-muted">Bank: <span className="text-zinc-900 font-bold">{accountDetails.bankName}</span></p>
+                            <p className="text-muted">A/C: <span className="text-zinc-900 mono select-all font-bold">{accountDetails.accountNumber}</span></p>
+                            <p className="text-muted">IFSC: <span className="text-zinc-900 mono select-all font-bold">{accountDetails.ifsc}</span></p>
+                            <p className="text-muted">Name: <span className="text-zinc-900 font-bold">{accountDetails.accountName}</span></p>
                           </>
                         )}
                         {method === "USDT" && (
                           <>
-                            <p className="text-muted">Address: <span className="text-white mono select-all font-medium">{accountDetails.walletAddress || accountDetails.cryptoAddress || accountDetails.address || "N/A"}</span></p>
-                            <p className="text-muted">USDT Amount: <span className="text-white font-medium">{accountDetails.usdtAmount} USDT</span></p>
+                            <p className="text-muted">Address: <span className="text-zinc-900 mono select-all font-bold">{accountDetails.walletAddress || accountDetails.cryptoAddress || accountDetails.address || "N/A"}</span></p>
+                            <p className="text-muted">USDT Amount: <span className="text-zinc-900 font-bold">{accountDetails.usdtAmount} USDT</span></p>
                           </>
                         )}
                         {noteDetails.gatewayStatus === "failed" && (
@@ -295,7 +295,7 @@ export default async function WithdrawalsPayoutPage({
                         )}
                       </div>
                     </td>
-                    <td className="py-3 pr-4 text-right font-medium text-white">
+                    <td className="py-3 pr-4 text-right font-medium text-zinc-900">
                       {formatAmount(w.amount)}
                     </td>
                     <td className="py-3 pr-4 text-right font-bold text-green">
@@ -407,7 +407,7 @@ export default async function WithdrawalsPayoutPage({
                 return (
                   <tr key={w.id} className="border-b border-border/50 hover:bg-surface-2/10 transition-colors">
                     <td className="py-3 pr-4">
-                      <p className="font-medium text-white">{w.user.displayName}</p>
+                      <p className="font-medium text-zinc-900">{w.user.displayName}</p>
                       <p className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
                         <span>UID: {w.user.uid}</span>
                         {w.user.adminNote && (
@@ -418,10 +418,10 @@ export default async function WithdrawalsPayoutPage({
                     </td>
                     <td className="py-3 pr-4">
                       <div className="text-xs space-y-0.5">
-                        <p className="text-muted"><strong className="text-gold">BANK NAME:</strong> <span className="text-white font-medium">{accountDetails.bankName || "N/A"}</span></p>
-                        <p className="text-muted"><strong className="text-gold">A/C NO:</strong> <span className="text-white mono select-all font-medium">{accountDetails.accountNumber}</span></p>
-                        <p className="text-muted"><strong className="text-gold">IFSC CODE:</strong> <span className="text-white mono select-all font-medium">{accountDetails.ifsc}</span></p>
-                        <p className="text-muted"><strong className="text-gold">BENEFICIARY NAME:</strong> <span className="text-white font-medium">{accountDetails.accountName}</span></p>
+                        <p className="text-muted"><strong className="text-gold">BANK NAME:</strong> <span className="text-zinc-900 font-bold">{accountDetails.bankName || "N/A"}</span></p>
+                        <p className="text-muted"><strong className="text-gold">A/C NO:</strong> <span className="text-zinc-900 mono select-all font-bold">{accountDetails.accountNumber}</span></p>
+                        <p className="text-muted"><strong className="text-gold">IFSC CODE:</strong> <span className="text-zinc-900 mono select-all font-bold">{accountDetails.ifsc}</span></p>
+                        <p className="text-muted"><strong className="text-gold">BENEFICIARY NAME:</strong> <span className="text-zinc-900 font-bold">{accountDetails.accountName}</span></p>
                       </div>
                     </td>
                     <td className="py-3 pr-4 text-right font-bold text-green">
