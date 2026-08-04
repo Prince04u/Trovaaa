@@ -106,7 +106,7 @@ export default function RechargePage() {
       
       router.push("/wallet/deposit/pay");
     } catch (err) {
-      alert(err.response?.data?.message || err.message || "Failed to submit recharge.");
+      alert(err.response?.data?.error || err.response?.data?.message || err.message || "Failed to submit recharge.");
     } finally {
       setSubmitLoading(false);
     }

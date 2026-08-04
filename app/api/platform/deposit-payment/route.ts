@@ -49,6 +49,16 @@ export async function GET(request: NextRequest) {
           },
         });
       }
+
+      // Auto-heal: If it is a Crypto channel but minAmount is too high (e.g. 12) to accept converted INR, lower it to 1
+      if ((channel.channelKey.includes("trc20") || channel.channelKey.includes("bep20")) && channel.minAmount > 1) {
+        channel = await prisma.depositChannel.update({
+          where: { id: channel.id },
+          data: {
+            minAmount: 1,
+          },
+        });
+      }
     }
 
     if (!channel) {
@@ -71,7 +81,7 @@ export async function GET(request: NextRequest) {
       } else {
         const isTrc = channelId.includes("trc20");
         const label = isTrc ? "TronPay-USDT (TRC20)" : "Binance-USDT (BEP20)";
-        const minAmount = isTrc ? 12 : 1;
+        const minAmount = 1; // Lowered to 1 to accommodate 500 INR -> 5.26 USDT conversions
 
         channel = await prisma.depositChannel.create({
           data: {
