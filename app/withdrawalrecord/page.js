@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import BottomNav from "@/components/home/BottomNav";
 import { getWithdrawals } from "@/lib/walletApi";
@@ -8,6 +9,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft } from "lucide-react";
 import { format } from "date-fns";
 
 export default function WithdrawalRecordPage() {
+  const router = useRouter();
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -58,9 +60,9 @@ export default function WithdrawalRecordPage() {
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none font-sans">
       <nav className="bg-[#009688] text-white h-[46px] px-3 flex items-center gap-4 sticky top-0 z-10 w-full">
-        <Link href="/my" className="text-white flex items-center text-decoration-none">
+        <button onClick={() => router.back()} className="text-white flex items-center bg-transparent border-none outline-none cursor-pointer p-0">
           <span className="material-icons-outlined text-[20px]">arrow_back_ios</span>
-        </Link>
+        </button>
         <span className="text-[17px] font-normal text-white">Withdrawal Record</span>
       </nav>
 
