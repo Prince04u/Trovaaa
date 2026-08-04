@@ -6,9 +6,9 @@ import BottomNav from "@/components/home/BottomNav";
 
 export default function RechargePage() {
   const [amount, setAmount] = useState("");
-  const [paymentType, setPaymentType] = useState("0");
+  const [paymentType, setPaymentType] = useState("WinPay");
 
-  const PRESETS = [500, 1000, 2000, 5000, 10000, 50000];
+  const PRESETS = [500, 1000, 2000, 5000, 10000, 49999];
 
   const handleRecharge = (e) => {
     e.preventDefault();
@@ -16,81 +16,98 @@ export default function RechargePage() {
       alert("Enter or Select recharge amount");
       return;
     }
-    alert(`Recharge request for ₹${amount} submitted!`);
+    alert(`Recharge request for ₹${amount} via ${paymentType} submitted!`);
   };
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+    <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333]">
       {/* Top Navbar */}
       <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link href="/account" className="text-white text-decoration-none flex items-center">
             <span className="material-icons-outlined text-[24px]">arrow_back</span>
           </Link>
           <span className="text-[17px] font-normal text-white">Recharge</span>
         </div>
-        <Link href="/rechargerecord" className="text-white text-decoration-none flex items-center">
-          <span className="material-icons-outlined text-[22px]">history</span>
-        </Link>
+        <button type="button" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
+          <span className="material-icons-outlined text-[24px]">menu</span>
+        </button>
       </nav>
 
-      <div className="p-4 flex flex-col gap-4 w-full">
+      <div className="p-4 flex flex-col gap-6 w-full max-w-xl mx-auto mt-2">
         {/* Balance Display */}
-        <div className="bg-white p-4 rounded shadow-sm text-center">
-          <span className="text-sm text-gray-500">Balance: </span>
-          <strong className="text-xl text-[#009688]">₹ 0.00</strong>
+        <div className="text-center">
+          <span className="text-xl text-[#333]">Balance: ₹ </span>
         </div>
 
-        {/* Input & Presets */}
-        <div className="bg-white p-4 rounded shadow-sm flex flex-col gap-3">
-          <label className="text-sm text-gray-600">Enter Amount</label>
+        {/* Input */}
+        <div className="flex items-center bg-white rounded-md p-3 border border-gray-100" style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
+          <span className="material-icons-outlined text-gray-500 mr-2 text-[20px]">account_balance_wallet</span>
           <input
             type="number"
             placeholder="Enter or Select recharge amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="border-b border-[#009688] py-2 text-lg outline-none font-bold text-[#333]"
+            className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none"
           />
+        </div>
 
-          <div className="grid grid-cols-3 gap-2.5 mt-2">
-            {PRESETS.map((val) => (
-              <button
-                key={val}
-                type="button"
-                onClick={() => setAmount(String(val))}
-                className={`py-2 rounded border text-sm font-medium cursor-pointer ${
-                  amount === String(val)
-                    ? "bg-[#009688] text-white border-[#009688]"
-                    : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                }`}
-              >
-                ₹ {val}
-              </button>
-            ))}
-          </div>
+        {/* Presets Grid */}
+        <div className="grid grid-cols-2 gap-4">
+          {PRESETS.map((val) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => setAmount(String(val))}
+              className={`py-3 rounded-md text-sm cursor-pointer border-none font-normal bg-[#fafafa] transition-colors`}
+              style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.08)", color: amount === String(val) ? "#009688" : "#333" }}
+            >
+              ₹ {val}
+            </button>
+          ))}
         </div>
 
         {/* Payment Methods */}
-        <div className="bg-white p-4 rounded shadow-sm flex flex-col gap-2">
-          <span className="text-sm font-semibold text-gray-700 mb-1">Payment Method</span>
-          {["UPI Pay", "Paytm", "Bank Transfer"].map((name, idx) => (
-            <label key={name} className="flex items-center gap-3 py-2 cursor-pointer border-b border-gray-100">
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentType === String(idx)}
-                onChange={() => setPaymentType(String(idx))}
-                className="accent-[#009688]"
-              />
-              <span className="text-sm text-gray-700">{name}</span>
-            </label>
-          ))}
+        <div className="flex flex-col mt-2">
+          <span className="text-sm text-gray-500 mb-4 ml-1">Payment</span>
+          
+          <label className="flex items-center gap-8 py-3 cursor-pointer">
+            <div className="w-5 flex justify-center">
+              {paymentType === "WinPay" ? (
+                <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
+              ) : null}
+            </div>
+            <span className="text-[15px] text-[#333]">WinPay</span>
+            <input
+              type="radio"
+              name="payment"
+              checked={paymentType === "WinPay"}
+              onChange={() => setPaymentType("WinPay")}
+              className="hidden"
+            />
+          </label>
+          
+          <label className="flex items-center gap-8 py-3 cursor-pointer">
+            <div className="w-5 flex justify-center">
+              {paymentType === "Dypay" ? (
+                <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
+              ) : null}
+            </div>
+            <span className="text-[15px] text-[#333]">Dypay</span>
+            <input
+              type="radio"
+              name="payment"
+              checked={paymentType === "Dypay"}
+              onChange={() => setPaymentType("Dypay")}
+              className="hidden"
+            />
+          </label>
         </div>
 
         <button
           type="button"
           onClick={handleRecharge}
-          className="mt-2 bg-[#009688] text-white py-3.5 rounded font-medium text-[16px] border-none cursor-pointer hover:opacity-90 shadow-sm"
+          className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full"
         >
           Recharge
         </button>

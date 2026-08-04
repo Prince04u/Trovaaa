@@ -18,60 +18,83 @@ export default function WithdrawalPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+    <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333]">
       {/* Top Navbar */}
       <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link href="/account" className="text-white text-decoration-none flex items-center">
             <span className="material-icons-outlined text-[24px]">arrow_back</span>
           </Link>
           <span className="text-[17px] font-normal text-white">Withdrawal</span>
         </div>
-        <Link href="/withdrawalrecord" className="text-white text-decoration-none flex items-center">
-          <span className="material-icons-outlined text-[22px]">history</span>
-        </Link>
+        <button type="button" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
+          <span className="material-icons-outlined text-[24px]">menu</span>
+        </button>
       </nav>
 
-      <form onSubmit={handleWithdrawal} className="p-4 flex flex-col gap-4 w-full">
-        <div className="bg-white p-4 rounded shadow-sm flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Balance: </span>
-          <strong className="text-xl text-[#009688]">₹ 0.00</strong>
+      <div className="p-4 flex flex-col gap-5 w-full max-w-xl mx-auto mt-2">
+        {/* Balance Display */}
+        <div className="text-center">
+          <span className="text-xl text-[#333]">Balance: ₹ </span>
         </div>
 
-        <div className="bg-white p-4 rounded shadow-sm flex flex-col gap-3">
-          <label className="text-sm text-gray-600">Enter Amount</label>
-          <input
-            type="number"
-            placeholder="Enter withdrawal amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="border-b border-[#009688] py-2 text-lg outline-none font-bold text-[#333]"
-            required
-          />
+        {/* Input */}
+        <div>
+          <div className="flex items-center bg-white rounded-md p-3 border border-gray-100" style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
+            <span className="material-icons-outlined text-gray-500 mr-2 text-[20px]">credit_card</span>
+            <input
+              type="number"
+              placeholder="Enter withdrawal amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="flex-1 text-sm outline-none font-normal text-[#333] bg-transparent border-none"
+            />
+          </div>
+          <div className="text-sm text-[#333] mt-4 ml-1">Fee: 0,to account 0</div>
+        </div>
 
-          <label className="text-sm text-gray-600 mt-2">Select Bank Card</label>
-          <Link href="/addbankcard" className="text-xs text-[#009688] text-decoration-none">
-            + Add Bank Card
+        {/* Payout Methods */}
+        <div className="flex flex-col mt-2">
+          <span className="text-sm text-gray-500 mb-4 ml-1">Payout</span>
+          
+          <label className="flex items-center gap-8 py-2 cursor-pointer">
+            <div className="w-5 flex justify-center">
+              <span className="material-icons-outlined text-[#333] text-[20px]">check</span>
+            </div>
+            <span className="text-[15px] text-[#333]">Bankcard</span>
+          </label>
+        </div>
+
+        {/* Details Form */}
+        <div className="flex flex-col mt-4">
+          <Link href="/addbankcard" className="flex items-center justify-between py-4 text-decoration-none text-[#333]" style={{ borderBottom: "1px solid #f0f0f0" }}>
+            <div className="flex items-center gap-3">
+              <span className="material-icons-outlined text-gray-500 text-[22px]">credit_card</span>
+              <span className="text-[14px]">Select Bank Card</span>
+            </div>
+            <span className="material-icons-outlined text-gray-400 text-[20px]">chevron_right</span>
           </Link>
-
-          <label className="text-sm text-gray-600 mt-2">Enter Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border-b border-[#009688] py-2 text-base outline-none text-[#333]"
-            required
-          />
+          
+          <div className="flex items-center gap-3 py-4" style={{ borderBottom: "1px solid #f0f0f0" }}>
+            <span className="material-icons-outlined text-gray-500 text-[22px]">vpn_key</span>
+            <input
+              type="password"
+              placeholder="Enter your login password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="flex-1 text-[14px] outline-none font-normal text-[#333] bg-transparent border-none"
+            />
+          </div>
         </div>
 
         <button
-          type="submit"
-          className="mt-2 bg-[#009688] text-white py-3.5 rounded font-medium text-[16px] border-none cursor-pointer hover:opacity-90 shadow-sm"
+          type="button"
+          onClick={handleWithdrawal}
+          className="mt-6 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full"
         >
           Withdrawal
         </button>
-      </form>
+      </div>
 
       <BottomNav />
     </main>
