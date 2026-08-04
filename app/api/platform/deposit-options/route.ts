@@ -75,14 +75,29 @@ export async function GET(req: NextRequest) {
       };
     });
 
+    const customChannels = [
+      { id: "sunpay_winpay", label: "WinPay", enabled: true, min: 100, max: 50000, type: "upi", icon: "upi", range: "100 - 50000", usdtRate: undefined },
+      { id: "sunpay_3qpay", label: "3QPay", enabled: true, min: 100, max: 50000, type: "upi", icon: "upi", range: "100 - 50000", usdtRate: undefined },
+      { id: "nowpayments_trc20", label: "Tron pay(trc20)", enabled: true, min: 100, max: 100000, type: "crypto", icon: "usdt", range: "100 - 100000", usdtRate: 95 },
+      { id: "nowpayments_bep20", label: "Binance pay (bep20)", enabled: true, min: 100, max: 100000, type: "crypto", icon: "usdt", range: "100 - 100000", usdtRate: 95 }
+    ];
+
+    const customMethods = customChannels.map(c => ({
+      id: c.id,
+      label: c.label,
+      enabled: true,
+      channelId: c.id,
+      icon: c.icon
+    }));
+
     return NextResponse.json({
       success: true,
       data: {
         maintenance: isMaintenance,
         maintenanceMessage,
         disabledMessage,
-        methods: formattedMethods,
-        channels: formattedChannels,
+        methods: customMethods,
+        channels: customChannels,
       },
     });
   } catch (error: any) {

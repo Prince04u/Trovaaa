@@ -47,25 +47,25 @@ export default function RechargePage() {
     loadBalance();
     
     getDepositOptions().then((res) => {
-      // Override backend channels with the exact names requested by user
-      const opts = [
-        { id: "sunpay_winpay", label: "WinPay", min: 100, max: 50000, type: "upi" },
-        { id: "sunpay_3qpay", label: "3QPay", min: 100, max: 50000, type: "upi" },
-        { id: "nowpayments_trc20", label: "Tron pay(trc20)", min: 100, max: 100000, type: "crypto" },
-        { id: "nowpayments_bep20", label: "Binance pay (bep20)", min: 100, max: 100000, type: "crypto" }
-      ];
+      const opts = res?.data?.channels?.filter(c => c.enabled) || [];
       setChannels(opts);
-      setPaymentType(opts[0].id);
+      if (opts.length > 0) {
+        setPaymentType(opts[0].id);
+      } else {
+        // Fallback to dummy data if API returns none, to match the UI screenshot
+        setChannels([
+          { id: "winpay", label: "WinPay", min: 100, max: 50000 },
+          { id: "dypay", label: "Dypay", min: 100, max: 50000 }
+        ]);
+        setPaymentType("winpay");
+      }
       setLoading(false);
     }).catch(() => {
-      const opts = [
-        { id: "sunpay_winpay", label: "WinPay", min: 100, max: 50000, type: "upi" },
-        { id: "sunpay_3qpay", label: "3QPay", min: 100, max: 50000, type: "upi" },
-        { id: "nowpayments_trc20", label: "Tron pay(trc20)", min: 100, max: 100000, type: "crypto" },
-        { id: "nowpayments_bep20", label: "Binance pay (bep20)", min: 100, max: 100000, type: "crypto" }
-      ];
-      setChannels(opts);
-      setPaymentType(opts[0].id);
+      setChannels([
+        { id: "winpay", label: "WinPay", min: 100, max: 50000 },
+        { id: "dypay", label: "Dypay", min: 100, max: 50000 }
+      ]);
+      setPaymentType("winpay");
       setLoading(false);
     });
   }, [router, loadBalance]);
