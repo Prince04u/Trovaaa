@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import LoadingDialog from "@/components/auth/LoadingDialog";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
+import { getToken } from "@/lib/auth";
 
 export default function PromotionPage() {
   const router = useRouter();
@@ -27,13 +28,14 @@ export default function PromotionPage() {
     }
 
     let mounted = true;
-    setLoading(true);
 
-    fetch("/api/referrals/me?date=all", {
-      headers: {
-        "Authorization": `Bearer ${typeof window !== "undefined" ? localStorage.getItem("token") : ""}`
-      }
-    })
+    if (typeof window !== "undefined") {
+      setLoading(true);
+      fetch("/api/referrals/me?date=all", {
+        headers: {
+          "Authorization": `Bearer ${getToken()}`
+        }
+      })
       .then(res => res.json())
       .then(res => {
         if (mounted && res?.success) {
@@ -44,6 +46,7 @@ export default function PromotionPage() {
       .finally(() => {
         if (mounted) setLoading(false);
       });
+    }
 
     return () => { mounted = false; };
   }, []);
