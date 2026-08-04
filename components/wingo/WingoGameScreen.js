@@ -557,16 +557,16 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       <div className="win">
         <div className="mine_top">
-          <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent" }}>
-            <div className="balance">
-              Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-            <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
-              <div className="btn" style={{ display: 'flex', gap: '10px' }}>
-                <button type="button" className="bg-[#2196f3] text-white rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
-                <button type="button" className="bg-white text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "1px solid #dcdfe6", outline: "none", cursor: "pointer" }} onClick={() => setHistoryTab("chart")}>Trend</button>
+            <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent", display: "flex", flexDirection: "column", padding: "0", overflow: "hidden" }}>
+              <div className="balance" style={{ padding: "12px 15px", boxSizing: "border-box", width: "100%" }}>
+                Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
-              <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+              <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent", background: "rgba(0, 0, 0, 0.05)", padding: "10px 15px", width: "100%", boxSizing: "border-box", display: "flex", justifyContent: "space-between" }}>
+                <div className="btn" style={{ display: 'flex', gap: '10px' }}>
+                  <button type="button" className="bg-white text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} onClick={() => router.push("/wallet/deposit")}>Recharge</button>
+                  <button type="button" className="bg-white text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} onClick={() => setHistoryTab("chart")}>Trend</button>
+                </div>
+                <div className="refresh" onClick={loadData} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 24 24" 
