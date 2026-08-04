@@ -71,7 +71,7 @@ export default function RechargeRecordPage() {
                 </div>
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-[#999] text-[12px] font-mono">{r.txHash || r.id}</span>
-                  <span className="text-[#999] text-[12px]">{r.channel || "pay"}</span>
+                  <span className="text-[#999] text-[12px]">{(r.channel && r.channel.includes('_') ? r.channel.split('_').pop() : r.channel) || "pay"}</span>
                 </div>
                 <div className="flex justify-start">
                   <span className="text-[#999] text-[12px]">
