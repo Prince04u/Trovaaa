@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import { getUser } from "@/lib/auth";
+import { addWithdrawAccount } from "@/lib/walletApi";
 
 export default function AddBankCardPage() {
   const router = useRouter();
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [form, setForm] = useState({
     actualName: "",
     ifscCode: "",
@@ -34,10 +36,24 @@ export default function AddBankCardPage() {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Bank Card added successfully!");
-    router.push("/bankcard");
+    setSubmitLoading(true);
+    try {
+      await addWithdrawAccount({
+        type: "bank",
+        accountName: form.actualName,
+        accountNumber: form.bankAccount,
+        ifsc: form.ifscCode,
+        bankName: form.bankName,
+      });
+      alert("Bank Card added successfully!");
+      router.back();
+    } catch (err) {
+      alert(err.response?.data?.message || err.message || "Failed to add bank card.");
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   const inputClass = "w-full bg-transparent text-[13px] text-[#333] placeholder-[#adadad] outline-none border-none py-[14px]";
@@ -113,9 +129,10 @@ export default function AddBankCardPage() {
         <div className="w-full flex justify-center mt-8 px-4">
           <button
             type="submit"
-            className="w-full max-w-[600px] bg-[#009688] text-white py-[12px] rounded-[4px] font-normal text-[16px] border-none cursor-pointer hover:opacity-90 shadow-md"
+            disabled={submitLoading}
+            className="w-full max-w-[600px] bg-[#009688] text-white py-[12px] rounded-[4px] font-normal text-[16px] border-none cursor-pointer hover:opacity-90 shadow-md disabled:opacity-50"
           >
-            Continue
+            {submitLoading ? "Adding..." : "Continue"}
           </button>
         </div>
       </form>

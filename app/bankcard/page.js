@@ -1,11 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/home/BottomNav";
+import { getWithdrawAccounts } from "@/lib/walletApi";
+import PageLoader from "@/components/brand/PageLoader";
 
 export default function BankCardPage() {
-  const [bankCards] = useState([]);
+  const [bankCards, setBankCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchCards = async () => {
+      try {
+        const res = await getWithdrawAccounts();
+        if (mounted && res?.data?.bank) {
+          setBankCards(res.data.bank);
+        }
+      } catch (err) {
+        console.error("Failed to load bank cards", err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchCards();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
@@ -23,14 +44,17 @@ export default function BankCardPage() {
       </nav>
 
       <div className="p-4 w-full">
-        {bankCards.length === 0 ? (
+        {loading ? (
+          <div className="py-16 text-center text-gray-400 text-[14px]">Loading...</div>
+        ) : bankCards.length === 0 ? (
           <div className="py-16 text-center text-gray-400 text-[14px]">No bank card added</div>
         ) : (
           <div className="flex flex-col gap-3">
             {bankCards.map((card, idx) => (
-              <div key={idx} className="bg-white p-4 rounded shadow-sm border border-gray-200">
-                <p className="font-bold text-[#333]">{card.bankname}</p>
-                <p className="text-sm text-gray-600">{card.bankaccount}</p>
+              <div key={card.id || idx} className="bg-white p-4 rounded shadow-sm border border-gray-200">
+                <p className="font-bold text-[#333] mb-1">{card.bankName}</p>
+                <p className="text-sm text-gray-600 mb-1">{card.accountNumber}</p>
+                <p className="text-xs text-gray-400 uppercase">{card.ifsc}</p>
               </div>
             ))}
           </div>
