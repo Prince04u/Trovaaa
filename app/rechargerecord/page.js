@@ -66,7 +66,7 @@ export default function RechargeRecordPage() {
             {displayRecords.map((r, i) => (
               <div key={r.id || i} className="flex flex-col py-3 px-4 border-b border-[#f5f5f5]">
                 <div className="flex justify-between items-center mb-[4px]">
-                  <span className="text-[#666] text-[14px]">₹ {(r.amount / 100).toFixed(2)}</span>
+                  <span className="text-[#666] text-[14px]">₹ {Number(r.amount).toFixed(2)}</span>
                   <span className="text-[13px]">{getStatusDisplay(r.status)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-[4px]">

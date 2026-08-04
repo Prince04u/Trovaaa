@@ -68,7 +68,24 @@ export default function WithdrawalPage() {
     
     setSubmitLoading(true);
     try {
-      await requestWithdraw(Number(amount), "bank", bankAccountId, password);
+      const selectedBank = banks.find((b) => b.id === bankAccountId);
+      if (!selectedBank) {
+        alert("Selected bank account not found");
+        return;
+      }
+      
+      const payload = {
+        amount: Number(amount), // API expects INR
+        method: "bank",
+        accountDetails: {
+          accountName: selectedBank.accountName,
+          accountNumber: selectedBank.accountNumber,
+          ifsc: selectedBank.ifsc,
+          bankName: selectedBank.bankName,
+        }
+      };
+
+      await requestWithdraw(payload);
       alert(`Withdrawal request for ₹${amount} submitted!`);
       router.push("/withdrawalrecord");
     } catch (err) {
