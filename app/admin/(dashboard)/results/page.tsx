@@ -4,7 +4,7 @@ import { getResultControlData } from "@/lib/admin/queries";
 import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { ResultModeForm, OverrideForm, CancelOverrideButton, WinningPercentageForm, BrahmastraProfitsForm } from "./ResultControlForms";
 import { LiveControl } from "./LiveControl";
-
+import { AdminQueryProvider } from "./QueryProvider";
 export default async function AdminResultsPage() {
   const staff = await requirePermission("results.view");
   const canMode = await hasPermission(staff, "results.mode");
@@ -14,7 +14,8 @@ export default async function AdminResultsPage() {
   const { resultMode, winningPercentage, brahmastraProfits, overrides } = await getResultControlData();
 
   return (
-    <div className="flex flex-col gap-8">
+    <AdminQueryProvider>
+      <div className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold">Parity Result Control</h1>
         <p className="text-sm text-muted mt-1">Live periods, payout exposure, and manual results for Parity</p>
@@ -82,6 +83,7 @@ export default async function AdminResultsPage() {
           )}
         </div>
       </section>
-    </div>
+      </div>
+    </AdminQueryProvider>
   );
 }
