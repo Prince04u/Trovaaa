@@ -4,27 +4,19 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { setResultOverrideAction, type AdminActionState } from "@/lib/actions/admin";
-import { setK3OverrideAction, setFiveDOverrideAction } from "@/lib/actions/gameAdmin";
 import { formatAmount } from "@/lib/format";
 import { Button } from "@/components/ui/Button";
 
-const GAMES = [
-  { key: "wingo", label: "Wingo" },
-  { key: "k3", label: "K3" },
-  { key: "fived", label: "5D" },
-];
 const MODES = [
-  { key: "s30", label: "30s", enum: "S30", wingoOnly: true },
-  { key: "m1", label: "1m", enum: "M1" },
-  { key: "m3", label: "3m", enum: "M3" },
-  { key: "m5", label: "5m", enum: "M5" },
-  { key: "m10", label: "10m", enum: "M10", hideForWingo: true },
-  { key: "parity", label: "Parity (3m)", enum: "PARITY", wingoOnly: true },
-  { key: "bcone", label: "Bcone (3m)", enum: "BCONE", wingoOnly: true },
+  { key: "parity", label: "Parity (3m)", enum: "PARITY" },
+  { key: "bcone", label: "Bcone (3m)", enum: "BCONE" },
+  { key: "s30", label: "30s Fast", enum: "S30" },
+  { key: "m1", label: "1m Fast", enum: "M1" },
+  { key: "m3", label: "3m Fast", enum: "M3" },
+  { key: "m5", label: "5m Fast", enum: "M5" },
 ];
 
 type Option = { label: string; value: Record<string, number>; payout: number };
-type PositionRow = { position: string; digits: { digit: number; payout: number }[] };
 type StateDto = {
   game: string;
   mode: string;
@@ -34,26 +26,23 @@ type StateDto = {
   totalStake: number;
   betCount: number;
   options?: Option[];
-  positions?: PositionRow[];
   selections?: Record<string, { amount: number; count: number }>;
 };
 
-async function fetchState(game: string, mode: string): Promise<StateDto> {
-  const res = await fetch(`/api/admin/results/state?game=${game}&mode=${mode}`, { cache: "no-store" });
+async function fetchState(mode: string): Promise<StateDto> {
+  const res = await fetch(`/api/admin/results/state?game=wingo&mode=${mode}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load state");
   return res.json();
 }
 
 export function LiveControl({ canOverride }: { canOverride: boolean }) {
   const queryClient = useQueryClient();
-  const [game, setGame] = useState("wingo");
-  const [mode, setMode] = useState("m1");
-  const [digits, setDigits] = useState([0, 0, 0, 0, 0]);
+  const [mode, setMode] = useState("parity");
   const [message, setMessage] = useState<AdminActionState>({});
 
   const { data } = useQuery({
-    queryKey: ["admin-results-state", game, mode],
-    queryFn: () => fetchState(game, mode),
+    queryKey: ["admin-results-state", "wingo", mode],
+    queryFn: () => fetchState(mode),
     refetchInterval: 2000,
   });
 
@@ -67,13 +56,11 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
       fd.set("mode", modeEnum);
       fd.set("roundNumber", String(data.roundNumber));
       for (const [k, v] of Object.entries(value)) fd.set(k, String(v));
-      if (game === "wingo") return setResultOverrideAction({}, fd);
-      if (game === "k3") return setK3OverrideAction({}, fd);
-      return setFiveDOverrideAction({}, fd);
+      return setResultOverrideAction({}, fd);
     },
     onSuccess: (result) => {
       setMessage(result);
-      queryClient.invalidateQueries({ queryKey: ["admin-results-state", game, mode] });
+      queryClient.invalidateQueries({ queryKey: ["admin-results-state", "wingo", mode] });
     },
     onError: (err) => setMessage({ error: err instanceof Error ? err.message : "Failed" }),
   });
@@ -89,7 +76,7 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
         <div>
           <h2 className="font-semibold">Live period — instant force result</h2>
           <p className="text-xs text-muted mt-0.5 font-mono">
-            {data ? `${game.toUpperCase()} ${modeEnum} · round #${data.roundNumber}` : "loading…"}
+            {data ? `PARITY ${modeEnum} · round #${data.roundNumber}` : "loading…"}
           </p>
         </div>
         <div className="rounded-lg border border-gold/40 bg-gold/10 px-4 py-2 text-center">
@@ -101,27 +88,7 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {GAMES.map((g) => (
-          <button
-            key={g.key}
-            onClick={() => {
-              setGame(g.key);
-              setMessage({});
-              const stillValid = MODES.some(
-                (m) => m.key === mode && !(g.key === "wingo" ? m.hideForWingo : m.wingoOnly)
-              );
-              if (!stillValid) setMode("m1");
-            }}
-            className={clsx(
-              "rounded-full px-4 py-1.5 text-sm border",
-              game === g.key ? "border-gold text-gold bg-gold/10 font-semibold" : "border-border text-muted hover:text-foreground"
-            )}
-          >
-            {g.label}
-          </button>
-        ))}
-        <span className="w-px bg-border mx-1" />
-        {MODES.filter((m) => (game === "wingo" ? !m.hideForWingo : !m.wingoOnly)).map((m) => (
+        {MODES.map((m) => (
           <button
             key={m.key}
             onClick={() => { setMode(m.key); setMessage({}); }}
@@ -176,11 +143,9 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
       {data?.options && (
         <div>
           <p className="text-xs text-muted mb-2">
-            {game === "wingo"
-              ? "Payout owed if each number wins — click a number to force it for this round."
-              : "Payout owed if each dice sum wins — click a sum to force it (uses a matching dice combo)."}
+            Payout owed if each number wins — click a number to force it for this round.
           </p>
-          <div className={clsx("grid gap-2", game === "wingo" ? "grid-cols-5 lg:grid-cols-10" : "grid-cols-4 lg:grid-cols-8")}>
+          <div className="grid gap-2 grid-cols-5 lg:grid-cols-10">
             {data.options.map((opt) => (
               <button
                 key={opt.label}
@@ -203,42 +168,6 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
               </button>
             ))}
           </div>
-        </div>
-      )}
-
-      {data?.positions && (
-        <div className="flex flex-col gap-4">
-          <p className="text-xs text-muted">
-            Pick a digit for each position (payout owed per digit shown), then force the full result.
-          </p>
-          {data.positions.map((row, pi) => (
-            <div key={row.position}>
-              <p className="text-xs font-semibold text-muted mb-1">Position {row.position}</p>
-              <div className="grid grid-cols-10 gap-1.5">
-                {row.digits.map((d) => (
-                  <button
-                    key={d.digit}
-                    onClick={() => setDigits((prev) => prev.map((v, i) => (i === pi ? d.digit : v)))}
-                    className={clsx(
-                      "rounded-lg border p-2 text-center text-sm transition",
-                      digits[pi] === d.digit ? "border-gold text-gold bg-gold/10 font-bold" : "border-border bg-surface-2 hover:border-gold/40"
-                    )}
-                  >
-                    <p>{d.digit}</p>
-                    <p className={clsx("text-[9px]", d.payout === 0 ? "text-green" : "text-muted")}>{d.payout}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-          <Button
-            variant="danger"
-            disabled={!canOverride || forceMutation.isPending}
-            onClick={() => forceMutation.mutate({ a: digits[0], b: digits[1], c: digits[2], d: digits[3], e: digits[4] })}
-            className="self-start"
-          >
-            Force result {digits.join("")}
-          </Button>
         </div>
       )}
 
