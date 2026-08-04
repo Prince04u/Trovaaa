@@ -92,9 +92,9 @@ export default function WithdrawalPage() {
           </Link>
           <span className="text-[17px] font-normal text-white">Withdrawal</span>
         </div>
-        <button type="button" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
+        <Link href="/withdrawalrecord" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer text-decoration-none">
           <span className="material-icons-outlined text-[24px]">menu</span>
-        </button>
+        </Link>
       </nav>
 
       <div className="p-4 flex flex-col gap-5 w-full max-w-xl mx-auto mt-2">

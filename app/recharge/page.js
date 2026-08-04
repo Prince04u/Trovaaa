@@ -129,9 +129,9 @@ export default function RechargePage() {
           </Link>
           <span className="text-[17px] font-normal text-white">Recharge</span>
         </div>
-        <button type="button" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
+        <Link href="/rechargerecord" className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer text-decoration-none">
           <span className="material-icons-outlined text-[24px]">menu</span>
-        </button>
+        </Link>
       </nav>
 
       <div className="p-4 flex flex-col gap-6 w-full max-w-xl mx-auto mt-2">
