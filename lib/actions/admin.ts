@@ -320,13 +320,7 @@ export async function approveWithdrawAction(formData: FormData) {
     noteDetails = JSON.parse(withdraw.note || "{}");
   } catch {}
 
-  const updatedNote = isMock ? JSON.stringify({
-    ...noteDetails,
-    gateway: "mock",
-    gatewayStatus: "success",
-    transactionId: `mock-${withdraw.id}`,
-    submittedAt: new Date().toISOString(),
-  }) : withdraw.note;
+  const updatedNote = withdraw.note;
 
   await prisma.withdrawRequest.update({
     where: { id },
