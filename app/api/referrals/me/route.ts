@@ -214,6 +214,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
+        id: user.id,
+        uid: user.uid,
         inviteCode: user.referralCode,
         referralCode: user.referralCode,
         inviteType: agent ? "agent" : "user",

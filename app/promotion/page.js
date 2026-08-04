@@ -53,7 +53,7 @@ export default function PromotionPage() {
     }
   };
 
-  const referralCode = data?.referralCode || "";
+  const referralCode = data?.referralCode || data?.uid || (data?.id ? data.id.slice(-8).toUpperCase() : "");
   const referralLink = typeof window !== "undefined" && referralCode 
     ? `${window.location.origin}/register?ref=${referralCode}` 
     : "";
