@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
-import { createNowPaymentsPayment } from "@/lib/nowpayments";
+import { createNowPaymentsPayment, createNowPaymentsInvoice } from "@/lib/nowpayments";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { createSunpaysPayin } from "@/lib/sunpays";
 import { getRequestBaseUrl } from "@/lib/url";
