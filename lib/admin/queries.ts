@@ -106,7 +106,10 @@ export async function getResultControlData() {
     resultMode: setting?.value ?? "RANDOM", 
     winningPercentage: winPct ? Number(winPct.value) : 30,
     brahmastraProfits: brahmastra?.value === "true",
-    overrides 
+    overrides: overrides.map(o => ({
+      ...o,
+      roundNumber: o.roundNumber.toString()
+    }))
   };
 }
 
