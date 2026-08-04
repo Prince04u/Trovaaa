@@ -268,7 +268,7 @@ export default function AgentPortalScreen() {
       )}
 
       {loading && !dashboard ? (
-        <div className="agent-portal-loading">Loading partner dashboard...</div>
+        <LoadingDialog visible={true} />
       ) : dashboard ? (
         <>
           <section className="agent-code-card">

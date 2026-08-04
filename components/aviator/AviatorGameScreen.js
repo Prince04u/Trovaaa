@@ -11,6 +11,7 @@ import { getBalance } from "@/lib/walletApi";
 import { getAviatorConfig } from "@/lib/platformApi";
 import { cashOut, cancelBet, getMyBets, getRecentRounds, placeBet } from "@/lib/aviatorApi";
 import { GameHeader } from "@/components/games/GameHeader";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 const DEFAULT_LIMITS = { minBetAmount: 10, maxBetAmount: 50000, maxAutoCashOut: 100, houseEdge: 0.01 };
 const HISTORY_LIMIT = 25;
@@ -564,7 +565,7 @@ export default function AviatorGameScreen() {
   if (!mounted) {
     return (
       <div className="sp-aviator-container">
-        <div className="av-msg">Loading...</div>
+        <LoadingDialog visible={true} />
       </div>
     );
   }

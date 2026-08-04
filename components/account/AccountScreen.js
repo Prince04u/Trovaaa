@@ -9,6 +9,8 @@ import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
 import { disconnectSocket } from "@/lib/socket";
 import { REF_ICONS } from "./ReferenceIcons";
+import BankCardModal from "./BankCardModal";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function AccountScreen() {
   const router = useRouter();
@@ -80,7 +82,7 @@ export default function AccountScreen() {
   if (!mounted) {
     return (
       <main className="min-h-screen bg-[#fafafa] w-full flex items-center justify-center">
-        <div className="text-sm text-gray-400 font-normal">Loading...</div>
+        <LoadingDialog visible={true} />
       </main>
     );
   }
