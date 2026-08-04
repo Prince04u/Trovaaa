@@ -3,7 +3,8 @@ import { getAuthUser } from "@/lib/auth/jwt";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
-import { colorChips } from "@/lib/wingo/rounds";
+import { colorChips, getRoundNumber } from "@/lib/wingo/rounds";
+import { settleRoundIfDue } from "@/lib/wingo/settle";
 
 const MODE_DURATIONS: Record<string, number> = {
   S30: 30,
@@ -23,6 +24,20 @@ const REVERSE_DURATION_MAP: Record<string, string> = {
 
 export async function GET(req: NextRequest) {
   try {
+    const now = Date.now();
+    // Best-effort lazy settlement of the immediate previous round for all modes
+    // This guarantees the Orders page shows real-time settled bets instead of "Wait"
+    const settlementPromises = ["S30", "M1", "M3", "M5"].map((mode) => {
+      const prevRound = getRoundNumber(mode as any, now) - BigInt(1);
+      return settleRoundIfDue(mode as any, prevRound).catch(err => {
+        console.error(`Error lazy settling ${mode} in bets/my:`, err);
+      });
+    });
+    
+    // Fire and forget (don't await) if we want it blazing fast, or await to guarantee it's in the response.
+    // The user requested real-time updates for Orders page, so we await it here!
+    await Promise.allSettled(settlementPromises);
+
     const user = await getAuthUser(req);
     if (!user) {
       return NextResponse.json({ message: "Not authorized, token invalid or expired" }, { status: 401 });
