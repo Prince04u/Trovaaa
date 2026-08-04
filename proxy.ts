@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   const requestHeaders = new Headers(request.headers);
@@ -39,7 +39,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-// Limit the middleware matcher to match relevant paths to keep static resources fast
+// Limit the proxy matcher to match relevant paths to keep static resources fast
 export const config = {
   matcher: [
     "/admin/:path*",
