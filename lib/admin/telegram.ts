@@ -37,7 +37,7 @@ export async function sendPhotoToTelegram(
 
   // Convert Buffer to Blob for standard Fetch multipart/form-data
   const blob = new Blob([photoBuffer], { type: "image/png" });
-  formData.append("photo", blob, "prediction_chart.png");
+  formData.append("document", blob, "prediction_chart.png");
 
   if (caption) {
     formData.append("caption", caption);
@@ -45,17 +45,17 @@ export async function sendPhotoToTelegram(
   }
 
   const token = TELEGRAM_BOT_TOKEN;
-  console.log(`Sending photo to Telegram chat ID: ${targetChatId} using bot token: ${token.slice(0, 10)}...`);
+  console.log(`Sending document to Telegram chat ID: ${targetChatId} using bot token: ${token.slice(0, 10)}...`);
 
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
     method: "POST",
     body: formData,
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error("Failed to send photo to Telegram:", errorText);
-    throw new Error(`Telegram SendPhoto error: ${errorText}`);
+    console.error("Failed to send document to Telegram:", errorText);
+    throw new Error(`Telegram SendDocument error: ${errorText}`);
   }
 
   console.log("Photo successfully sent to Telegram!");

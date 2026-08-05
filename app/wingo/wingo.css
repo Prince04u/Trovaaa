@@ -323,7 +323,7 @@ ul, ol, li, p {
 }
 .list_con li.wg-period-cell {
     color: #333;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .list_con li.wg-number-cell {
     font-size: 13px;

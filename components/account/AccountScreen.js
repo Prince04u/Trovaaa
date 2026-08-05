@@ -86,9 +86,19 @@ export default function AccountScreen() {
     );
   }
 
-  const displayName = (user?.name || user?.mobile || "").replace(/\s*\(Multiple\)/gi, "");
+  let cleanMobile = (user?.mobile || user?.name || "").replace(/\s*\(Multiple\)/gi, "").trim();
+  if (cleanMobile) {
+    if (!cleanMobile.startsWith("+91")) {
+      if (cleanMobile.startsWith("91") && cleanMobile.length === 12) {
+        cleanMobile = "+" + cleanMobile;
+      } else {
+        cleanMobile = "+91" + cleanMobile;
+      }
+    }
+  }
+  const displayName = cleanMobile || "User";
   const uid = user?.uid || user?.id?.slice(-8).toUpperCase() || "";
-  const avatarChar = displayName ? displayName.charAt(0).toUpperCase() : "P";
+  const avatarChar = displayName ? (displayName.startsWith("+91") ? displayName.charAt(3) : displayName.charAt(0)).toUpperCase() : "P";
 
   return (
     <main className="min-h-screen bg-[#fafafa] pb-[64px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">

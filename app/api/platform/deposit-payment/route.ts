@@ -122,8 +122,16 @@ export async function GET(request: NextRequest) {
     // Strictly route to Sunpays so the user is forced into the official gateway checkout.
     if (isSunpays) {
       // 1. Create a PENDING deposit request in database
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dateStr = `${dd}${mm}`;
+      const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000);
+      const customDepositId = `RC${dateStr}IS${randomDigits}`;
+
       const depositRequest = await prisma.depositRequest.create({
         data: {
+          id: customDepositId,
           userId: user.id,
           amount: amount,
           status: "PENDING",
@@ -150,6 +158,13 @@ export async function GET(request: NextRequest) {
         if (!checkoutUrl) {
           throw new Error("No checkout_url returned from Sunpay");
         }
+
+        // Save merchant providerId in DB first so the telegram lookup can fetch it
+        const providerId = String(spResponse.transaction?.id || spResponse.id || depositRequest.id);
+        await prisma.depositRequest.update({
+          where: { id: depositRequest.id },
+          data: { providerId },
+        });
 
         // Send initial Telegram bot notification
         const mode = "Sunpay UPI";
@@ -178,7 +193,6 @@ export async function GET(request: NextRequest) {
         await prisma.depositRequest.update({
           where: { id: depositRequest.id },
           data: { 
-            providerId: String(spResponse.transaction?.id || spResponse.id || depositRequest.id),
             note: updatedNote 
           },
         });
@@ -209,8 +223,16 @@ export async function GET(request: NextRequest) {
       const priceAmountInr = amountInr; // Pass INR amount directly since NowPayments helper uses 'inr' as price_currency
 
       // 1. Create a PENDING deposit request in database
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dateStr = `${dd}${mm}`;
+      const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000);
+      const customDepositId = `RC${dateStr}UN${randomDigits}`;
+
       const depositRequest = await prisma.depositRequest.create({
         data: {
+          id: customDepositId,
           userId: user.id,
           amount: amountInr,
           status: "PENDING",
@@ -220,14 +242,20 @@ export async function GET(request: NextRequest) {
 
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
 
-      // 2. Request invoice from NOWPayments gateway
+      // 2. Request direct payment from NOWPayments gateway for white-label address rendering
       console.log(`Calling NOWPayments for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
-      const npPayment = await createNowPaymentsInvoice(
+      const npPayment = await createNowPaymentsPayment(
         priceAmountInr,
-        depositRequest.id,
         payCurrency,
+        depositRequest.id,
         ipnCallbackUrl
       );
+
+      // Save merchant providerId in DB first so the telegram lookup can fetch it
+      await prisma.depositRequest.update({
+        where: { id: depositRequest.id },
+        data: { providerId: String(npPayment.payment_id) },
+      });
 
       // 3. Send initial Telegram bot notification
       const mode = "Usdt(deposit channel)";
@@ -249,31 +277,44 @@ export async function GET(request: NextRequest) {
 
       // 4. Save NOWPayments response details and telegram message ID in database note
       const updatedNote = JSON.stringify({
-        paymentId: npPayment.id,
-        checkoutUrl: npPayment.invoice_url,
+        paymentId: npPayment.payment_id,
+        payAddress: npPayment.pay_address,
+        payAmount: npPayment.pay_amount,
         telegramMessageId: telegramMessageId || undefined,
       });
 
       await prisma.depositRequest.update({
         where: { id: depositRequest.id },
-        data: { note: updatedNote },
+        data: { 
+          note: updatedNote 
+        },
       });
 
-      // 5. Return details to user payment screen (with checkoutUrl to skip manual pay screen)
+      // 5. Return details to user payment screen for custom white-label rendering
       return NextResponse.json({
         success: true,
         data: {
           type: "crypto",
           depositId: depositRequest.id,
-          checkoutUrl: npPayment.invoice_url,
+          payAddress: npPayment.pay_address,
+          payAmount: npPayment.pay_amount,
+          payCurrency: npPayment.pay_currency,
           usdtRate,
           channelLabel: channel.label,
         },
       });
     } else {
       // Manual UPI Channel
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dateStr = `${dd}${mm}`;
+      const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000);
+      const customDepositId = `RC${dateStr}IS${randomDigits}`;
+
       const depositRequest = await prisma.depositRequest.create({
         data: {
+          id: customDepositId,
           userId: user.id,
           amount: amount,
           status: "PENDING",

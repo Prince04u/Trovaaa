@@ -28,7 +28,7 @@ export async function sendTelegramNotification(
   const isWithdraw = mode.toLowerCase().includes("withdraw");
   
   const eDance = `<tg-emoji emoji-id="6307506297080121060">💃</tg-emoji>`;
-  const eMoney = `💵`;
+  const eMoney = `<tg-emoji emoji-id="6235459831302460476">💵</tg-emoji>`;
   const eComet = `☄️`;
   const eTime = `<tg-emoji emoji-id="6242510612824332116">🕐</tg-emoji>`;
   const eArrow = `<tg-emoji emoji-id="6068736321927519921">➡️</tg-emoji>`;
@@ -85,6 +85,25 @@ export async function sendTelegramNotification(
     statusText = `Failed ${eProhibited}`;
   }
 
+  let merchantOrderId = "N/A";
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    if (!isWithdraw) {
+      const depReq = await prisma.depositRequest.findUnique({
+        where: { id: orderId },
+        select: { providerId: true }
+      });
+      if (depReq && depReq.providerId) {
+        merchantOrderId = depReq.providerId;
+      }
+    } else {
+      // Withdrawal requests don't have providerId by default in the schema
+      merchantOrderId = "N/A";
+    }
+  } catch (err) {
+    console.error("Telegram notification DB query failed:", err);
+  }
+
   const isUsdt = mode.toLowerCase().includes("usdt") || mode.toLowerCase().includes("trc20") || mode.toLowerCase().includes("bep20");
   let amountText = "";
   if (isUsdt) {
@@ -100,7 +119,7 @@ export async function sendTelegramNotification(
     const typeLabel = isMock 
       ? `Mock <tg-emoji emoji-id="6269083884722328380">⁉️</tg-emoji>`
       : `Real <tg-emoji emoji-id="6147460667281511517">✔️</tg-emoji>`;
-    extraRows += `\n\n🔛Type : ${typeLabel}`;
+    extraRows += `\n\n<tg-emoji emoji-id="6147637448135414816">🏷️</tg-emoji>Type : ${typeLabel}`;
 
     if (approvedBy) {
       let byName = approvedBy;
@@ -118,6 +137,10 @@ export async function sendTelegramNotification(
     }
   }
 
+  const eRcWIcon = `<tg-emoji emoji-id="6269014138748408445">🆔</tg-emoji>`;
+
+  const idLabel = isWithdraw ? "W id" : "Rc id";
+
   const messageText = `${headerText}
 
 ${eMoney}Amount :- ${amountText}
@@ -128,7 +151,9 @@ ${eArrow}Date : ${dateStr}
 
 ${eRainbow}Uid :-<code>${userUid}</code>
 
-${eBoom}order id :-<code>${orderId}</code>
+${eBoom}order id :-<code>${merchantOrderId}</code>
+
+${eRcWIcon}${idLabel} :-<code>${orderId}</code>
 
 ${eShield}Txid :- <code>${txid}</code>
 

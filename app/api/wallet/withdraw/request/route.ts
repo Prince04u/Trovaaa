@@ -135,8 +135,16 @@ export async function POST(req: NextRequest) {
         netPayoutAmount,
       });
 
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dateStr = `${dd}${mm}`;
+      const randomDigits = Math.floor(1000000000 + Math.random() * 9000000000);
+      const customWithdrawId = `W${dateStr}${randomDigits}`;
+
       const withdrawRequest = await tx.withdrawRequest.create({
         data: {
+          id: customWithdrawId,
           userId: user.id,
           amount: numericAmount,
           status: "PENDING",

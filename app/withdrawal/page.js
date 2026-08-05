@@ -17,6 +17,8 @@ export default function WithdrawalPage() {
   const [password, setPassword] = useState("");
   const [banks, setBanks] = useState([]);
   const [bankAccountId, setBankAccountId] = useState("");
+  const [error, setError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -54,16 +56,17 @@ export default function WithdrawalPage() {
 
   const handleWithdrawal = async (e) => {
     e.preventDefault();
+    setError("");
     if (!amount || Number(amount) <= 0) {
-      alert("Enter valid withdrawal amount");
+      setError("Enter valid withdrawal amount");
       return;
     }
     if (!bankAccountId) {
-      alert("Please add a bank account first");
+      setError("Please add a bank account first");
       return;
     }
     if (!password) {
-      alert("Please enter password");
+      setError("Please enter password");
       return;
     }
 
@@ -71,7 +74,7 @@ export default function WithdrawalPage() {
     try {
       const selectedBank = banks.find((b) => b.id === bankAccountId);
       if (!selectedBank) {
-        alert("Selected bank account not found");
+        setError("Selected bank account not found");
         return;
       }
 
@@ -87,10 +90,9 @@ export default function WithdrawalPage() {
       };
 
       await requestWithdraw(payload);
-      alert(`Withdrawal request for ₹${amount} submitted!`);
-      router.push("/withdrawalrecord");
+      setShowSuccessModal(true);
     } catch (err) {
-      alert(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
+      setError(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
     } finally {
       setSubmitLoading(false);
     }
@@ -116,20 +118,20 @@ export default function WithdrawalPage() {
         </Link>
       </nav>
 
-      <div className="px-4 pt-4 flex flex-col w-full max-w-2xl mx-auto bg-white">
+      <div className="px-4 md:px-12 lg:px-20 py-4 flex flex-col w-full max-w-full mx-auto bg-white min-h-screen">
         {/* Balance Display */}
         <div className="text-center my-6 text-[20px] font-medium text-[#000000]">
           Balance: ₹ {balance.toFixed(2)}
         </div>
 
         {/* Input & Fee */}
-        <div className="mt-1">
-          <div className="flex items-center bg-white rounded-[4px] px-3.5 border border-[#dcdee0] shadow-sm h-[46px]">
-            {/* Icon 1: Grey filled circle with white card */}
+        <div className="mt-1 w-full">
+          <div className="flex items-center bg-white rounded-[4px] px-3.5 border border-[#dcdee0] shadow-sm h-[46px] w-full">
+            {/* Circular card icon matching the reference */}
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
-              <circle cx="10" cy="10" r="10" fill="#C8C9CC"/>
+              <circle cx="10" cy="10" r="10" fill="#8f9094"/>
               <rect x="4.5" y="6" width="11" height="8" rx="1" fill="white"/>
-              <rect x="4.5" y="7.5" width="11" height="2" fill="#C8C9CC"/>
+              <rect x="4.5" y="7.5" width="11" height="2" fill="#8f9094"/>
             </svg>
             <input
               type="number"
@@ -139,11 +141,11 @@ export default function WithdrawalPage() {
               className="flex-1 text-[14px] outline-none font-normal text-[#323233] bg-transparent border-none placeholder-[#969799] w-full"
             />
           </div>
-          <div className="text-[14px] text-[#323233] font-normal mt-3 mb-6 ml-1">Fee: 0,to account {toAccountAmount}</div>
+          <div className="text-[14px] text-[#323233] font-normal mt-3 mb-6 ml-1">Fee: 0, to account {toAccountAmount}</div>
         </div>
 
         {/* Payout Section */}
-        <div className="flex flex-col mt-1">
+        <div className="flex flex-col mt-1 w-full">
           <span className="text-[14px] text-[#757575] font-normal mb-3 ml-1">Payout</span>
           
           <div className="flex items-center py-1">
@@ -153,8 +155,8 @@ export default function WithdrawalPage() {
         </div>
 
         {/* Details Form */}
-        <div className="flex flex-col mt-4">
-          <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f2f3f5]">
+        <div className="flex flex-col mt-4 w-full">
+          <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f2f3f5] w-full">
             <div className="flex items-center">
               {/* Icon 2: Grey outline card with chip in bottom right */}
               <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
@@ -170,7 +172,7 @@ export default function WithdrawalPage() {
             </svg>
           </Link>
           
-          <div className="flex items-center py-3.5 border-b border-[#f2f3f5]">
+          <div className="flex items-center py-3.5 border-b border-[#f2f3f5] w-full">
             {/* Icon 3: Grey key outline with circular head and teeth */}
             <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
               <circle cx="5.5" cy="7.5" r="4" stroke="#757575" strokeWidth="1.6" fill="none"/>
@@ -183,10 +185,17 @@ export default function WithdrawalPage() {
               placeholder="Enter your login password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="flex-1 text-[14px] outline-none font-normal text-[#323233] bg-transparent border-none placeholder-[#969799]"
+              className="flex-1 text-[14px] outline-none font-normal text-[#323233] bg-transparent border-none placeholder-[#969799] w-full"
             />
           </div>
         </div>
+
+        {/* Error Banner */}
+        {error && (
+          <div className="text-[13px] text-[#e53935] text-center font-normal mt-4 px-4 py-2 bg-[#ffebee] border border-[#ffcdd2] rounded-[4px] w-full break-words">
+            {error}
+          </div>
+        )}
 
         {/* Withdrawal Button */}
         <div className="flex justify-center mt-8 w-full">
@@ -194,7 +203,7 @@ export default function WithdrawalPage() {
             type="button"
             onClick={handleWithdrawal}
             disabled={submitLoading}
-            className="w-[75%] max-w-[340px] py-3 bg-[#009688] text-white rounded-[4px] text-[14px] font-normal border-none cursor-pointer hover:bg-[#00897b] transition-colors shadow-none outline-none disabled:opacity-50"
+            className="w-full py-3.5 bg-[#009688] text-white rounded-[4px] text-[14px] font-normal border-none cursor-pointer hover:bg-[#00897b] transition-colors shadow-none outline-none disabled:opacity-50"
           >
             Withdrawal
           </button>
@@ -203,6 +212,42 @@ export default function WithdrawalPage() {
 
       <BottomNav />
       <LoadingDialog visible={submitLoading} />
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-xl w-[85%] max-w-[320px] p-6 flex flex-col items-center">
+            {/* Success Checkmark Circle */}
+            <div className="w-14 h-14 bg-[#4caf50] rounded-full flex items-center justify-center shadow-lg mb-4">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12L10 17L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            
+            {/* Title */}
+            <h3 className="text-[18px] font-bold text-[#333333] mb-2 text-center">
+              Withdrawal Submitted!
+            </h3>
+            
+            {/* Body Text */}
+            <p className="text-[13px] text-[#666666] mb-5 text-center leading-relaxed">
+              Your withdrawal request for <span className="font-semibold text-[#009688]">₹{Number(amount).toLocaleString('en-IN')}</span> has been submitted successfully for verification.
+            </p>
+            
+            {/* Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowSuccessModal(false);
+                router.push("/withdrawalrecord");
+              }}
+              className="w-full py-2.5 bg-[#009688] hover:bg-[#00897b] text-white font-medium rounded text-[14px] shadow-sm transition-colors cursor-pointer outline-none"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

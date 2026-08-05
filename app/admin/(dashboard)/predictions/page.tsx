@@ -88,6 +88,7 @@ export default function PredictionsPage() {
   // Preview Image states
   const [previewBlobUrl, setPreviewBlobUrl] = useState<string | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
 
   // Notifications
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -402,7 +403,9 @@ export default function PredictionsPage() {
   const handleSendTelegram = async () => {
     if (!selectedTemplate) return;
     try {
-      showNotification("Sending chart to Telegram...", "success");
+      // Set persistent notification (no auto-hide timeout)
+      setNotification({ message: "Sending chart to Telegram...", type: "success" });
+      
       const res = await fetch("/api/prediction/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -420,9 +423,12 @@ export default function PredictionsPage() {
         throw new Error(errorData.error || "Failed to send");
       }
 
-      showNotification("Success! Dynamic Chart sent to Telegram.", "success");
+      // Show success notification and set a timeout to auto-hide it after 4 seconds
+      setNotification({ message: "Sent successfully!", type: "success" });
+      setTimeout(() => setNotification(null), 4000);
     } catch (err: any) {
-      showNotification(err.message || "Send failed", "error");
+      setNotification({ message: err.message || "Send failed", type: "error" });
+      setTimeout(() => setNotification(null), 4000);
     }
   };
 
@@ -895,7 +901,9 @@ export default function PredictionsPage() {
                     <img 
                       src={previewBlobUrl} 
                       alt="Prediction Preview" 
-                      className="max-h-[260px] w-auto object-contain rounded-lg shadow-lg" 
+                      onClick={() => setIsPreviewModalOpen(true)}
+                      className="max-h-[260px] w-auto object-contain rounded-lg shadow-lg cursor-zoom-in hover:brightness-95 transition" 
+                      title="Click to view full screen"
                     />
                   ) : (
                     <div className="text-center text-xs text-muted">
@@ -1098,6 +1106,42 @@ export default function PredictionsPage() {
                 </button>
               </div>
             </section>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Preview Modal */}
+      {isPreviewModalOpen && previewBlobUrl && (
+        <div 
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setIsPreviewModalOpen(false)}
+        >
+          <div className="relative max-w-5xl max-h-[90vh] flex flex-col items-center gap-4">
+            <img 
+              src={previewBlobUrl} 
+              alt="Fullscreen Preview" 
+              className="max-h-[80vh] w-auto object-contain rounded-xl shadow-2xl border border-white/10" 
+            />
+            <div className="flex gap-4">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownload();
+                }}
+                className="bg-teal-500 hover:brightness-110 text-black px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg transition"
+              >
+                Download PNG
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPreviewModalOpen(false);
+                }}
+                className="bg-white/10 hover:bg-white/15 border border-border text-foreground px-5 py-2.5 rounded-xl text-sm font-semibold transition"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
