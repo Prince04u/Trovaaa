@@ -126,10 +126,10 @@ export default function WithdrawalPage() {
         <div className="mt-1">
           <div className="flex items-center bg-white rounded-[4px] px-3.5 border border-[#dcdee0] shadow-sm h-[46px]">
             {/* Icon 1: Grey filled circle with white card */}
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
-              <circle cx="11" cy="11" r="10" fill="#B5B5B5"/>
-              <rect x="5.5" y="7" width="11" height="8" rx="1" fill="white"/>
-              <rect x="5.5" y="8.5" width="11" height="2" fill="#B5B5B5"/>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+              <circle cx="10" cy="10" r="10" fill="#C8C9CC"/>
+              <rect x="4.5" y="6" width="11" height="8" rx="1" fill="white"/>
+              <rect x="4.5" y="7.5" width="11" height="2" fill="#C8C9CC"/>
             </svg>
             <input
               type="number"
@@ -157,23 +157,26 @@ export default function WithdrawalPage() {
           <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f2f3f5]">
             <div className="flex items-center">
               {/* Icon 2: Grey outline card with chip in bottom right */}
-              <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
-                <rect x="1" y="1" width="20" height="15" rx="2" stroke="#757575" strokeWidth="1.8"/>
-                <line x1="1" y1="5.5" x2="21" y2="5.5" stroke="#757575" strokeWidth="1.8"/>
-                <rect x="13.5" y="9.5" width="4.5" height="3" fill="#757575" rx="0.5"/>
+              <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+                <rect x="1" y="1" width="18" height="13" rx="1.5" stroke="#757575" strokeWidth="1.6"/>
+                <line x1="1" y1="4.5" x2="19" y2="4.5" stroke="#757575" strokeWidth="1.6"/>
+                <rect x="12" y="8" width="4" height="3" fill="#757575" rx="0.5"/>
               </svg>
               <span className="text-[14px] text-[#4e4e4e] font-normal">{selectedBank ? `${selectedBank.bankName} - ${selectedBank.accountNumber.slice(-4)}` : "Select Bank Card"}</span>
             </div>
-            <span className="material-icons-outlined text-[#969799] text-[18px]">chevron_right</span>
+            {/* Down Arrow icon v matching Apex King */}
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <path d="M1 1.5L6 6.5L11 1.5" stroke="#969799" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </Link>
           
           <div className="flex items-center py-3.5 border-b border-[#f2f3f5]">
             {/* Icon 3: Grey key outline with circular head and teeth */}
-            <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
-              <circle cx="6.5" cy="8.5" r="4.5" stroke="#757575" strokeWidth="1.8" fill="none"/>
-              <line x1="11" y1="8.5" x2="20" y2="8.5" stroke="#757575" strokeWidth="1.8"/>
-              <line x1="16" y1="8.5" x2="16" y2="12.5" stroke="#757575" strokeWidth="1.8"/>
-              <line x1="18.5" y1="8.5" x2="18.5" y2="12.5" stroke="#757575" strokeWidth="1.8"/>
+            <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+              <circle cx="5.5" cy="7.5" r="4" stroke="#757575" strokeWidth="1.6" fill="none"/>
+              <line x1="9.5" y1="7.5" x2="18.5" y2="7.5" stroke="#757575" strokeWidth="1.6"/>
+              <line x1="14.5" y1="7.5" x2="14.5" y2="11.5" stroke="#757575" strokeWidth="1.6"/>
+              <line x1="17" y1="7.5" x2="17" y2="11.5" stroke="#757575" strokeWidth="1.6"/>
             </svg>
             <input
               type="password"
