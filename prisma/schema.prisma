@@ -753,3 +753,14 @@ model PredictorKey {
   @@index([key, isActive])
 }
 
+model PredictionTemplate {
+  id        String   @id @default(uuid())
+  name      String
+  imageUrl  String
+  fields    Json     // stores the coordinates, fonts, size, colors, alignments etc.
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+

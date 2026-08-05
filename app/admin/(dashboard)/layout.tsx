@@ -26,6 +26,7 @@ const NAV_GROUPS = [
     items: [
       { href: "/results", label: "Result control", permission: "results.view" },
       { href: "/bets", label: "Bets", permission: "results.view" },
+      { href: "/predictions", label: "Prediction charts", permission: "results.view" },
     ],
   },
   {
