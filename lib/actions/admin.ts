@@ -83,97 +83,63 @@ export async function approveDepositAction(formData: FormData) {
     const parsedCustom = Number(customAmountRaw);
     if (!isNaN(parsedCustom) && parsedCustom > 0) {
       amountToApprove = parsedCustom;
-    }
-  }
-
-  const { depositBonusPercent } = await getBonusSettings();
-
-  // Check if this is the user's first approved deposit
-  const previousApprovedCount = await prisma.depositRequest.count({
-    where: {
-      userId: deposit.userId,
-      status: "APPROVED",
-      id: { not: id }
-    }
-  });
-  const isFirstDeposit = previousApprovedCount === 0;
-
-  let bonusAmount = 0;
-  if (isFirstDeposit) {
-    bonusAmount = getFirstDepositBonus(amountToApprove, deposit.note);
-  } else {
-    bonusAmount = Math.floor((amountToApprove * depositBonusPercent) / 100);
-  }
-
-  await prisma.$transaction(async (tx) => {
-    const wallet = await tx.wallet.update({
-      where: { userId: deposit.userId },
-      data: { balance: { increment: amountToApprove + bonusAmount } },
-    });
-    await tx.ledgerEntry.create({
-      data: {
-        walletId: wallet.id,
-        type: "DEPOSIT_APPROVED",
-        amount: amountToApprove,
-        balanceAfter: wallet.balance - bonusAmount,
-        meta: { depositId: id, isMock, originalAmount: deposit.amount },
-      },
-    });
-    if (bonusAmount > 0) {
-      await tx.ledgerEntry.create({
-        data: {
-          walletId: wallet.id,
-          type: "DEPOSIT_BONUS",
-          amount: bonusAmount,
-          balanceAfter: wallet.balance,
-          meta: { depositId: id, percent: depositBonusPercent, isMock },
-        },
+      await prisma.depositRequest.update({
+        where: { id },
+        data: { amount: amountToApprove }
       });
     }
-    await tx.depositRequest.update({
-      where: { id },
-      data: { status: "APPROVED", isMock, reviewedById: staff.id, reviewedAt: new Date(), amount: amountToApprove },
-    });
+  }
+
+  const { applyDepositCredit } = await import("@/lib/wallet/creditDeposit");
+  const { distributeRechargeBonus } = await import("@/lib/actions/commissions");
+  
+  const creditRes = await applyDepositCredit({
+    depositId: id,
+    source: "admin_manual",
+    gatewayMeta: { gateway: "admin_bulk", approvedBy: staff.id },
+    buildNote: (existing) => ({
+      ...existing,
+      gatewayStatus: "success",
+      adminManual: true,
+      approvedAt: new Date().toISOString(),
+      approvedBy: staff.id,
+    }),
+    reviewedById: staff.id,
+    isMock,
   });
 
-  const bonusSuffix = bonusAmount > 0 ? ` (+${formatAmount(bonusAmount)} bonus)` : "";
-  await logAudit(staff.id, "DEPOSIT_APPROVED", "DepositRequest", id, { amount: amountToApprove, bonusAmount, userId: deposit.userId, isMock, originalAmount: deposit.amount });
-  await logActivity("DEPOSIT_APPROVED", `Deposit of ${formatAmount(amountToApprove)}${bonusSuffix} approved${isMock ? " (Mock)" : ""}`, staff.id, { depositId: id });
-  await createNotification(
-    deposit.userId,
-    "DEPOSIT_APPROVED",
-    "Deposit approved",
-    `Your deposit of ${formatAmount(amountToApprove)}${bonusSuffix} has been approved.`,
-    { depositId: id }
-  );
-  await checkAndAwardReferralReward(deposit.userId, amountToApprove, deposit.id);
+  if (creditRes.credited) {
+    await distributeRechargeBonus(deposit.userId, amountToApprove);
+    await logAudit(staff.id, "DEPOSIT_APPROVED", "DepositRequest", id, { amount: amountToApprove, userId: deposit.userId, isMock, originalAmount: deposit.amount });
 
-  let noteDetails: any = {};
-  try {
-    noteDetails = JSON.parse(deposit.note || "{}");
-  } catch {}
+    let noteDetails: any = {};
+    try {
+      noteDetails = JSON.parse(deposit.note || "{}");
+    } catch {}
 
-  const mode = (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("usdt") || (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("trc20") || (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("bep20") ? "Usdt(deposit channel)" : "Upi(deposit channel)";
+    const mode = (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("usdt") || (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("trc20") || (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("bep20") ? "Usdt(deposit channel)" : "Upi(deposit channel)";
 
-  try {
-    const { sendTelegramNotification } = await import("@/lib/telegram");
-    await sendTelegramNotification(
-      deposit.user.uid,
-      amountToApprove,
-      mode,
-      deposit.id,
-      "success",
-      new Date(),
-      noteDetails.txid || "N/A",
-      noteDetails.telegramMessageId,
-      isMock,
-      staff.displayName
-    );
-  } catch (err) {
-    console.error("Failed to send manual approval Telegram notification:", err);
+    try {
+      const { sendTelegramNotification } = await import("@/lib/telegram");
+      await sendTelegramNotification(
+        deposit.user.uid,
+        amountToApprove,
+        mode,
+        deposit.id,
+        "success",
+        new Date(),
+        noteDetails.txid || "N/A",
+        noteDetails.telegramMessageId,
+        isMock,
+        staff.displayName
+      );
+    } catch (err) {
+      console.error("Failed to send manual approval Telegram notification:", err);
+    }
   }
 
   revalidatePath("/admin/wallet");
+  revalidatePath("/admin/users/[id]", "page");
 }
 
 export async function rejectDepositAction(formData: FormData) {
