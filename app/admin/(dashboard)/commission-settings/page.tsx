@@ -2,7 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { getSetting, saveSetting } from "@/lib/actions/settings";
-import { Save, Loader2, AlertCircle } from "lucide-react";
+import { Save, Loader2, AlertCircle, Plus, Trash2 } from "lucide-react";
+
+type RechargeTier = {
+  id: string;
+  min: string;
+  max: string;
+  memberBonus: string;
+  agentBonus: string;
+};
+
+type RechargeSettings = {
+  firstRecharge: RechargeTier[];
+  secondRecharge: RechargeTier[];
+  thirdRecharge: RechargeTier[];
+};
 
 export default function CommissionSettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -10,13 +24,10 @@ export default function CommissionSettingsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const [rechargeBonus, setRechargeBonus] = useState({
-    firstRechargeMemberBonus: "",
-    firstRechargeAgentBonus: "",
-    secondRechargeMemberBonus: "",
-    secondRechargeAgentBonus: "",
-    thirdRechargeMemberBonus: "",
-    thirdRechargeAgentBonus: "",
+  const [rechargeBonus, setRechargeBonus] = useState<RechargeSettings>({
+    firstRecharge: [],
+    secondRecharge: [],
+    thirdRecharge: []
   });
 
   const [bettingCommission, setBettingCommission] = useState({
@@ -33,7 +44,12 @@ export default function CommissionSettingsPage() {
       try {
         const rechargeStr = await getSetting("recharge_bonus_settings");
         if (rechargeStr && rechargeStr !== "{}") {
-          setRechargeBonus(JSON.parse(rechargeStr));
+          try {
+            const parsed = JSON.parse(rechargeStr);
+            if (Array.isArray(parsed.firstRecharge)) {
+              setRechargeBonus(parsed);
+            }
+          } catch(e) {}
         }
 
         const commissionStr = await getSetting("betting_commission_settings");
@@ -71,12 +87,120 @@ export default function CommissionSettingsPage() {
     }
   };
 
-  const updateRecharge = (field: keyof typeof rechargeBonus, value: string) => {
-    setRechargeBonus(prev => ({ ...prev, [field]: value }));
+  const addTier = (type: keyof RechargeSettings) => {
+    const newTier: RechargeTier = {
+      id: Math.random().toString(36).substring(7),
+      min: "",
+      max: "",
+      memberBonus: "",
+      agentBonus: ""
+    };
+    setRechargeBonus(prev => ({
+      ...prev,
+      [type]: [...prev[type], newTier]
+    }));
+  };
+
+  const removeTier = (type: keyof RechargeSettings, id: string) => {
+    setRechargeBonus(prev => ({
+      ...prev,
+      [type]: prev[type].filter(t => t.id !== id)
+    }));
+  };
+
+  const updateTier = (type: keyof RechargeSettings, id: string, field: keyof RechargeTier, value: string) => {
+    setRechargeBonus(prev => ({
+      ...prev,
+      [type]: prev[type].map(t => t.id === id ? { ...t, [field]: value } : t)
+    }));
   };
 
   const updateCommission = (field: keyof typeof bettingCommission, value: string) => {
     setBettingCommission(prev => ({ ...prev, [field]: value }));
+  };
+
+  const renderTierList = (type: keyof RechargeSettings, title: string) => {
+    const tiers = rechargeBonus[type];
+    
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">{title}</h3>
+          <button 
+            onClick={() => addTier(type)}
+            className="flex items-center gap-1 text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1.5 rounded font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add Tier
+          </button>
+        </div>
+        
+        {tiers.length === 0 ? (
+          <div className="text-center py-6 bg-surface-2/30 rounded-lg border border-dashed border-border text-muted text-sm">
+            No tiers added yet. Click "Add Tier" to create one.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {tiers.map((tier, index) => (
+              <div key={tier.id} className="relative bg-surface border border-border rounded-lg p-3 pt-4 group">
+                <div className="absolute -top-2.5 left-3 bg-surface px-2 text-[10px] font-bold text-muted uppercase tracking-wider">
+                  Tier {index + 1}
+                </div>
+                <button
+                  onClick={() => removeTier(type, tier.id)}
+                  className="absolute top-2 right-2 p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-1">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-medium text-muted">Min Deposit (₹)</label>
+                    <input
+                      type="number"
+                      value={tier.min}
+                      onChange={(e) => updateTier(type, tier.id, "min", e.target.value)}
+                      placeholder="e.g. 500"
+                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-medium text-muted">Max Deposit (₹)</label>
+                    <input
+                      type="number"
+                      value={tier.max}
+                      onChange={(e) => updateTier(type, tier.id, "max", e.target.value)}
+                      placeholder="e.g. 999"
+                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-medium text-muted">Member Bonus</label>
+                    <input
+                      type="text"
+                      value={tier.memberBonus}
+                      onChange={(e) => updateTier(type, tier.id, "memberBonus", e.target.value)}
+                      placeholder="e.g. 150 or 5%"
+                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-medium text-muted">Agent Bonus</label>
+                    <input
+                      type="text"
+                      value={tier.agentBonus}
+                      onChange={(e) => updateTier(type, tier.id, "agentBonus", e.target.value)}
+                      placeholder="e.g. 50 or 10%"
+                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   if (loading) {
@@ -88,7 +212,7 @@ export default function CommissionSettingsPage() {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto w-full">
+    <div className="p-6 max-w-5xl mx-auto w-full pb-24">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Commission & Bonus Settings</h1>
@@ -120,108 +244,29 @@ export default function CommissionSettingsPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
         
         {/* Recharge Bonuses Card */}
         <div className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm">
           <div className="p-5 border-b border-border/50 bg-surface-2/30">
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons-outlined text-indigo-500">card_giftcard</span>
-              Recharge Bonuses
+              Tiered Recharge Bonuses
             </h2>
-            <p className="text-xs text-muted mt-1">Set the flat amount (₹) or percentage (%) bonus for members and agents.</p>
+            <p className="text-xs text-muted mt-1">Set the flat amount (₹) or percentage (%) bonus for members and agents based on deposit tiers.</p>
           </div>
           
-          <div className="p-6 space-y-6">
-            {/* First Recharge */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">1st Recharge</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Member Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.firstRechargeMemberBonus}
-                    onChange={(e) => updateRecharge("firstRechargeMemberBonus", e.target.value)}
-                    placeholder="e.g. 50 or 5%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Agent Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.firstRechargeAgentBonus}
-                    onChange={(e) => updateRecharge("firstRechargeAgentBonus", e.target.value)}
-                    placeholder="e.g. 100 or 10%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-              </div>
-            </div>
-
+          <div className="p-6 space-y-8">
+            {renderTierList("firstRecharge", "1st Recharge Tiers")}
             <div className="h-px bg-border/50 w-full" />
-
-            {/* Second Recharge */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">2nd Recharge</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Member Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.secondRechargeMemberBonus}
-                    onChange={(e) => updateRecharge("secondRechargeMemberBonus", e.target.value)}
-                    placeholder="e.g. 50 or 5%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Agent Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.secondRechargeAgentBonus}
-                    onChange={(e) => updateRecharge("secondRechargeAgentBonus", e.target.value)}
-                    placeholder="e.g. 100 or 10%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-              </div>
-            </div>
-
+            {renderTierList("secondRecharge", "2nd Recharge Tiers")}
             <div className="h-px bg-border/50 w-full" />
-
-            {/* Third Recharge */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">3rd Recharge</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Member Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.thirdRechargeMemberBonus}
-                    onChange={(e) => updateRecharge("thirdRechargeMemberBonus", e.target.value)}
-                    placeholder="e.g. 50 or 5%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Agent Bonus (₹ or %)</label>
-                  <input
-                    type="text"
-                    value={rechargeBonus.thirdRechargeAgentBonus}
-                    onChange={(e) => updateRecharge("thirdRechargeAgentBonus", e.target.value)}
-                    placeholder="e.g. 100 or 10%"
-                    className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-              </div>
-            </div>
+            {renderTierList("thirdRecharge", "3rd Recharge Tiers")}
           </div>
         </div>
 
         {/* Multi-Level Betting Commission Card */}
-        <div className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm h-fit">
+        <div className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm xl:sticky top-6">
           <div className="p-5 border-b border-border/50 bg-surface-2/30">
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons-outlined text-emerald-500">account_tree</span>
