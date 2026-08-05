@@ -136,14 +136,14 @@ export default function CommissionSettingsPage() {
         </div>
         
         {tiers.length === 0 ? (
-          <div className="text-center py-6 bg-surface-2/30 rounded-lg border border-dashed border-border text-muted text-sm">
+          <div className="text-center py-6 bg-zinc-50 dark:bg-zinc-800/30 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 text-sm">
             No tiers added yet. Click "Add Tier" to create one.
           </div>
         ) : (
           <div className="space-y-3">
             {tiers.map((tier, index) => (
-              <div key={tier.id} className="relative bg-surface border border-border rounded-lg p-3 pt-4 group">
-                <div className="absolute -top-2.5 left-3 bg-surface px-2 text-[10px] font-bold text-muted uppercase tracking-wider">
+              <div key={tier.id} className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 pt-4 group">
+                <div className="absolute -top-2.5 left-3 bg-white dark:bg-zinc-900 px-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                   Tier {index + 1}
                 </div>
                 <button
@@ -155,43 +155,43 @@ export default function CommissionSettingsPage() {
                 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-1">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted">Min Deposit (₹)</label>
+                    <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Min Deposit (₹)</label>
                     <input
                       type="number"
                       value={tier.min}
                       onChange={(e) => updateTier(type, tier.id, "min", e.target.value)}
                       placeholder="e.g. 500"
-                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                      className="w-full bg-transparent border border-zinc-200 dark:border-zinc-800 rounded px-2.5 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted">Max Deposit (₹)</label>
+                    <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Max Deposit (₹)</label>
                     <input
                       type="number"
                       value={tier.max}
                       onChange={(e) => updateTier(type, tier.id, "max", e.target.value)}
                       placeholder="e.g. 999"
-                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                      className="w-full bg-transparent border border-zinc-200 dark:border-zinc-800 rounded px-2.5 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted">Member Bonus</label>
+                    <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Member Bonus</label>
                     <input
                       type="text"
                       value={tier.memberBonus}
                       onChange={(e) => updateTier(type, tier.id, "memberBonus", e.target.value)}
                       placeholder="e.g. 150 or 5%"
-                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                      className="w-full bg-transparent border border-zinc-200 dark:border-zinc-800 rounded px-2.5 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted">Agent Bonus</label>
+                    <label className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Agent Bonus</label>
                     <input
                       type="text"
                       value={tier.agentBonus}
                       onChange={(e) => updateTier(type, tier.id, "agentBonus", e.target.value)}
                       placeholder="e.g. 50 or 10%"
-                      className="w-full bg-transparent border border-border rounded px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:border-indigo-500"
+                      className="w-full bg-transparent border border-zinc-200 dark:border-zinc-800 rounded px-2.5 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                 </div>
@@ -247,32 +247,32 @@ export default function CommissionSettingsPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
         
         {/* Recharge Bonuses Card */}
-        <div className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm">
-          <div className="p-5 border-b border-border/50 bg-surface-2/30">
-            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+          <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
               <span className="material-icons-outlined text-indigo-500">card_giftcard</span>
               Tiered Recharge Bonuses
             </h2>
-            <p className="text-xs text-muted mt-1">Set the flat amount (₹) or percentage (%) bonus for members and agents based on deposit tiers.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Set the flat amount (₹) or percentage (%) bonus for members and agents based on deposit tiers.</p>
           </div>
           
           <div className="p-6 space-y-8">
             {renderTierList("firstRecharge", "1st Recharge Tiers")}
-            <div className="h-px bg-border/50 w-full" />
+            <div className="h-px bg-zinc-200 dark:bg-zinc-800 w-full" />
             {renderTierList("secondRecharge", "2nd Recharge Tiers")}
-            <div className="h-px bg-border/50 w-full" />
+            <div className="h-px bg-zinc-200 dark:bg-zinc-800 w-full" />
             {renderTierList("thirdRecharge", "3rd Recharge Tiers")}
           </div>
         </div>
 
         {/* Multi-Level Betting Commission Card */}
-        <div className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm xl:sticky top-6">
-          <div className="p-5 border-b border-border/50 bg-surface-2/30">
-            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm xl:sticky top-6">
+          <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
               <span className="material-icons-outlined text-emerald-500">account_tree</span>
               6-Level Betting Commissions
             </h2>
-            <p className="text-xs text-muted mt-1">Set the % of the member's bet amount that automatically goes to the upstream agents.</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Set the % of the member's bet amount that automatically goes to the upstream agents.</p>
           </div>
           
           <div className="p-6 space-y-5">
@@ -281,10 +281,10 @@ export default function CommissionSettingsPage() {
               return (
                 <div key={level} className="flex items-center gap-4">
                   <div className="w-24 shrink-0 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-surface-3 flex items-center justify-center text-xs font-bold text-foreground">
+                    <span className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-900 dark:text-zinc-100">
                       L{level}
                     </span>
-                    <span className="text-sm font-medium text-muted">Level {level}</span>
+                    <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Level {level}</span>
                   </div>
                   <div className="flex-1 relative">
                     <input
@@ -295,9 +295,9 @@ export default function CommissionSettingsPage() {
                       value={bettingCommission[fieldName]}
                       onChange={(e) => updateCommission(fieldName, e.target.value)}
                       placeholder="0.00"
-                      className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-foreground focus:outline-none focus:border-emerald-500 pr-8"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-emerald-500 pr-8"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm font-medium">%</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 text-sm font-medium">%</span>
                   </div>
                 </div>
               );
