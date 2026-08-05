@@ -117,3 +117,22 @@ export async function getNowPaymentsPaymentStatus(paymentId: string): Promise<Pa
 
   return response.json();
 }
+
+export async function getNowPaymentsInvoiceStatus(invoiceId: string): Promise<any> {
+  const headers = {
+    "x-api-key": getNowpaymentsApiKey(),
+  };
+
+  const response = await fetch(`${NOWPAYMENTS_BASE_URL}/invoice/${invoiceId}`, {
+    method: "GET",
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`NOWPayments invoice status fetch failed: ${response.status} ${errorText}`);
+  }
+
+  return response.json();
+}
+

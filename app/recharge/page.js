@@ -143,12 +143,12 @@ export default function RechargePage() {
     return (
       <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333]">
         {/* Top Navbar */}
-        <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
+        <nav className="bg-white text-[#323233] h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 border-b border-[#ebedf0] w-full">
           <div className="flex items-center gap-4">
-            <button onClick={() => setCryptoDetails(null)} className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
+            <button onClick={() => setCryptoDetails(null)} className="text-[#323233] bg-transparent border-none outline-none flex items-center p-0 cursor-pointer">
               <span className="material-icons-outlined text-[24px]">arrow_back</span>
             </button>
-            <span className="text-[17px] font-normal text-white">USDT Deposit Details</span>
+            <span className="text-[17px] font-medium text-[#323233]">USDT Deposit Details</span>
           </div>
         </nav>
 
@@ -214,19 +214,19 @@ export default function RechargePage() {
     return (
       <main className="fixed inset-0 bg-white z-50 flex flex-col w-full h-full m-0 p-0 select-none text-[#333]">
         {/* Top Navbar */}
-        <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
+        <nav className="bg-white text-[#323233] h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 border-b border-[#ebedf0] w-full">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setActiveCheckoutUrl(null)} 
-              className="text-white bg-transparent border-none outline-none flex items-center p-0 cursor-pointer"
+              className="text-[#323233] bg-transparent border-none outline-none flex items-center p-0 cursor-pointer"
             >
               <span className="material-icons-outlined text-[24px]">arrow_back</span>
             </button>
-            <span className="text-[17px] font-normal text-white">Secure Payment Gateway</span>
+            <span className="text-[17px] font-medium text-[#323233]">Secure Payment Gateway</span>
           </div>
           <button 
             onClick={() => setActiveCheckoutUrl(null)}
-            className="text-white bg-transparent border-none outline-none text-xs font-semibold px-2 py-1 border border-white/20 rounded cursor-pointer"
+            className="text-[#323233] bg-white border border-[#dcdee0] outline-none text-xs font-semibold px-2.5 py-1 rounded cursor-pointer hover:bg-gray-50 transition"
           >
             Cancel
           </button>
@@ -238,6 +238,12 @@ export default function RechargePage() {
             src={activeCheckoutUrl} 
             title="Payment Gateway" 
             className="w-full h-full border-none m-0 p-0 absolute inset-0"
+            style={activeCheckoutUrl?.includes("nowpayments") ? {
+              height: "calc(100% + 60px)",
+              top: 0,
+              left: 0,
+              bottom: "-60px",
+            } : {}}
             allow="payment"
           />
         </div>

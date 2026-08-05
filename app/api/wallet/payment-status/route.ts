@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getNowPaymentsPaymentStatus } from "@/lib/nowpayments";
+import { getNowPaymentsPaymentStatus, getNowPaymentsInvoiceStatus } from "@/lib/nowpayments";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { distributeRechargeBonus } from "@/lib/actions/commissions";
@@ -34,14 +34,24 @@ export async function GET(request: NextRequest) {
       noteDetails = JSON.parse(deposit.note || "{}");
     } catch {}
 
-    const { paymentId } = noteDetails;
+    const { paymentId, invoiceId } = noteDetails;
 
     // If it's a NOWPayments transaction, poll the gateway API
-    if (paymentId) {
-      const npStatus = await getNowPaymentsPaymentStatus(String(paymentId));
-      const paymentStatus = npStatus.payment_status?.toLowerCase();
+    if (paymentId || invoiceId) {
+      let paymentStatus = "";
+      try {
+        if (paymentId) {
+          const npStatus = await getNowPaymentsPaymentStatus(String(paymentId));
+          paymentStatus = npStatus.payment_status?.toLowerCase() || "";
+        } else if (invoiceId) {
+          const npStatus = await getNowPaymentsInvoiceStatus(String(invoiceId));
+          paymentStatus = npStatus.invoice_status?.toLowerCase() || "";
+        }
+      } catch (err) {
+        console.error("Failed to query nowpayments status in poll:", err);
+      }
 
-      if (paymentStatus === "finished") {
+      if (paymentStatus === "finished" || paymentStatus === "paid" || paymentStatus === "confirmed" || paymentStatus === "partially_paid") {
         const creditRes = await applyDepositCredit({
           depositId: id,
           source: "payment_status_poll",

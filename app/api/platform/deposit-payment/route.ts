@@ -166,34 +166,40 @@ export async function GET(request: NextRequest) {
           data: { providerId },
         });
 
-        // Send initial Telegram bot notification
+        // Send initial Telegram bot notification (ASYNC)
         const mode = "Sunpay UPI";
-        let telegramMessageId: number | null = null;
-        try {
-          const msgId = await sendTelegramNotification(
-            user.uid,
-            amount,
-            mode,
-            depositRequest.id,
-            "created",
-            depositRequest.createdAt,
-            "N/A"
-          );
-          if (msgId) telegramMessageId = msgId;
-        } catch (err) {
-          console.error("Failed to send Telegram notification:", err);
-        }
+        sendTelegramNotification(
+          user.uid,
+          amount,
+          mode,
+          depositRequest.id,
+          "created",
+          depositRequest.createdAt,
+          "N/A"
+        ).then((msgId) => {
+          if (msgId) {
+            prisma.depositRequest.update({
+              where: { id: depositRequest.id },
+              data: {
+                note: JSON.stringify({
+                  gateway: "sunpays",
+                  checkoutUrl: checkoutUrl,
+                  telegramMessageId: msgId,
+                })
+              }
+            }).catch(err => console.error("Async DB update failed:", err));
+          }
+        }).catch(err => console.error("Async Telegram notification failed:", err));
 
-        const updatedNote = JSON.stringify({
+        const initialNote = JSON.stringify({
           gateway: "sunpays",
           checkoutUrl: checkoutUrl,
-          telegramMessageId: telegramMessageId || undefined,
         });
 
         await prisma.depositRequest.update({
           where: { id: depositRequest.id },
           data: { 
-            note: updatedNote 
+            note: initialNote 
           },
         });
 
@@ -220,7 +226,7 @@ export async function GET(request: NextRequest) {
     if (isCrypto) {
       const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);
-      const priceAmountInr = amountInr; // Pass INR amount directly since NowPayments helper uses 'inr' as price_currency
+      const priceAmountInr = amountInr;
 
       // 1. Create a PENDING deposit request in database
       const now = new Date();
@@ -242,64 +248,66 @@ export async function GET(request: NextRequest) {
 
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
 
-      // 2. Request direct payment from NOWPayments gateway for white-label address rendering
-      console.log(`Calling NOWPayments for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
-      const npPayment = await createNowPaymentsPayment(
+      // 2. Request Invoice from NOWPayments for natural checkout page
+      console.log(`Calling NOWPayments Invoice for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
+      const npInvoice = await createNowPaymentsInvoice(
         priceAmountInr,
-        payCurrency,
         depositRequest.id,
+        payCurrency,
         ipnCallbackUrl
       );
 
-      // Save merchant providerId in DB first so the telegram lookup can fetch it
+      // Save merchant providerId in DB
       await prisma.depositRequest.update({
         where: { id: depositRequest.id },
-        data: { providerId: String(npPayment.payment_id) },
+        data: { providerId: String(npInvoice.id) },
       });
 
-      // 3. Send initial Telegram bot notification
+      // 3. Send initial Telegram bot notification (ASYNC)
       const mode = "Usdt(deposit channel)";
-      let telegramMessageId: number | null = null;
-      try {
-        const msgId = await sendTelegramNotification(
-          user.uid,
-          amountInr,
-          mode,
-          depositRequest.id,
-          "created",
-          depositRequest.createdAt,
-          "N/A"
-        );
-        if (msgId) telegramMessageId = msgId;
-      } catch (err) {
-        console.error("Failed to send Telegram notification:", err);
-      }
+      sendTelegramNotification(
+        user.uid,
+        amountInr,
+        mode,
+        depositRequest.id,
+        "created",
+        depositRequest.createdAt,
+        "N/A"
+      ).then((msgId) => {
+        if (msgId) {
+          prisma.depositRequest.update({
+            where: { id: depositRequest.id },
+            data: {
+              note: JSON.stringify({
+                invoiceId: npInvoice.id,
+                checkoutUrl: npInvoice.invoice_url,
+                telegramMessageId: msgId,
+              })
+            }
+          }).catch(err => console.error("Async DB update failed:", err));
+        }
+      }).catch(err => console.error("Async Telegram notification failed:", err));
 
-      // 4. Save NOWPayments response details and telegram message ID in database note
-      const updatedNote = JSON.stringify({
-        paymentId: npPayment.payment_id,
-        payAddress: npPayment.pay_address,
-        payAmount: npPayment.pay_amount,
-        telegramMessageId: telegramMessageId || undefined,
+      // 4. Save NOWPayments response details in database note
+      const initialNote = JSON.stringify({
+        invoiceId: npInvoice.id,
+        checkoutUrl: npInvoice.invoice_url,
       });
 
       await prisma.depositRequest.update({
         where: { id: depositRequest.id },
         data: { 
-          note: updatedNote 
+          note: initialNote 
         },
       });
 
-      // 5. Return details to user payment screen for custom white-label rendering
+      // 5. Return details to user payment screen for iframe rendering
       return NextResponse.json({
         success: true,
         data: {
-          type: "crypto",
+          type: "crypto_invoice",
           depositId: depositRequest.id,
-          payAddress: npPayment.pay_address,
-          payAmount: npPayment.pay_amount,
-          payCurrency: npPayment.pay_currency,
-          usdtRate,
+          checkoutUrl: npInvoice.invoice_url,
           channelLabel: channel.label,
         },
       });
@@ -323,34 +331,29 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // Send initial Telegram notification
+      // Send initial Telegram notification (ASYNC)
       const mode = "Upi(deposit channel)";
-      let telegramMessageId: number | null = null;
-      try {
-        const msgId = await sendTelegramNotification(
-          user.uid,
-          amount,
-          mode,
-          depositRequest.id,
-          "created",
-          depositRequest.createdAt,
-          "N/A"
-        );
-        if (msgId) telegramMessageId = msgId;
-      } catch (err) {
-        console.error("Failed to send Telegram notification:", err);
-      }
-
-      // Save telegram message ID in note
-      const updatedNote = JSON.stringify({
-        manualChannelLabel: channel.label,
-        telegramMessageId: telegramMessageId || undefined,
-      });
-
-      await prisma.depositRequest.update({
-        where: { id: depositRequest.id },
-        data: { note: updatedNote },
-      });
+      sendTelegramNotification(
+        user.uid,
+        amount,
+        mode,
+        depositRequest.id,
+        "created",
+        depositRequest.createdAt,
+        "N/A"
+      ).then((msgId) => {
+        if (msgId) {
+          prisma.depositRequest.update({
+            where: { id: depositRequest.id },
+            data: {
+              note: JSON.stringify({
+                manualChannelLabel: channel.label,
+                telegramMessageId: msgId,
+              })
+            }
+          }).catch(err => console.error("Async DB update failed:", err));
+        }
+      }).catch(err => console.error("Async Telegram notification failed:", err));
 
       return NextResponse.json({
         success: true,
