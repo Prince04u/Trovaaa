@@ -110,10 +110,9 @@ export default function RechargePage() {
       sessionStorage.setItem("deposit_channel", paymentType);
       sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
       
-      router.push("/recharge");
+      router.push("/rechargerecord");
     } catch (err) {
       alert(err.response?.data?.error || err.response?.data?.message || err.message || "Failed to submit recharge.");
-    } finally {
       setSubmitLoading(false);
     }
   };
