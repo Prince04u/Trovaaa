@@ -166,7 +166,7 @@ export function GameBoard({ mode, modeLabel }: { mode: string; modeLabel: string
   function handleBetSuccess() {
     queryClient.invalidateQueries({ queryKey: ["wingo-state", mode] });
     queryClient.invalidateQueries({ queryKey: ["wallet-balance"] });
-    pushToast("Bet Successful");
+    pushToast("Success");
     setModalOpen(false);
   }
 

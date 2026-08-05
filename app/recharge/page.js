@@ -325,6 +325,7 @@ export default function RechargePage() {
   };
 
   if (cryptoDetails) {
+    const formattedPayAmount = Math.round(Number(cryptoDetails.payAmount) * 100000) / 100000;
     if (depositStatusStep === "success") {
       const t = T[lang];
       return (
@@ -477,13 +478,13 @@ export default function RechargePage() {
                     <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">{t.amountText}</span>
                     <div className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 flex items-center justify-between">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-black text-gray-800">{cryptoDetails.payAmount}</span>
+                        <span className="text-2xl font-black text-gray-800">{formattedPayAmount}</span>
                         <span className="text-sm font-bold text-gray-500">USDT</span>
                         <span className="text-xs font-semibold text-gray-500 bg-gray-200 px-1.5 py-0.5 rounded ml-1.5">{networkLabel}</span>
                       </div>
                       <span className="text-sm font-semibold text-gray-500">~ ₹{cryptoDetails.inrAmount}</span>
                       <button 
-                        onClick={() => handleCopyText(String(cryptoDetails.payAmount))}
+                        onClick={() => handleCopyText(String(formattedPayAmount))}
                         className="bg-transparent border-none text-[#009688] font-bold text-xs cursor-pointer flex items-center gap-0.5"
                       >
                         <span className="material-icons-outlined text-base">content_copy</span>
@@ -524,7 +525,7 @@ export default function RechargePage() {
                   </div>
                   <div className="w-10 h-10 rounded-xl border border-gray-100 bg-white flex items-center justify-center p-1.5 shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://altcoinsbox.com/wp-content/uploads/2023/04/walletconnect-logo.png" alt="WalletConnect" className="w-full h-full object-contain" />
+                    <img src="https://cryptologos.cc/logos/trust-wallet-token-twt-logo.png" alt="TrustWallet" className="w-full h-full object-contain" />
                   </div>
                 </div>
               </div>

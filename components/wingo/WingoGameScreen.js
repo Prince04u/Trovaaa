@@ -504,8 +504,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         myBetsRef.current = myBetsRef.current.map(b => b.id === generatedId ? updatedBet : b);
       }
 
-      push("Bet Successful", "success");
-      setLoading(false);
+      push("Success", "success");
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
       setShowPurpleLine(false);
       try {
         await loadData({ showSpinner: true });
@@ -997,7 +999,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Outcome popups */}
       <OutcomePopup popup={outcomePopup} onClose={() => setOutcomePopup(null)} />
 
-      <LoadingDialog visible={refreshing} />
+      <LoadingDialog visible={loading || refreshing} />
       <ToastStack toasts={toasts} />
     </main>
   );

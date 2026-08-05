@@ -423,7 +423,7 @@ export function GameBoard({ mode, modeLabel }: { mode: string; modeLabel: string
 
     queryClient.invalidateQueries({ queryKey: ["fived-state", mode] });
     queryClient.invalidateQueries({ queryKey: ["wallet-balance"] });
-    setCenterToast({ message: "Bet Successful", type: "success" });
+    setCenterToast({ message: "Success", type: "success" });
     setTimeout(() => setCenterToast(null), 1000);
     setModalOpen(false);
   }

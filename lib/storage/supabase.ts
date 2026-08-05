@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 const BUCKET = "cms-media";
 
 function getSupabaseUrl(): string {
@@ -34,23 +37,41 @@ async function ensureBucket(baseUrl: string, key: string) {
 export async function uploadImage(data: ArrayBuffer, contentType: string, extension: string): Promise<string> {
   const baseUrl = getSupabaseUrl();
   const key = getServiceKey();
-  await ensureBucket(baseUrl, key);
 
-  const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
-  const res = await fetch(`${baseUrl}/storage/v1/object/${BUCKET}/${path}`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": contentType,
-      "x-upsert": "false",
-    },
-    body: data,
-  });
+  try {
+    await ensureBucket(baseUrl, key);
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Image upload failed: ${res.status} ${text}`);
+    const pathStr = `uploads/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
+    const res = await fetch(`${baseUrl}/storage/v1/object/${BUCKET}/${pathStr}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": contentType,
+        "x-upsert": "false",
+      },
+      body: data,
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Image upload failed: ${res.status} ${text}`);
+    }
+
+    return `${baseUrl}/storage/v1/object/public/${BUCKET}/${pathStr}`;
+  } catch (error) {
+    console.error("Supabase upload failed, falling back to local storage:", error);
+    try {
+      const dir = path.join(process.cwd(), "public", "uploads");
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
+      const filepath = path.join(dir, filename);
+      fs.writeFileSync(filepath, Buffer.from(data));
+      return `/uploads/${filename}`;
+    } catch (localErr: any) {
+      console.error("Local storage fallback failed:", localErr);
+      throw new Error(`Failed to upload screenshot: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
-
-  return `${baseUrl}/storage/v1/object/public/${BUCKET}/${path}`;
 }

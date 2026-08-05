@@ -28,6 +28,7 @@ import OutcomePopup from "../games/OutcomePopup";
 import { Odometer } from "@/components/Odometer";
 import Dice2D from "@/components/k3/Dice2D";
 import HowToPlayModal from "@/components/games/HowToPlayModal";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 import { Clock, HelpCircle } from "lucide-react";
 import { GameHeader } from "@/components/games/GameHeader";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
@@ -750,8 +751,10 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
         return optIndex !== -1 ? updatedBets[optIndex] : b;
       });
 
-      setCenterToast({ message: "Bet Successful", type: "success" });
-      setLoading(false);
+      setCenterToast({ message: "Success", type: "success" });
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
       loadDataRef.current && loadDataRef.current();
       setTimeout(() => setCenterToast(null), 1000);
     } catch (err) {
@@ -1663,6 +1666,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
         </>
       )}
       <ToastStack toasts={toasts} />
+      <LoadingDialog visible={loading} />
     </div>
   );
 }

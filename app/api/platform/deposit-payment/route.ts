@@ -212,7 +212,11 @@ export async function GET(request: NextRequest) {
           depositRequest.id,
           "created",
           depositRequest.createdAt,
-          "N/A"
+          "N/A",
+          undefined,
+          false,
+          undefined,
+          providerId
         ).then((msgId) => {
           if (msgId) {
             prisma.depositRequest.update({
@@ -335,7 +339,7 @@ export async function GET(request: NextRequest) {
           depositId: depositRequest.id,
           payAddress: payAddress,
           payCurrency: payCurrency,
-          payAmount: amount,
+          payAmount: Math.round(amount * 100000) / 100000,
           inrAmount: amountInr,
         },
       });

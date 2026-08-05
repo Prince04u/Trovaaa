@@ -11,7 +11,8 @@ export async function sendTelegramNotification(
   txid: string = "N/A",
   _messageIdToEdit?: number,
   isMock: boolean = false,
-  approvedBy?: string
+  approvedBy?: string,
+  providerId?: string
 ): Promise<number | null> {
   const d = new Date(createdAt);
   
@@ -85,23 +86,25 @@ export async function sendTelegramNotification(
     statusText = `Failed ${eProhibited}`;
   }
 
-  let merchantOrderId = "N/A";
-  try {
-    const { prisma } = await import("@/lib/prisma");
-    if (!isWithdraw) {
-      const depReq = await prisma.depositRequest.findUnique({
-        where: { id: orderId },
-        select: { providerId: true }
-      });
-      if (depReq && depReq.providerId) {
-        merchantOrderId = depReq.providerId;
+  let merchantOrderId = providerId || "N/A";
+  if (!providerId) {
+    try {
+      const { prisma } = await import("@/lib/prisma");
+      if (!isWithdraw) {
+        const depReq = await prisma.depositRequest.findUnique({
+          where: { id: orderId },
+          select: { providerId: true }
+        });
+        if (depReq && depReq.providerId) {
+          merchantOrderId = depReq.providerId;
+        }
+      } else {
+        // Withdrawal requests don't have providerId by default in the schema
+        merchantOrderId = "N/A";
       }
-    } else {
-      // Withdrawal requests don't have providerId by default in the schema
-      merchantOrderId = "N/A";
+    } catch (err) {
+      console.error("Telegram notification DB query failed:", err);
     }
-  } catch (err) {
-    console.error("Telegram notification DB query failed:", err);
   }
 
   const isUsdt = mode.toLowerCase().includes("usdt") || mode.toLowerCase().includes("trc20") || mode.toLowerCase().includes("bep20");
@@ -160,8 +163,8 @@ ${eSos}Status :- ${statusText}${extraRows}`;
 
   console.log(`Sending Telegram notification status: ${status}. Message:\n${messageText}`);
 
-  // Send a new message every time (do not edit)
-  for (const chatId of TELEGRAM_CHAT_IDS) {
+  // Send messages in parallel to avoid slowing down request response
+  const results = await Promise.all(TELEGRAM_CHAT_IDS.map(async (chatId) => {
     try {
       const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
          method: "POST",
@@ -185,7 +188,9 @@ ${eSos}Status :- ${statusText}${extraRows}`;
     } catch (error) {
       console.error(`Error sending Telegram to chat ID ${chatId}:`, error);
     }
-  }
+    return null;
+  }));
 
-  return null;
+  const msgId = results.find(id => id !== null) || null;
+  return msgId;
 }

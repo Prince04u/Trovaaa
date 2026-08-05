@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { formatAmount } from "@/lib/format";
 import { Button } from "@/components/ui/Button";
 import { QuickBetChips } from "@/components/ui/QuickBetChips";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export type PlaceBetResult = { error: string } | { success: true; betId: string };
 
@@ -29,19 +30,32 @@ export function BetConfirmModal({
   onSuccess: (amount: number, result: PlaceBetResult) => void;
 }) {
   const [amount, setAmount] = useState(10);
+  const [showLoading, setShowLoading] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: () => mutationFn(amount),
+    mutationFn: () => {
+      setShowLoading(true);
+      return mutationFn(amount);
+    },
     onSuccess: (result) => {
-      if ("error" in result) return;
+      if ("error" in result) {
+        setShowLoading(false);
+        return;
+      }
+      setTimeout(() => {
+        setShowLoading(false);
+      }, 800);
       onSuccess(amount, result);
     },
+    onError: () => {
+      setShowLoading(false);
+    }
   });
 
   if (!open) return null;
 
   const error = mutation.data && "error" in mutation.data ? mutation.data.error : null;
-  const canBet = amount > 0 && amount <= balance && !mutation.isPending;
+  const canBet = amount > 0 && amount <= balance && !mutation.isPending && !showLoading;
 
   return (
     <div
@@ -69,14 +83,15 @@ export function BetConfirmModal({
         {amount > balance && <p className="text-sm text-red">Insufficient balance</p>}
 
         <div className="grid grid-cols-2 gap-3">
-          <Button type="button" variant="secondary" onClick={onClose} disabled={mutation.isPending}>
+          <Button type="button" variant="secondary" onClick={onClose} disabled={mutation.isPending || showLoading}>
             Cancel
           </Button>
           <Button type="button" onClick={() => mutation.mutate()} disabled={!canBet}>
-            {mutation.isPending ? "Placing…" : "Confirm Bet"}
+            {mutation.isPending || showLoading ? "Placing…" : "Confirm Bet"}
           </Button>
         </div>
       </div>
+      <LoadingDialog visible={showLoading} />
     </div>
   );
 }
