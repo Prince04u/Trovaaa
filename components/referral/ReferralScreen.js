@@ -11,6 +11,7 @@ import { getToken } from "@/lib/auth";
 import { buildInviteShareUrl, copyToClipboard } from "@/lib/clipboard";
 import { BRAND_NAME } from "@/lib/brand";
 import { getMyReferrals, getReferralEarnings } from "@/lib/referralApi";
+import PageLoader from "@/components/brand/PageLoader";
 
 const FRIENDS_PREVIEW = 5;
 
@@ -405,6 +406,7 @@ export default function ReferralScreen() {
           </div>
         </section>
         <BottomNav />
+        <PageLoader />
       </main>
     );
   }

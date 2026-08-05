@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getRecentResults, getCurrentPeriod } from "@/lib/wingoApi";
+import PageLoader from "@/components/brand/PageLoader";
 
-export default function TrendPage() {
+function TrendPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type") || "bcone";
@@ -258,5 +259,13 @@ export default function TrendPage() {
       </div>
       
     </div>
+  );
+}
+
+export default function TrendPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <TrendPageContent />
+    </Suspense>
   );
 }

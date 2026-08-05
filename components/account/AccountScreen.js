@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/home/BottomNav";
-import { clearAuth, getToken } from "@/lib/auth";
+import { clearAuth, getToken, getUser } from "@/lib/auth";
 import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
 import { disconnectSocket } from "@/lib/socket";
@@ -14,7 +14,12 @@ import LoadingDialog from "@/components/auth/LoadingDialog";
 export default function AccountScreen() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [user, setUserState] = useState(null);
+  const [user, setUserState] = useState(() => {
+    if (typeof window !== "undefined") {
+      return getUser();
+    }
+    return null;
+  });
   const [balance, setBalance] = useState(0);
 
   // Accordion state
@@ -78,13 +83,7 @@ export default function AccountScreen() {
     setShowSignInModal(false);
   };
 
-  if (!mounted) {
-    return (
-      <main className="min-h-screen bg-[#fafafa] w-full flex items-center justify-center">
-        <LoadingDialog visible={true} />
-      </main>
-    );
-  }
+
 
   let cleanMobile = (user?.mobile || user?.name || "").replace(/\s*\(Multiple\)/gi, "").trim();
   if (cleanMobile) {
@@ -548,6 +547,12 @@ export default function AccountScreen() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {!mounted && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "transparent" }}>
+          <LoadingDialog visible={true} />
         </div>
       )}
 

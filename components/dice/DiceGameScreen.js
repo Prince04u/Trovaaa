@@ -12,6 +12,7 @@ import { getBalance } from "@/lib/walletApi";
 import { getDiceConfig } from "@/lib/platformApi";
 import { getMyRolls, roll } from "@/lib/diceApi";
 import HowToPlayModal from "@/components/games/HowToPlayModal";
+import PageLoader from "@/components/brand/PageLoader";
 import { GameHeader } from "@/components/games/GameHeader";
 import { useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
@@ -484,13 +485,7 @@ export default function DiceGameScreen() {
     return `linear-gradient(to right, var(--ln-gold) 0%, var(--ln-gold) ${thumbPercent}%, #21262d ${thumbPercent}%, #21262d 100%)`;
   }, [thumbPercent]);
  
-  if (!mounted) {
-    return (
-      <main className="dice-game">
-        <div className="dc-msg">Loading...</div>
-      </main>
-    );
-  }
+
  
   return (
     <main className="dice-game">
@@ -926,6 +921,7 @@ export default function DiceGameScreen() {
         </section>
       )}
  
+      {!mounted && <PageLoader />}
       <BottomNav />
     </main>
   );

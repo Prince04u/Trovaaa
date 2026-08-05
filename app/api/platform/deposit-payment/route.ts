@@ -16,6 +16,43 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
+    
+    // Check if we are loading an existing deposit session
+    const depositId = searchParams.get("depositId");
+    if (depositId) {
+      const deposit = await prisma.depositRequest.findUnique({
+        where: { id: depositId },
+      });
+      if (!deposit) {
+        return NextResponse.json({ error: "Deposit request not found" }, { status: 404 });
+      }
+      if (deposit.status !== "PENDING") {
+        return NextResponse.json({ error: "Deposit request is no longer pending" }, { status: 400 });
+      }
+      
+      let noteObj: any = {};
+      try {
+        noteObj = JSON.parse(deposit.note || "{}");
+      } catch {}
+
+      const isCrypto = deposit.channelKey?.toLowerCase().includes("trc") || 
+                      deposit.channelKey?.toLowerCase().includes("bep") || 
+                      deposit.channelKey?.toLowerCase().includes("usdt");
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          depositId: deposit.id,
+          type: isCrypto ? "crypto" : "sunpays",
+          checkoutUrl: noteObj.checkoutUrl || "",
+          payAddress: noteObj.payAddress || "0x698cd0Ac5D87FE50488945F14765a805B8B0b7Ca4",
+          payCurrency: noteObj.payCurrency || (deposit.channelKey?.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20"),
+          payAmount: noteObj.payAmount || 0,
+          inrAmount: deposit.amount,
+        },
+      });
+    }
+
     const channelId = searchParams.get("channel");
     const amountParam = searchParams.get("amount");
     const amount = Number(amountParam);
@@ -220,13 +257,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const typeLower = String(channel.channelType || "").toLowerCase();
-    const isCrypto = typeLower.includes("crypto") || typeLower.includes("usdt");
-
     if (isCrypto) {
       const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);
-      const priceAmountInr = amountInr;
 
       // 1. Create a PENDING deposit request in database
       const now = new Date();
@@ -247,24 +280,10 @@ export async function GET(request: NextRequest) {
       });
 
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
+      const payAddress = channel.detail || "0x698cd0Ac5D87FE50488945F14765a805B8B0b7Ca4";
 
-      // 2. Request Invoice from NOWPayments for natural checkout page
-      console.log(`Calling NOWPayments Invoice for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
-      const npInvoice = await createNowPaymentsInvoice(
-        priceAmountInr,
-        depositRequest.id,
-        payCurrency,
-        ipnCallbackUrl
-      );
-
-      // Save merchant providerId in DB
-      await prisma.depositRequest.update({
-        where: { id: depositRequest.id },
-        data: { providerId: String(npInvoice.id) },
-      });
-
-      // 3. Send initial Telegram bot notification (ASYNC)
-      const mode = "Usdt(deposit channel)";
+      // 2. Send initial Telegram bot notification (ASYNC)
+      const mode = channel.label || "Usdt(deposit channel)";
       sendTelegramNotification(
         user.uid,
         amountInr,
@@ -279,8 +298,10 @@ export async function GET(request: NextRequest) {
             where: { id: depositRequest.id },
             data: {
               note: JSON.stringify({
-                invoiceId: npInvoice.id,
-                checkoutUrl: npInvoice.invoice_url,
+                gateway: "manual_usdt",
+                payAddress: payAddress,
+                payCurrency: payCurrency,
+                payAmount: amount,
                 telegramMessageId: msgId,
               })
             }
@@ -288,10 +309,12 @@ export async function GET(request: NextRequest) {
         }
       }).catch(err => console.error("Async Telegram notification failed:", err));
 
-      // 4. Save NOWPayments response details in database note
+      // 3. Save details in database note
       const initialNote = JSON.stringify({
-        invoiceId: npInvoice.id,
-        checkoutUrl: npInvoice.invoice_url,
+        gateway: "manual_usdt",
+        payAddress: payAddress,
+        payCurrency: payCurrency,
+        payAmount: amount,
       });
 
       await prisma.depositRequest.update({
@@ -301,13 +324,16 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // 5. Return details to user payment screen for iframe rendering
+      // 4. Return details to user payment screen
       return NextResponse.json({
         success: true,
         data: {
-          type: "crypto_invoice",
+          type: "crypto",
           depositId: depositRequest.id,
-          checkoutUrl: npInvoice.invoice_url,
+          payAddress: payAddress,
+          payCurrency: payCurrency,
+          payAmount: amount,
+          inrAmount: amountInr,
         },
       });
     } else {

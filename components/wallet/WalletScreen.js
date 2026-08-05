@@ -152,9 +152,7 @@ export default function WalletScreen() {
     }
   };
 
-  if (!mounted) {
-    return <PageLoader />;
-  }
+
 
   return (
     <main className="wallet-screen">
@@ -252,6 +250,7 @@ export default function WalletScreen() {
         ))}
       </section>
 
+      {!mounted && <PageLoader />}
       <BottomNav />
     </main>
   );

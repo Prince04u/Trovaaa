@@ -14,6 +14,7 @@ import {
   getDurationMeta,
   getDurationSlugFromSeconds,
 } from "@/lib/wingoUtils";
+import PageLoader from "@/components/brand/PageLoader";
 
 const STATUS_OPTIONS = ["all", "pending", "won", "lost", "refunded"];
 const PAGE_SIZE = 25;
@@ -80,13 +81,7 @@ export default function GameHistoryScreen() {
     }
   };
 
-  if (!mounted) {
-    return (
-      <main className="game-history-page">
-        <div className="game-history-loading">Loading...</div>
-      </main>
-    );
-  }
+
 
   return (
     <main className="game-history-page">
@@ -198,6 +193,7 @@ export default function GameHistoryScreen() {
         </div>
       )}
 
+      {!mounted && <PageLoader />}
       <BottomNav />
     </main>
   );

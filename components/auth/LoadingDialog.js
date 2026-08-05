@@ -6,7 +6,7 @@ export default function LoadingDialog({ visible }) {
       {/* Overlay */}
       <div 
         className="fixed inset-0 z-[200]" 
-        style={{ backgroundColor: 'rgb(33, 33, 33)', opacity: 0.46, transition: '0.3s cubic-bezier(0.25, 0.8, 0.5, 1)' }}
+        style={{ backgroundColor: 'transparent', transition: '0.3s cubic-bezier(0.25, 0.8, 0.5, 1)' }}
       />
       
       {/* Dialog */}

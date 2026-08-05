@@ -591,7 +591,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <ul className="center_top">
             <li>
               <ul className="top_ol">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38IENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" alt="Trophy Icon" />
+                <img 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38IENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" 
+                  style={{ width: "18px", height: "18px", marginRight: "6px", display: "inline-block", verticalAlign: "middle", opacity: 0.6 }} 
+                  alt="Trophy" 
+                />
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
@@ -601,15 +605,36 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             <li className="right_li">
               <ul className="top_ol">Count Down</ul>
               <ul className="bot_ol">
-                <div className="countdown">
-                  <div className="van-count-down">
-                    <span className="span">{timer.mm[0]}</span>
-                    <span className="span">{timer.mm[1]}</span>
-                    <span className="colon">:</span>
-                    <span className="span">{timer.ss[0]}</span>
-                    <span className="span">{timer.ss[1]}</span>
+                {remainingSeconds > 0 ? (
+                  <div className="countdown">
+                    <div className="van-count-down">
+                      <span className="span">{timer.mm[0]}</span>
+                      <span className="span">{timer.mm[1]}</span>
+                      <span className="colon">:</span>
+                      <span className="span">{timer.ss[0]}</span>
+                      <span className="span">{timer.ss[1]}</span>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    style={{
+                      backgroundColor: "#ff9800",
+                      color: "#ffffff",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "6px 14px",
+                      fontSize: "14px",
+                      fontWeight: "normal",
+                      cursor: "pointer",
+                      display: "inline-block",
+                      outline: "none",
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.15)"
+                    }}
+                  >
+                    Continue
+                  </button>
+                )}
               </ul>
             </li>
           </ul>
