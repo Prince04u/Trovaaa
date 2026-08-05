@@ -754,7 +754,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
       setCenterToast({ message: "Success", type: "success" });
       setTimeout(() => {
         setLoading(false);
-      }, 800);
+      }, 100);
       loadDataRef.current && loadDataRef.current();
       setTimeout(() => setCenterToast(null), 1000);
     } catch (err) {

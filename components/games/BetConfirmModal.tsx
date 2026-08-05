@@ -44,7 +44,7 @@ export function BetConfirmModal({
       }
       setTimeout(() => {
         setShowLoading(false);
-      }, 800);
+      }, 100);
       onSuccess(amount, result);
     },
     onError: () => {

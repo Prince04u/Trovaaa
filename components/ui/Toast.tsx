@@ -24,7 +24,7 @@ export function useToasts() {
 export function ToastStack({ toasts }: { toasts: ToastItem[] }) {
   if (toasts.length === 0) return null;
   return (
-    <div className="fixed inset-0 pointer-events-none z-[100] flex flex-col items-center justify-center gap-2">
+    <div className="fixed inset-0 pointer-events-none z-[9999] flex flex-col items-center justify-center gap-2">
       <style>{`
         @keyframes wgToastIn {
           0% { transform: scale(0.9); opacity: 0; }

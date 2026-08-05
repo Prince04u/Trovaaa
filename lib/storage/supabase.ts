@@ -67,11 +67,11 @@ export async function uploadImage(data: ArrayBuffer, contentType: string, extens
       }
       const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
       const filepath = path.join(dir, filename);
-      fs.writeFileSync(filepath, Buffer.from(data));
+      fs.writeFileSync(filepath, new Uint8Array(data));
       return `/uploads/${filename}`;
     } catch (localErr: any) {
       console.error("Local storage fallback failed:", localErr);
-      throw new Error(`Failed to upload screenshot: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(`Failed to upload screenshot locally: ${localErr.message || String(localErr)}`);
     }
   }
 }

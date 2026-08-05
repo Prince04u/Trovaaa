@@ -507,7 +507,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       push("Success", "success");
       setTimeout(() => {
         setLoading(false);
-      }, 800);
+      }, 100);
       setShowPurpleLine(false);
       try {
         await loadData({ showSpinner: true });

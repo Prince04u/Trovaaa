@@ -226,9 +226,8 @@ export default function RechargePage() {
 
       if (paymentData.checkoutUrl) {
         if (typeof window !== "undefined") {
-          window.history.pushState(null, "", `/recharge?id=${paymentData.depositId}`);
+          window.location.href = paymentData.checkoutUrl;
         }
-        setActiveCheckoutUrl(paymentData.checkoutUrl);
         return;
       }
 
@@ -525,7 +524,7 @@ export default function RechargePage() {
                   </div>
                   <div className="w-10 h-10 rounded-xl border border-gray-100 bg-white flex items-center justify-center p-1.5 shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://cryptologos.cc/logos/trust-wallet-token-twt-logo.png" alt="TrustWallet" className="w-full h-full object-contain" />
+                    <img src="/trustwallet.png" alt="TrustWallet" className="w-full h-full object-contain" />
                   </div>
                 </div>
               </div>
