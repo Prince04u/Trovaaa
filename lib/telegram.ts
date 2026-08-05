@@ -107,20 +107,19 @@ export async function sendTelegramNotification(
   const isUsdt = mode.toLowerCase().includes("usdt") || mode.toLowerCase().includes("trc20") || mode.toLowerCase().includes("bep20");
   let amountText = "";
   if (isUsdt) {
-    const rate = isWithdraw ? 104 : 102;
+    const rate = isWithdraw ? 104 : 95;
     const usdAmount = (amount / rate).toFixed(2);
     amountText = `${usdAmount}$`;
   } else {
     amountText = `₹${amount}`;
   }
 
-  let extraRows = "";
-  if (status !== "created") {
-    const typeLabel = isMock 
-      ? `Mock <tg-emoji emoji-id="6269083884722328380">⁉️</tg-emoji>`
-      : `Real <tg-emoji emoji-id="6147460667281511517">✔️</tg-emoji>`;
-    extraRows += `\n\n<tg-emoji emoji-id="6147637448135414816">🏷️</tg-emoji>Type : ${typeLabel}`;
+  const typeLabel = isMock 
+    ? `Mock <tg-emoji emoji-id="6269083884722328380">⁉️</tg-emoji>`
+    : `Real <tg-emoji emoji-id="6147460667281511517">✔️</tg-emoji>`;
+  let extraRows = `\n\n<tg-emoji emoji-id="6147637448135414816">🏷️</tg-emoji>Type : ${typeLabel}`;
 
+  if (status !== "created") {
     if (approvedBy) {
       let byName = approvedBy;
       let crown = "";

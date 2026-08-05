@@ -149,7 +149,7 @@ export async function distributeRechargeBonus(userId: string, depositAmount: num
             type: "DEPOSIT_BONUS",
             amount: memberBonus,
             balanceAfter: updatedWallet.balance,
-            meta: { description: `${rechargeType} Bonus`, depositAmount }
+            meta: { description: rechargeType === "1st Recharge" ? "First Recharge Reward" : `${rechargeType} Bonus`, depositAmount }
           }
         });
       });
@@ -170,7 +170,7 @@ export async function distributeRechargeBonus(userId: string, depositAmount: num
               type: "DEPOSIT_BONUS",
               amount: agentBonus,
               balanceAfter: updatedWallet.balance,
-              meta: { description: `${rechargeType} Agent Bonus`, sourceUserId: user.id, depositAmount }
+              meta: { description: rechargeType === "1st Recharge" ? "First Recharge Reward" : `${rechargeType} Agent Bonus`, sourceUserId: user.id, depositAmount }
             }
           });
         });

@@ -308,7 +308,6 @@ export async function GET(request: NextRequest) {
           type: "crypto_invoice",
           depositId: depositRequest.id,
           checkoutUrl: npInvoice.invoice_url,
-          channelLabel: channel.label,
         },
       });
     } else {

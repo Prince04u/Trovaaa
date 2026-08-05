@@ -235,7 +235,7 @@ export default function RechargePage() {
         {/* Secure Checkout IFrame */}
         <div className="flex-1 w-full h-full bg-[#fcfcfc] relative overflow-hidden">
           <iframe 
-            src={activeCheckoutUrl} 
+            src={activeCheckoutUrl?.includes("nowpayments") ? `/api/wallet/usdt-checkout?url=${encodeURIComponent(activeCheckoutUrl)}` : activeCheckoutUrl} 
             title="Payment Gateway" 
             className="w-full h-full border-none m-0 p-0 absolute inset-0"
             style={activeCheckoutUrl?.includes("nowpayments") ? {

@@ -46,7 +46,7 @@ export default function WithdrawalRecordPage() {
       return <span className="text-[#f44336]">Failed</span>;
     }
     if (status === "pending" || status === "PENDING") {
-      return <span className="text-[#ff9800]">Pending</span>;
+      return <span className="text-[#ff9800]">Applying</span>;
     }
     if (status === "approved" || status === "APPROVED") {
       if (note.gatewayStatus === "success") {
@@ -54,7 +54,7 @@ export default function WithdrawalRecordPage() {
       }
       return <span className="text-[#4caf50]">Agree</span>;
     }
-    return <span className="text-[#ff9800]">Pending</span>;
+    return <span className="text-[#ff9800]">Applying</span>;
   };
 
   return (
@@ -77,14 +77,14 @@ export default function WithdrawalRecordPage() {
               <div key={r.id || i} className="flex flex-col py-3 px-4 border-b border-[#f5f5f5]">
                 <div className="flex justify-between items-center mb-[4px]">
                   <span className="text-[#666] text-[14px]">₹ {Number(r.amount).toFixed(2)}</span>
-                  <span className="text-[13px]">{getStatusDisplay(r.status, r.note)}</span>
+                  <span className="text-[14px]">{getStatusDisplay(r.status, r.note)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-[4px]">
-                  <span className="text-[#999] text-[12px] font-mono uppercase break-all mr-2">L1WS{r.id.replace(/-/g, "").slice(0, 16)}</span>
-                  <span className="text-[#999] text-[12px] whitespace-nowrap">BankCard</span>
+                  <span className="text-[#666] text-[14px] break-all mr-2">L1WS{r.id.replace(/-/g, "").slice(0, 16)}</span>
+                  <span className="text-[#666] text-[14px] whitespace-nowrap">BankCard</span>
                 </div>
                 <div className="flex justify-start">
-                  <span className="text-[#999] text-[12px]">
+                  <span className="text-[#666] text-[14px]">
                     {r.createdAt ? format(new Date(r.createdAt), "yyyy-MM-dd HH:mm") : ""}
                   </span>
                 </div>
