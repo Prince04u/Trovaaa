@@ -22,9 +22,6 @@ export type DepositCreditSource =
 
 export interface DepositCreditParams {
   depositId: string;
-  /** Bonus amount to add on top of the deposit amount (0 if none). Computed by the caller so business rules stay where they were. */
-  bonusAmount: number;
-  bonusPercent?: number;
   source: DepositCreditSource;
   /** Extra fields merged into the ledger entry `meta` for traceability. */
   gatewayMeta?: Record<string, unknown>;
@@ -98,9 +95,9 @@ interface LockedDepositRow {
 }
 
 export async function applyDepositCredit(params: DepositCreditParams): Promise<DepositCreditResult> {
-  const { depositId, bonusAmount, source } = params;
+  const { depositId, source } = params;
 
-  log(source, depositId, "verification:start", { bonusAmount, bonusPercent: params.bonusPercent });
+  log(source, depositId, "verification:start");
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
@@ -137,13 +134,12 @@ export async function applyDepositCredit(params: DepositCreditParams): Promise<D
         log(source, depositId, "wallet-credit:start", {
           userId: current.userId,
           amount: current.amount,
-          bonusAmount,
         });
 
         const wallet = await tx.wallet.upsert({
           where: { userId: current.userId },
-          update: { balance: { increment: current.amount + bonusAmount } },
-          create: { userId: current.userId, balance: current.amount + bonusAmount },
+          update: { balance: { increment: current.amount } },
+          create: { userId: current.userId, balance: current.amount },
         });
 
         // Enforce 1x bet requirement for deposits
@@ -159,29 +155,11 @@ export async function applyDepositCredit(params: DepositCreditParams): Promise<D
             walletId: wallet.id,
             type: "DEPOSIT_APPROVED",
             amount: current.amount,
-            balanceAfter: wallet.balance - bonusAmount,
+            balanceAfter: wallet.balance,
             meta: { depositId, source, ...(params.gatewayMeta || {}) } as Prisma.InputJsonValue,
           },
         });
         log(source, depositId, "ledger:deposit_entry_created");
-
-        if (bonusAmount > 0) {
-          await tx.ledgerEntry.create({
-            data: {
-              walletId: wallet.id,
-              type: "DEPOSIT_BONUS",
-              amount: bonusAmount,
-              balanceAfter: wallet.balance,
-              meta: {
-                depositId,
-                source,
-                percent: params.bonusPercent,
-                ...(params.gatewayMeta || {}),
-              } as Prisma.InputJsonValue,
-            },
-          });
-          log(source, depositId, "ledger:bonus_entry_created", { bonusAmount });
-        }
 
         let existingNote: Record<string, unknown> = {};
         try {

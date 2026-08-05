@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount, waterRewards, waterRewardsAgg] = await Promise.all([
+    const [referredBy, agent, referralRewards, walletEarningsAgg, pendingCount, waterRewards, waterRewardsAgg, depositBonuses] = await Promise.all([
       user.referredById
         ? prisma.user.findUnique({
             where: { id: user.referredById },
@@ -56,6 +56,9 @@ export async function GET(req: NextRequest) {
       prisma.ledgerEntry.aggregate({
         where: { wallet: { userId: user.id }, type: "WATER_REWARD" },
         _sum: { amount: true },
+      }),
+      prisma.ledgerEntry.findMany({
+        where: { wallet: { userId: user.id }, type: "DEPOSIT_BONUS", ...dateFilter },
       }),
     ]);
     
@@ -175,6 +178,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    const firstRewardByUser = new Map<string, number>();
+    for (const db of depositBonuses) {
+      const sourceId = (db.meta as Record<string, unknown> | null)?.sourceUserId as string | undefined;
+      if (sourceId) {
+        firstRewardByUser.set(sourceId, (firstRewardByUser.get(sourceId) || 0) + Math.abs(db.amount));
+      }
+    }
+
     const selectStart = dateStr && dateStr !== "all" ? new Date(`${dateStr}T00:00:00+05:30`).getTime() : 0;
     const selectEnd = dateStr && dateStr !== "all" ? new Date(`${dateStr}T23:59:59+05:30`).getTime() : Infinity;
 
@@ -183,10 +194,7 @@ export async function GET(req: NextRequest) {
       const totalDepositAmount = userDeposits.reduce((sum, d) => sum + d.amount, 0);
       const totalDepositNumber = userDeposits.length;
 
-      const firstDep = firstDepositByUser.get(ru.id);
-      const firstDepositAmount = (firstDep && firstDep.createdAt.getTime() >= selectStart && firstDep.createdAt.getTime() <= selectEnd)
-        ? firstDep.amount
-        : 0;
+      const firstDepositAmount = firstRewardByUser.get(ru.id) || 0;
 
       const totalBetAmount = betSumByUser.get(ru.id) || 0;
       const commission = commissionByUser.get(ru.id) || 0;

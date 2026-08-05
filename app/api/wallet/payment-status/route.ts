@@ -5,6 +5,8 @@ import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 
+import { distributeRechargeBonus } from "@/lib/actions/commissions";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
@@ -41,25 +43,6 @@ export async function GET(request: NextRequest) {
       const paymentStatus = npStatus.payment_status?.toLowerCase();
 
       if (paymentStatus === "finished") {
-        // Auto-approve the payment
-        const { depositBonusPercent } = await getBonusSettings();
-        
-        const previousApprovedCount = await prisma.depositRequest.count({
-          where: {
-            userId: deposit.userId,
-            status: "APPROVED",
-            id: { not: id }
-          }
-        });
-        const isFirstDeposit = previousApprovedCount === 0;
-
-        let bonusAmount = 0;
-        if (isFirstDeposit) {
-          bonusAmount = getFirstDepositBonus(deposit.amount, deposit.note);
-        } else {
-          bonusAmount = Math.floor((deposit.amount * depositBonusPercent) / 100);
-        }
-
         await prisma.$transaction(async (tx) => {
           // Double check request status inside transaction to avoid race conditions
           const currentDep = await tx.depositRequest.findUnique({ where: { id } });
@@ -67,7 +50,7 @@ export async function GET(request: NextRequest) {
 
           const wallet = await tx.wallet.update({
             where: { userId: deposit.userId },
-            data: { balance: { increment: deposit.amount + bonusAmount } },
+            data: { balance: { increment: deposit.amount } },
           });
 
           await tx.ledgerEntry.create({
@@ -75,22 +58,10 @@ export async function GET(request: NextRequest) {
               walletId: wallet.id,
               type: "DEPOSIT_APPROVED",
               amount: deposit.amount,
-              balanceAfter: wallet.balance - bonusAmount,
+              balanceAfter: wallet.balance,
               meta: { depositId: id, autoApproved: true },
             },
           });
-
-          if (bonusAmount > 0) {
-            await tx.ledgerEntry.create({
-              data: {
-                walletId: wallet.id,
-                type: "DEPOSIT_BONUS",
-                amount: bonusAmount,
-                balanceAfter: wallet.balance,
-                meta: { depositId: id, percent: depositBonusPercent, autoApproved: true },
-              },
-            });
-          }
 
           await tx.depositRequest.update({
             where: { id },
@@ -105,6 +76,9 @@ export async function GET(request: NextRequest) {
             },
           });
         });
+
+        // Distribute recharge bonus asynchronously
+        await distributeRechargeBonus(deposit.userId, deposit.amount);
 
         // Trigger Telegram update (success)
         await sendTelegramNotification(

@@ -5,6 +5,7 @@ import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit } from "@/lib/wallet/creditDeposit";
+import { distributeRechargeBonus } from "@/lib/actions/commissions";
 
 /**
  * POST /api/admin/deposits/sunpays-sync
@@ -163,29 +164,13 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 2. Properly approve (credit + ledger) the ones not yet credited using central helper
+    // 2. Properly approve (credit + ledger) the ones not yet credited using central helper
   for (const deposit of safeToApprove) {
     try {
       let noteDetails: any = {};
       try {
         noteDetails = JSON.parse((deposit as any).note || "{}");
       } catch {}
-
-      const previousApprovedCount = await prisma.depositRequest.count({
-        where: {
-          userId: deposit.userId,
-          status: "APPROVED",
-          id: { not: deposit.id },
-        },
-      });
-      const isFirstDeposit = previousApprovedCount === 0;
-
-      let bonusAmount = 0;
-      if (isFirstDeposit) {
-        bonusAmount = getFirstDepositBonus(deposit.amount, (deposit as any).note);
-      } else {
-        bonusAmount = Math.floor((deposit.amount * depositBonusPercent) / 100);
-      }
 
       // Check one more time before calling applyDepositCredit
       const userWallet = await prisma.wallet.findUnique({
@@ -226,8 +211,6 @@ export async function POST(req: NextRequest) {
 
       const creditRes = await applyDepositCredit({
         depositId: deposit.id,
-        bonusAmount,
-        bonusPercent: depositBonusPercent,
         source: "admin_manual",
         gatewayMeta: { gateway: "sunpays", adminBulkSync: true, approvedBy: user.id },
         buildNote: (existing) => ({
@@ -243,6 +226,8 @@ export async function POST(req: NextRequest) {
       if (creditRes.credited) {
         approved++;
         approvedIds.push(deposit.id);
+
+        await distributeRechargeBonus(deposit.userId, deposit.amount);
 
         try {
           await sendTelegramNotification(

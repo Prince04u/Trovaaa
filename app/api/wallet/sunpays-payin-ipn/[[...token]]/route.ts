@@ -5,6 +5,7 @@ import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit, markDepositRejected } from "@/lib/wallet/creditDeposit";
+import { distributeRechargeBonus } from "@/lib/actions/commissions";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ token?: string[] }> }) {
   try {
@@ -109,30 +110,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     console.log(`Sunpays payload status: ${status}, event: ${event}. isSuccess: ${isSuccess}, isFailed: ${isFailed}`);
 
     if (isSuccess) {
-      // Auto-approve the deposit
-      const { depositBonusPercent } = await getBonusSettings();
-      
-      const previousApprovedCount = await prisma.depositRequest.count({
-        where: {
-          userId: deposit.userId,
-          status: "APPROVED",
-          id: { not: order_id }
-        }
-      });
-      const isFirstDeposit = previousApprovedCount === 0;
-
-      let bonusAmount = 0;
-      if (isFirstDeposit) {
-        bonusAmount = getFirstDepositBonus(deposit.amount, deposit.note);
-      } else {
-        bonusAmount = Math.floor((deposit.amount * depositBonusPercent) / 100);
-      }
-
       // Use central helper to perform credit, requiredWager updates, and ledger entry generation
       const creditRes = await applyDepositCredit({
         depositId: order_id,
-        bonusAmount,
-        bonusPercent: depositBonusPercent,
+        bonusAmount: 0, // Legacy field, to be cleaned up
+        bonusPercent: 0,
         source: "sunpays_ipn",
         gatewayMeta: { gateway: "sunpays", transactionId: transaction_id },
         buildNote: (existing) => ({
@@ -145,6 +127,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       });
 
       if (creditRes.credited) {
+        await distributeRechargeBonus(deposit.userId, deposit.amount);
+
         // Send Telegram notification update (success)
         try {
           await sendTelegramNotification(

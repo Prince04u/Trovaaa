@@ -4,6 +4,7 @@ import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit, markDepositRejected } from "@/lib/wallet/creditDeposit";
+import { distributeRechargeBonus } from "@/lib/actions/commissions";
 
 /**
  * Cron job: Poll all PENDING Sunpays deposits and attempt to credit them.
@@ -128,29 +129,8 @@ export async function GET(req: NextRequest) {
           lowerHtml.includes('"status":"expired"');
 
         if (isSuccess) {
-          // Auto-approve the deposit
-          const { depositBonusPercent } = await getBonusSettings();
-
-          const previousApprovedCount = await prisma.depositRequest.count({
-            where: {
-              userId: deposit.userId,
-              status: "APPROVED",
-              id: { not: deposit.id },
-            },
-          });
-          const isFirstDeposit = previousApprovedCount === 0;
-
-          let bonusAmount = 0;
-          if (isFirstDeposit) {
-            bonusAmount = getFirstDepositBonus(deposit.amount, deposit.note);
-          } else {
-            bonusAmount = Math.floor((deposit.amount * depositBonusPercent) / 100);
-          }
-
           const creditRes = await applyDepositCredit({
             depositId: deposit.id,
-            bonusAmount,
-            bonusPercent: depositBonusPercent,
             source: "payment_status_poll",
             gatewayMeta: { gateway: "sunpays", autoPolled: true },
             buildNote: (existing) => ({
@@ -162,6 +142,7 @@ export async function GET(req: NextRequest) {
           });
 
           if (creditRes.credited) {
+            await distributeRechargeBonus(deposit.userId, deposit.amount);
             // Send Telegram notification
             try {
               await sendTelegramNotification(
