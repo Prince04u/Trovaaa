@@ -206,7 +206,7 @@ export default function RechargePage() {
       </div>
 
       <BottomNav />
-      {submitLoading && <PageLoader />}
+      {submitLoading && <LoadingDialog visible={true} />}
     </main>
   );
 }

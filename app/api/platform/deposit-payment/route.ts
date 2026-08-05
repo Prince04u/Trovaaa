@@ -172,8 +172,8 @@ export async function GET(request: NextRequest) {
           amount,
           "Sunpay UPI",
           depositRequest.id,
-          depositRequest.createdAt,
           "created",
+          depositRequest.createdAt,
           "N/A"
         ).catch(err => console.error("Failed to send Telegram notification:", err));
 
@@ -240,8 +240,8 @@ export async function GET(request: NextRequest) {
           amountInr,
           "Usdt(deposit channel)",
           depositRequest.id,
-          depositRequest.createdAt,
           "created",
+          depositRequest.createdAt,
           "N/A"
         ).catch(err => console.error("Failed to send Telegram notification:", err));
 
