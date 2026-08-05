@@ -125,7 +125,12 @@ export default function WithdrawalPage() {
         {/* Input & Fee */}
         <div className="mt-1">
           <div className="flex items-center bg-white rounded-[4px] px-3.5 border border-[#dcdee0] shadow-sm h-[46px]">
-            <span className="material-icons-outlined text-[#969799] text-[20px] mr-3">credit_card</span>
+            {/* Icon 1: Grey filled circle with white card */}
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+              <circle cx="11" cy="11" r="10" fill="#B5B5B5"/>
+              <rect x="5.5" y="7" width="11" height="8" rx="1" fill="white"/>
+              <rect x="5.5" y="8.5" width="11" height="2" fill="#B5B5B5"/>
+            </svg>
             <input
               type="number"
               placeholder="Enter withdrawal amount"
@@ -151,14 +156,25 @@ export default function WithdrawalPage() {
         <div className="flex flex-col mt-4">
           <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f2f3f5]">
             <div className="flex items-center">
-              <span className="material-icons-outlined text-[#969799] text-[20px] mr-3">credit_card</span>
+              {/* Icon 2: Grey outline card with chip in bottom right */}
+              <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+                <rect x="1" y="1" width="20" height="15" rx="2" stroke="#757575" strokeWidth="1.8"/>
+                <line x1="1" y1="5.5" x2="21" y2="5.5" stroke="#757575" strokeWidth="1.8"/>
+                <rect x="13.5" y="9.5" width="4.5" height="3" fill="#757575" rx="0.5"/>
+              </svg>
               <span className="text-[14px] text-[#4e4e4e] font-normal">{selectedBank ? `${selectedBank.bankName} - ${selectedBank.accountNumber.slice(-4)}` : "Select Bank Card"}</span>
             </div>
             <span className="material-icons-outlined text-[#969799] text-[18px]">chevron_right</span>
           </Link>
           
           <div className="flex items-center py-3.5 border-b border-[#f2f3f5]">
-            <span className="material-icons-outlined text-[#969799] text-[20px] mr-3">vpn_key</span>
+            {/* Icon 3: Grey key outline with circular head and teeth */}
+            <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
+              <circle cx="6.5" cy="8.5" r="4.5" stroke="#757575" strokeWidth="1.8" fill="none"/>
+              <line x1="11" y1="8.5" x2="20" y2="8.5" stroke="#757575" strokeWidth="1.8"/>
+              <line x1="16" y1="8.5" x2="16" y2="12.5" stroke="#757575" strokeWidth="1.8"/>
+              <line x1="18.5" y1="8.5" x2="18.5" y2="12.5" stroke="#757575" strokeWidth="1.8"/>
+            </svg>
             <input
               type="password"
               placeholder="Enter your login password"
