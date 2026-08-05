@@ -149,6 +149,13 @@ export async function POST(
 
     const bet = rawResult[0];
 
+    try {
+      const { distributeWaterReward } = await import("@/lib/actions/commissions");
+      distributeWaterReward(user.id, amount, `K3 ${mode}`).catch(console.error);
+    } catch (e) {
+      console.error("Failed to distribute water reward:", e);
+    }
+
     return NextResponse.json({
       success: true,
       message: "Bet placed successfully.",

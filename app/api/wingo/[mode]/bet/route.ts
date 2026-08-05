@@ -114,6 +114,13 @@ export async function POST(
     const bet = rawResult[0];
 
     try {
+      const { distributeWaterReward } = await import("@/lib/actions/commissions");
+      distributeWaterReward(user.id, amount, `Wingo ${mode}`).catch(console.error);
+    } catch (e) {
+      console.error("Failed to distribute water reward:", e);
+    }
+
+    try {
       fs.appendFileSync(
         "C:/Users/ashut/Downloads/omega-new/scratch/latency.log",
         `[${new Date().toISOString()}] User & Wallet Fetch: ${userWalletTime}ms | Transaction Batch: ${txTime}ms\n`
