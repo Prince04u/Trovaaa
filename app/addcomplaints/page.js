@@ -4,23 +4,69 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
+import { getToken } from "@/lib/auth";
+
+const TYPE_OPTIONS = [
+  "Suggestion",
+  "Consult",
+  "Recharge Problem",
+  "Withdraw Problem",
+  "Parity Problem",
+  "Gift Receive Problem",
+  "Other",
+];
 
 export default function AddComplaintsPage() {
   const router = useRouter();
-  const [type, setType] = useState("Out of money");
+  const [type, setType] = useState("Recharge Problem");
+  const [tempType, setTempType] = useState("Recharge Problem");
+  const [showTypePicker, setShowTypePicker] = useState(false);
   const [outId, setOutId] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const openPicker = () => {
+    setTempType(type);
+    setShowTypePicker(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!description.trim()) {
+      alert("Please enter description");
+      return;
+    }
+
     setLoading(true);
     try {
+      const token = getToken();
+      const headers = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const res = await fetch("/api/users/me/feedback", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          formTitle: `${type} Complaint`,
+          data: {
+            type,
+            outId: outId.trim(),
+            whatsapp: whatsapp.trim(),
+            description: description.trim(),
+          },
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to submit complaint");
+
       alert("Complaint submitted successfully!");
       router.push("/complaints");
     } catch (err) {
-      alert("Failed to submit complaint.");
+      alert(err.message || "Failed to submit complaint.");
     } finally {
       setLoading(false);
     }
@@ -37,22 +83,15 @@ export default function AddComplaintsPage() {
       </nav>
 
       <form onSubmit={handleSubmit} className="px-6 pt-6 flex flex-col w-full max-w-2xl mx-auto bg-white">
-        {/* Type Field */}
+        {/* Type Field - Opens Bottom Picker Sheet */}
         <div className="flex flex-col mb-8 relative">
           <label className="text-[13px] font-normal text-[#888888] mb-2">Type</label>
-          <div className="relative flex items-center w-full">
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full text-[14px] text-[#333333] border-b border-[#e0e0e0] pb-2 outline-none bg-transparent appearance-none cursor-pointer pr-8"
-            >
-              <option value="Out of money">Out of money</option>
-              <option value="Recharge issue">Recharge issue</option>
-              <option value="Withdrawal issue">Withdrawal issue</option>
-              <option value="Suggestion">Suggestion</option>
-              <option value="Other">Other</option>
-            </select>
-            <span className="material-icons-outlined text-[#888888] text-[20px] absolute right-0 pointer-events-none pb-2">
+          <div
+            onClick={openPicker}
+            className="relative flex items-center justify-between w-full border-b border-[#e0e0e0] pb-2 cursor-pointer"
+          >
+            <span className="text-[14px] text-[#333333]">{type}</span>
+            <span className="material-icons-outlined text-[#888888] text-[20px] pointer-events-none">
               arrow_drop_down
             </span>
           </div>
@@ -107,6 +146,64 @@ export default function AddComplaintsPage() {
           </button>
         </div>
       </form>
+
+      {/* Bottom Sheet Type Picker Modal */}
+      {showTypePicker && (
+        <>
+          {/* Dark Overlay */}
+          <div
+            className="fixed inset-0 bg-black/40 z-40 transition-opacity"
+            onClick={() => setShowTypePicker(false)}
+          />
+
+          {/* Bottom Sheet */}
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[16px] overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#f0f0f0]">
+              <button
+                type="button"
+                onClick={() => setShowTypePicker(false)}
+                className="text-[15px] font-normal text-[#888888] bg-transparent border-none cursor-pointer p-0"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setType(tempType);
+                  setShowTypePicker(false);
+                }}
+                className="text-[15px] font-normal text-[#5c8ce6] bg-transparent border-none cursor-pointer p-0"
+              >
+                Confirm
+              </button>
+            </div>
+
+            {/* Options List */}
+            <div className="py-4 px-4 max-h-[300px] overflow-y-auto flex flex-col items-center select-none">
+              <div className="w-full flex flex-col items-center gap-3.5 py-2">
+                {TYPE_OPTIONS.map((opt) => {
+                  const isSelected = opt === tempType;
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setTempType(opt)}
+                      className={`w-full py-1.5 text-center transition-all border-none bg-transparent cursor-pointer ${
+                        isSelected
+                          ? "text-[16px] font-medium text-[#222222]"
+                          : "text-[14px] font-normal text-[#c8c9cc]"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       <BottomNav />
     </main>
