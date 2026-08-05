@@ -198,9 +198,9 @@ export default function RechargePage() {
           type="button"
           onClick={handleRecharge}
           disabled={submitLoading}
-          className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full disabled:opacity-50"
+          className="mt-4 bg-[#009688] text-white py-3.5 rounded-[4px] font-normal text-[16px] border-none cursor-pointer hover:bg-[#007b6f] w-full"
         >
-          {submitLoading ? "Processing..." : "Recharge"}
+          Recharge
         </button>
       </div>
 
