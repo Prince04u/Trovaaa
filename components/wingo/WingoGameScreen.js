@@ -874,7 +874,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               <div className="wg-sheet-row">
                 <span>Contract Money</span>
                 <div className="wg-sheet-contract-row">
-                  {[1, 10, 100, 1000].map((amt) => (
+                  {[10, 100, 1000, 10000].map((amt) => (
                     <button
                       key={amt}
                       type="button"
@@ -905,41 +905,37 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                 </div>
               </div>
 
-              <div className="wg-sheet-row wg-sheet-multi-shortcuts">
-                <span>Multiplier</span>
-                <div className="wg-sheet-multi-row">
-                  {[1, 5, 10, 20, 50, 100].map((m) => (
-                    <button
-                      key={m}
-                      type="button"
-                      className={`wg-sheet-multi-btn ${quantity === m ? "active" : ""}`}
-                      onClick={() => setQuantity(m)}
-                    >
-                      X{m}
-                    </button>
-                  ))}
+              <div className="wg-sheet-total-wrap" style={{ marginTop: '20px', marginBottom: '15px' }}>
+                <span className="wg-sheet-total-label" style={{ fontSize: '14px', color: '#333' }}>Total contract money is {totalAmount}</span>
+              </div>
+
+              <label className="wg-sheet-agree select-none" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '14px', color: '#333' }}>
+                <div 
+                  style={{
+                    width: '18px', 
+                    height: '18px', 
+                    background: agreed ? '#000' : '#fff',
+                    border: agreed ? '1px solid #000' : '1px solid #ccc',
+                    borderRadius: '2px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '8px'
+                  }}
+                  onClick={() => setAgreed(!agreed)}
+                >
+                  {agreed && <span className="material-icons-outlined" style={{ color: '#fff', fontSize: '14px' }}>check</span>}
                 </div>
-              </div>
-
-              <div className="wg-sheet-total-wrap">
-                <span className="wg-sheet-total-label">Total Contract Money:</span>
-                <strong className={`wg-sheet-total-val text-${betTheme}`}>
-                  ₹{totalAmount.toFixed(2)}
-                </strong>
-              </div>
-
-              <label className="wg-sheet-agree select-none">
-                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-                <span>I agree to the <span className="wg-sheet-link" onClick={(e) => { e.stopPropagation(); openRules(); }}>Pre-sale Agreement</span></span>
+                <span>I agree <span className="wg-sheet-link" style={{ color: '#009688' }} onClick={(e) => { e.stopPropagation(); openRules(); }}>PRESALE RULE</span></span>
               </label>
             </div>
 
             <div className="wg-sheet-footer">
               <button type="button" className="wg-sheet-btn-cancel" onClick={() => setBetSheet(null)}>
-                Close
+                CANCEL
               </button>
-              <button type="button" className={`wg-sheet-btn-submit bg-${betTheme}`} onClick={submitBet} disabled={loading}>
-                {loading ? "Submitting..." : "Confirm"}
+              <button type="button" className="wg-sheet-btn-submit" style={{ color: '#009688' }} onClick={submitBet} disabled={loading}>
+                {loading ? "SUBMITTING..." : "CONFIRM"}
               </button>
             </div>
           </div>
