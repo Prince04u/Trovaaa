@@ -9,6 +9,7 @@ import { parseWalletBalance } from "@/lib/walletBalance";
 import { getDepositOptions, getDepositPayment } from "@/lib/platformApi";
 import { getToken } from "@/lib/auth";
 import PageLoader from "@/components/brand/PageLoader";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function RechargePage() {
   const router = useRouter();
@@ -205,6 +206,7 @@ export default function RechargePage() {
       </div>
 
       <BottomNav />
+      {submitLoading && <LoadingDialog visible={true} />}
     </main>
   );
 }
