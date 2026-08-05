@@ -10,11 +10,6 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-    }
-
     const { searchParams } = new URL(request.url);
     const channelId = searchParams.get("channel");
     const amountParam = searchParams.get("amount");
@@ -24,40 +19,44 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
     }
 
-    // Retrieve or auto-create the deposit channel to ensure it exists
-    let channel = await prisma.depositChannel.findFirst({
-      where: {
-        OR: [
-          { id: channelId },
-          { channelKey: channelId },
-        ],
-      },
-    });
+    // Parallelize user authentication and channel lookup for maximum response speed
+    const [user, initialChannel] = await Promise.all([
+      getCurrentUser(),
+      prisma.depositChannel.findFirst({
+        where: {
+          OR: [
+            { id: channelId },
+            { channelKey: channelId },
+          ],
+        },
+      }),
+    ]);
+
+    if (!user) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    let channel = initialChannel;
 
     if (channel) {
       const keyLower = channel.channelKey.toLowerCase();
       const isSunpaysKey = keyLower.includes("sunpay") || keyLower.includes("paytmx") || keyLower.includes("upixqr");
       
-      // Auto-heal: If it is a Sunpays/UPI channel but currently stored as crypto, correct it in the database
+      // Non-blocking Auto-heal
       if (isSunpaysKey && channel.channelType !== "upi") {
-        channel = await prisma.depositChannel.update({
+        prisma.depositChannel.update({
           where: { id: channel.id },
-          data: {
-            channelType: "upi",
-            label: "Sunpay UPI x QR",
-            minAmount: 100,
-          },
-        });
+          data: { channelType: "upi", label: "Sunpay UPI x QR", minAmount: 100 },
+        }).catch(err => console.error("Auto-heal DB update error:", err));
+        channel = { ...channel, channelType: "upi", label: "Sunpay UPI x QR", minAmount: 100 };
       }
 
-      // Auto-heal: If it is a Crypto channel but minAmount is too high (e.g. 12) to accept converted INR, lower it to 1
       if ((channel.channelKey.includes("trc20") || channel.channelKey.includes("bep20")) && channel.minAmount > 1) {
-        channel = await prisma.depositChannel.update({
+        prisma.depositChannel.update({
           where: { id: channel.id },
-          data: {
-            minAmount: 1,
-          },
-        });
+          data: { minAmount: 1 },
+        }).catch(err => console.error("Auto-heal DB update error:", err));
+        channel = { ...channel, minAmount: 1 };
       }
     }
 
