@@ -67,24 +67,24 @@ export default function TransactionsPage() {
             const balBefore = isAddition(item.type) ? balAfter - amount : balAfter + amount;
 
             return (
-              <div key={item.id || i} className="flex justify-between items-start py-[14px] px-[15px] border-b border-[#f5f5f5]">
-                <div className="flex flex-col">
-                  <span className="text-[13px] font-normal text-[#999999] mb-[4px]">
+              <div key={item.id || i} className="flex justify-between items-start py-[12px] px-[15px] border-b border-[#f0f0f0]">
+                <div className="flex flex-col gap-[6px]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none">
                     ₹ {amount.toFixed(2)}
                   </span>
-                  <span className="text-[14px] font-normal text-[#333333] mb-[4px]">
+                  <span className="text-[14px] font-normal text-[#333333] leading-none my-[2px]">
                     {item.description}
                   </span>
-                  <span className="text-[13px] font-normal text-[#999999]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none">
                     {formatDate(item.createdAt)}
                   </span>
                 </div>
                 
-                <div className="flex flex-col items-end text-right">
-                  <span className="text-[13px] font-normal text-[#999999] mb-[4px]">
+                <div className="flex flex-col items-end text-right gap-[6px]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none">
                     ₹ {balBefore.toFixed(2)}
                   </span>
-                  <span className="text-[13px] font-normal text-[#999999]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none my-[2px]">
                     ₹ {balAfter.toFixed(2)}
                   </span>
                 </div>
@@ -98,7 +98,7 @@ export default function TransactionsPage() {
         <div className="text-[#999999] text-[13px] font-normal">
           {!loading && list.length > 0 && `1-${list.length} of ${list.length}`}
         </div>
-        <div className="absolute right-4 flex gap-6">
+        <div className="absolute right-4 flex gap-10">
           <span className="material-icons-outlined text-[#333333] text-[18px] cursor-pointer">keyboard_arrow_left</span>
           <span className="material-icons-outlined text-[#333333] text-[18px] cursor-pointer">keyboard_arrow_right</span>
         </div>
