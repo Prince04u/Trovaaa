@@ -7,18 +7,18 @@ import type { LedgerType } from "@/generated/prisma/client";
 // UI understands (see lib/transactionUtils.js). `credit` decides the +/- sign
 // the UI shows, so debits (bets, withdrawals) must map to non-credit types.
 const LEDGER_MAP: Record<LedgerType, { type: string; description: string }> = {
-  WELCOME_BONUS: { type: "bonus_credit", description: "Welcome bonus" },
-  DEPOSIT_APPROVED: { type: "deposit", description: "Deposit approved" },
-  DEPOSIT_BONUS: { type: "bonus_credit", description: "Deposit bonus" },
-  WITHDRAW_APPROVED: { type: "withdrawal", description: "Withdrawal approved" },
-  WITHDRAW_REJECTED_REFUND: { type: "locked_release", description: "Withdrawal refunded" },
-  WITHDRAW_REQUESTED: { type: "withdrawal", description: "Withdrawal requested" },
-  BET_PLACED: { type: "bet_deduction", description: "Bet placed" },
-  BET_WON: { type: "winning_credit", description: "Bet won" },
-  BET_LOST: { type: "bet_deduction", description: "Bet lost" },
-  ADMIN_ADJUST: { type: "admin_adjustment", description: "Balance adjustment" },
-  REWARD_CLAIMED: { type: "referral_bonus", description: "Reward claimed" },
-  GIFT_CODE_REDEEMED: { type: "bonus_credit", description: "Gift code redeemed" },
+  WELCOME_BONUS: { type: "bonus_credit", description: "Sign In Reward" },
+  DEPOSIT_APPROVED: { type: "deposit", description: "Deposit Approved" },
+  DEPOSIT_BONUS: { type: "bonus_credit", description: "Deposit Bonus" },
+  WITHDRAW_APPROVED: { type: "withdrawal", description: "Withdrawal" },
+  WITHDRAW_REJECTED_REFUND: { type: "locked_release", description: "Withdrawal failure" },
+  WITHDRAW_REQUESTED: { type: "withdrawal", description: "Withdrawal" },
+  BET_PLACED: { type: "bet_deduction", description: "Place Order" },
+  BET_WON: { type: "winning_credit", description: "Win A Prize" },
+  BET_LOST: { type: "bet_deduction", description: "Bet Lost" },
+  ADMIN_ADJUST: { type: "admin_adjustment", description: "Balance Adjustment" },
+  REWARD_CLAIMED: { type: "referral_bonus", description: "Reward Claimed" },
+  GIFT_CODE_REDEEMED: { type: "bonus_credit", description: "Gift Code Redeemed" },
   WATER_REWARD: { type: "bonus_credit", description: "Water Reward" },
 };
 
