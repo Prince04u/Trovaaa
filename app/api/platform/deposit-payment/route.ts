@@ -257,6 +257,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    const typeLower = String(channel.channelType || "").toLowerCase();
+    const isCrypto = typeLower.includes("crypto") || typeLower.includes("usdt") || channel.channelKey.toLowerCase().includes("trc") || channel.channelKey.toLowerCase().includes("bep");
+
     if (isCrypto) {
       const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);

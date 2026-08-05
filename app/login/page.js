@@ -37,7 +37,7 @@ export default function LoginPage() {
         router.push("/");
       }, 500);
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed.");
+      pushToast("password error");
       setLoading(false);
     }
   };
@@ -58,7 +58,7 @@ export default function LoginPage() {
       </header>
 
       {/* Form Section — recharge_box from reference */}
-      <div className="w-full flex-1 box-border" style={{ marginTop: '99px', padding: '0 24px' }}>
+      <div className="recharge_box w-full flex-1 box-border" style={{ marginTop: '99px', padding: '24px' }}>
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}
@@ -87,25 +87,24 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={loading}
-              className="van-btn-teal"
-              style={{ width: '240px' }}
+              className="login_btn ripple van-btn-teal w-[240px] h-[44px] bg-[#009688] text-white text-[14px] font-normal border-none outline-none shadow-none cursor-pointer flex items-center justify-center rounded-[2px]"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
           </div>
 
-          {/* Sub-buttons: Register & Forgot Password — 240px container, 25px top margin */}
+          {/* Sub-buttons: Register & Forgot Password — 310px container, 25px top margin */}
           <div className="flex justify-center w-full" style={{ padding: '0' }}>
-            <div className="flex justify-between" style={{ width: '240px', marginTop: '25px' }}>
+            <div className="flex justify-between" style={{ width: '310px', marginTop: '25px' }}>
               <Link 
                 href="/register" 
-                className="van-btn-sub"
+                className="ripplegrey flex items-center justify-center rounded-[2px] h-[40px] px-[15px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] text-decoration-none border-none outline-none shadow-none cursor-pointer font-normal"
               >
                 Register
               </Link>
               <Link 
                 href="/forgotpass" 
-                className="van-btn-sub"
+                className="ripplegrey flex items-center justify-center rounded-[2px] h-[40px] px-[15px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] text-decoration-none border-none outline-none shadow-none cursor-pointer font-normal"
               >
                 Forgot Password?
               </Link>

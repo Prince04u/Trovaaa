@@ -549,14 +549,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     <main className="wingo-game">
       <div className="win">
         <div className="mine_top">
-            <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent" }}>
-              <div className="balance">
+            <div className="mine_info" style={{ WebkitTapHighlightColor: "transparent", padding: "12px 8px 8px", background: "#009688" }}>
+              <p className="balance" style={{ fontSize: "18px", padding: "12px 8px 15px", color: "#FFFFFF", margin: 0 }}>
                 Available balance: ₹ {Number(balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </div>
+              </p>
               <div className="mine_info_btn" style={{ WebkitTapHighlightColor: "transparent" }}>
-                <div className="btn_group" style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" className="one_btn bg-[#2196f3] text-white rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer" }} onClick={() => router.push("/recharge")}>Recharge</button>
-                  <button type="button" className="bg-white text-[#333] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "center", height: "30px", boxSizing: "border-box", border: "1px solid #dcdfe6", outline: "none", cursor: "pointer" }} onClick={() => router.push(`/trend?type=${duration}`)}>Trend</button>
+                <div className="btn_group" style={{ display: 'flex', gap: '0' }}>
+                  <button type="button" className="one_btn ripple bg-[#2196f3] text-white rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 15px", display: "flex", alignItems: "center", justifyContent: "center", height: "36px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer", marginRight: "10px" }} onClick={() => router.push("/recharge")}>Recharge</button>
+                  <button type="button" className="bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] rounded-[2px]" style={{ WebkitTapHighlightColor: "transparent", fontSize: "14px", fontWeight: "400", padding: "0 15px", display: "flex", alignItems: "center", justifyContent: "center", height: "36px", boxSizing: "border-box", border: "none", outline: "none", cursor: "pointer" }} onClick={() => router.push(`/trend?type=${duration}`)}>Trend</button>
                 </div>
                 <div className="refresh" onClick={() => loadData({ showSpinner: true })} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <svg 
@@ -579,11 +579,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           </div>
         </div>
 
-        {/* Category Tabs */}
-        <div className="main">
-          <ul className="main_nav">
-            <li className="active text-center">{duration.charAt(0).toUpperCase() + duration.slice(1)}</li>
-          </ul>
+        {/* Game Mode Title (e.g. Parity) */}
+        <div className="flex items-center justify-center bg-white py-[12px] text-[15px] font-normal text-[#333] select-none border-b-[2px] border-[#009688]">
+          {duration === 'bcone' || duration === 'parity' ? 'Parity' : duration.charAt(0).toUpperCase() + duration.slice(1)}
         </div>
 
         {/* Period & Count Down Card */}
@@ -591,11 +589,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <ul className="center_top">
             <li>
               <ul className="top_ol">
-                <img 
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38IENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" 
-                  style={{ width: "18px", height: "18px", marginRight: "6px", display: "inline-block", verticalAlign: "middle", opacity: 0.6 }} 
-                  alt="Trophy" 
-                />
+                <Trophy size={20} className="inline-block mr-[10px] opacity-60 align-middle" />
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
@@ -659,9 +653,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         {/* History and Tabs lists */}
         <div className="content">
           <div className="content_con select-none">
-            <div className="flex flex-col items-center justify-center pt-4 pb-2 bg-white text-[#666] text-[14px]">
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38JENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStpQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" width="24" height="24" className="mb-1 opacity-60" alt="Trophy" />
-              <span className="font-light">{duration === 'bcone' ? 'Bcone Record' : duration === 'parity' ? 'Parity Record' : duration.charAt(0).toUpperCase() + duration.slice(1) + ' Record'}</span>
+            <div className="content_title flex flex-col items-center justify-center py-[12px] bg-white text-[#666] text-[14px]">
+              <Trophy size={20} className="inline-block mb-1 opacity-60" />
+              <span className="font-light">{duration === 'bcone' || duration === 'parity' ? 'Parity Record' : duration.charAt(0).toUpperCase() + duration.slice(1) + ' Record'}</span>
             </div>
             <div className="h-[1px] w-full bg-[#009688]" />
             
@@ -867,7 +861,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Type</span>
-                        <span>Bcone</span>
+                        <span>{duration === 'bcone' ? 'Parity' : duration.charAt(0).toUpperCase() + duration.slice(1)}</span>
                       </div>
                       <div className="flex justify-end mt-2 mb-2">
                         <button 

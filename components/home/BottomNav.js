@@ -49,7 +49,7 @@ export default function BottomNav() {
             <img
               src={active ? activeIcon : inactiveIcon}
               alt={label}
-              className="w-[20px] h-[20px] object-contain"
+              className="w-[18px] h-[18px] object-contain"
             />
             <span
               className="text-[12px] font-normal leading-none mt-[4px]"

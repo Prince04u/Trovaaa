@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/home/BottomNav";
+import { Bell } from "lucide-react";
 import { clearAuth, getToken, getUser } from "@/lib/auth";
 import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
@@ -102,16 +103,16 @@ export default function AccountScreen() {
   return (
     <main className="min-h-screen bg-[#fafafa] pb-[64px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Profile Header Banner matching reference site luvomall.games */}
-      <section className="w-full bg-[#009688] pt-[20px] pb-[15px] px-[20px] box-border text-white">
+      <section className="mine_info w-full bg-[#009688] pt-[12px] pb-[12px] box-border text-white">
         {/* User identification top bar */}
-        <div className="flex items-center justify-between w-full h-[60px]">
+        <div className="flex items-center justify-between w-full h-[50px] px-[12px] box-border">
           <div className="flex items-center">
             <div className="w-[45px] h-[45px] rounded-full bg-[#9DE3DF] text-white flex items-center justify-center font-normal text-[20px] shrink-0 border border-white/20 mr-[15px]">
               {avatarChar}
             </div>
             <div className="flex flex-col text-[14px] leading-[22px]">
               <div className="flex items-center font-normal tracking-wide mb-[2px]">
-                User：
+                User:
                 <button
                   type="button"
                   onClick={() => setShowNameModal(true)}
@@ -120,7 +121,7 @@ export default function AccountScreen() {
                   {displayName}
                 </button>
               </div>
-              <div className="font-normal tracking-wide">ID：{uid}</div>
+              <div className="font-normal tracking-wide">ID: {uid}</div>
             </div>
           </div>
 
@@ -128,46 +129,46 @@ export default function AccountScreen() {
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0 shadow-sm mt-1"
+            className="notice w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0 mt-1"
             aria-label="Notifications"
           >
-            <img src={REF_ICONS.notice} alt="Notice" className="w-[20px] h-[20px] object-contain opacity-80" />
+            <Bell size={20} className="text-[#009688]" />
           </button>
         </div>
 
         {/* 3 Stat Columns (Balance, Commission, Interest) */}
-        <div className="flex items-center justify-around w-full mt-[10px] pb-[10px]">
+        <div className="mine_top_items flex items-center justify-between w-full mt-[12px] px-[20px] py-[5px] box-border">
           {/* Balance */}
-          <div className="flex flex-col items-center">
-            <div className="mb-[2px] font-normal text-[15px]">₹ {Number(balance || 0).toFixed(2)}</div>
-            <span className="text-[14px] font-normal tracking-wide mb-[5px]">Balance</span>
+          <div className="top_item flex flex-col items-center w-[80px]">
+            <div className="text-[14px] font-normal leading-tight">₹ {Number(balance || 0).toFixed(2)}</div>
+            <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Balance</div>
             <Link 
               href="/recharge" 
-              className="bg-[#2196f3] text-white text-[13px] px-[16px] py-[3px] rounded-none select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
+              className="one_btn ripple bg-[#2196f3] text-white text-[12px] w-[80px] h-[20px] mt-[6px] flex items-center justify-center border-none outline-none shadow-none cursor-pointer rounded-[2px] text-decoration-none"
             >
               Recharge
             </Link>
           </div>
 
           {/* Commission */}
-          <div className="flex flex-col items-center">
-            <div className="mb-[2px] font-normal text-[15px]">₹ 0</div>
-            <span className="text-[14px] font-normal tracking-wide mb-[5px]">Commission</span>
+          <div className="top_item flex flex-col items-center w-[80px]">
+            <div className="text-[14px] font-normal leading-tight">₹ 0</div>
+            <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Commission</div>
             <Link 
               href="/reward" 
-              className="bg-[#2196f3] text-white text-[13px] px-[22px] py-[3px] rounded-none select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
+              className="one_btn ripple bg-[#2196f3] text-white text-[12px] w-[80px] h-[20px] mt-[6px] flex items-center justify-center border-none outline-none shadow-none cursor-pointer rounded-[2px] text-decoration-none"
             >
               See
             </Link>
           </div>
 
           {/* Interest */}
-          <div className="flex flex-col items-center">
-            <div className="mb-[2px] font-normal text-[15px]">₹ 0</div>
-            <span className="text-[14px] font-normal tracking-wide mb-[5px]">Interest</span>
+          <div className="top_item flex flex-col items-center w-[80px]">
+            <div className="text-[14px] font-normal leading-tight">₹ 0</div>
+            <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Interest</div>
             <Link 
               href="/interest" 
-              className="bg-[#2196f3] text-white text-[13px] px-[22px] py-[3px] rounded-none select-none text-decoration-none flex items-center justify-center border-none outline-none shadow-none"
+              className="one_btn ripple bg-[#2196f3] text-white text-[12px] w-[80px] h-[20px] mt-[6px] flex items-center justify-center border-none outline-none shadow-none cursor-pointer rounded-[2px] text-decoration-none"
             >
               See
             </Link>
@@ -183,9 +184,7 @@ export default function AccountScreen() {
           onClick={() => setShowSignInModal(true)}
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.signIn} alt="Sign In" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.signIn} alt="Sign In" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Sign In</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -197,9 +196,7 @@ export default function AccountScreen() {
           href="/orders"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.orders} alt="Orders" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.orders} alt="Orders" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Orders</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -211,9 +208,7 @@ export default function AccountScreen() {
           href="/promotion"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.promotion} alt="Promotion" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.promotion} alt="Promotion" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Promotion</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -225,9 +220,7 @@ export default function AccountScreen() {
           href="/redenvelope"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.redEnvelope} alt="Red Envelope" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Red Envelope</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -243,9 +236,7 @@ export default function AccountScreen() {
             onClick={() => setWalletOpen(!walletOpen)}
             className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-              <img src={REF_ICONS.wallet} alt="Wallet" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-            </div>
+            <img src={REF_ICONS.wallet} alt="Wallet" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
             <div className="flex-grow flex items-center justify-between">
               <span className="text-[15px] font-normal text-[#333333]">Wallet</span>
               <span className={`material-icons-outlined text-[18px] text-[#c8c9cc] font-light transition-transform duration-200 ${walletOpen ? "rotate-180" : ""}`}>
@@ -283,9 +274,7 @@ export default function AccountScreen() {
           href="/bankcard"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.bankCard} alt="Bank Card" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Bank Card</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -297,9 +286,7 @@ export default function AccountScreen() {
           href="/address"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.address} alt="Address" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.address} alt="Address" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Address</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -312,9 +299,7 @@ export default function AccountScreen() {
             onClick={() => setSecurityOpen(!securityOpen)}
             className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-              <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-            </div>
+            <img src={REF_ICONS.accountSecurity} alt="Account Security" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
             <div className="flex-grow flex items-center justify-between">
               <span className="text-[15px] font-normal text-[#333333]">Account Security</span>
               <span className={`material-icons-outlined text-[18px] text-[#c8c9cc] font-light transition-transform duration-200 ${securityOpen ? "rotate-180" : ""}`}>
@@ -341,9 +326,7 @@ export default function AccountScreen() {
             onClick={() => setDownloadOpen(!downloadOpen)}
             className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-              <img src={REF_ICONS.appDownload} alt="App Download" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-            </div>
+            <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
             <div className="flex-grow flex items-center justify-between">
               <span className="text-[15px] font-normal text-[#333333]">App Download</span>
               <span className={`material-icons-outlined text-[18px] text-[#c8c9cc] font-light transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
@@ -370,9 +353,7 @@ export default function AccountScreen() {
           href="/complaints"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border"
         >
-          <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-            <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-          </div>
+          <img src={REF_ICONS.complaints} alt="Complaints & Suggestions" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Complaints & Suggestions</span>
             <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
@@ -385,9 +366,7 @@ export default function AccountScreen() {
             onClick={() => setAboutOpen(!aboutOpen)}
             className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
           >
-            <div className="flex justify-center items-center shrink-0 w-[24px] mr-[10px]">
-              <img src={REF_ICONS.about} alt="About" className="w-[22px] h-[22px] object-contain shrink-0 opacity-80" />
-            </div>
+            <img src={REF_ICONS.about} alt="About" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
             <div className="flex-grow flex items-center justify-between">
               <span className="text-[15px] font-normal text-[#333333]">About</span>
               <span className={`material-icons-outlined text-[18px] text-[#c8c9cc] font-light transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}>
@@ -406,15 +385,9 @@ export default function AccountScreen() {
               </Link>
               <Link
                 href="/riskagreement"
-                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
-              >
-                Risk Disclosure Agreement
-              </Link>
-              <Link
-                href="/cancellationpolicy"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
-                Cancellation and Refundable Policy
+                Risk Disclosure Agreement
               </Link>
             </div>
           )}
@@ -426,7 +399,7 @@ export default function AccountScreen() {
         <button
           type="button"
           onClick={() => setShowLogoutModal(true)}
-          className="w-[54%] h-[40px] bg-white border border-[#e0e0e0] text-[#333333] text-[15px] font-normal rounded-[2px] flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors cursor-pointer outline-none"
+          className="ripplegrey w-[350px] max-w-[90%] h-[36px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] font-normal rounded-[2px] border-none outline-none shadow-none cursor-pointer flex items-center justify-center"
         >
           Logout
         </button>
@@ -527,7 +500,7 @@ export default function AccountScreen() {
       {/* Logout Confirm Modal Dialog */}
       {showLogoutModal && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[4px] w-full max-w-[480px] p-6 shadow-lg flex flex-col justify-between">
+          <div className="wrapper bg-white rounded-[4px] w-full max-w-[480px] p-[15px] shadow-lg flex flex-col justify-between">
             <h3 className="text-[18px] font-medium text-[#222222] m-0 mb-3">Confirm</h3>
             <p className="text-[14px] text-[#555555] m-0 mb-6">Do you want to logout?</p>
             <div className="flex justify-end gap-6">

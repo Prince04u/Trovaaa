@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import BottomNav from "./BottomNav";
 
@@ -55,6 +56,31 @@ const PRODUCTS = [
 ];
 
 export default function HomeScreen() {
+  const BANNERS = [
+    "https://apex-king.com/img/img1.a0c0ceb8.jpg",
+    "https://apex-king.com/img/img2.d20d91c8.jpg",
+    "https://apex-king.com/img/img3.cf981904.jpg",
+    "https://apex-king.com/img/img4.bab134cd.jpg",
+    "https://apex-king.com/img/img5.9594a6e6.jpg"
+  ];
+  const SLIDES = [...BANNERS, BANNERS[0]];
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentSlideIndex((prev) => prev + 1);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleTransitionEnd = () => {
+    if (currentSlideIndex >= SLIDES.length - 1) {
+      setIsTransitioning(false);
+      setCurrentSlideIndex(0);
+    }
+  };
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       <section className="bg-[#f2f2f2] h-[50px] flex items-center justify-between text-xs font-normal select-none w-full relative z-10 px-[15px]" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }}>
@@ -79,13 +105,41 @@ export default function HomeScreen() {
         </span>
       </section>
 
-      {/* Image Banner */}
-      <section className="w-full bg-white relative select-none border-b border-gray-200 flex justify-center">
-        <img
-          src="https://apex-king.com/img/img1.a0c0ceb8.jpg"
-          alt="Banner"
-          className="w-full h-auto block"
-        />
+      {/* Image Banner Carousel */}
+      <section 
+        className="w-full bg-white relative select-none border-b border-gray-200 overflow-hidden"
+        style={{ aspectRatio: "716 / 500" }}
+      >
+        <div 
+          className="flex h-full"
+          onTransitionEnd={handleTransitionEnd}
+          style={{ 
+            transform: `translateX(-${(currentSlideIndex * 100) / SLIDES.length}%)`, 
+            width: `${SLIDES.length * 100}%`,
+            transition: isTransitioning ? "transform 500ms ease-in-out" : "none"
+          }}
+        >
+          {SLIDES.map((src, index) => (
+            <div key={index} className="w-full h-full flex-shrink-0" style={{ width: `${100 / SLIDES.length}%` }}>
+              <img
+                src={src}
+                alt={`Banner ${index + 1}`}
+                className="w-full h-full object-cover block"
+              />
+            </div>
+          ))}
+        </div>
+        {/* Carousel Indicators */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+          {BANNERS.map((_, index) => (
+            <div 
+              key={index} 
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                index === (currentSlideIndex % BANNERS.length) ? "bg-[#009688] w-3" : "bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* 2-Column Product Grid list matching indexs.vue */}
