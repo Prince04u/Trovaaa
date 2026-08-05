@@ -86,6 +86,9 @@ export default function RechargePage() {
     }
 
     setSubmitLoading(true);
+    // Force browser to paint LoadingDialog immediately on click before API fetch begins
+    await new Promise((r) => setTimeout(r, 10));
+
     try {
       // Find method for this channel if any
       const methodId = paymentType; // Fallback
@@ -101,7 +104,7 @@ export default function RechargePage() {
       if (!paymentData) throw new Error("Failed to initialize payment details");
 
       if (paymentData.checkoutUrl) {
-        window.location.href = paymentData.checkoutUrl;
+        window.location.replace(paymentData.checkoutUrl);
         return;
       }
 
