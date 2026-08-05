@@ -179,9 +179,7 @@ function WithdrawAccountsContent() {
     }
   };
 
-  if (loadingAccounts) {
-    return <PageLoader />;
-  }
+
 
   return (
     <main style={{ minHeight: "100vh", background: "#fafafa", color: "#222222", paddingBottom: "100px", position: "relative" }}>
@@ -680,6 +678,7 @@ function WithdrawAccountsContent() {
           Back to withdraw
         </Link>
       </section>
+      {loadingAccounts && <PageLoader />}
     </main>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 import { Trophy, ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getToken, getUser } from "@/lib/auth";
@@ -133,6 +134,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   const [historyTab, setHistoryTab] = useState("game");
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [showPurpleLine, setShowPurpleLine] = useState(true);
   const [gameHistoryPage, setGameHistoryPage] = useState(1);
   const [outcomePopup, setOutcomePopup] = useState(null);
   const myBetsRef = useRef([]);
@@ -325,7 +327,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         return;
       }
       setIsAuthInitialized(true);
-      loadData({ showSpinner: false });
+      loadData({ showSpinner: true });
     }
     
     getWingoConfig()
@@ -504,7 +506,12 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       push("Bet Successful", "success");
       setLoading(false);
-      loadData();
+      setShowPurpleLine(false);
+      try {
+        await loadData({ showSpinner: true });
+      } finally {
+        setShowPurpleLine(true);
+      }
     } catch (err) {
       setBalance(prev => prev + deductedAmount);
       setMyBets(prev => prev.filter(b => b.id !== generatedId));
@@ -584,7 +591,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <ul className="center_top">
             <li>
               <ul className="top_ol">
-                <Trophy strokeWidth={2} />
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADF0lEQVRoQ+1aO2gUURQ9Nx8mYCfYiR+w0EbsTMD4qyVqwA/aGBG7FUdm3jYBYxOYeS+OmE6IBoL4Az9gk8L4BbVSUlkIiXY2dkKEZK9MSGR8O7PzdXeKmXLn3nvOub/d91hCwse2bU5oWqiZlJKSBExk5AeqhCRJZwubqiJRySl9a3WKYM6Oa3KnSkjRKc0Zr6pIzgQW7h5akbDd3alZSsqlElJ4b0QETFORTwD2BON0dXVtdRzne/CzsrRWvV7f0mg0vmm6P/utdQfAOU3IoOM470oqZF+j0XirCZn2hQgAjvbikZTyZBmF2Lb9EMAJjW+dhBBDzPxMb1EiOu+6rl+t1acMrSWEGGHm2yFcj66eRyzLek1E+zWDX8x8RCn1qgxCLMs6SETPAWwI8mTmN0qpA+tCjhPR45DFsUBEV1zXfdrJigghjjHzdQDbdY7MPKyUevL3hGjb9n0ApyK2oD9cg+1auRpOK+wHUsrTvv1fIUKIfmZ+3yGymWCJaMB13Q//CFmblb1EdAvA7kyR2+c0z8wXlVIf1yGbLh9M09zY09NzE8DZ9vFKhXR3eXn5kud5P4NekbcolmVdBXA4ZJulQi3K2N9OAOaUUtfCYsZeB5mmuaO7u/vQmqjVwWrXw8z+AppbWVl56Xne11a4sUKCzrZtLwDY1iYhi1LKpnUbhZ1KSNQ36/8Qpv+yiMNIJaRWqxl9fX1f2lCVxaWlpZ2Tk5O/4wREbq04R38IENFYnF2e98w8FjXUhbTWehAhhMfMl/OQjSREdMN1XTNt7FStQ1+0zkmLXiI/bSUciRLnMxCfLCwQ1kWEr4PM08ppS5k9c8lxAe1LOsMEY0C2JWFBDPPMrM3MTExm8U/87CHgdVqtU2GYYwS0TCAzQkJvWDme0qpqYT2Lc1yVyQY3V/PhmEMEFE/gAEAQxr6PICZ3t7emfHx8R9FCCi0ImGEwtZ0lrWaVGyhFQmCVkKSlkCzqyoSl7iqteIyFPG+aq24xFWtFZehqrVaZKjoa9Skf9cIo5Rr2CshEVWuKhK8xM6yLMrUWn8AMZSO49QGBtUAAAAASUVORK5CYII=" alt="Trophy Icon" />
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
@@ -639,6 +646,23 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               <li>Number</li>
               <li>Result</li>
             </ul>
+            <div className="w-full h-[3px] bg-transparent relative overflow-hidden" style={{ minHeight: '3px' }}>
+              {refreshing && showPurpleLine && (
+                <>
+                  <style>{`
+                    @keyframes indeterminateProgress {
+                      0% { left: -50%; width: 50%; }
+                      50% { left: 25%; width: 60%; }
+                      100% { left: 100%; width: 50%; }
+                    }
+                    .purple-progress-bar {
+                      animation: indeterminateProgress 1.3s infinite linear;
+                    }
+                  `}</style>
+                  <div className="absolute top-0 bottom-0 bg-[#9c27b0] purple-progress-bar" />
+                </>
+              )}
+            </div>
             
             {displayResults.slice((gameHistoryPage - 1) * 10, gameHistoryPage * 10).map((r) => {
               const dots = r.resultColors?.length ? r.resultColors : getColorDots(r.resultNumber);
@@ -864,8 +888,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       {/* Slide-Up Betting Dialog Ticket */}
       {betSheet && (
-        <div className="wg-sheet-mask select-none" onClick={() => setBetSheet(null)}>
-          <div className="wg-sheet" onClick={(e) => e.stopPropagation()}>
+        <div 
+          className="fixed inset-0 z-[200] bg-black/45 flex items-end md:items-center justify-center select-none pb-0 md:p-4" 
+          onClick={() => setBetSheet(null)}
+        >
+          <div 
+            className="bg-white w-full md:max-w-[450px] rounded-t-[16px] md:rounded-lg overflow-hidden shadow-2xl relative pb-6 md:pb-0 transition-all duration-300 transform translate-y-0" 
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={`wg-sheet-header ${betTheme}`}>
               <h3 style={{ margin: 0, padding: 0 }}>Join {getBetSelectionLabel(betSheet.betType, betSheet.betValue)}</h3>
             </div>
@@ -948,6 +978,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Outcome popups */}
       <OutcomePopup popup={outcomePopup} onClose={() => setOutcomePopup(null)} />
 
+      <LoadingDialog visible={refreshing} />
       <ToastStack toasts={toasts} />
     </main>
   );

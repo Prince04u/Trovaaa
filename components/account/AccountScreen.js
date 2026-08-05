@@ -256,16 +256,16 @@ export default function AccountScreen() {
           </button>
 
           {walletOpen && (
-            <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
+            <div className="flex flex-col bg-white">
               <Link
                 href="/recharge"
-                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
+                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
                 Recharge
               </Link>
               <Link
                 href="/withdrawal"
-                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
+                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
               >
                 Withdrawal
               </Link>
@@ -407,9 +407,15 @@ export default function AccountScreen() {
               </Link>
               <Link
                 href="/riskagreement"
-                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
+                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
               >
                 Risk Disclosure Agreement
+              </Link>
+              <Link
+                href="/cancellationpolicy"
+                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
+              >
+                Cancellation and Refundable Policy
               </Link>
             </div>
           )}

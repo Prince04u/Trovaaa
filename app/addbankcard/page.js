@@ -27,8 +27,36 @@ export default function AddBankCardPage() {
 
   useEffect(() => {
     const user = getUser();
-    if (user?.mobile || user?.phone) {
-      setForm(prev => ({ ...prev, accountPhone: user.mobile || user.phone }));
+    let phoneNum = user?.mobile || user?.phone || "";
+    
+    // Check if edit mode is active
+    const searchParams = new URLSearchParams(window.location.search);
+    const isEdit = searchParams.get("edit") === "true";
+    if (isEdit) {
+      const editCardStr = sessionStorage.getItem("edit_bank_card");
+      if (editCardStr) {
+        try {
+          const card = JSON.parse(editCardStr);
+          setForm({
+            actualName: card.accountName || "",
+            ifscCode: card.ifsc || "",
+            bankName: card.bankName || "",
+            bankAccount: card.accountNumber || "",
+            usdtAddress: "",
+            state: "",
+            city: "",
+            address: "",
+            mobileNumber: "",
+            email: "",
+            accountPhone: phoneNum,
+            code: ""
+          });
+        } catch (e) {
+          console.error("Failed to parse edit bank card data", e);
+        }
+      }
+    } else {
+      setForm(prev => ({ ...prev, accountPhone: phoneNum }));
     }
   }, []);
 
@@ -47,10 +75,11 @@ export default function AddBankCardPage() {
         ifsc: form.ifscCode,
         bankName: form.bankName,
       });
-      alert("Bank Card added successfully!");
+      sessionStorage.removeItem("edit_bank_card");
+      alert("Bank Card saved successfully!");
       router.back();
     } catch (err) {
-      alert(err.response?.data?.message || err.message || "Failed to add bank card.");
+      alert(err.response?.data?.message || err.message || "Failed to save bank card.");
     } finally {
       setSubmitLoading(false);
     }

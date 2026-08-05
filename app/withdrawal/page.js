@@ -18,7 +18,7 @@ export default function WithdrawalPage() {
   const [banks, setBanks] = useState([]);
   const [bankAccountId, setBankAccountId] = useState("");
   const [error, setError] = useState("");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -90,7 +90,11 @@ export default function WithdrawalPage() {
       };
 
       await requestWithdraw(payload);
-      setShowSuccessModal(true);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        router.push("/withdrawalrecord");
+      }, 2500);
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
     } finally {
@@ -98,10 +102,11 @@ export default function WithdrawalPage() {
     }
   };
 
-  if (loading) return <PageLoader />;
 
   const selectedBank = banks.find((b) => b.id === bankAccountId);
-  const toAccountAmount = amount && !isNaN(Number(amount)) && Number(amount) > 0 ? Number(amount).toFixed(0) : "0";
+  const inputVal = Number(amount) || 0;
+  const withdrawalFee = Math.round(inputVal * 0.05);
+  const toAccountAmount = inputVal > 0 ? (inputVal - Math.round(inputVal * 0.02)).toFixed(0) : "0";
 
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333333]">
@@ -141,7 +146,7 @@ export default function WithdrawalPage() {
               className="flex-1 text-[14px] outline-none font-normal text-[#323233] bg-transparent border-none placeholder-[#969799] w-full"
             />
           </div>
-          <div className="text-[14px] text-[#323233] font-normal mt-3 mb-6 ml-1">Fee: 0, to account {toAccountAmount}</div>
+          <div className="text-[14px] text-[#323233] font-normal mt-3 mb-6 ml-1">Fee: {withdrawalFee}, to account {toAccountAmount}</div>
         </div>
 
         {/* Payout Section */}
@@ -212,40 +217,12 @@ export default function WithdrawalPage() {
 
       <BottomNav />
       <LoadingDialog visible={submitLoading} />
+      {loading && <PageLoader />}
 
-      {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-lg shadow-xl w-[85%] max-w-[320px] p-6 flex flex-col items-center">
-            {/* Success Checkmark Circle */}
-            <div className="w-14 h-14 bg-[#4caf50] rounded-full flex items-center justify-center shadow-lg mb-4">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12L10 17L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            
-            {/* Title */}
-            <h3 className="text-[18px] font-bold text-[#333333] mb-2 text-center">
-              Withdrawal Submitted!
-            </h3>
-            
-            {/* Body Text */}
-            <p className="text-[13px] text-[#666666] mb-5 text-center leading-relaxed">
-              Your withdrawal request for <span className="font-semibold text-[#009688]">₹{Number(amount).toLocaleString('en-IN')}</span> has been submitted successfully for verification.
-            </p>
-            
-            {/* Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setShowSuccessModal(false);
-                router.push("/withdrawalrecord");
-              }}
-              className="w-full py-2.5 bg-[#009688] hover:bg-[#00897b] text-white font-medium rounded text-[14px] shadow-sm transition-colors cursor-pointer outline-none"
-            >
-              OK
-            </button>
-          </div>
+      {/* Success Toast */}
+      {showToast && (
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c] text-white text-[15px] font-normal py-2.5 px-7 rounded-[10px] shadow-lg shadow-black/10 pointer-events-none select-none">
+          Success
         </div>
       )}
     </main>

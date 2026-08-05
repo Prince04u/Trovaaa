@@ -34,7 +34,7 @@ export function ToastStack({ toasts }: { toasts: ToastItem[] }) {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="bg-[rgba(0,0,0,0.7)] text-white px-8 py-3 rounded-[4px] text-[15px] font-normal"
+          className="bg-[#4c4c4c] text-white px-7 py-2.5 rounded-[10px] text-[15px] font-normal shadow-lg shadow-black/10"
           style={{
             animation: "wgToastIn 0.15s ease-out forwards",
           }}

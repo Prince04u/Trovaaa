@@ -354,9 +354,7 @@ export default function WithdrawPage() {
     return <PageLoader />;
   }
 
-  if (!accountsReady) {
-    return <PageLoader />;
-  }
+
 
   return (
     <main className="withdraw-page">
@@ -751,6 +749,7 @@ export default function WithdrawPage() {
           </div>
         </div>
       )}
+      {!accountsReady && <PageLoader />}
     </main>
   );
 }

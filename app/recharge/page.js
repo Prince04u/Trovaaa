@@ -25,6 +25,7 @@ export default function RechargePage() {
   const [activeCheckoutUrl, setActiveCheckoutUrl] = useState(null);
   const [cryptoDetails, setCryptoDetails] = useState(null);
   const [copiedAddress, setCopiedAddress] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const PRESETS = [500, 1000, 2000, 5000, 10000, 50000];
 
@@ -104,31 +105,39 @@ export default function RechargePage() {
 
       if (!paymentData) throw new Error("Failed to initialize payment details");
 
-      if (paymentData.type === "crypto") {
-        setCryptoDetails(paymentData);
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        setShowSuccessToast(false);
         setSubmitLoading(false);
-        return;
-      }
 
-      if (paymentData.checkoutUrl) {
-        setActiveCheckoutUrl(paymentData.checkoutUrl);
-        setSubmitLoading(false);
-        return;
-      }
+        if (paymentData.type === "crypto") {
+          setCryptoDetails(paymentData);
+          return;
+        }
 
-      sessionStorage.setItem("deposit_amount", String(amountToSend));
-      sessionStorage.setItem("deposit_method", methodId);
-      sessionStorage.setItem("deposit_channel", paymentType);
-      sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
-      
-      router.push("/recharge");
+        if (paymentData.checkoutUrl) {
+          if (paymentData.checkoutUrl.includes("nowpayments")) {
+            window.location.href = paymentData.checkoutUrl;
+            return;
+          }
+          setActiveCheckoutUrl(paymentData.checkoutUrl);
+          return;
+        }
+
+        sessionStorage.setItem("deposit_amount", String(amountToSend));
+        sessionStorage.setItem("deposit_method", methodId);
+        sessionStorage.setItem("deposit_channel", paymentType);
+        sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
+        
+        router.push("/recharge");
+      }, 1500);
     } catch (err) {
       setError(err.response?.data?.error || err.response?.data?.message || err.message || "Failed to submit recharge.");
       setSubmitLoading(false);
     }
   };
 
-  if (loading) return <PageLoader />;
+
 
   if (cryptoDetails) {
     const networkName = cryptoDetails.payCurrency?.toUpperCase() === "USDTBSC" ? "USDT (BEP20)" : "USDT (TRC20)";
@@ -235,15 +244,9 @@ export default function RechargePage() {
         {/* Secure Checkout IFrame */}
         <div className="flex-1 w-full h-full bg-[#fcfcfc] relative overflow-hidden">
           <iframe 
-            src={activeCheckoutUrl?.includes("nowpayments") ? `/api/wallet/usdt-checkout?url=${encodeURIComponent(activeCheckoutUrl)}` : activeCheckoutUrl} 
+            src={activeCheckoutUrl} 
             title="Payment Gateway" 
             className="w-full h-full border-none m-0 p-0 absolute inset-0"
-            style={activeCheckoutUrl?.includes("nowpayments") ? {
-              height: "calc(100% + 60px)",
-              top: 0,
-              left: 0,
-              bottom: "-60px",
-            } : {}}
             allow="payment"
           />
         </div>
@@ -365,6 +368,14 @@ export default function RechargePage() {
 
       <BottomNav />
       <LoadingDialog visible={submitLoading} />
+      {loading && <PageLoader />}
+
+      {/* Success Toast */}
+      {showSuccessToast && (
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c] text-white text-[15px] font-normal py-2.5 px-7 rounded-[10px] shadow-lg shadow-black/10 pointer-events-none select-none">
+          Success
+        </div>
+      )}
     </main>
   );
 }
