@@ -30,44 +30,78 @@ export default function TransactionsPage() {
     return () => { mounted = false; };
   }, []);
 
+  const formatDate = (dateString) => {
+    const d = new Date(dateString);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const hh = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  };
+
+  const isAddition = (type) => {
+    return ['deposit', 'bonus_credit', 'winning_credit', 'referral_bonus', 'locked_release'].includes(type);
+  };
+
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+    <main className="min-h-screen bg-[#fafafa] pb-[60px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Top Navbar */}
-      <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 shadow-sm w-full">
+      <nav className="bg-[#009688] text-white h-[46px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-none">
         <Link href="/account" className="text-white text-decoration-none flex items-center">
           <span className="material-icons-outlined text-[24px]">arrow_back</span>
         </Link>
-        <span className="text-[17px] font-normal text-white">Transactions</span>
+        <span className="text-[17px] font-normal text-white ml-1">Transactions</span>
       </nav>
 
-      <div className="p-4 w-full text-center">
+      <div className="w-full bg-white flex flex-col">
         {loading ? (
           <div className="py-16 flex justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#009688]"></div></div>
         ) : list.length === 0 ? (
-          <div className="py-16 text-gray-400 text-[14px]">No data available</div>
+          <div className="py-16 text-gray-400 text-[14px] text-center">No data available</div>
         ) : (
-          <div className="flex flex-col gap-3">
-            {list.map((item, i) => (
-              <div key={item.id || i} className="bg-white p-4 rounded shadow-sm text-left flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-[#333] text-[15px]">{item.description}</p>
-                  <p className="text-[12px] text-gray-400 mt-1">{new Date(item.createdAt).toLocaleString()}</p>
+          list.map((item, i) => {
+            const amount = Number(item.amount) || 0;
+            const balAfter = Number(item.balanceAfter) || 0;
+            // Calculate previous balance
+            const balBefore = isAddition(item.type) ? balAfter - amount : balAfter + amount;
+
+            return (
+              <div key={item.id || i} className="flex justify-between items-start py-[12px] px-[15px] border-b border-[#f5f5f5]">
+                <div className="flex flex-col">
+                  <span className="text-[14px] font-normal text-[#666666] mb-[6px]">
+                    ₹ {amount.toFixed(2)}
+                  </span>
+                  <span className="text-[14px] font-normal text-[#333333] mb-[6px]">
+                    {item.description}
+                  </span>
+                  <span className="text-[13px] font-normal text-[#999999]">
+                    {formatDate(item.createdAt)}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className={`font-bold text-[16px] ${['deposit', 'bonus_credit', 'winning_credit', 'referral_bonus'].includes(item.type) ? 'text-[#009688]' : 'text-[#f44336]'}`}>
-                    {['deposit', 'bonus_credit', 'winning_credit', 'referral_bonus'].includes(item.type) ? '+' : '-'}₹ {item.amount}
-                  </p>
-                  {item.balanceAfter !== undefined && (
-                    <p className="text-[12px] text-gray-500 mt-1">Bal: ₹ {item.balanceAfter}</p>
-                  )}
+                
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-[14px] font-normal text-[#666666] mb-[6px]">
+                    ₹ {balBefore.toFixed(2)}
+                  </span>
+                  <span className="text-[14px] font-normal text-[#666666]">
+                    ₹ {balAfter.toFixed(2)}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })
         )}
+      </div>
+
+      <div className="w-full bg-[#fafafa] flex items-center justify-between px-4 py-4 mt-2">
+        <div className="w-full text-center text-[#999999] text-[13px] font-normal">
+          {!loading && list.length > 0 && `1-${list.length} of ${list.length}`}
+        </div>
       </div>
 
       <BottomNav />
     </main>
   );
 }
+
