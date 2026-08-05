@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         profile: {
           id: user.id,
           uid: user.uid,
-          name: user.displayName,
+          name: (user.displayName || "").replace(/\s*\(Multiple\)/gi, "").trim(),
           mobile: user.phone,
           inviteCode: user.referralCode,
         },
