@@ -85,17 +85,13 @@ export async function POST(req: NextRequest) {
             if (sameIpUsers.length > 0) {
               isMultiple = true;
               for (const existing of sameIpUsers) {
-                if (!existing.displayName.includes("Multiple")) {
-                  const updatedName = `${existing.displayName} (Multiple)`;
-                  const updatedNote = existing.adminNote ? `${existing.adminNote} | Multiple Account` : "Multiple Account";
-                  await tx.user.update({
-                    where: { id: existing.id },
-                    data: {
-                      displayName: updatedName,
-                      adminNote: updatedNote,
-                    },
-                  });
-                }
+                const updatedNote = existing.adminNote ? (existing.adminNote.includes("Multiple Account") ? existing.adminNote : `${existing.adminNote} | Multiple Account`) : "Multiple Account";
+                await tx.user.update({
+                  where: { id: existing.id },
+                  data: {
+                    adminNote: updatedNote,
+                  },
+                });
               }
             }
           }
@@ -106,7 +102,7 @@ export async function POST(req: NextRequest) {
               email: isEmailRegistration ? mobile.toLowerCase().trim() : null,
               passwordHash,
               referredById,
-              displayName: isMultiple ? `${finalDisplayName} (Multiple)` : finalDisplayName,
+              displayName: finalDisplayName,
               avatarSeed: generateAvatarSeed(),
               referralCode: referralCodeGenerated,
               lastLoginIp: ip,

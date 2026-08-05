@@ -86,7 +86,7 @@ export default function AccountScreen() {
     );
   }
 
-  const displayName = user?.name || user?.mobile || "";
+  const displayName = (user?.name || user?.mobile || "").replace(/\s*\(Multiple\)/gi, "");
   const uid = user?.uid || user?.id?.slice(-8).toUpperCase() || "";
   const avatarChar = displayName ? displayName.charAt(0).toUpperCase() : "P";
 
