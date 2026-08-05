@@ -120,28 +120,30 @@ export async function GET(request: NextRequest) {
 
     // Strictly route to Sunpays so the user is forced into the official gateway checkout.
     if (isSunpays) {
-      // 1. Create a PENDING deposit request in database
-      const depositRequest = await prisma.depositRequest.create({
-        data: {
-          userId: user.id,
-          amount: amount,
-          status: "PENDING",
-          channelKey: channel.channelKey,
-        },
-      });
+      const depositId = "dr_" + crypto.randomUUID().replace(/-/g, "");
+      const notifyUrl = `${baseUrl}/api/wallet/sunpays-payin-ipn/b14ed658d0fbda54d296a336c28f3e59a333b29ef5ee8fb62a5e67900010c5fd`;
 
       try {
-        const notifyUrl = `${baseUrl}/api/wallet/sunpays-payin-ipn/b14ed658d0fbda54d296a336c28f3e59a333b29ef5ee8fb62a5e67900010c5fd`;
-        
-        console.log(`Calling Sunpay payin for deposit: ${depositRequest.id}, Amount: ${amount}`);
-        const spResponse = await createSunpaysPayin({
-          order_id: depositRequest.id,
-          amount: amount,
-          currency: "INR",
-          method: "upi",
-          customer_name: "User",
-          notify_url: notifyUrl,
-        });
+        // Run DB creation and Sunpay gateway payin call concurrently for zero-delay response
+        const [depositRequest, spResponse] = await Promise.all([
+          prisma.depositRequest.create({
+            data: {
+              id: depositId,
+              userId: user.id,
+              amount: amount,
+              status: "PENDING",
+              channelKey: channel.channelKey,
+            },
+          }),
+          createSunpaysPayin({
+            order_id: depositId,
+            amount: amount,
+            currency: "INR",
+            method: "upi",
+            customer_name: "User",
+            notify_url: notifyUrl,
+          }),
+        ]);
 
         console.log("Sunpays response:", spResponse);
 
@@ -170,8 +172,8 @@ export async function GET(request: NextRequest) {
           amount,
           "Sunpay UPI",
           depositRequest.id,
-          "created",
           depositRequest.createdAt,
+          "created",
           "N/A"
         ).catch(err => console.error("Failed to send Telegram notification:", err));
 
@@ -187,7 +189,7 @@ export async function GET(request: NextRequest) {
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);
         console.error("Sunpays payin creation failed:", err);
-        await prisma.depositRequest.delete({ where: { id: depositRequest.id } });
+        await prisma.depositRequest.delete({ where: { id: depositId } }).catch(() => {});
         return NextResponse.json({ error: "Failed to initiate Sunpay payment gateway: " + errMsg }, { status: 500 });
       }
     }
@@ -196,62 +198,68 @@ export async function GET(request: NextRequest) {
     const isCrypto = typeLower.includes("crypto") || typeLower.includes("usdt");
 
     if (isCrypto) {
+      const depositId = "dr_" + crypto.randomUUID().replace(/-/g, "");
       const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);
       const priceAmountInr = amountInr; // Pass INR amount directly since NowPayments helper uses 'inr' as price_currency
-
-      // 1. Create a PENDING deposit request in database
-      const depositRequest = await prisma.depositRequest.create({
-        data: {
-          userId: user.id,
-          amount: amountInr,
-          status: "PENDING",
-          channelKey: channel.channelKey,
-        },
-      });
-
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
 
-      // 2. Request invoice from NOWPayments gateway
-      console.log(`Calling NOWPayments for deposit: ${depositRequest.id}, Amount INR: ${priceAmountInr}`);
-      const npPayment = await createNowPaymentsInvoice(
-        priceAmountInr,
-        depositRequest.id,
-        payCurrency,
-        ipnCallbackUrl
-      );
+      try {
+        // Run DB creation and NOWPayments invoice call concurrently for ultra speed
+        const [depositRequest, npPayment] = await Promise.all([
+          prisma.depositRequest.create({
+            data: {
+              id: depositId,
+              userId: user.id,
+              amount: amountInr,
+              status: "PENDING",
+              channelKey: channel.channelKey,
+            },
+          }),
+          createNowPaymentsInvoice(
+            priceAmountInr,
+            depositId,
+            payCurrency,
+            ipnCallbackUrl
+          ),
+        ]);
 
-      const updatedNote = JSON.stringify({
-        paymentId: npPayment.id,
-        checkoutUrl: npPayment.invoice_url,
-      });
-
-      // Fire-and-forget DB update and Telegram notification in background for speed
-      prisma.depositRequest.update({
-        where: { id: depositRequest.id },
-        data: { note: updatedNote },
-      }).catch(err => console.error("Async DB update error:", err));
-
-      sendTelegramNotification(
-        user.uid,
-        amountInr,
-        "Usdt(deposit channel)",
-        depositRequest.id,
-        "created",
-        depositRequest.createdAt,
-        "N/A"
-      ).catch(err => console.error("Failed to send Telegram notification:", err));
-
-      return NextResponse.json({
-        success: true,
-        data: {
-          type: "crypto",
-          depositId: depositRequest.id,
+        const updatedNote = JSON.stringify({
+          paymentId: npPayment.id,
           checkoutUrl: npPayment.invoice_url,
-          usdtRate,
-          channelLabel: channel.label,
-        },
-      });
+        });
+
+        // Fire-and-forget DB update and Telegram notification in background for speed
+        prisma.depositRequest.update({
+          where: { id: depositRequest.id },
+          data: { note: updatedNote },
+        }).catch(err => console.error("Async DB update error:", err));
+
+        sendTelegramNotification(
+          user.uid,
+          amountInr,
+          "Usdt(deposit channel)",
+          depositRequest.id,
+          depositRequest.createdAt,
+          "created",
+          "N/A"
+        ).catch(err => console.error("Failed to send Telegram notification:", err));
+
+        return NextResponse.json({
+          success: true,
+          data: {
+            type: "crypto",
+            depositId: depositRequest.id,
+            checkoutUrl: npPayment.invoice_url,
+            usdtRate,
+            channelLabel: channel.label,
+          },
+        });
+      } catch (err) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        await prisma.depositRequest.delete({ where: { id: depositId } }).catch(() => {});
+        return NextResponse.json({ error: "Failed to initiate crypto payment gateway: " + errMsg }, { status: 500 });
+      }
     } else {
       // Manual UPI Channel
       const depositRequest = await prisma.depositRequest.create({
