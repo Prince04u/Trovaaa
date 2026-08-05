@@ -45,7 +45,7 @@ export default function TransactionsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-[60px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+    <main className="min-h-screen bg-white pb-[60px] flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Top Navbar */}
       <nav className="bg-[#009688] text-white h-[46px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-none">
         <Link href="/account" className="text-white text-decoration-none flex items-center">
@@ -67,12 +67,12 @@ export default function TransactionsPage() {
             const balBefore = isAddition(item.type) ? balAfter - amount : balAfter + amount;
 
             return (
-              <div key={item.id || i} className="flex justify-between items-start py-[12px] px-[15px] border-b border-[#f5f5f5]">
+              <div key={item.id || i} className="flex justify-between items-start py-[14px] px-[15px] border-b border-[#f5f5f5]">
                 <div className="flex flex-col">
-                  <span className="text-[14px] font-normal text-[#666666] mb-[6px]">
+                  <span className="text-[13px] font-normal text-[#999999] mb-[4px]">
                     ₹ {amount.toFixed(2)}
                   </span>
-                  <span className="text-[14px] font-normal text-[#333333] mb-[6px]">
+                  <span className="text-[14px] font-normal text-[#333333] mb-[4px]">
                     {item.description}
                   </span>
                   <span className="text-[13px] font-normal text-[#999999]">
@@ -81,10 +81,10 @@ export default function TransactionsPage() {
                 </div>
                 
                 <div className="flex flex-col items-end text-right">
-                  <span className="text-[14px] font-normal text-[#666666] mb-[6px]">
+                  <span className="text-[13px] font-normal text-[#999999] mb-[4px]">
                     ₹ {balBefore.toFixed(2)}
                   </span>
-                  <span className="text-[14px] font-normal text-[#666666]">
+                  <span className="text-[13px] font-normal text-[#999999]">
                     ₹ {balAfter.toFixed(2)}
                   </span>
                 </div>
@@ -94,9 +94,13 @@ export default function TransactionsPage() {
         )}
       </div>
 
-      <div className="w-full bg-[#fafafa] flex items-center justify-between px-4 py-4 mt-2">
-        <div className="w-full text-center text-[#999999] text-[13px] font-normal">
+      <div className="w-full bg-white flex items-center justify-center px-4 py-4 mt-2 relative">
+        <div className="text-[#999999] text-[13px] font-normal">
           {!loading && list.length > 0 && `1-${list.length} of ${list.length}`}
+        </div>
+        <div className="absolute right-4 flex gap-6">
+          <span className="material-icons-outlined text-[#333333] text-[18px] cursor-pointer">keyboard_arrow_left</span>
+          <span className="material-icons-outlined text-[#333333] text-[18px] cursor-pointer">keyboard_arrow_right</span>
         </div>
       </div>
 
