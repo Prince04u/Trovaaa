@@ -67,24 +67,27 @@ export default function TransactionsPage() {
             const balBefore = isAddition(item.type) ? balAfter - amount : balAfter + amount;
 
             return (
-              <div key={item.id || i} className="flex justify-between items-start py-[12px] px-[15px] border-b border-[#f0f0f0]">
-                <div className="flex flex-col gap-[4px]">
-                  <span className="text-[13px] font-normal text-[#999999] leading-none">
+              <div key={item.id || i} className="flex justify-between items-start py-[14px] px-[15px] border-b border-[#ebedf0]">
+                <div className="flex flex-col">
+                  <span className="text-[13px] text-[#969799] leading-[18px]">
                     ₹ {amount.toFixed(2)}
                   </span>
-                  <span className="text-[14px] font-normal text-[#333333] leading-none my-[2px]">
+                  <span className="text-[13px] text-[#969799] leading-[18px] mt-[4px]">
                     {item.description}
                   </span>
-                  <span className="text-[13px] font-normal text-[#999999] leading-none">
+                  <span className="text-[13px] text-[#969799] leading-[18px] mt-[4px]">
                     {formatDate(item.createdAt)}
                   </span>
                 </div>
                 
-                <div className="flex flex-col items-end text-right justify-between h-[52px]">
-                  <span className="text-[13px] font-normal text-[#999999] leading-none mt-[1px]">
+                <div className="flex flex-col items-end text-right">
+                  <span className="text-[13px] text-[#969799] leading-[18px]">
                     ₹ {balBefore.toFixed(2)}
                   </span>
-                  <span className="text-[13px] font-normal text-[#999999] leading-none mb-[1px]">
+                  <span className="text-[13px] text-transparent leading-[18px] mt-[4px] select-none">
+                    -
+                  </span>
+                  <span className="text-[13px] text-[#969799] leading-[18px] mt-[4px]">
                     ₹ {balAfter.toFixed(2)}
                   </span>
                 </div>
