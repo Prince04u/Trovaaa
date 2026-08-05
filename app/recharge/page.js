@@ -9,7 +9,6 @@ import { parseWalletBalance } from "@/lib/walletBalance";
 import { getDepositOptions, getDepositPayment } from "@/lib/platformApi";
 import { getToken } from "@/lib/auth";
 import PageLoader from "@/components/brand/PageLoader";
-import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function RechargePage() {
   const router = useRouter();
@@ -86,7 +85,6 @@ export default function RechargePage() {
     }
 
     setSubmitLoading(true);
-
     try {
       // Find method for this channel if any
       const methodId = paymentType; // Fallback
@@ -102,7 +100,7 @@ export default function RechargePage() {
       if (!paymentData) throw new Error("Failed to initialize payment details");
 
       if (paymentData.checkoutUrl) {
-        window.location.replace(paymentData.checkoutUrl);
+        window.location.href = paymentData.checkoutUrl;
         return;
       }
 
@@ -111,9 +109,10 @@ export default function RechargePage() {
       sessionStorage.setItem("deposit_channel", paymentType);
       sessionStorage.setItem("deposit_payment_details", JSON.stringify(paymentData));
       
-      router.push("/rechargerecord");
+      router.push("/recharge");
     } catch (err) {
       alert(err.response?.data?.error || err.response?.data?.message || err.message || "Failed to submit recharge.");
+    } finally {
       setSubmitLoading(false);
     }
   };
@@ -199,14 +198,13 @@ export default function RechargePage() {
           type="button"
           onClick={handleRecharge}
           disabled={submitLoading}
-          className="mt-4 bg-[#009688] text-white py-3.5 rounded-[4px] font-normal text-[16px] border-none cursor-pointer hover:bg-[#007b6f] w-full"
+          className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full disabled:opacity-50"
         >
-          Recharge
+          {submitLoading ? "Processing..." : "Recharge"}
         </button>
       </div>
 
       <BottomNav />
-      {submitLoading && <LoadingDialog visible={true} />}
     </main>
   );
 }

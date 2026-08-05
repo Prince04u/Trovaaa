@@ -40,8 +40,6 @@ export async function createSunpaysPayin(payload: {
       "x-signature": signature,
     },
     body,
-    cache: "no-store",
-    keepalive: true,
   });
 
   if (!response.ok) {
