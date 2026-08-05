@@ -9,6 +9,7 @@ import { parseWalletBalance } from "@/lib/walletBalance";
 import { getDepositOptions, getDepositPayment } from "@/lib/platformApi";
 import { getToken } from "@/lib/auth";
 import PageLoader from "@/components/brand/PageLoader";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function RechargePage() {
   const router = useRouter();
@@ -200,11 +201,12 @@ export default function RechargePage() {
           disabled={submitLoading}
           className="mt-4 bg-[#009688] text-white py-3.5 rounded-sm font-normal text-[16px] border-none cursor-pointer hover:opacity-90 w-full disabled:opacity-50"
         >
-          {submitLoading ? "Processing..." : "Recharge"}
+          Recharge
         </button>
       </div>
 
       <BottomNav />
+      <LoadingDialog visible={submitLoading} />
     </main>
   );
 }
