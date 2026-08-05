@@ -179,7 +179,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Sign In</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </button>
 
@@ -193,7 +193,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Orders</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -207,7 +207,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Promotion</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -221,7 +221,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Red Envelope</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -279,7 +279,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Bank Card</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -293,7 +293,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Address</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
@@ -366,7 +366,7 @@ export default function AccountScreen() {
           </div>
           <div className="flex-grow flex items-center justify-between">
             <span className="text-[15px] font-normal text-[#333333]">Complaints & Suggestions</span>
-            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_right</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
           </div>
         </Link>
 
