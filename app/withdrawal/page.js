@@ -117,32 +117,34 @@ export default function WithdrawalPage() {
       </nav>
 
       <div className="px-6 pt-6 flex flex-col w-full max-w-2xl mx-auto bg-white">
-        {/* Balance Display */}
-        <div className="text-center my-4">
-          <span className="text-[15px] text-[#333333] font-normal">Balance: ₹ </span>
-          <span className="text-[24px] text-[#000000] font-normal">{balance.toFixed(2)}</span>
+        {/* Balance Display - Uniform Font Size matching reference photo */}
+        <div className="text-center my-6 text-[22px] font-normal text-[#000000]">
+          Balance: ₹ {balance.toFixed(2)}
         </div>
 
         {/* Input & Fee */}
-        <div className="mt-2">
-          <div className="flex items-center bg-white rounded-[6px] px-4 py-3 border border-[#f0f0f0] shadow-[0_2px_8px_rgba(0,0,0,0.06)] h-[52px]">
-            <span className="material-icons-outlined text-[#a0a0a0] text-[22px] mr-3">credit_card</span>
+        <div className="mt-1">
+          <div className="flex items-center bg-white rounded-[4px] px-4 border border-[#e5e5e5] shadow-[0_1px_4px_rgba(0,0,0,0.05)] h-[48px]">
+            {/* Round Circle Card Icon matching reference photo */}
+            <div className="w-[20px] h-[20px] rounded-full border border-[#aaaaaa] flex items-center justify-center mr-3 shrink-0">
+              <span className="material-icons-outlined text-[#aaaaaa] text-[12px]">credit_card</span>
+            </div>
             <input
               type="number"
               placeholder="Enter withdrawal amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="flex-1 text-[14px] outline-none font-normal text-[#333333] bg-transparent border-none placeholder-[#a0a0a0] w-full"
+              className="flex-1 text-[14px] outline-none font-normal text-[#333333] bg-transparent border-none placeholder-[#aaaaaa] w-full"
             />
           </div>
           <div className="text-[13px] text-[#666666] font-normal mt-3 mb-6 ml-1">Fee: 0,to account {toAccountAmount}</div>
         </div>
 
         {/* Payout Section */}
-        <div className="flex flex-col mt-2">
+        <div className="flex flex-col mt-1">
           <span className="text-[13px] text-[#888888] font-normal mb-3 ml-1">Payout</span>
           
-          <div className="flex items-center py-2">
+          <div className="flex items-center py-1">
             <span className="material-icons-outlined text-[#333333] text-[18px]">check</span>
             <span className="text-[14px] text-[#333333] font-normal ml-6">Bankcard</span>
           </div>
@@ -150,16 +152,16 @@ export default function WithdrawalPage() {
 
         {/* Details Form */}
         <div className="flex flex-col mt-4">
-          <Link href="/addbankcard" className="flex items-center justify-between py-4 text-decoration-none border-b border-[#f0f0f0]">
+          <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f0f0f0]">
             <div className="flex items-center gap-3">
-              <span className="material-icons-outlined text-[#888888] text-[22px]">credit_card</span>
+              <span className="material-icons-outlined text-[#888888] text-[20px]">credit_card</span>
               <span className="text-[14px] text-[#666666] font-normal">{selectedBank ? `${selectedBank.bankName} - ${selectedBank.accountNumber.slice(-4)}` : "Select Bank Card"}</span>
             </div>
-            <span className="material-icons-outlined text-[#aaaaaa] text-[20px]">keyboard_arrow_down</span>
+            <span className="material-icons-outlined text-[#bbbbbb] text-[18px]">keyboard_arrow_down</span>
           </Link>
           
-          <div className="flex items-center gap-3 py-4 border-b border-[#f0f0f0]">
-            <span className="material-icons-outlined text-[#888888] text-[22px]">vpn_key</span>
+          <div className="flex items-center gap-3 py-3.5 border-b border-[#f0f0f0]">
+            <span className="material-icons-outlined text-[#888888] text-[20px]">vpn_key</span>
             <input
               type="password"
               placeholder="Enter your login password"
@@ -176,7 +178,7 @@ export default function WithdrawalPage() {
             type="button"
             onClick={handleWithdrawal}
             disabled={submitLoading}
-            className="w-[75%] max-w-[340px] py-3 bg-[#009688] text-white rounded-[4px] text-[15px] font-normal border-none cursor-pointer hover:bg-[#00897b] transition-colors shadow-none outline-none disabled:opacity-50"
+            className="w-[75%] max-w-[340px] py-2.5 bg-[#009688] text-white rounded-[4px] text-[15px] font-normal border-none cursor-pointer hover:bg-[#00897b] transition-colors shadow-none outline-none disabled:opacity-50"
           >
             Withdrawal
           </button>
