@@ -68,7 +68,7 @@ export default function TransactionsPage() {
 
             return (
               <div key={item.id || i} className="flex justify-between items-start py-[12px] px-[15px] border-b border-[#f0f0f0]">
-                <div className="flex flex-col gap-[6px]">
+                <div className="flex flex-col gap-[4px]">
                   <span className="text-[13px] font-normal text-[#999999] leading-none">
                     ₹ {amount.toFixed(2)}
                   </span>
@@ -80,11 +80,11 @@ export default function TransactionsPage() {
                   </span>
                 </div>
                 
-                <div className="flex flex-col items-end text-right gap-[6px]">
-                  <span className="text-[13px] font-normal text-[#999999] leading-none">
+                <div className="flex flex-col items-end text-right justify-between h-[52px]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none mt-[1px]">
                     ₹ {balBefore.toFixed(2)}
                   </span>
-                  <span className="text-[13px] font-normal text-[#999999] leading-none my-[2px]">
+                  <span className="text-[13px] font-normal text-[#999999] leading-none mb-[1px]">
                     ₹ {balAfter.toFixed(2)}
                   </span>
                 </div>
