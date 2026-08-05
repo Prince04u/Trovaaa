@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
+import { getBonusSettings } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit, markDepositRejected } from "@/lib/wallet/creditDeposit";

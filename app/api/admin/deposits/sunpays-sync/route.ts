@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
-import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
+import { getBonusSettings } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit } from "@/lib/wallet/creditDeposit";
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
   }
 
   const now = new Date();
-  const { depositBonusPercent } = await getBonusSettings();
+
 
   let approved = 0;
   let fixedStatus = 0;  // Already credited but DB status fixed

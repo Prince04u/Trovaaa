@@ -57,45 +57,7 @@ export async function saveBonusSettings(next: BonusSettings): Promise<void> {
   cached = { value: next, expiresAt: Date.now() + CACHE_TTL_MS };
 }
 
-export function getFirstDepositBonus(amountInInr: number, noteStr: string | null): number {
-  let noteDetails: any = {};
-  try {
-    noteDetails = JSON.parse(noteStr || "{}");
-  } catch {}
+// getFirstDepositBonus has been REMOVED.
+// All deposit bonuses are now handled exclusively by distributeRechargeBonus()
+// in lib/actions/commissions.ts, which reads from the admin Commission Settings.
 
-  const isUsdt = (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("usdt") ||
-                 (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("trc20") ||
-                 (noteDetails.payCurrency || noteDetails.manualChannelLabel || "").toLowerCase().includes("bep20");
-
-  if (isUsdt) {
-    const usdAmount = Number(noteDetails.actuallyPaidUsdt || noteDetails.payAmount || (amountInInr / 97));
-    let usdBonus = 0;
-    if (usdAmount >= 100) {
-      usdBonus = 20;
-    } else if (usdAmount >= 50) {
-      usdBonus = 5;
-    } else if (usdAmount >= 20) {
-      usdBonus = 3;
-    } else if (usdAmount >= 10) {
-      usdBonus = 2;
-    } else if (usdAmount >= 5) {
-      usdBonus = 1;
-    }
-    const rate = usdAmount > 0 ? (amountInInr / usdAmount) : 98;
-    return Math.round(usdBonus * rate);
-  } else {
-    // INR Slabs
-    if (amountInInr >= 10000) {
-      return 1960;
-    } else if (amountInInr >= 5000) {
-      return 490;
-    } else if (amountInInr >= 2000) {
-      return 294;
-    } else if (amountInInr >= 1000) {
-      return 196;
-    } else if (amountInInr >= 500) {
-      return 98;
-    }
-    return 0;
-  }
-}

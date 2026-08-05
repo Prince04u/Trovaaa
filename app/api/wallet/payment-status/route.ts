@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getNowPaymentsPaymentStatus } from "@/lib/nowpayments";
-import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
-
 import { distributeRechargeBonus } from "@/lib/actions/commissions";
+import { applyDepositCredit } from "@/lib/wallet/creditDeposit";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -43,57 +42,36 @@ export async function GET(request: NextRequest) {
       const paymentStatus = npStatus.payment_status?.toLowerCase();
 
       if (paymentStatus === "finished") {
-        await prisma.$transaction(async (tx) => {
-          // Double check request status inside transaction to avoid race conditions
-          const currentDep = await tx.depositRequest.findUnique({ where: { id } });
-          if (!currentDep || currentDep.status !== "PENDING") return;
-
-          const wallet = await tx.wallet.update({
-            where: { userId: deposit.userId },
-            data: { balance: { increment: deposit.amount } },
-          });
-
-          await tx.ledgerEntry.create({
-            data: {
-              walletId: wallet.id,
-              type: "DEPOSIT_APPROVED",
-              amount: deposit.amount,
-              balanceAfter: wallet.balance,
-              meta: { depositId: id, autoApproved: true },
-            },
-          });
-
-          await tx.depositRequest.update({
-            where: { id },
-            data: {
-              status: "APPROVED",
-              reviewedAt: new Date(),
-              note: JSON.stringify({
-                ...noteDetails,
-                gatewayStatus: paymentStatus,
-                autoVerified: true,
-              }),
-            },
-          });
+        const creditRes = await applyDepositCredit({
+          depositId: id,
+          source: "payment_status_poll",
+          gatewayMeta: { gateway: "nowpayments", autoApproved: true },
+          buildNote: (existing) => ({
+            ...existing,
+            gatewayStatus: paymentStatus,
+            autoVerified: true,
+          }),
         });
 
-        // Distribute recharge bonus asynchronously
-        await distributeRechargeBonus(deposit.userId, deposit.amount);
+        if (creditRes.credited) {
+          // Distribute recharge bonus from admin settings ONLY
+          await distributeRechargeBonus(deposit.userId, deposit.amount);
 
-        // Trigger Telegram update (success)
-        await sendTelegramNotification(
-          deposit.user.uid,
-          deposit.amount,
-          "Usdt(deposit channel)",
-          deposit.id,
-          "success",
-          new Date(),
-          noteDetails.txid || "N/A",
-          noteDetails.telegramMessageId,
-          deposit.isMock,
-          "Automatic"
-        );
-        await checkAndAwardReferralReward(deposit.userId, deposit.amount, deposit.id);
+          // Trigger Telegram update (success)
+          await sendTelegramNotification(
+            deposit.user.uid,
+            deposit.amount,
+            "Usdt(deposit channel)",
+            deposit.id,
+            "success",
+            new Date(),
+            noteDetails.txid || "N/A",
+            noteDetails.telegramMessageId,
+            deposit.isMock,
+            "Automatic"
+          );
+          await checkAndAwardReferralReward(deposit.userId, deposit.amount, deposit.id);
+        }
 
         return NextResponse.json({ status: "APPROVED" });
       } else if (paymentStatus === "failed" || paymentStatus === "expired") {

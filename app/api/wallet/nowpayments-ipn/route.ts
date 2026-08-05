@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getNowPaymentsPaymentStatus } from "@/lib/nowpayments";
-import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { distributeRechargeBonus } from "@/lib/actions/commissions";
+import { applyDepositCredit } from "@/lib/wallet/creditDeposit";
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,59 +55,46 @@ export async function POST(request: NextRequest) {
       const actualInr = Math.round(actualUsdt * usdtRate);
       const creditAmount = actualInr > 0 ? actualInr : deposit.amount;
 
-      await prisma.$transaction(async (tx) => {
-        const currentDep = await tx.depositRequest.findUnique({ where: { id: order_id } });
-        if (!currentDep || currentDep.status !== "PENDING") return;
-
-        const wallet = await tx.wallet.update({
-          where: { userId: deposit.userId },
-          data: { balance: { increment: creditAmount } },
-        });
-
-        await tx.ledgerEntry.create({
-          data: {
-            walletId: wallet.id,
-            type: "DEPOSIT_APPROVED",
-            amount: creditAmount,
-            balanceAfter: wallet.balance,
-            meta: { depositId: order_id, ipnAutoApproved: true, actuallyPaidUsdt: actualUsdt },
-          },
-        });
-
-        await tx.depositRequest.update({
+      // Update deposit amount if different from original
+      if (creditAmount !== deposit.amount) {
+        await prisma.depositRequest.update({
           where: { id: order_id },
-          data: {
-            status: "APPROVED",
-            isMock: false,
-            reviewedAt: new Date(),
-            note: JSON.stringify({
-              ...noteDetails,
-              gatewayStatus: paymentStatus,
-              ipnVerified: true,
-              actuallyPaidUsdt: actualUsdt,
-            }),
-          },
+          data: { amount: creditAmount }
         });
+      }
+
+      const creditRes = await applyDepositCredit({
+        depositId: order_id,
+        source: "nowpayments_ipn",
+        gatewayMeta: { gateway: "nowpayments", ipnAutoApproved: true, actuallyPaidUsdt: actualUsdt },
+        buildNote: (existing) => ({
+          ...existing,
+          gatewayStatus: paymentStatus,
+          ipnVerified: true,
+          actuallyPaidUsdt: actualUsdt,
+        }),
       });
 
-      // Distribute recharge bonus asynchronously
-      await distributeRechargeBonus(deposit.userId, creditAmount);
+      if (creditRes.credited) {
+        // Distribute recharge bonus from admin settings ONLY
+        await distributeRechargeBonus(deposit.userId, creditAmount);
 
-      // Trigger Telegram success update
-      await sendTelegramNotification(
-        deposit.user.uid,
-        creditAmount,
-        "Usdt(deposit channel)",
-        deposit.id,
-        "success",
-        new Date(),
-        noteDetails.txid || "N/A",
-        noteDetails.telegramMessageId,
-        deposit.isMock,
-        "Automatic"
-      );
-      await checkAndAwardReferralReward(deposit.userId, deposit.amount, deposit.id);
-      console.log(`Auto-approved deposit ${order_id} via IPN webhook.`);
+        // Trigger Telegram success update
+        await sendTelegramNotification(
+          deposit.user.uid,
+          creditAmount,
+          "Usdt(deposit channel)",
+          deposit.id,
+          "success",
+          new Date(),
+          noteDetails.txid || "N/A",
+          noteDetails.telegramMessageId,
+          deposit.isMock,
+          "Automatic"
+        );
+        await checkAndAwardReferralReward(deposit.userId, deposit.amount, deposit.id);
+        console.log(`Auto-approved deposit ${order_id} via IPN webhook.`);
+      }
     } else if (paymentStatus === "failed" || paymentStatus === "expired") {
       // Auto-reject the payment
       await prisma.depositRequest.update({

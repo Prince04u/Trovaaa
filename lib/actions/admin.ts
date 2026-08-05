@@ -16,7 +16,7 @@ import { createNotification } from "@/lib/notifications";
 import { assertPermission } from "@/lib/admin/permissions";
 import { logActivity } from "@/lib/admin/activity";
 import { formatAmount } from "@/lib/format";
-import { getBonusSettings, saveBonusSettings, DEFAULT_BONUS_SETTINGS, type BonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
+import { getBonusSettings, saveBonusSettings, DEFAULT_BONUS_SETTINGS, type BonusSettings } from "@/lib/settings/bonuses";
 import { headers } from "next/headers";
 import { createSunpaysPayout } from "@/lib/sunpays";
 import { getServerActionBaseUrl } from "@/lib/url";

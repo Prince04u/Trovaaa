@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifySignature, generateSignature } from "@/lib/sunpays";
-import { getBonusSettings, getFirstDepositBonus } from "@/lib/settings/bonuses";
+
 import { sendTelegramNotification } from "@/lib/telegram";
 import { checkAndAwardReferralReward } from "@/lib/rewards/referral";
 import { applyDepositCredit, markDepositRejected } from "@/lib/wallet/creditDeposit";
@@ -113,8 +113,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       // Use central helper to perform credit, requiredWager updates, and ledger entry generation
       const creditRes = await applyDepositCredit({
         depositId: order_id,
-        bonusAmount: 0, // Legacy field, to be cleaned up
-        bonusPercent: 0,
+
         source: "sunpays_ipn",
         gatewayMeta: { gateway: "sunpays", transactionId: transaction_id },
         buildNote: (existing) => ({
