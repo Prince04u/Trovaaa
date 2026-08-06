@@ -121,7 +121,7 @@ export default function AddBankCardPage() {
       } else {
         setTimeout(() => {
           pushToast("success", "success");
-          setOtpCountdown(60);
+          setOtpCountdown(180);
         }, 1000);
       }
     } catch (err) {

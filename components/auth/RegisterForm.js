@@ -27,6 +27,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
+  const [passwordError, setPasswordError] = useState(false);
   const { toasts, push: pushToast } = useToasts();
 
   useEffect(() => {
@@ -40,6 +41,9 @@ export default function RegisterForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (name === "password" && value) {
+      setPasswordError(false);
+    }
   };
 
   const handleSendOtp = async () => {
@@ -47,8 +51,12 @@ export default function RegisterForm() {
       setError("Please enter mobile number first");
       return;
     }
+    if (!form.password) {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
     setError("");
-    setLoading(true);
     try {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
@@ -65,13 +73,11 @@ export default function RegisterForm() {
       } else {
         setTimeout(() => {
           pushToast("success", "success");
-          setOtpCountdown(60);
+          setOtpCountdown(180);
         }, 1000);
       }
     } catch (err) {
       setError("Failed to send OTP. Please check your network connection.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -149,7 +155,7 @@ export default function RegisterForm() {
           </div>
 
           {/* Verification Code + OTP Button Row — special_box from reference */}
-          <div className="w-full flex flex-row justify-between" style={{ marginBottom: '24px' }}>
+          <div className="w-full flex flex-row justify-between items-center" style={{ marginBottom: '24px' }}>
             <div className="van-card-input" style={{ width: '72%' }}>
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
                 <img src={CHAT_ICON_B64} alt="Verification Code" width="20" height="20" style={{ display: 'block', width: '20px', height: '20px' }} />
@@ -184,6 +190,11 @@ export default function RegisterForm() {
               onChange={handleChange}
               placeholder="Password"
             />
+            {passwordError && (
+              <p className="text-[12px] text-red-600 font-normal mt-1.5 pl-1.5 text-left">
+                Password is required
+              </p>
+            )}
           </div>
 
           {/* Recommendation Code (Invite Code) — 35px margin-bottom */}

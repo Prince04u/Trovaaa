@@ -761,7 +761,7 @@ a {
 }
 
 .van-otp-btn {
-  height: 46px;
+  height: 48px;
   width: 26%;
   min-width: 100px;
   max-width: 280px;
@@ -777,7 +777,7 @@ a {
   justify-content: center;
   cursor: pointer;
   box-sizing: border-box;
-  line-height: 46px;
+  line-height: 48px;
   text-align: center;
   transition: background-color 0.2s ease;
 }

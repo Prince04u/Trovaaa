@@ -39,7 +39,9 @@ export async function verifyOtp(sessionId: string, code: string): Promise<{ succ
     });
 
     const data = await res.json();
-    if (res.ok && (data.status === "success" || data.success)) {
+    console.log("[HyperAPI Verify OTP response]:", data, "status:", res.status);
+
+    if (res.ok) {
       return { success: true };
     }
     return { success: false, message: data.message || "Invalid verification code." };
