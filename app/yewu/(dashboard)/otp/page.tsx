@@ -91,16 +91,28 @@ export default function AdminOtpPage() {
               required
             />
           </div>
-          <div className="flex flex-col gap-1.5 w-[140px]">
+          <div className="flex flex-col gap-1.5 min-w-[220px]">
             <label className="text-xs text-muted font-medium">Custom OTP Code</label>
-            <input
-              type="text"
-              placeholder="e.g. 123456"
-              value={customCode}
-              onChange={(e) => setCustomCode(e.target.value)}
-              className="rounded-lg bg-surface border border-border px-3.5 py-2 text-sm text-foreground placeholder:text-muted outline-none focus:border-gold/60"
-              required
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="e.g. 123456"
+                value={customCode}
+                onChange={(e) => setCustomCode(e.target.value)}
+                className="rounded-lg bg-surface border border-border px-3.5 py-2 text-sm text-foreground placeholder:text-muted outline-none focus:border-gold/60 flex-1"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+                  setCustomCode(randomCode);
+                }}
+                className="rounded-lg bg-surface-3 hover:bg-surface-4 text-xs font-semibold px-3.5 border border-border transition shrink-0"
+              >
+                Random
+              </button>
+            </div>
           </div>
           <button
             type="submit"

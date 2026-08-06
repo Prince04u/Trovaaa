@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import { getUser } from "@/lib/auth";
@@ -9,77 +8,342 @@ import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function RedEnvelopePage() {
   const router = useRouter();
-  const { toasts, push } = useToasts();
-  const [view, setView] = useState("list"); // "list" | "add"
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("••••••");
+  const { toasts, push: pushToast } = useToasts();
+
+  // App views: "list" | "add" | "claim"
+  const [view, setView] = useState("list");
+  
+  // Launch state
+  const [amount, setAmount] = useState("");
+  const [password, setPassword] = useState("");
+  const [launchLoading, setLaunchLoading] = useState(false);
+  const [userHasPermission, setUserHasPermission] = useState(false);
+  const [myEnvelopes, setMyEnvelopes] = useState([]);
+
+  // Claim State
+  const [claimCode, setClaimCode] = useState(null);
+  const [claimLoading, setClaimLoading] = useState(true);
+  const [claimEnvelope, setClaimEnvelope] = useState(null);
+  const [isClaimed, setIsClaimed] = useState(false);
+  const [claimingState, setClaimingState] = useState(false);
+  const [claimError, setClaimError] = useState("");
 
   useEffect(() => {
+    // 1. Check if we have a claim code in URL query parameters
+    const params = new URLSearchParams(window.location.search);
+    const codeInUrl = params.get("code");
+
     const user = getUser();
-    if (user?.mobile || user?.phone) {
-      const p = user.mobile || user.phone;
-      setPhone(p.startsWith("+") ? p : `+91${p}`);
+    if (!user) {
+      if (codeInUrl) {
+        router.push(`/login?redirect=/redenvelope?code=${codeInUrl}`);
+      } else {
+        router.push("/login");
+      }
+      return;
+    }
+
+    if (codeInUrl) {
+      setClaimCode(codeInUrl);
+      setView("claim");
+      fetchClaimEnvelopeDetails(codeInUrl);
     } else {
-      setPhone("+919341225312"); // fallback like in screenshot
+      checkPermission();
+      fetchMyEnvelopes();
     }
   }, []);
 
-  const handleLaunch = (e) => {
-    e.preventDefault();
-    push("You can't send a red envelope", "error");
+  const checkPermission = async () => {
+    try {
+      // In getUser info we check permissions
+      const user = getUser();
+      // Fetch fresh status or check user object
+      const res = await fetch("/api/users/me");
+      const resData = await res.json();
+      if (res.ok && resData.success) {
+        setUserHasPermission(!!resData.data.canCreateRedEnvelope);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
+  const fetchMyEnvelopes = async () => {
+    try {
+      const res = await fetch("/api/wallet/red-envelope/my");
+      const resData = await res.json();
+      if (res.ok && resData.success) {
+        setMyEnvelopes(resData.data);
+      }
+    } catch (e) {
+      console.error("Failed to load user envelopes", e);
+    }
+  };
+
+  const fetchClaimEnvelopeDetails = async (code) => {
+    setClaimLoading(true);
+    try {
+      const res = await fetch(`/api/wallet/red-envelope/claim?code=${code}`);
+      const resData = await res.json();
+      if (res.ok && resData.success) {
+        setClaimEnvelope(resData.data);
+      } else {
+        setClaimError(resData.message || "Failed to load Red Envelope details");
+      }
+    } catch (err) {
+      setClaimError("Failed to load Red Envelope details");
+    } finally {
+      setClaimLoading(false);
+    }
+  };
+
+  const handleLaunch = async (e) => {
+    e.preventDefault();
+    if (!userHasPermission) {
+      pushToast("You don't have permission to launch a red envelope.", "error");
+      return;
+    }
+
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+      pushToast("Please enter a valid amount.", "error");
+      return;
+    }
+    if (!password) {
+      pushToast("Password is required.", "error");
+      return;
+    }
+
+    setLaunchLoading(true);
+    try {
+      const res = await fetch("/api/wallet/red-envelope/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, password }),
+      });
+      const resData = await res.json();
+
+      if (res.ok && resData.success) {
+        pushToast("Red envelope launched successfully!", "success");
+        setAmount("");
+        setPassword("");
+        setView("list");
+        fetchMyEnvelopes();
+      } else {
+        pushToast(resData.message || "Failed to launch red envelope.", "error");
+      }
+    } catch (err) {
+      pushToast("An error occurred during launch.", "error");
+    } finally {
+      setLaunchLoading(false);
+    }
+  };
+
+  const handleClaimContinue = async () => {
+    if (isClaimed) {
+      router.push("/account");
+      return;
+    }
+
+    setClaimingState(true);
+    try {
+      const res = await fetch("/api/wallet/red-envelope/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: claimCode }),
+      });
+      const resData = await res.json();
+
+      if (res.ok && resData.success) {
+        setIsClaimed(true);
+        pushToast("Red envelope claimed successfully!", "success");
+        setTimeout(() => {
+          router.push("/account");
+        }, 1500);
+      } else if (resData.alreadyClaimed) {
+        setIsClaimed(true);
+        pushToast("You have already claimed this red envelope", "error");
+        setTimeout(() => {
+          router.push("/account");
+        }, 1500);
+      } else {
+        pushToast(resData.message || "Failed to claim Red Envelope", "error");
+      }
+    } catch (err) {
+      pushToast("An error occurred. Please try again.", "error");
+    } finally {
+      setClaimingState(false);
+    }
+  };
+
+  const getShareableUrl = (envelopeCode) => {
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}/redenvelopes?code=${envelopeCode}`;
+    }
+    return `/redenvelopes?code=${envelopeCode}`;
+  };
+
+  const copyLink = (code) => {
+    navigator.clipboard.writeText(getShareableUrl(code));
+    pushToast("Shareable link copied to clipboard!", "success");
+  };
+
+  // ─── CLAIM VIEW RENDER ───
+  if (view === "claim") {
+    if (claimLoading) {
+      return (
+        <main className="min-h-screen bg-[#f4f5f6] flex items-center justify-center font-sans">
+          <div className="text-sm text-[#999]">Loading Red Envelope...</div>
+        </main>
+      );
+    }
+
+    if (claimError) {
+      return (
+        <main className="min-h-screen bg-[#f4f5f6] pb-24 flex flex-col w-full text-center items-center justify-center font-sans px-6">
+          <div className="card-surface rounded-2xl p-8 bg-white border border-[#eee] max-w-sm w-full shadow-sm">
+            <span className="material-icons-outlined text-[48px] text-red-500">error_outline</span>
+            <p className="text-base font-medium text-[#333] mt-3">{claimError}</p>
+            <button
+              onClick={() => router.push("/account")}
+              className="w-full bg-[#009688] text-white py-2.5 rounded-lg text-sm font-medium border-none mt-6 cursor-pointer hover:opacity-90 shadow-sm"
+            >
+              Go to Account
+            </button>
+          </div>
+        </main>
+      );
+    }
+
+    return (
+      <main className="min-h-screen bg-[#f4f5f6] flex flex-col w-full relative select-none text-[#333] font-sans pb-12">
+        {/* Top Navbar */}
+        <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-sm">
+          <button
+            onClick={() => router.push("/account")}
+            className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
+          >
+            <span className="material-icons-outlined text-[24px]">arrow_back</span>
+          </button>
+          <span className="text-[17px] font-normal text-white">Red Envelopes</span>
+        </nav>
+
+        {/* Curved Background Header */}
+        <div className="w-full h-[120px] bg-[#d32f2f] rounded-b-[40%] flex items-center justify-center shadow-inner relative z-0 animate-fade-in"></div>
+
+        {/* Main Claim Card */}
+        <div className="flex-1 flex justify-center px-4 -mt-16 relative z-10">
+          <div className="w-full max-w-[360px] bg-white rounded-2xl p-6 flex flex-col items-center shadow-lg border border-white/40 h-[480px]">
+            
+            <div className="w-full flex justify-between items-start">
+              <span className="text-[18px]">👑</span>
+              <span className="text-xs text-[#999] tracking-wider">Luvomall</span>
+            </div>
+
+            <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
+
+            {/* Red Envelope Pouch Illustration */}
+            <div className="relative w-[220px] h-[220px] my-4 flex items-center justify-center">
+              <img
+                src="/images/red_envelope_pouch.png"
+                alt="Red Envelope"
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
+                <span className="text-[26px] font-bold text-[#fbc02d] tracking-wide filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                  ₹ {(claimEnvelope?.amount ?? 0).toFixed(2)}
+                </span>
+                
+                {isClaimed && (
+                  <div className="mt-3 bg-black/60 backdrop-blur-xs rounded-full px-5 py-1 flex items-center justify-center border border-white/10 shadow-md">
+                    <span className="text-[12px] font-medium text-white tracking-widest">success</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Continue Button */}
+            <div className="w-full mt-auto">
+              <button
+                onClick={handleClaimContinue}
+                disabled={claimingState}
+                className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-medium text-[16px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
+              >
+                {claimingState ? "Claiming..." : "Continue"}
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <ToastStack toasts={toasts} />
+      </main>
+    );
+  }
+
+  // ─── STANDARD LIST / LAUNCH VIEW ───
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#333] font-sans">
       {view === "list" ? (
         <>
           {/* Top Navbar */}
-          <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 w-full">
+          <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 w-full shadow-sm">
             <div className="flex items-center gap-3">
-              <button 
-                onClick={() => router.push("/account")} 
+              <button
+                onClick={() => router.push("/account")}
                 className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
               >
                 <span className="material-icons-outlined text-[24px]">arrow_back</span>
               </button>
               <span className="text-[17px] font-normal text-white">RedEnvelope</span>
             </div>
-            <button 
-              onClick={() => setView("add")} 
-              className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
-            >
-              <span className="material-icons-outlined text-[26px]">add</span>
-            </button>
+            {userHasPermission && (
+              <button
+                onClick={() => setView("add")}
+                className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
+              >
+                <span className="material-icons-outlined text-[26px]">add</span>
+              </button>
+            )}
           </nav>
 
           {/* List Content */}
           <div className="flex flex-col flex-1 bg-white">
-            <div className="py-8 text-center text-[#333] text-[13px] font-medium border-b border-[#eee]">
-              No data available
-            </div>
-            
-            {/* Pagination Controls */}
-            <div className="flex items-center justify-between px-6 py-4 bg-white text-[13px] text-[#999] border-b border-[#eee] md:justify-end md:gap-8">
-              <div>1-10 of 0</div>
-              <div className="flex items-center gap-6">
-                <span className="material-icons-outlined text-[18px] text-[#ccc] cursor-pointer">keyboard_arrow_left</span>
-                <span className="material-icons-outlined text-[18px] text-[#ccc] cursor-pointer">keyboard_arrow_right</span>
+            {myEnvelopes.length === 0 ? (
+              <div className="py-8 text-center text-[#999] text-[13px] font-medium border-b border-[#eee]">
+                No data available
               </div>
-              <div className="flex items-center gap-2">
-                <span>Rows per page:</span>
-                <select className="bg-transparent border-b border-[#ccc] text-[#666] outline-none pb-1 text-[13px]" defaultValue="10" disabled>
-                  <option value="10">10</option>
-                </select>
+            ) : (
+              <div className="flex flex-col divide-y divide-[#eee]">
+                {myEnvelopes.map((env) => (
+                  <div key={env.id} className="flex justify-between items-center px-4 py-3.5 text-sm">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-mono font-bold text-[#009688]">{env.code}</span>
+                      <span className="text-xs text-[#999]">{new Date(env.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="font-bold text-[#333]">₹{env.amount}</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-teal-50 text-[#009688] font-medium">
+                        {env.claimedCount} / {env.maxClaims} Claims
+                      </span>
+                      <button
+                        onClick={() => copyLink(env.code)}
+                        className="text-xs border border-[#009688] text-[#009688] bg-transparent px-2.5 py-1 rounded hover:bg-teal-50 cursor-pointer"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            )}
           </div>
         </>
       ) : (
         <>
           {/* Top Navbar */}
-          <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full">
-            <button 
-              onClick={() => setView("list")} 
+          <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-sm">
+            <button
+              onClick={() => setView("list")}
               className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
             >
               <span className="material-icons-outlined text-[24px]">arrow_back</span>
@@ -88,14 +352,15 @@ export default function RedEnvelopePage() {
           </nav>
 
           {/* Add Form */}
-          <form onSubmit={handleLaunch} className="flex flex-col w-full bg-white px-4 py-6 gap-5">
+          <form onSubmit={handleLaunch} className="flex flex-col w-full bg-white px-4 py-6 gap-5 animate-fade-in">
             <div className="flex flex-col gap-1.5">
-              <label className="text-[12px] text-[#adadad] font-normal">Fixed Mony</label>
+              <label className="text-[12px] text-[#adadad] font-normal">Fixed Money (₹)</label>
               <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full bg-[#fffbeb] border-none outline-none py-2 px-3 text-[14px] text-[#333] rounded"
+                type="number"
+                value={amount}
+                placeholder="Enter amount to load in envelope"
+                onChange={(e) => setAmount(e.target.value)}
+                className="w-full bg-[#fffbeb] border-none outline-none py-3 px-3 text-[14px] text-[#333] rounded focus:ring-1 focus:ring-[#009688]/40"
                 required
               />
             </div>
@@ -105,8 +370,9 @@ export default function RedEnvelopePage() {
               <input
                 type="password"
                 value={password}
+                placeholder="Enter login password to verify"
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#fffbeb] border-none outline-none py-2 px-3 text-[14px] text-[#333] rounded"
+                className="w-full bg-[#fffbeb] border-none outline-none py-3 px-3 text-[14px] text-[#333] rounded focus:ring-1 focus:ring-[#009688]/40"
                 required
               />
             </div>
@@ -114,9 +380,10 @@ export default function RedEnvelopePage() {
             <div className="w-full flex justify-center mt-6">
               <button
                 type="submit"
-                className="w-full max-w-[600px] bg-[#009688] text-white py-3 rounded font-medium text-[16px] border-none cursor-pointer hover:opacity-90 shadow-md transition-opacity"
+                disabled={launchLoading}
+                className="w-full max-w-[600px] bg-[#009688] hover:bg-[#00796b] text-white py-3.5 rounded font-medium text-[16px] border-none cursor-pointer shadow-md transition disabled:opacity-60"
               >
-                Launch
+                {launchLoading ? "Launching..." : "Launch"}
               </button>
             </div>
           </form>

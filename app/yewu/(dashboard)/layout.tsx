@@ -29,6 +29,7 @@ const NAV_GROUPS = [
       { href: "/bets", label: "Bets", permission: "results.view" },
       { href: "/predictions", label: "Prediction charts", permission: "results.view" },
       { href: "/otp", label: "OTP Management", permission: "results.view" },
+      { href: "/red-envelope", label: "Red Envelope", permission: "results.view" },
     ],
   },
   {
