@@ -135,7 +135,7 @@ export default function PublicRedEnvelopesPage() {
 
       {/* Main Claim Card */}
       <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[480px]">
+        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[500px]">
           
           <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
 
@@ -144,11 +144,11 @@ export default function PublicRedEnvelopesPage() {
             <img
               src="/images/red_envelope_pouch.png"
               alt="Red Envelope Pouch"
-              className="w-full h-full object-contain scale-[1.5]"
+              className="w-full h-full object-contain scale-[1.65]"
             />
             {/* Amount overlay on the bag */}
             <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
-              <span className="text-[32px] font-semibold text-[#ffd54f] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
+              <span className="text-[32px] font-semibold text-[#ffe082] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
                 ₹ {(envelope?.amount ?? 0).toFixed(2)}
               </span>
               
