@@ -310,10 +310,10 @@ export default function AddBankCardPage() {
         </div>
 
         {/* Account Phone Number */}
-        <div className="w-full px-[24px] pt-[12px] pb-[6px] flex flex-col gap-[2px] select-none">
-          <label className="text-[12px] text-[#adadad] font-normal">Account phone number</label>
-          <span className="text-[14px] text-[#333] font-medium">{form.accountPhone}</span>
-          <div className="w-full h-[1px] bg-[#ebedf0] mt-[2px]"></div>
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Account phone number</label>
+          <span className="text-[15px] text-[#323233] font-normal flex items-center h-[22px]">{form.accountPhone}</span>
+          <div className={underlineClass}></div>
         </div>
 
         {/* Verification Code */}
