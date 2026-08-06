@@ -287,62 +287,93 @@ export async function GET(request: NextRequest) {
       });
 
       const payCurrency = channelId.toLowerCase().includes("bep20") ? "usdtbsc" : "usdttrc20";
-      const payAddress = channel.detail || "0x698cd0Ac5D87FE50488945F14765a805B8B0b7Ca4";
 
-      // 2. Send initial Telegram bot notification (ASYNC)
-      const mode = channel.label || "Usdt(deposit channel)";
-      sendTelegramNotification(
-        user.uid,
-        amountInr,
-        mode,
-        depositRequest.id,
-        "created",
-        depositRequest.createdAt,
-        "N/A"
-      ).then((msgId) => {
-        if (msgId) {
-          prisma.depositRequest.update({
-            where: { id: depositRequest.id },
-            data: {
-              note: JSON.stringify({
-                gateway: "manual_usdt",
-                payAddress: payAddress,
-                payCurrency: payCurrency,
-                payAmount: amount,
-                telegramMessageId: msgId,
-              })
-            }
-          }).catch(err => console.error("Async DB update failed:", err));
-        }
-      }).catch(err => console.error("Async Telegram notification failed:", err));
+      try {
+        console.log(`Calling NOWPayments for deposit: ${depositRequest.id}, Amount INR: ${amountInr}`);
+        const npPayment = await createNowPaymentsPayment(
+          amountInr,
+          payCurrency,
+          depositRequest.id,
+          ipnCallbackUrl
+        );
 
-      // 3. Save details in database note
-      const initialNote = JSON.stringify({
-        gateway: "manual_usdt",
-        payAddress: payAddress,
-        payCurrency: payCurrency,
-        payAmount: amount,
-      });
+        const payAddress = npPayment.pay_address;
+        const payAmount = npPayment.pay_amount;
+        const providerId = String(npPayment.payment_id);
 
-      await prisma.depositRequest.update({
-        where: { id: depositRequest.id },
-        data: { 
-          note: initialNote 
-        },
-      });
+        // Update providerId in DB first
+        await prisma.depositRequest.update({
+          where: { id: depositRequest.id },
+          data: { providerId },
+        });
 
-      // 4. Return details to user payment screen
-      return NextResponse.json({
-        success: true,
-        data: {
-          type: "crypto",
-          depositId: depositRequest.id,
+        // 2. Send initial Telegram bot notification (ASYNC)
+        const mode = channel.label || "Usdt(deposit channel)";
+        sendTelegramNotification(
+          user.uid,
+          amountInr,
+          mode,
+          depositRequest.id,
+          "created",
+          depositRequest.createdAt,
+          "N/A",
+          undefined,
+          false,
+          undefined,
+          providerId
+        ).then((msgId) => {
+          if (msgId) {
+            prisma.depositRequest.update({
+              where: { id: depositRequest.id },
+              data: {
+                note: JSON.stringify({
+                  gateway: "nowpayments",
+                  paymentId: providerId,
+                  payAddress: payAddress,
+                  payCurrency: payCurrency,
+                  payAmount: payAmount,
+                  telegramMessageId: msgId,
+                })
+              }
+            }).catch(err => console.error("Async DB update failed:", err));
+          }
+        }).catch(err => console.error("Async Telegram notification failed:", err));
+
+        // 3. Save details in database note
+        const initialNote = JSON.stringify({
+          gateway: "nowpayments",
+          paymentId: providerId,
           payAddress: payAddress,
           payCurrency: payCurrency,
-          payAmount: Math.round(amount * 100000) / 100000,
-          inrAmount: amountInr,
-        },
-      });
+          payAmount: payAmount,
+        });
+
+        await prisma.depositRequest.update({
+          where: { id: depositRequest.id },
+          data: { 
+            note: initialNote 
+          },
+        });
+
+        // 4. Return details to user payment screen
+        return NextResponse.json({
+          success: true,
+          data: {
+            type: "crypto",
+            depositId: depositRequest.id,
+            payAddress: payAddress,
+            payCurrency: payCurrency,
+            payAmount: payAmount,
+            inrAmount: amountInr,
+          },
+        });
+      } catch (err) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        console.error("NOWPayments payment creation failed:", err);
+        // Delete the request to avoid stale pending records if the gateway fails
+        await prisma.depositRequest.delete({ where: { id: depositRequest.id } });
+        return NextResponse.json({ error: "Failed to initiate NOWPayments payment: " + errMsg }, { status: 500 });
+      }
     } else {
       // Manual UPI Channel
       const now = new Date();
