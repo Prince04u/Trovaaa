@@ -15,9 +15,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/61Wk6JmMvaL._UL1500_.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "2": {
     "id": 2,
@@ -28,9 +40,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/71rXzGEk8uL._UY695_.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "3": {
     "id": 3,
@@ -41,9 +65,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/715ltZ1SJtL._UY695_.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "4": {
     "id": 4,
@@ -53,9 +89,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/4.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "5": {
     "id": 5,
@@ -66,9 +114,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/5_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "6": {
     "id": 6,
@@ -79,9 +139,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/6_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "7": {
     "id": 7,
@@ -91,9 +163,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/7.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "8": {
     "id": 8,
@@ -104,9 +188,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/8_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "9": {
     "id": 9,
@@ -116,9 +212,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/9.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "10": {
     "id": 10,
@@ -129,9 +237,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/10_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "11": {
     "id": 11,
@@ -143,9 +263,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/11_2.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "12": {
     "id": 12,
@@ -156,9 +288,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/12_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "13": {
     "id": 13,
@@ -169,9 +313,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/13_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "14": {
     "id": 14,
@@ -181,9 +337,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/14.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "15": {
     "id": 15,
@@ -194,9 +362,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/15_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   },
   "16": {
     "id": 16,
@@ -207,9 +387,21 @@ const PRODUCTS_DATA = {
       "https://art.apex-king.com/uploads/images/16_1.jpg"
     ],
     "specs": {
-      "Brand": "Apex",
-      "Qty": "1"
-    }
+      "Brand": "Ananth Jewels",
+      "Collection": "Ananth Jewels 925 Silver BIS Hallmark Collection",
+      "Stone": "Cubic Zirconia",
+      "Resizable?": "Y",
+      "Material": "sterling-silver",
+      "Metal": "Stamp 925-Sterling",
+      "Metal ": "Silver",
+      "Model Number": "SLB069",
+      "Packaging": "Comes with a Case for Gifting",
+      "Stone Shape": "Round",
+      "Stone Colour": "Clear",
+      "Stone Clarity": "FL",
+      "Stone Cut": "deal",
+      "Inscription": "925"
+}
   }
 };
 
@@ -233,16 +425,18 @@ function ProductDetailsContent() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  useEffect(() => {
-    if (!product.images || product.images.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [product.images]);
+  const handleScroll = (e) => {
+    const scrollLeft = e.target.scrollLeft;
+    const width = e.target.clientWidth;
+    const index = Math.round(scrollLeft / width);
+    setCurrentImageIndex(index);
+  };
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+    <main className="min-h-screen bg-[#f5f5f5] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+      <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+      `}} />
       {/* Top Navbar */}
       <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 shadow-sm w-full">
         <button
@@ -256,49 +450,68 @@ function ProductDetailsContent() {
       </nav>
 
       {/* Product Image Carousel */}
-      <div className="w-full aspect-square bg-[#f0f0f0] relative overflow-hidden">
-        {product.images.map((img, idx) => (
-          <img
-            key={idx}
-            src={img}
-            alt={`${product.title} ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-            style={{
-              opacity: idx === currentImageIndex ? 1 : 0,
-              zIndex: idx === currentImageIndex ? 1 : 0,
-            }}
-          />
-        ))}
+      <div className="w-full bg-white relative">
+        <div 
+          className="w-full aspect-square flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+          onScroll={handleScroll}
+          style={{ scrollBehavior: 'smooth', msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+        >
+          {product.images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`${product.title} ${idx + 1}`}
+              className="w-full h-full object-contain flex-shrink-0 snap-center"
+            />
+          ))}
+        </div>
+        
+        {/* Pagination Dots */}
+        <div className="w-full bg-gray-500 py-2.5 flex justify-center items-center gap-3">
+          {product.images.map((_, idx) => (
+            <div
+              key={idx}
+              className={`rounded-full transition-all duration-300 ${
+                idx === currentImageIndex 
+                  ? "w-2.5 h-2.5 bg-[#ccc] border border-[#aaa]" 
+                  : "w-2.5 h-2.5 bg-[#e0e0e0] border border-[#ccc]"
+              }`}
+              style={{
+                opacity: idx === currentImageIndex ? 1 : 0.6
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Product Info */}
-      <div className="p-4 bg-white border-b border-gray-200 flex flex-col gap-2">
-        <p className="text-[16px] text-gray-800 font-normal m-0 leading-snug">{product.title}</p>
-        <p className="text-[20px] text-[#E65100] font-bold m-0">₹ {product.price}</p>
-        <button
-          type="button"
-          onClick={() => router.push('/recharge')}
-          className="mt-2 bg-[#2196f3] text-white py-3 rounded font-medium text-[15px] border-none w-full cursor-pointer"
-        >
-          Buy Now
-        </button>
+      <div className="p-4 bg-white flex flex-col gap-3">
+        <p className="text-[13px] text-gray-800 font-normal m-0 leading-snug">{product.title}</p>
+        <p className="text-[15px] text-[#F9A825] font-normal m-0">₹ {product.price}</p>
+        <div>
+          <button
+            type="button"
+            disabled
+            className="bg-[#e0e0e0] text-[#9e9e9e] px-4 py-1.5 rounded-[3px] text-[12px] border-none cursor-not-allowed"
+          >
+            Sold Out
+          </button>
+        </div>
       </div>
 
       {/* Specifications Table */}
-      <div className="p-4 bg-white mt-3 border-t border-b border-gray-200">
-        <h3 className="text-[16px] font-medium text-[#333333] m-0 mb-3 pb-2 border-b border-gray-100">
+      <div className="bg-white mt-[10px] pb-4">
+        <h3 className="text-[13px] font-normal text-gray-400 m-0 px-4 py-4">
           Product Specifications
         </h3>
-        <table className="w-full text-[14px]">
-          <tbody>
-            {Object.entries(product.specs).map(([key, val]) => (
-              <tr key={key} className="border-b border-gray-100">
-                <td className="py-2.5 text-gray-500 font-normal w-1/3">{key}</td>
-                <td className="py-2.5 text-gray-800 font-normal">{val}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="w-full">
+          {Object.entries(product.specs).map(([key, val], i) => (
+            <div key={i} className="flex px-4 py-4 border-t border-[#f5f5f5]">
+              <div className="w-1/3 text-[13px] text-gray-800">{key}</div>
+              <div className="w-2/3 text-[13px] text-gray-800">{val}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <BottomNav />
