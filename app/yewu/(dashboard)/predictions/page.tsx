@@ -89,6 +89,7 @@ export default function PredictionsPage() {
   const [previewBlobUrl, setPreviewBlobUrl] = useState<string | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [previewError, setPreviewError] = useState<string | null>(null);
 
   // Notifications
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -339,6 +340,7 @@ export default function PredictionsPage() {
   const handleGeneratePreview = async () => {
     if (!selectedTemplate) return;
     try {
+      setPreviewError(null);
       setPreviewLoading(true);
       if (previewBlobUrl) {
         URL.revokeObjectURL(previewBlobUrl);
@@ -356,12 +358,16 @@ export default function PredictionsPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to generate preview image");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${res.status}: Failed to generate preview`);
+      }
       
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       setPreviewBlobUrl(url);
     } catch (err: any) {
+      setPreviewError(err.message);
       showNotification(err.message || "Failed to generate preview", "error");
     } finally {
       setPreviewLoading(false);
