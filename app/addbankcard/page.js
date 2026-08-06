@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
+import { ToastStack, useToasts } from "@/components/ui/Toast";
 import { getUser } from "@/lib/auth";
 import { addWithdrawAccount } from "@/lib/walletApi";
-import { useToasts, ToastStack } from "@/components/ui/Toast";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AddBankCardPage() {
   const { toasts, push: pushToast } = useToasts();
@@ -25,7 +24,7 @@ export default function AddBankCardPage() {
     mobileNumber: "",
     email: "",
     accountPhone: "",
-    code: ""
+    code: "",
   });
 
   useEffect(() => {
@@ -52,14 +51,18 @@ export default function AddBankCardPage() {
             mobileNumber: phoneNum,
             email: "",
             accountPhone: phoneNum,
-            code: ""
+            code: "",
           });
         } catch (e) {
           console.error("Failed to parse edit bank card data", e);
         }
       }
     } else {
-      setForm(prev => ({ ...prev, accountPhone: phoneNum, mobileNumber: phoneNum }));
+      setForm((prev) => ({
+        ...prev,
+        accountPhone: phoneNum,
+        mobileNumber: phoneNum,
+      }));
     }
   }, []);
 
@@ -72,7 +75,7 @@ export default function AddBankCardPage() {
   }, [otpCountdown]);
 
   const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -97,7 +100,11 @@ export default function AddBankCardPage() {
         }, 1500);
       }, 1000);
     } catch (err) {
-      alert(err.response?.data?.message || err.message || "Failed to save bank card.");
+      alert(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to save bank card.",
+      );
     } finally {
       setSubmitLoading(false);
     }
@@ -131,67 +138,195 @@ export default function AddBankCardPage() {
     }
   };
 
-  const inputClass = "w-full bg-transparent text-[13px] text-[#333] placeholder-[#adadad] outline-none border-none py-[14px]";
+  const inputContainerClass = "w-full px-[24px] pt-[20px] pb-[10px] flex flex-col gap-1.5 select-none";
+  const labelClass = "text-[14px] text-[#888888] font-normal";
+  const inputClass = "w-full bg-transparent text-[15px] text-[#323233] outline-none border-none p-0 h-[28px]";
+  const underlineClass = "w-full h-[1px] bg-[#ebedf0] mt-1";
 
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none">
       {/* Top Navbar */}
       <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-4 sticky top-0 z-10 shadow-sm w-full">
-        <button onClick={() => router.back()} className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0">
-          <span className="material-icons-outlined text-[24px]">arrow_back</span>
+        <button
+          onClick={() => router.back()}
+          className="text-white bg-transparent border-none outline-none flex items-center cursor-pointer p-0"
+        >
+          <span className="material-icons-outlined text-[24px]">
+            arrow_back
+          </span>
         </button>
-        <span className="text-[17px] font-normal text-white tracking-wide">Add Bank Card</span>
+        <span className="text-[17px] font-normal text-white tracking-wide">
+          Add Bank Card
+        </span>
       </nav>
 
-      <form onSubmit={handleSubmit} className="flex flex-col w-full bg-white mt-1">
-        <div className="w-full px-4"><input type="text" name="actualName" value={form.actualName} onChange={handleChange} placeholder="Actual Name" className={inputClass} required /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full bg-white mt-1"
+      >
+        {/* Actual Name */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Actual Name</label>
+          <input
+            type="text"
+            name="actualName"
+            value={form.actualName}
+            onChange={handleChange}
+            placeholder="Actual Name"
+            className={inputClass}
+            required
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="ifscCode" value={form.ifscCode} onChange={handleChange} placeholder="IFSC Code" className={inputClass} required /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* IFSC Code */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>IFSC Code</label>
+          <input
+            type="text"
+            name="ifscCode"
+            value={form.ifscCode}
+            onChange={handleChange}
+            placeholder="IFSC Code"
+            className={inputClass}
+            required
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="bankName" value={form.bankName} onChange={handleChange} placeholder="Bank Name" className={inputClass} required /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* Bank Name */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Bank Name</label>
+          <input
+            type="text"
+            name="bankName"
+            value={form.bankName}
+            onChange={handleChange}
+            placeholder="Bank Name"
+            className={inputClass}
+            required
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="bankAccount" value={form.bankAccount} onChange={handleChange} placeholder="Bank Account" className={inputClass} required /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* Bank Account */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Bank Account</label>
+          <input
+            type="text"
+            name="bankAccount"
+            value={form.bankAccount}
+            onChange={handleChange}
+            placeholder="Bank Account"
+            className={inputClass}
+            required
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="usdtAddress" value={form.usdtAddress} onChange={handleChange} placeholder="USDT Address" className={inputClass} /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* USDT Address */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>USDT Address</label>
+          <input
+            type="text"
+            name="usdtAddress"
+            value={form.usdtAddress}
+            onChange={handleChange}
+            placeholder="USDT Address"
+            className={inputClass}
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="state" value={form.state} onChange={handleChange} placeholder="State/Territory" className={inputClass} /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* State/Territory */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>State/Territory</label>
+          <input
+            type="text"
+            name="state"
+            value={form.state}
+            onChange={handleChange}
+            placeholder="State/Territory"
+            className={inputClass}
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="city" value={form.city} onChange={handleChange} placeholder="City" className={inputClass} /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* City */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>City</label>
+          <input
+            type="text"
+            name="city"
+            value={form.city}
+            onChange={handleChange}
+            placeholder="City"
+            className={inputClass}
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="address" value={form.address} onChange={handleChange} placeholder="Address" className={inputClass} /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* Address */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Address</label>
+          <input
+            type="text"
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+            placeholder="Address"
+            className={inputClass}
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="text" name="mobileNumber" value={form.mobileNumber} placeholder="Mobile Number" className={inputClass + " opacity-60 cursor-not-allowed"} readOnly disabled /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* Mobile Number */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Mobile Number</label>
+          <input
+            type="text"
+            name="mobileNumber"
+            value={form.mobileNumber}
+            placeholder="Mobile Number"
+            className={inputClass + " opacity-60 cursor-not-allowed"}
+            readOnly
+            disabled
+          />
+          <div className={underlineClass}></div>
+        </div>
 
-        <div className="w-full px-4"><input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Email" className={inputClass} /></div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
+        {/* Email */}
+        <div className={inputContainerClass}>
+          <label className={labelClass}>Email</label>
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className={inputClass}
+          />
+          <div className={underlineClass}></div>
+        </div>
 
         {/* Account Phone Number */}
-        <div className="w-full px-4 pt-3 pb-2 flex flex-col">
-          <span className="text-[12px] text-[#adadad] mb-[6px]">Account phone number</span>
+        <div className="w-full px-[24px] pt-[20px] pb-[10px] flex flex-col gap-1.5 select-none">
+          <label className="text-[12px] text-[#adadad] font-normal">Account phone number</label>
           <span className="text-[14px] text-[#333] font-medium">{form.accountPhone}</span>
+          <div className="w-full h-[1px] bg-[#ebedf0] mt-1"></div>
         </div>
-        <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
 
         {/* Verification Code */}
-        <div className="w-full px-4 pt-3 pb-3 flex flex-row items-end justify-between border-b border-[#e5e5e5]">
-          <div className="flex flex-col flex-1">
-            <span className="text-[12px] text-[#adadad] mb-1">Code</span>
+        <div className="w-full px-[24px] pt-[20px] pb-[10px] flex flex-row items-end justify-between select-none">
+          <div className="flex flex-col flex-1 gap-1.5">
+            <label className="text-[12px] text-[#adadad] font-normal">Code</label>
             <input
               type="text"
               name="code"
               value={form.code}
               onChange={handleChange}
               placeholder="Verification Code"
-              className="w-full bg-transparent text-[13px] text-[#333] placeholder-[#adadad] outline-none border-none py-[2px]"
+              className="w-full bg-transparent text-[15px] text-[#323233] placeholder-[#adadad] outline-none border-none p-0 h-[28px]"
               required
             />
           </div>
@@ -199,14 +334,15 @@ export default function AddBankCardPage() {
             type="button"
             onClick={handleSendOtp}
             disabled={otpCountdown > 0 || submitLoading}
-            className="bg-[#fcfcfc] text-[#333] text-[13px] px-5 py-2 rounded-[2px] ml-4 shrink-0 border border-[#e5e5e5] cursor-pointer hover:bg-[#f0f0f0] transition-colors disabled:opacity-50"
+            className="bg-[#fcfcfc] text-[#333] text-[13px] px-5 py-2 rounded-[2px] ml-4 shrink-0 border border-[#e5e5e5] cursor-pointer hover:bg-[#f0f0f0] transition-colors disabled:opacity-50 h-[32px] flex items-center justify-center"
           >
             {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
           </button>
         </div>
+        <div className="w-[calc(100%-48px)] mx-auto h-[1px] bg-[#ebedf0] mb-6"></div>
 
         {/* Continue Button */}
-        <div className="w-full flex justify-center mt-8 px-4">
+        <div className="w-full flex justify-center mt-2 px-4">
           <button
             type="submit"
             disabled={submitLoading}
