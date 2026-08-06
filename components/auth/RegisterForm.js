@@ -64,15 +64,15 @@ export default function RegisterForm() {
 
   const handleSendOtp = async () => {
     if (!form.mobile) {
-      pushToast("Mobile Number is required");
+      setTimeout(() => pushToast("Mobile Number is required"), 1000);
       return;
     }
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Mobile Number is false");
+      setTimeout(() => pushToast("Mobile Number is false"), 1000);
       return;
     }
     if (!form.password) {
-      pushToast("Password is required");
+      setTimeout(() => pushToast("Password is required"), 1000);
       return;
     }
     try {
@@ -84,9 +84,9 @@ export default function RegisterForm() {
       const data = await res.json();
       if (!res.ok) {
         if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
-          pushToast("Verification Code is false");
+          setTimeout(() => pushToast("Verification Code is false"), 1000);
         } else {
-          pushToast(data.message || "Failed to send OTP");
+          setTimeout(() => pushToast(data.message || "Failed to send OTP"), 1000);
         }
       } else {
         setTimeout(() => {
@@ -95,7 +95,7 @@ export default function RegisterForm() {
         }, 1000);
       }
     } catch (err) {
-      pushToast("Failed to send OTP");
+      setTimeout(() => pushToast("Failed to send OTP"), 1000);
     }
   };
 
@@ -103,32 +103,32 @@ export default function RegisterForm() {
     e.preventDefault();
 
     if (!form.mobile) {
-      pushToast("Mobile Number is required");
+      setTimeout(() => pushToast("Mobile Number is required"), 1000);
       return;
     }
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Mobile Number is false");
+      setTimeout(() => pushToast("Mobile Number is false"), 1000);
       return;
     }
 
     if (!form.verificationCode) {
-      pushToast("Verification Code is required");
+      setTimeout(() => pushToast("Verification Code is required"), 1000);
       return;
     }
     
     if (!form.password) {
-      pushToast("Password is required");
+      setTimeout(() => pushToast("Password is required"), 1000);
       return;
     }
 
     if (!form.inviteCode) {
-      pushToast("Invalid parameters");
+      setTimeout(() => pushToast("Invalid parameters"), 1000);
       return;
     }
 
     if (!agree) {
-      pushToast("Please agree to the Privacy Policy");
+      setTimeout(() => pushToast("Please agree to the Privacy Policy"), 1000);
       return;
     }
 
@@ -152,9 +152,9 @@ export default function RegisterForm() {
     } catch (err) {
       const errMsg = err.response?.data?.message || "Registration failed";
       if (errMsg.toLowerCase().includes("verification") || errMsg.toLowerCase().includes("false")) {
-        pushToast("Verification Code is false");
+        setTimeout(() => pushToast("Verification Code is false"), 1000);
       } else {
-        pushToast(errMsg);
+        setTimeout(() => pushToast(errMsg), 1000);
       }
       setLoading(false);
     }
