@@ -25,13 +25,11 @@ export async function POST(req: NextRequest) {
     const origin = url.origin;
     const imageBuffer = await generatePredictionImage(template, headerValues || {}, rows || [], !!isLast, origin);
 
-    // Convert Buffer to ArrayBuffer to prevent Next.js Response from corrupting binary data
-    const arrayBuffer = imageBuffer.buffer.slice(imageBuffer.byteOffset, imageBuffer.byteOffset + imageBuffer.byteLength);
-
-    return new Response(arrayBuffer, {
+    return new Response(new Uint8Array(imageBuffer), {
       headers: {
         "Content-Type": "image/png",
-        "Cache-Control": "no-cache",
+        "Content-Length": String(imageBuffer.length),
+        "Cache-Control": "no-cache, no-store",
       },
     });
   } catch (error: any) {
