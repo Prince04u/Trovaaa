@@ -170,6 +170,28 @@ export default function AdminRedEnvelopePage() {
     }
   };
 
+  const handleDeleteEnvelope = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this red envelope? All claimed records for it will also be deleted.")) {
+      return;
+    }
+    setError("");
+    setSuccessMsg("");
+    try {
+      const res = await fetch(`/api/yewu/red-envelope?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSuccessMsg("Red Envelope deleted successfully!");
+        fetchEnvelopes();
+      } else {
+        setError(data.message || "Failed to delete envelope");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to delete envelope");
+    }
+  };
+
   const handleSearchClaims = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
@@ -469,6 +491,12 @@ export default function AdminRedEnvelopePage() {
                           className="rounded bg-teal-500/10 text-teal-400 border border-teal-500/30 px-3 py-1 font-semibold hover:bg-teal-500/20 transition mr-2"
                         >
                           Copy Link
+                        </button>
+                        <button
+                          onClick={() => handleDeleteEnvelope(env.id)}
+                          className="rounded bg-red/10 text-red border border-red/30 px-3 py-1 font-semibold hover:bg-red/20 transition"
+                        >
+                          Delete
                         </button>
                       </td>
                     </tr>

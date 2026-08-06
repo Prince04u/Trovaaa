@@ -88,3 +88,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: error.message || "Internal server error" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user || !isStaffUser(user) || !(await hasPermission(user, "results.view"))) {
+      return NextResponse.json({ message: "Not authorized" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id || id.trim().length === 0) {
+      return NextResponse.json({ message: "Envelope ID is required." }, { status: 400 });
+    }
+
+    const { prisma } = await import("@/lib/prisma");
+
+    // Delete in transaction
+    await prisma.$transaction([
+      prisma.redEnvelopeClaim.deleteMany({
+        where: { redEnvelopeId: id.trim() }
+      }),
+      prisma.redEnvelope.delete({
+        where: { id: id.trim() }
+      })
+    ]);
+
+    return NextResponse.json({ success: true, message: "Red Envelope deleted successfully!" });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message || "Internal server error" }, { status: 500 });
+  }
+}
