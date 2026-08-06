@@ -48,69 +48,62 @@ export default function ClientSidePreview({
   const logicalHeight = baseHeight + (N * rowHeight) + totalProfitHeight;
 
   return (
-    <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-[#222]">
-      {/* We use a container that scales its content to fit while preserving aspect ratio */}
-      <div
-        style={{
-          width: logicalWidth,
-          height: logicalHeight,
-          transform: `scale(min(1, 100% / ${logicalWidth}))`, // This is just a fallback, we'll use a better scale approach via CSS
-          transformOrigin: "center center",
-          position: "relative",
-          backgroundColor: "#fff",
-        }}
-        className="preview-scale-container"
+    <div className="w-full h-full flex items-center justify-center overflow-hidden bg-[#222]">
+      <svg
+        viewBox={`0 0 ${logicalWidth} ${logicalHeight}`}
+        className="w-full h-full max-w-full max-h-full drop-shadow-2xl"
+        preserveAspectRatio="xMidYMid meet"
+        style={{ backgroundColor: "#ffffff" }}
       >
+        <defs>
+          <clipPath id="template-clip">
+            <rect x="0" y="0" width={logicalWidth} height={baseHeight} />
+          </clipPath>
+        </defs>
+        
         {/* Base Image */}
-        <img
-          src={template.imageUrl}
-          alt="Template Base"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: baseHeight,
-            objectFit: "cover",
-            zIndex: 1,
-          }}
+        <image
+          href={template.imageUrl}
+          x="0"
+          y="0"
+          width="100%"
+          height={baseHeight}
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#template-clip)"
         />
 
         {/* Header Elements */}
-        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: baseHeight, zIndex: 2 }}>
-          {Object.entries(template.fields || {}).map(([key, field]: [string, any]) => {
-            if (field.y >= 416) return null; // skip table-area fields
-            const value = headerValues[key] !== undefined && headerValues[key] !== "" ? headerValues[key] : (field.text || "");
-            
-            return (
-              <div
-                key={key}
-                style={{
-                  position: "absolute",
-                  left: (field.x * 2) - 1000,
-                  top: (field.y * 2) - 100,
-                  width: 2000,
-                  height: 200,
-                  display: "flex",
-                  justifyContent: field.align === "left" ? "flex-start" : field.align === "right" ? "flex-end" : "center",
-                  alignItems: "center",
-                  fontSize: (field.fontSize || 24) * 2,
-                  color: field.color || "#ffffff",
-                  fontWeight: field.fontWeight === "bold" ? 700 : 400,
-                  fontStyle: field.fontStyle || "normal",
-                  letterSpacing: (field.letterSpacing || 0) * 2,
-                  opacity: field.opacity !== undefined ? field.opacity : 1,
-                  fontFamily: "Arial, Helvetica, sans-serif"
-                }}
-              >
-                {value}
-              </div>
-            );
-          })}
-        </div>
+        {Object.entries(template.fields || {}).map(([key, field]: [string, any]) => {
+          if (field.y >= 416) return null; // skip table-area fields
+          const value = headerValues[key] !== undefined && headerValues[key] !== "" ? headerValues[key] : (field.text || "");
+          if (!value) return null;
+          
+          const align = field.align || "center";
+          let textAnchor = "middle";
+          if (align === "left") textAnchor = "start";
+          else if (align === "right") textAnchor = "end";
+
+          return (
+            <text
+              key={key}
+              x={(field.x || 0) * 2}
+              y={(field.y || 0) * 2}
+              fontFamily="Arial, Helvetica, sans-serif"
+              fontSize={(field.fontSize || 24) * 2}
+              fontWeight={field.fontWeight === "bold" ? "bold" : "normal"}
+              fill={field.color || "#ffffff"}
+              textAnchor={textAnchor}
+              dominantBaseline="central"
+              opacity={field.opacity !== undefined ? field.opacity : 1}
+              letterSpacing={(field.letterSpacing || 0) * 2}
+            >
+              {value}
+            </text>
+          );
+        })}
 
         {/* Table Rows */}
-        <div style={{ position: "absolute", top: baseHeight, left: 0, width: "100%", zIndex: 2 }}>
+        <g transform={`translate(0, ${baseHeight})`}>
           {rows.map((r, i) => {
             const rowY = i * rowHeight;
             const bgFill = i % 2 === 0 ? "#ffffff" : "#f9f9f9";
@@ -140,49 +133,50 @@ export default function ClientSidePreview({
             const bottomLineColor = (i === N - 1 && !isLastPrediction) ? "#e05307" : "#d3d3d3";
 
             return (
-              <div
-                key={`row-${i}`}
-                style={{
-                  position: "absolute", top: rowY, left: 38, width: 1972, height: 60, display: "flex", backgroundColor: bgFill,
-                  borderLeft: "2px solid #e05307", borderRight: "2px solid #e05307", borderBottom: `2px solid ${bottomLineColor}`,
-                  boxSizing: "border-box"
-                }}
-              >
-                <div style={{ display: "flex", width: 350, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222", fontFamily: "Arial, sans-serif" }}>{r.period}</div>
-                <div style={{ display: "flex", width: 322, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222", fontFamily: "Arial, sans-serif" }}>{r.project}</div>
-                <div style={{ display: "flex", width: 314, borderRight: "2px solid #d3d3d3", backgroundColor: colourBg, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: colourBg ? "#ffffff" : "#222222", fontFamily: "Arial, sans-serif" }}>{r.colour}</div>
-                <div style={{ display: "flex", width: 316, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222", fontFamily: "Arial, sans-serif" }}>{r.amount}</div>
-                <div style={{ display: "flex", width: 330, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: resultColor, fontFamily: "Arial, sans-serif" }}>{resultText}</div>
-                <div style={{ display: "flex", width: 340, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: profitColor, fontFamily: "Arial, sans-serif" }}>{profitText}</div>
-              </div>
+              <g key={`row-${i}`}>
+                {/* Row Background */}
+                <rect x="38" y={rowY} width="1972" height={rowHeight} fill={bgFill} />
+                
+                {/* Colour Column Background */}
+                {colourBg && (
+                  <rect x={38 + 350 + 322} y={rowY} width="314" height={rowHeight} fill={colourBg} />
+                )}
+
+                {/* Borders */}
+                <line x1="38" y1={rowY + rowHeight} x2="2010" y2={rowY + rowHeight} stroke={bottomLineColor} strokeWidth="2" />
+                <line x1="38" y1={rowY} x2="38" y2={rowY + rowHeight} stroke="#e05307" strokeWidth="2" />
+                <line x1="2010" y1={rowY} x2="2010" y2={rowY + rowHeight} stroke="#e05307" strokeWidth="2" />
+                
+                {/* Column Dividers */}
+                <line x1={38 + 350} y1={rowY} x2={38 + 350} y2={rowY + rowHeight} stroke="#d3d3d3" strokeWidth="2" />
+                <line x1={38 + 350 + 322} y1={rowY} x2={38 + 350 + 322} y2={rowY + rowHeight} stroke="#d3d3d3" strokeWidth="2" />
+                <line x1={38 + 350 + 322 + 314} y1={rowY} x2={38 + 350 + 322 + 314} y2={rowY + rowHeight} stroke="#d3d3d3" strokeWidth="2" />
+                <line x1={38 + 350 + 322 + 314 + 316} y1={rowY} x2={38 + 350 + 322 + 314 + 316} y2={rowY + rowHeight} stroke="#d3d3d3" strokeWidth="2" />
+                <line x1={38 + 350 + 322 + 314 + 316 + 330} y1={rowY} x2={38 + 350 + 322 + 314 + 316 + 330} y2={rowY + rowHeight} stroke="#d3d3d3" strokeWidth="2" />
+
+                {/* Text Elements */}
+                <text x={38 + 175} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill="#222222" textAnchor="middle" dominantBaseline="central">{r.period}</text>
+                <text x={38 + 350 + 161} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill="#222222" textAnchor="middle" dominantBaseline="central">{r.project}</text>
+                <text x={38 + 350 + 322 + 157} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill={colourBg ? "#ffffff" : "#222222"} textAnchor="middle" dominantBaseline="central">{r.colour}</text>
+                <text x={38 + 350 + 322 + 314 + 158} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill="#222222" textAnchor="middle" dominantBaseline="central">{r.amount}</text>
+                <text x={38 + 350 + 322 + 314 + 316 + 165} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill={resultColor} textAnchor="middle" dominantBaseline="central">{resultText}</text>
+                <text x={38 + 350 + 322 + 314 + 316 + 330 + 170} y={rowY + 30} fontFamily="Arial, sans-serif" fontSize="28" fontWeight="bold" fill={profitColor} textAnchor="middle" dominantBaseline="central">{profitText}</text>
+              </g>
             );
           })}
 
           {/* Total Row */}
           {isLastPrediction && (
-            <div
-              style={{
-                position: "absolute", top: N * rowHeight, left: 38, width: 1972, height: 80, display: "flex", backgroundColor: "#ffffff",
-                borderLeft: "2px solid #e05307", borderRight: "2px solid #e05307", borderBottom: "2px solid #e05307",
-                alignItems: "center", justifyContent: "flex-end", paddingRight: 35, boxSizing: "border-box"
-              }}
-            >
-              <div style={{ display: "flex", fontSize: 36, fontWeight: 700, color: "#222222", marginRight: 15, fontFamily: "Arial, sans-serif" }}>Total Profit = </div>
-              <div style={{ display: "flex", fontSize: 44, fontWeight: 700, color: totalProfit >= 0 ? "#0f9d58" : "#ef4444", fontFamily: "Arial, sans-serif" }}>₹{totalProfit}</div>
-            </div>
+            <g transform={`translate(0, ${N * rowHeight})`}>
+              <rect x="38" y="0" width="1972" height="80" fill="#ffffff" />
+              <rect x="38" y="0" width="1972" height="80" fill="none" stroke="#e05307" strokeWidth="2" />
+              
+              <text x="1900" y="40" fontFamily="Arial, sans-serif" fontSize="36" fontWeight="bold" fill="#222222" textAnchor="end" dominantBaseline="central">Total Profit = </text>
+              <text x="1980" y="40" fontFamily="Arial, sans-serif" fontSize="44" fontWeight="bold" fill={totalProfit >= 0 ? "#0f9d58" : "#ef4444"} textAnchor="end" dominantBaseline="central">₹{totalProfit}</text>
+            </g>
           )}
-        </div>
-      </div>
-      <style dangerouslySetInnerHTML={{__html: `
-        .preview-scale-container {
-          transform: scale(0.12);
-        }
-        @media (min-width: 1500px) {
-           .preview-scale-container {
-              transform: scale(0.15);
-           }
-        }
-      `}} />
+        </g>
+      </svg>
     </div>
   );
 }
