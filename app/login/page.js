@@ -15,7 +15,6 @@ import { useToasts, ToastStack } from "@/components/ui/Toast";
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ mobile: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { toasts, push: pushToast } = useToasts();
 
@@ -28,6 +27,15 @@ export default function LoginPage() {
         }, 100);
       }
     }
+    
+    // Clear form when user switches tabs or hides browser
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        setForm({ mobile: "", password: "" });
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [pushToast]);
 
   const handleChange = (event) => {
@@ -37,10 +45,19 @@ export default function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
+
+    if (!form.mobile) {
+      pushToast("Mobile Number is required");
+      return;
+    }
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Invalid phone number", "error", 3000);
+      pushToast("Mobile Number is false");
+      return;
+    }
+
+    if (!form.password) {
+      pushToast("Password is required");
       return;
     }
 
@@ -73,13 +90,7 @@ export default function LoginPage() {
 
       {/* Form Section — recharge_box from reference */}
       <div className="recharge_box w-full flex-1 box-border" style={{ marginTop: '24px', padding: '24px' }}>
-        {error && (
-          <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off">
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />

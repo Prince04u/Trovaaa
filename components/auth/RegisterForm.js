@@ -37,6 +37,23 @@ export default function RegisterForm() {
     return () => clearInterval(interval);
   }, [otpCountdown]);
 
+  // Clear form when user switches tabs or hides browser
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        setForm({
+          mobile: "",
+          verificationCode: "",
+          password: "",
+          inviteCode: searchParams.get("ref")?.trim().toUpperCase() || "",
+        });
+        setOtpCountdown(0);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [searchParams]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -102,6 +119,11 @@ export default function RegisterForm() {
       return;
     }
 
+    if (!form.inviteCode) {
+      pushToast("Invalid parameters");
+      return;
+    }
+
     if (!agree) {
       pushToast("Please agree to the Privacy Policy");
       return;
@@ -152,7 +174,7 @@ export default function RegisterForm() {
 
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
-        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off">
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
