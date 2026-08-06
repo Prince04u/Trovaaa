@@ -163,8 +163,8 @@ export default function HomeScreen() {
         <span className="text-[14px] text-[#666666] absolute left-1/2 -translate-x-1/2">Open with an app</span>
         <div className="flex items-center gap-3">
           <a
-            href="/luvomall_1.0.0.apk"
-            download="app.apk"
+            href="/Luvomall.apk"
+            download="Luvomall.apk"
             className="cursor-pointer flex items-center justify-center"
             aria-label="Download App"
           >
