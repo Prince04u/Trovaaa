@@ -144,7 +144,7 @@ export default function PublicRedEnvelopesPage() {
             <img
               src="/images/red_envelope_pouch.png"
               alt="Red Envelope Pouch"
-              className="w-full h-full object-contain scale-[1.65]"
+              className="w-full h-full object-contain scale-[1.3] mix-blend-multiply"
             />
             {/* Amount overlay on the bag */}
             <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">

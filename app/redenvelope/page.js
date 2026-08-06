@@ -241,7 +241,7 @@ export default function RedEnvelopePage() {
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
-                className="w-full h-full object-contain scale-[1.65]"
+                className="w-full h-full object-contain scale-[1.3] mix-blend-multiply"
               />
               <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
                 <span className="text-[32px] font-semibold text-[#ffe082] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
