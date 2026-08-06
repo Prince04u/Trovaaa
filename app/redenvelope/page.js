@@ -228,34 +228,29 @@ export default function RedEnvelopePage() {
         </nav>
 
         {/* Curved Background Header */}
-        <div className="w-full h-[120px] bg-[#d32f2f] rounded-b-[40%] flex items-center justify-center shadow-inner relative z-0 animate-fade-in"></div>
+        <div className="w-full h-[130px] bg-[#d32f2f] rounded-b-[45%] absolute top-[50px] left-0 z-0 shadow-inner"></div>
 
         {/* Main Claim Card */}
-        <div className="flex-1 flex justify-center px-4 -mt-16 relative z-10">
-          <div className="w-full max-w-[360px] bg-white rounded-2xl p-6 flex flex-col items-center shadow-lg border border-white/40 h-[480px]">
+        <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
+          <div className="w-full max-w-[340px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[450px]">
             
-            <div className="w-full flex justify-between items-start">
-              <span className="text-[18px]">👑</span>
-              <span className="text-xs text-[#999] tracking-wider">Luvomall</span>
-            </div>
-
             <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
 
             {/* Red Envelope Pouch Illustration */}
-            <div className="relative w-[220px] h-[220px] my-4 flex items-center justify-center">
+            <div className="relative w-[210px] h-[210px] my-4 flex items-center justify-center">
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
                 className="w-full h-full object-contain"
               />
               <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
-                <span className="text-[26px] font-bold text-[#fbc02d] tracking-wide filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                <span className="text-[30px] font-bold text-[#ffd54f] tracking-wide font-sans drop-shadow-[0_1.5px_2px_rgba(0,0,0,0.5)]">
                   ₹ {(claimEnvelope?.amount ?? 0).toFixed(2)}
                 </span>
                 
                 {isClaimed && (
-                  <div className="mt-3 bg-black/60 backdrop-blur-xs rounded-full px-5 py-1 flex items-center justify-center border border-white/10 shadow-md">
-                    <span className="text-[12px] font-medium text-white tracking-widest">success</span>
+                  <div className="mt-3 bg-[#3e3e3e]/90 rounded-lg px-6 py-1.5 flex items-center justify-center border border-[#525252]/50 shadow-md">
+                    <span className="text-[12px] font-semibold text-white tracking-widest">success</span>
                   </div>
                 )}
               </div>
