@@ -162,16 +162,6 @@ export default function HomeScreen() {
         <img src="/logo.png" alt="Logo" className="h-[40px] w-auto object-contain" />
         <span className="text-[14px] text-[#666666] absolute left-1/2 -translate-x-1/2">Open with an app</span>
         <div className="flex items-center gap-3">
-          <button 
-            type="button"
-            onClick={() => setShowNotice(true)} 
-            className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
-            aria-label="Notifications"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px] text-[#808080]">
-              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-            </svg>
-          </button>
           <a
             href="/luvomall_1.0.0.apk"
             download="app.apk"
