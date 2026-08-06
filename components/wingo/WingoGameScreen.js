@@ -478,6 +478,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       push("Please enter a valid quantity of 1 or more.", "error");
       return;
     }
+    if (totalAmount < 10) {
+      push("Minimum bet amount is ₹10", "error");
+      return;
+    }
     if (totalAmount < betLimits.minBetAmount || totalAmount > betLimits.maxBetAmount) {
       push(`Bet amount must be between ₹${betLimits.minBetAmount} and ₹${betLimits.maxBetAmount.toLocaleString("en-IN")}`, "error");
       return;
@@ -515,7 +519,6 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
     setMyBets(prev => [optimisticBet, ...prev]);
     myBetsRef.current = [optimisticBet, ...myBetsRef.current];
-    setBetSheet(null);
 
     try {
       const res = await placeBet(duration, {
@@ -539,8 +542,10 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       }
 
       setLoading(false);
+      setBetSheet(null);
+
       setTimeout(() => {
-        push("Success", "success");
+        push("success", "success");
         setShowBetLoading(true);
 
         loadData({ showSpinner: false })
@@ -550,7 +555,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           .catch(() => {
             setShowBetLoading(false);
           });
-      }, 200);
+      }, 1000);
     } catch (err) {
       setBalance(prev => prev + deductedAmount);
       setMyBets(prev => prev.filter(b => b.id !== generatedId));
@@ -570,6 +575,9 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
   const getBetErrorMessage = (err) => {
     const msg = err.response?.data?.message || "Bet failed";
+    if (msg.includes("Insufficient balance") || msg.includes("insufficient_balance")) {
+      return "Your balance is insufficient";
+    }
     if (/replica set|mongos|Transaction numbers/i.test(msg)) {
       return "Bet could not be processed. Please try again.";
     }

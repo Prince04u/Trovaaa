@@ -245,8 +245,14 @@ export default function AccountScreen() {
             </div>
           </button>
 
-          {walletOpen && (
-            <div className="flex flex-col bg-white">
+          <div
+            className="transition-all duration-300 ease-in-out overflow-hidden"
+            style={{
+              maxHeight: walletOpen ? "132px" : "0px",
+              opacity: walletOpen ? 1 : 0,
+            }}
+          >
+            <div className="flex flex-col bg-white border-t border-[#f5f5f5]">
               <Link
                 href="/recharge"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none"
@@ -266,7 +272,7 @@ export default function AccountScreen() {
                 Transactions
               </Link>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Bank Card */}
@@ -308,7 +314,13 @@ export default function AccountScreen() {
             </div>
           </button>
 
-          {securityOpen && (
+          <div
+            className="transition-all duration-300 ease-in-out overflow-hidden"
+            style={{
+              maxHeight: securityOpen ? "44px" : "0px",
+              opacity: securityOpen ? 1 : 0,
+            }}
+          >
             <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
               <Link
                 href="/forgotpass"
@@ -317,7 +329,7 @@ export default function AccountScreen() {
                 Reset Password
               </Link>
             </div>
-          )}
+          </div>
         </div>
 
         {/* App Download (Direct Link) */}

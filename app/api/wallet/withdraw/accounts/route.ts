@@ -78,9 +78,47 @@ export async function POST(req: NextRequest) {
 
     let newAccount;
     if (type === "bank") {
-      if (!accountName || !accountNumber || !ifsc || !bankName) {
-        return NextResponse.json({ message: "Bank name, Account holder name, number, and IFSC are required for bank" }, { status: 400 });
+      const { code, mobile } = body;
+      if (!accountName || !accountNumber || !ifsc || !bankName || !code || !mobile) {
+        return NextResponse.json({ message: "Bank details and verification code are required" }, { status: 400 });
       }
+
+      const cleanMobile = String(mobile).trim().toLowerCase();
+      const cleanCode = String(code).trim();
+
+      // Verify OTP code
+      const storedOtp = await prisma.otp.findUnique({
+        where: { phone: cleanMobile },
+      });
+
+      if (!storedOtp) {
+        return NextResponse.json({ message: "Verification code has expired or was not requested." }, { status: 400 });
+      }
+
+      // Check expiration (5 minutes)
+      const expiresAt = new Date(storedOtp.createdAt.getTime() + 5 * 60 * 1000);
+      if (new Date() > expiresAt) {
+        await prisma.otp.delete({ where: { phone: cleanMobile } }).catch(() => {});
+        return NextResponse.json({ message: "Verification code has expired." }, { status: 400 });
+      }
+
+      // Verify matching code
+      if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
+        if (storedOtp.code !== cleanCode) {
+          return NextResponse.json({ message: "Invalid verification code." }, { status: 400 });
+        }
+      } else {
+        const { verifyOtp } = await import("@/lib/otp");
+        const verifyRes = await verifyOtp(storedOtp.sessionId || "", cleanCode);
+        if (!verifyRes.success) {
+          if (storedOtp.code !== cleanCode) {
+            return NextResponse.json({ message: verifyRes.message || "Invalid verification code." }, { status: 400 });
+          }
+        }
+      }
+
+      // Delete OTP on successful verification
+      await prisma.otp.delete({ where: { phone: cleanMobile } }).catch(() => {});
       
       const cleanBankName = String(bankName).trim();
       const cleanName = String(accountName).trim();

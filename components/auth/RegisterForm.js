@@ -42,17 +42,43 @@ export default function RegisterForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (!form.mobile) {
       setError("Please enter mobile number first");
       return;
     }
-    setOtpCountdown(60);
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: form.mobile }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Failed to send OTP");
+      } else {
+        setTimeout(() => {
+          pushToast("success", "success");
+          setOtpCountdown(60);
+        }, 1000);
+      }
+    } catch (err) {
+      setError("Failed to send OTP. Please check your network connection.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!form.verificationCode) {
+      setError("Please enter the verification code.");
+      return;
+    }
 
     if (!agree) {
       setError("Please agree to the Privacy Policy");
@@ -67,13 +93,17 @@ export default function RegisterForm() {
         mobile: form.mobile,
         password: form.password,
         referralCode: form.inviteCode.trim().toUpperCase() || undefined,
+        code: form.verificationCode,
       });
 
       saveAuth(response.data);
-      pushToast("Success");
+      
       setTimeout(() => {
-        router.push("/");
-      }, 500);
+        pushToast("success", "success");
+        setTimeout(() => {
+          router.push("/");
+        }, 1500);
+      }, 1000);
     } catch (err) {
       setError(
         err.response?.data?.message ||

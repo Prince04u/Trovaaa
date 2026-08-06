@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redis } from "@/lib/redis";
 import crypto from "crypto";
 import { rateLimit } from "@/lib/rateLimit";
+import { prisma } from "@/lib/prisma";
+import { sendOtp } from "@/lib/otp";
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,19 +33,32 @@ export async function POST(req: NextRequest) {
       ? String(crypto.randomInt(100000, 999999))
       : "123456";
 
-    // Store in Redis with a 5-minute (300 seconds) expiration
-    const redisKey = `otp:${cleanMobile}`;
-    await redis.set(redisKey, code, "EX", 300);
-
     if (isProd) {
-      console.log(`[OTP] Production OTP code generated for ${cleanMobile}`);
-      // SMS gateway dispatch logic goes here
+      console.log(`[OTP] Production OTP dispatch requested for ${cleanMobile}`);
+      const hyperRes = await sendOtp(cleanMobile);
+      if (!hyperRes.success) {
+        return NextResponse.json({ message: hyperRes.message || "Failed to send verification SMS." }, { status: 500 });
+      }
+
+      await prisma.otp.upsert({
+        where: { phone: cleanMobile },
+        update: { code, sessionId: hyperRes.session_id || null, createdAt: new Date() },
+        create: { phone: cleanMobile, code, sessionId: hyperRes.session_id || null },
+      });
+
       return NextResponse.json({
         success: true,
         message: "Verification code sent successfully.",
       });
     } else {
       console.log(`[OTP] Dev mockup OTP code generated for ${cleanMobile}: ${code}`);
+      
+      await prisma.otp.upsert({
+        where: { phone: cleanMobile },
+        update: { code, sessionId: "mock_session", createdAt: new Date() },
+        create: { phone: cleanMobile, code, sessionId: "mock_session" },
+      });
+
       return NextResponse.json({
         success: true,
         message: `Verification code sent successfully (Dev mockup: use code ${code}).`,

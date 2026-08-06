@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 
@@ -9,7 +9,11 @@ const PRODUCTS_DATA = {
     id: 1,
     title: "【 Now 】 Series White 18K Gold Pair Ring",
     price: "38570.00",
-    images: ["https://art.apex-king.com/uploads/images/51iEBQzCL5L._UL1500_.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/51iEBQzCL5L._UL1500_.jpg",
+      "https://art.apex-king.com/uploads/images/9.jpg",
+      "https://art.apex-king.com/uploads/images/10.jpg"
+    ],
     specs: {
       "Brand": "Now",
       "Material": "18K Gold",
@@ -21,7 +25,11 @@ const PRODUCTS_DATA = {
     id: 2,
     title: "【Cute Pet】 Series Rose 18K Gold Pearl Pendant",
     price: "2899.00",
-    images: ["https://art.apex-king.com/uploads/images/71JvL64Y3cL._UY695_.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/71JvL64Y3cL._UY695_.jpg",
+      "https://art.apex-king.com/uploads/images/10.jpg",
+      "https://art.apex-king.com/uploads/images/11.jpg"
+    ],
     specs: {
       "Brand": "Cute Pet",
       "Material": "Rose 18K Gold",
@@ -34,7 +42,11 @@ const PRODUCTS_DATA = {
     id: 3,
     title: "18K Gold Diamond Ruby Deer Horn Collar Chain",
     price: "4559.00",
-    images: ["https://art.apex-king.com/uploads/images/71YWzTc2omL._UY695_.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/71YWzTc2omL._UY695_.jpg",
+      "https://art.apex-king.com/uploads/images/11.jpg",
+      "https://art.apex-king.com/uploads/images/12.jpg"
+    ],
     specs: {
       "Material": "18K Gold",
       "Stone": "Diamond, Ruby",
@@ -45,7 +57,11 @@ const PRODUCTS_DATA = {
     id: 4,
     title: "Enzo Jewelry 14k Gold Seven Colored Gemstone Pendant",
     price: "5599.00",
-    images: ["https://art.apex-king.com/uploads/images/4.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/4.jpg",
+      "https://art.apex-king.com/uploads/images/12.jpg",
+      "https://art.apex-king.com/uploads/images/13.jpg"
+    ],
     specs: {
       "Brand": "Enzo",
       "Material": "14k Gold",
@@ -57,7 +73,11 @@ const PRODUCTS_DATA = {
     id: 5,
     title: "Sukkhi Gleaming Pearl Gold Plated Wedding Jewellery Kundan Peacock Meenakari Multi-String Necklace",
     price: "1745.00",
-    images: ["https://art.apex-king.com/uploads/images/5.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/5.jpg",
+      "https://art.apex-king.com/uploads/images/13.jpg",
+      "https://art.apex-king.com/uploads/images/14.jpg"
+    ],
     specs: {
       "Brand": "Sukkhi",
       "Material": "Gold Plated",
@@ -70,7 +90,11 @@ const PRODUCTS_DATA = {
     id: 6,
     title: "Ananth Jewels 925 Sterling Silver BIS Hallmarked Heart Bracelet for Women",
     price: "9000.00",
-    images: ["https://art.apex-king.com/uploads/images/6.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/6.jpg",
+      "https://art.apex-king.com/uploads/images/14.jpg",
+      "https://art.apex-king.com/uploads/images/15.jpg"
+    ],
     specs: {
       "Brand": "Ananth Jewels",
       "Material": "925 Sterling Silver",
@@ -81,7 +105,11 @@ const PRODUCTS_DATA = {
     id: 7,
     title: "Handicraft Kottage ® 1gm 22Ct Gold Plated Pendant and Chain for Men/Women/Girls",
     price: "999.00",
-    images: ["https://art.apex-king.com/uploads/images/7.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/7.jpg",
+      "https://art.apex-king.com/uploads/images/15.jpg",
+      "https://art.apex-king.com/uploads/images/16.jpg"
+    ],
     specs: {
       "Brand": "Handicraft Kottage",
       "Material": "Gold Plated",
@@ -92,7 +120,11 @@ const PRODUCTS_DATA = {
     id: 8,
     title: "Mansiyaorange Combo of Two Party One Gram Gold Forming Long Haram and Choker Set",
     price: "3199.00",
-    images: ["https://art.apex-king.com/uploads/images/8.jpg"],
+    images: [
+      "https://art.apex-king.com/uploads/images/8.jpg",
+      "https://art.apex-king.com/uploads/images/16.jpg",
+      "https://art.apex-king.com/uploads/images/9.jpg"
+    ],
     specs: {
       "Brand": "Mansiyaorange",
       "Material": "Gold Forming",
@@ -119,6 +151,16 @@ function ProductDetailsContent() {
     }
   };
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!product.images || product.images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [product.images]);
+
   return (
     <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
       {/* Top Navbar */}
@@ -134,12 +176,19 @@ function ProductDetailsContent() {
       </nav>
 
       {/* Product Image Carousel */}
-      <div className="w-full aspect-square bg-[#f0f0f0] relative">
-        <img
-          src={product.images[0]}
-          alt={product.title}
-          className="w-full h-full object-cover"
-        />
+      <div className="w-full aspect-square bg-[#f0f0f0] relative overflow-hidden">
+        {product.images.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={`${product.title} ${idx + 1}`}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+            style={{
+              opacity: idx === currentImageIndex ? 1 : 0,
+              zIndex: idx === currentImageIndex ? 1 : 0,
+            }}
+          />
+        ))}
       </div>
 
       {/* Product Info */}

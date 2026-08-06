@@ -90,11 +90,13 @@ export default function WithdrawalPage() {
       };
 
       await requestWithdraw(payload);
-      setShowToast(true);
       setTimeout(() => {
-        setShowToast(false);
-        router.push("/withdrawalrecord");
-      }, 2500);
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+          router.push("/withdrawalrecord");
+        }, 1500);
+      }, 1000);
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
     } finally {
@@ -221,8 +223,8 @@ export default function WithdrawalPage() {
 
       {/* Success Toast */}
       {showToast && (
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c] text-white text-[15px] font-normal py-2.5 px-7 rounded-[10px] shadow-lg shadow-black/10 pointer-events-none select-none">
-          Success
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c]/95 text-white text-[13.5px] font-normal py-2 px-5 rounded-[8px] shadow-md shadow-black/10 pointer-events-none select-none text-center min-w-[110px]">
+          success
         </div>
       )}
     </main>

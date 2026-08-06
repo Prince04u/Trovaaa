@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redis } from "@/lib/redis";
+import { prisma } from "@/lib/prisma";
+import { verifyOtp } from "@/lib/otp";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,19 +12,39 @@ export async function POST(req: NextRequest) {
     const cleanMobile = String(mobile).trim().toLowerCase();
     const cleanCode = String(code).trim();
 
-    const redisKey = `otp:${cleanMobile}`;
-    const storedCode = await redis.get(redisKey);
+    const storedOtp = await prisma.otp.findUnique({
+      where: { phone: cleanMobile },
+    });
 
-    if (!storedCode) {
+    if (!storedOtp) {
       return NextResponse.json({ message: "Verification code has expired or was not requested." }, { status: 400 });
     }
 
-    if (storedCode !== cleanCode) {
-      return NextResponse.json({ message: "Invalid verification code." }, { status: 400 });
+    // Check expiration (5 minutes / 300 seconds)
+    const expiresAt = new Date(storedOtp.createdAt.getTime() + 5 * 60 * 1000);
+    if (new Date() > expiresAt) {
+      await prisma.otp.delete({ where: { phone: cleanMobile } }).catch(() => {});
+      return NextResponse.json({ message: "Verification code has expired." }, { status: 400 });
     }
 
-    // Delete OTP from Redis on successful verification to prevent reuse
-    await redis.del(redisKey);
+    // If it's a custom admin code or mock session
+    if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
+      if (storedOtp.code !== cleanCode) {
+        return NextResponse.json({ message: "Invalid verification code." }, { status: 400 });
+      }
+    } else {
+      // Production HyperAPI verification
+      const verifyRes = await verifyOtp(storedOtp.sessionId || "", cleanCode);
+      if (!verifyRes.success) {
+        // Fallback: check if the database code matches directly (allows admin custom overrides)
+        if (storedOtp.code !== cleanCode) {
+          return NextResponse.json({ message: verifyRes.message || "Invalid verification code." }, { status: 400 });
+        }
+      }
+    }
+
+    // Delete OTP on successful verification to prevent reuse
+    await prisma.otp.delete({ where: { phone: cleanMobile } }).catch(() => {});
 
     return NextResponse.json({
       success: true,

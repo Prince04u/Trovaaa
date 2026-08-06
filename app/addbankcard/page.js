@@ -6,8 +6,11 @@ import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import { getUser } from "@/lib/auth";
 import { addWithdrawAccount } from "@/lib/walletApi";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function AddBankCardPage() {
+  const { toasts, push: pushToast } = useToasts();
+  const [otpCountdown, setOtpCountdown] = useState(0);
   const router = useRouter();
   const [submitLoading, setSubmitLoading] = useState(false);
   const [form, setForm] = useState({
@@ -60,6 +63,14 @@ export default function AddBankCardPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (otpCountdown === 0) return;
+    const interval = setInterval(() => {
+      setOtpCountdown((c) => c - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [otpCountdown]);
+
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -74,12 +85,47 @@ export default function AddBankCardPage() {
         accountNumber: form.bankAccount,
         ifsc: form.ifscCode,
         bankName: form.bankName,
+        code: form.code,
+        mobile: form.accountPhone,
       });
       sessionStorage.removeItem("edit_bank_card");
-      alert("Bank Card saved successfully!");
-      router.back();
+      
+      setTimeout(() => {
+        pushToast("success", "success");
+        setTimeout(() => {
+          router.back();
+        }, 1500);
+      }, 1000);
     } catch (err) {
       alert(err.response?.data?.message || err.message || "Failed to save bank card.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
+  const handleSendOtp = async () => {
+    if (!form.accountPhone) {
+      alert("Phone number not found.");
+      return;
+    }
+    setSubmitLoading(true);
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: form.accountPhone }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || "Failed to send OTP");
+      } else {
+        setTimeout(() => {
+          pushToast("success", "success");
+          setOtpCountdown(60);
+        }, 1000);
+      }
+    } catch (err) {
+      alert("Failed to send OTP. Please check your network connection.");
     } finally {
       setSubmitLoading(false);
     }
@@ -149,8 +195,13 @@ export default function AddBankCardPage() {
               required 
             />
           </div>
-          <button type="button" className="bg-[#fcfcfc] text-[#333] text-[13px] px-5 py-2 rounded-[2px] ml-4 shrink-0 border border-[#e5e5e5] cursor-pointer hover:bg-[#f0f0f0] transition-colors">
-            OTP
+          <button
+            type="button"
+            onClick={handleSendOtp}
+            disabled={otpCountdown > 0 || submitLoading}
+            className="bg-[#fcfcfc] text-[#333] text-[13px] px-5 py-2 rounded-[2px] ml-4 shrink-0 border border-[#e5e5e5] cursor-pointer hover:bg-[#f0f0f0] transition-colors disabled:opacity-50"
+          >
+            {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
           </button>
         </div>
 
@@ -167,6 +218,7 @@ export default function AddBankCardPage() {
       </form>
 
       <BottomNav />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

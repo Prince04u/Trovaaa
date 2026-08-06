@@ -31,17 +31,20 @@ export function ToastStack({ toasts }: { toasts: ToastItem[] }) {
           100% { transform: scale(1); opacity: 1; }
         }
       `}</style>
-      {toasts.map((t) => (
-        <div
-          key={t.id}
-          className="bg-[#4c4c4c] text-white px-7 py-2.5 rounded-[10px] text-[15px] font-normal shadow-lg shadow-black/10"
-          style={{
-            animation: "wgToastIn 0.15s ease-out forwards",
-          }}
-        >
-          {t.message}
-        </div>
-      ))}
+      {toasts.map((t) => {
+        const displayMsg = t.message?.toLowerCase() === "success" ? "success" : t.message;
+        return (
+          <div
+            key={t.id}
+            className="bg-[#4c4c4c]/95 text-white px-5 py-2 rounded-[8px] text-[13.5px] font-normal shadow-md shadow-black/10 text-center min-w-[110px] pointer-events-none select-none"
+            style={{
+              animation: "wgToastIn 0.15s ease-out forwards",
+            }}
+          >
+            {displayMsg}
+          </div>
+        );
+      })}
     </div>
   );
 }

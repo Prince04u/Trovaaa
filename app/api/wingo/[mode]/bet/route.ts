@@ -38,6 +38,9 @@ export async function POST(
     if (!betType || betValue === undefined || !amount || amount <= 0) {
       return NextResponse.json({ message: "Missing bet placement details." }, { status: 400 });
     }
+    if (amount < 10) {
+      return NextResponse.json({ message: "Minimum bet amount is ₹10" }, { status: 400 });
+    }
 
     // Map betType & selection
     let mappedBetType: WingoBetType;
@@ -71,7 +74,7 @@ export async function POST(
 
     const wallet = userWithWallet.wallet;
     if (!wallet || wallet.balance < amount) {
-      return NextResponse.json({ message: "Insufficient balance to place bet." }, { status: 400 });
+      return NextResponse.json({ message: "Your balance is insufficient" }, { status: 400 });
     }
 
     const balanceAfter = wallet.balance - amount;
@@ -99,7 +102,7 @@ export async function POST(
     const txTime = Date.now() - t1;
 
     if (!rawResult || rawResult.length === 0) {
-      return NextResponse.json({ message: "Insufficient balance to place bet." }, { status: 400 });
+      return NextResponse.json({ message: "Your balance is insufficient" }, { status: 400 });
     }
 
     // Decrement required wager if set

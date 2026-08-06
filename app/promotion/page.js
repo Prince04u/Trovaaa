@@ -67,8 +67,10 @@ export default function PromotionPage() {
     if (!referralLink) return;
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
-    pushToast("Success");
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => {
+      pushToast("success", "success");
+      setCopied(false);
+    }, 1000);
   };
 
   const referrals = data?.referrals || [];

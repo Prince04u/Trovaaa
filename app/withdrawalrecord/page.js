@@ -76,7 +76,7 @@ export default function WithdrawalRecordPage() {
             {displayRecords.map((r, i) => (
               <div key={r.id || i} className="flex flex-col py-3 px-4 border-b border-[#f5f5f5]">
                 <div className="flex justify-between items-center mb-[4px]">
-                  <span className="text-[#666] text-[14px]">₹ {Number(r.amount).toFixed(2)}</span>
+                  <span className="text-[#666] text-[14px]">₹ {(Number(r.amount) * 0.95).toFixed(2)}</span>
                   <span className="text-[14px]">{getStatusDisplay(r.status, r.note)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-[4px]">
