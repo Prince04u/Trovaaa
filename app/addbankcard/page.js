@@ -138,10 +138,10 @@ export default function AddBankCardPage() {
     }
   };
 
-  const inputContainerClass = "w-full px-[24px] pt-[20px] pb-[10px] flex flex-col gap-1.5 select-none";
+  const inputContainerClass = "w-full px-[24px] pt-[12px] pb-[6px] flex flex-col gap-[2px] select-none";
   const labelClass = "text-[14px] text-[#888888] font-normal";
-  const inputClass = "w-full bg-transparent text-[15px] text-[#323233] outline-none border-none p-0 h-[28px]";
-  const underlineClass = "w-full h-[1px] bg-[#ebedf0] mt-1";
+  const inputClass = "w-full bg-transparent text-[15px] text-[#323233] outline-none border-none p-0 h-[22px]";
+  const underlineClass = "w-full h-[1px] bg-[#ebedf0] mt-[2px]";
 
   return (
     <main className="min-h-screen bg-white pb-24 flex flex-col w-full max-w-none m-0 relative select-none">
@@ -310,15 +310,15 @@ export default function AddBankCardPage() {
         </div>
 
         {/* Account Phone Number */}
-        <div className="w-full px-[24px] pt-[20px] pb-[10px] flex flex-col gap-1.5 select-none">
+        <div className="w-full px-[24px] pt-[12px] pb-[6px] flex flex-col gap-[2px] select-none">
           <label className="text-[12px] text-[#adadad] font-normal">Account phone number</label>
           <span className="text-[14px] text-[#333] font-medium">{form.accountPhone}</span>
-          <div className="w-full h-[1px] bg-[#ebedf0] mt-1"></div>
+          <div className="w-full h-[1px] bg-[#ebedf0] mt-[2px]"></div>
         </div>
 
         {/* Verification Code */}
-        <div className="w-full px-[24px] pt-[20px] pb-[10px] flex flex-row items-end justify-between select-none">
-          <div className="flex flex-col flex-1 gap-1.5">
+        <div className="w-full px-[24px] pt-[12px] pb-[6px] flex flex-row items-end justify-between select-none">
+          <div className="flex flex-col flex-1 gap-[2px]">
             <label className="text-[12px] text-[#adadad] font-normal">Code</label>
             <input
               type="text"
@@ -326,7 +326,7 @@ export default function AddBankCardPage() {
               value={form.code}
               onChange={handleChange}
               placeholder=""
-              className="w-full bg-transparent text-[15px] text-[#323233] placeholder-[#adadad] outline-none border-none p-0 h-[28px]"
+              className="w-full bg-transparent text-[15px] text-[#323233] placeholder-[#adadad] outline-none border-none p-0 h-[22px]"
               required
             />
           </div>
