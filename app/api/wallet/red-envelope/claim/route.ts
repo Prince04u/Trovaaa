@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth/jwt";
-import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +12,8 @@ export async function GET(req: NextRequest) {
     if (!code || code.trim().length === 0) {
       return NextResponse.json({ message: "Code is required" }, { status: 400 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     const envelope = await prisma.redEnvelope.findUnique({
       where: { code: code.trim() },
@@ -57,6 +58,8 @@ export async function POST(req: NextRequest) {
     if (!code || code.trim().length === 0) {
       return NextResponse.json({ message: "Code is required" }, { status: 400 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     const envelope = await prisma.redEnvelope.findUnique({
       where: { code: code.trim() }

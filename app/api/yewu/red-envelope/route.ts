@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 import { hasPermission, isStaffUser } from "@/lib/admin/permissions";
 
@@ -9,6 +8,8 @@ export async function GET(req: NextRequest) {
     if (!user || !isStaffUser(user) || !(await hasPermission(user, "results.view"))) {
       return NextResponse.json({ message: "Not authorized" }, { status: 403 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     const envelopes = await prisma.redEnvelope.findMany({
       orderBy: { createdAt: "desc" },
@@ -50,6 +51,8 @@ export async function POST(req: NextRequest) {
     if (!code || code.trim().length === 0) {
       return NextResponse.json({ message: "Code is required." }, { status: 400 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     let specificUserId: string | null = null;
     if (specificUserPhone && specificUserPhone.trim().length > 0) {

@@ -32,5 +32,5 @@ export const prisma = globalForPrisma.prisma ?? createClient();
 // Save to globalThis in both development and production to reuse connections across serverless warm containers
 globalForPrisma.prisma = prisma;
 
-// Triggered client reload after schema sync
+// Triggered client reload after schema sync: forced refresh v3
 

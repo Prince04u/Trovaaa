@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth/jwt";
-import { prisma } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/auth/password";
 
 export const dynamic = "force-dynamic";
@@ -11,6 +10,8 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ message: "Please log in first" }, { status: 401 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     // Check if the user has permission to create envelopes
     const dbUser = await prisma.user.findUnique({

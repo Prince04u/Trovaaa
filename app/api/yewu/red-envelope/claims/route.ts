@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 import { hasPermission, isStaffUser } from "@/lib/admin/permissions";
 
@@ -16,6 +15,8 @@ export async function GET(req: NextRequest) {
     if (!q.trim()) {
       return NextResponse.json({ success: true, data: [] });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     // Find user first
     const targetUser = await prisma.user.findFirst({

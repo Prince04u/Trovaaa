@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth/jwt";
-import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +9,8 @@ export async function GET(req: NextRequest) {
     if (!user) {
       return NextResponse.json({ message: "Please log in first" }, { status: 401 });
     }
+
+    const { prisma } = await import("@/lib/prisma");
 
     const envelopes = await prisma.redEnvelope.findMany({
       where: { creatorId: user.id },
