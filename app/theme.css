@@ -1,0 +1,256 @@
+/**
+ * Luvomall — Light Teal Theme
+ */
+
+:root {
+
+  /* ===== BACKGROUND ===== */
+
+  --theme-bg:#F7F7F7;
+  --theme-bg-soft:#FFFFFF;
+  --theme-bg-elevated:#FFFFFF;
+  --theme-bg-card:#FFFFFF;
+  --theme-bg-muted:#EAEAEA;
+  --theme-bg-input:#FFFFFF;
+
+  --theme-bg-overlay:rgba(0,0,0,.5);
+  --theme-bg-nav:rgba(255,255,255,.98);
+  --theme-bg-pill:#F2F2F2;
+
+  --theme-btn-muted:#EAEAEA;
+
+  /* ===== TEXT ===== */
+
+  --theme-text:#222222;
+  --theme-text-secondary:#666666;
+  --theme-text-muted:#999999;
+  --theme-text-dim:#CCCCCC;
+  --theme-text-inverse:#FFFFFF;
+
+  /* ===== PRIMARY GREEN ===== */
+
+  --theme-green:#00A091;
+  --theme-green-light:#26a69a;
+  --theme-green-dark:#008f81;
+  --theme-green-deep:#004d40;
+
+  --theme-green-glow:rgba(0,160,145,.08);
+  --theme-green-border:rgba(0,160,145,.18);
+  --theme-green-soft-bg:rgba(0,160,145,.08);
+
+  /* ===== BRAND COLOR (MAPPED FROM GOLD) ===== */
+
+  --theme-gold:#00A091;
+  --theme-gold-bright:#26a69a;
+  --theme-gold-muted:#008f81;
+  --theme-gold-glow:rgba(67,160,71,.12);
+
+  /* ===== COLORS ===== */
+
+  --theme-violet:#8E24AA;
+  --theme-violet-light:#BA68C8;
+
+  --theme-orange:#FF9800;
+  --theme-orange-light:#FFB74D;
+
+  --theme-blue:#2196F3;
+  --theme-blue-light:#64B5F6;
+
+  --theme-badge-hot:#F44336;
+
+  /* ===== BORDER ===== */
+
+  --theme-border:#E0E0E0;
+  --theme-border-muted:#EEEEEE;
+  --theme-border-strong:#CCCCCC;
+
+  --theme-border-gold:rgba(67,160,71,.22);
+  --theme-border-green:rgba(67,160,71,.18);
+
+  /* ===== STATUS ===== */
+
+  --theme-danger:#F44336;
+  --theme-danger-dark:#D32F2F;
+  --theme-danger-bg:rgba(244,67,54,.12);
+  --theme-danger-border:#D32F2F;
+  --theme-danger-text:#D32F2F;
+
+  --theme-warning:#FF9800;
+  --theme-warning-bg:rgba(255,152,0,.12);
+
+  --theme-success:var(--theme-green);
+  --theme-info:var(--theme-blue);
+
+  /* ===== SHADOW ===== */
+
+  --theme-shadow-sm:
+      0 2px 4px rgba(0,0,0,.05);
+
+  --theme-shadow-md:
+      0 4px 10px rgba(0,0,0,.08);
+
+  --theme-shadow-lg:
+      0 10px 20px rgba(0,0,0,.12);
+
+  --theme-shadow-green:
+      0 4px 14px rgba(67,160,71,.08);
+
+  --theme-shadow-gold:
+      0 8px 22px rgba(67,160,71,.08);
+
+  /* ===== LEGACY ===== */
+
+  --theme-gradient-gold-text:var(--theme-gold-bright);
+
+  --theme-gradient-green:var(--theme-green);
+  --theme-gradient-green-h:var(--theme-green-dark);
+  --theme-gradient-green-soft:var(--theme-green-soft-bg);
+  --theme-gradient-green-badge:var(--theme-green);
+
+  --theme-app-glow:transparent;
+  --theme-gradient-card:var(--theme-bg-card);
+  --theme-gradient-modal-header:var(--theme-bg-elevated);
+  --theme-gradient-banner:var(--theme-bg-card);
+
+  --color-bg:var(--theme-bg);
+  --color-surface:var(--theme-bg-card);
+  --color-primary:var(--theme-green);
+  --color-primary-light:var(--theme-green-light);
+  --color-accent:var(--theme-gold);
+  --color-text:var(--theme-text);
+  --color-text-muted:var(--theme-text-muted);
+  --color-border:var(--theme-border);
+
+  --gradient-primary:var(--theme-green);
+  --gradient-cta:var(--theme-green);
+
+  /* ===== PREMIUM UI HELPERS (UI-only) ===== */
+  --theme-glass-bg:rgba(255,255,255,.8);
+  --theme-glass-bg-soft:rgba(255,255,255,.6);
+  --theme-glass-border:rgba(0,0,0,.08);
+  --theme-glass-border-strong:rgba(67,160,71,.18);
+  --theme-glass-blur:14px;
+  --theme-gold-glow-strong:rgba(67,160,71,.22);
+  --theme-gold-metal: linear-gradient(135deg, #80cbd4 0%, #009688 50%, #00796b 100%);
+  --theme-gold-soft-metal: linear-gradient(135deg, #80cbd4 0%, #009688 100%);
+  --theme-dark-glow: 0 0 20px rgba(67, 160, 71, 0.05);
+  --theme-card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Premium Gold Recharge Popup Dialog */
+.ln-recharge-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease-out;
+  padding: 1.5rem;
+}
+
+.ln-recharge-popup-card {
+  width: 100%;
+  max-width: 380px;
+  background: #141416;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ln-recharge-popup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ln-recharge-popup-icon {
+  width: 54px;
+  height: 54px;
+  background: rgba(46, 125, 50, 0.15);
+  border: 1.5px solid #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22c55e;
+  font-size: 1.75rem;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+}
+
+.ln-recharge-popup-header h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.ln-recharge-popup-body {
+  background: #0d0d0f;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.ln-recharge-popup-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.ln-recharge-popup-val {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+}
+
+.ln-recharge-popup-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #fbbf24 0%, #009688 100%);
+  color: #000;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  transition: all 0.2s ease;
+}
+
+.ln-recharge-popup-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.5);
+}
+
+.ln-recharge-popup-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

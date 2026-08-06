@@ -1,0 +1,87 @@
+:root {
+    --bg-color: #000000;
+    --card-bg: #111111;
+    --accent: #ffffff;
+    --text-main: #ffffff;
+    --text-sec: #888888;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 50px 30px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.icon-wrap {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px auto;
+}
+
+.game-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--accent);
+    fill: var(--accent);
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-sec);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.cta-button {
+    background: var(--accent);
+    color: #000;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 20px 40px;
+    border-radius: 50px;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.cta-button:hover {
+    transform: scale(1.03);
+}

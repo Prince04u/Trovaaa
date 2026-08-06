@@ -1,0 +1,43 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import BottomNav from "@/components/home/BottomNav";
+
+export default function AddressPage() {
+  const [addresses] = useState([]);
+
+  return (
+    <main className="min-h-screen bg-[#fafafa] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
+      {/* Top Navbar */}
+      <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center justify-between sticky top-0 z-10 shadow-sm w-full">
+        <div className="flex items-center gap-3">
+          <Link href="/account" className="text-white text-decoration-none flex items-center">
+            <span className="material-icons-outlined text-[24px]">arrow_back</span>
+          </Link>
+          <span className="text-[17px] font-normal text-white">Address</span>
+        </div>
+        <Link href="/addaddress" className="text-white text-decoration-none flex items-center">
+          <span className="material-icons-outlined text-[24px]">add</span>
+        </Link>
+      </nav>
+
+      <div className="p-4 w-full">
+        {addresses.length === 0 ? (
+          <div className="py-16 text-center text-gray-400 text-[14px]">No address added</div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {addresses.map((addr, idx) => (
+              <div key={idx} className="bg-white p-4 rounded shadow-sm border border-gray-200">
+                <p className="font-bold text-[#333]">{addr.name}</p>
+                <p className="text-sm text-gray-600">{addr.detailAddress}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <BottomNav />
+    </main>
+  );
+}
