@@ -28,6 +28,9 @@ export default function LoginPage() {
       }
     }
     
+    // Clear form on initial mount to defeat bfcache/browser restore
+    setForm({ mobile: "", password: "" });
+    
     // Clear form when user switches tabs or hides browser
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
@@ -90,7 +93,7 @@ export default function LoginPage() {
 
       {/* Form Section — recharge_box from reference */}
       <div className="recharge_box w-full flex-1 box-border" style={{ marginTop: '24px', padding: '24px' }}>
-        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off" noValidate>
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />

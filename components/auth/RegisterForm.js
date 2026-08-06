@@ -37,8 +37,17 @@ export default function RegisterForm() {
     return () => clearInterval(interval);
   }, [otpCountdown]);
 
-  // Clear form when user switches tabs or hides browser
+  // Clear form when user switches tabs or hides browser, and on mount
   useEffect(() => {
+    // Force clear on initial mount to defeat bfcache/browser restore
+    setForm({
+      mobile: "",
+      verificationCode: "",
+      password: "",
+      inviteCode: searchParams.get("ref")?.trim().toUpperCase() || "",
+    });
+    setOtpCountdown(0);
+    
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         setForm({
@@ -174,7 +183,7 @@ export default function RegisterForm() {
 
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
-        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off" noValidate>
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
