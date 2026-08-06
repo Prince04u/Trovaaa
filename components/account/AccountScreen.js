@@ -370,8 +370,6 @@ export default function AccountScreen() {
                 keyboard_arrow_down
               </span>
             </div>
-          </button>
-
           <div
             className="transition-all duration-300 ease-in-out overflow-hidden w-full"
             style={{
