@@ -332,8 +332,8 @@ export default function AccountScreen() {
 
         {/* App Download (Direct Link) */}
         <a
-          href="/luvomall_1.0.0.apk"
-          download="app.apk"
+          href="/Luvomall.apk"
+          download="Luvomall.apk"
           className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border cursor-pointer"
         >
           <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />

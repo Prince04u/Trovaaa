@@ -786,7 +786,9 @@ export default function RechargePage() {
                     <span className="text-[#323233] text-[15px] font-semibold">✓</span>
                   ) : null}
                 </div>
-                <span className="text-[14px] text-[#323233] font-normal">{ch.label}</span>
+                <span className="text-[14px] text-[#323233] font-normal">
+                  {ch.label.replace(/trc20/i, 'TRC20').replace(/bep20/i, 'BEP20')}
+                </span>
                 <input
                   type="radio"
                   name="payment"
