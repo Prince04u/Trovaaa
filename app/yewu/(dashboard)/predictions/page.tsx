@@ -6,6 +6,7 @@ import {
   Eye, Download, Image as ImageIcon, Bold, Italic, 
   AlignCenter, AlignLeft, AlignRight, RefreshCw, Star 
 } from "lucide-react";
+import ClientSidePreview from "@/components/admin/ClientSidePreview";
 
 interface FieldStyle {
   text: string;
@@ -150,20 +151,6 @@ export default function PredictionsPage() {
       setHeaderValues(initialHeader);
     }
   }, [selectedTemplate]);
-
-  // Auto-refresh preview when rows/headerValues/isLastPrediction change (debounced)
-  const previewDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => {
-    if (!selectedTemplate || activeTab !== "generator") return;
-    if (previewDebounceRef.current) clearTimeout(previewDebounceRef.current);
-    previewDebounceRef.current = setTimeout(() => {
-      handleGeneratePreview();
-    }, 800);
-    return () => {
-      if (previewDebounceRef.current) clearTimeout(previewDebounceRef.current);
-    };
-  }, [rows, headerValues, isLastPrediction]);
-
 
   // Save targeted channel username to DB
   const handleSaveChannelSettings = async () => {
@@ -349,42 +336,7 @@ export default function PredictionsPage() {
   };
 
   // Trigger Image Generation for Preview
-  const handleGeneratePreview = async () => {
-    if (!selectedTemplate) return;
-    try {
-      setPreviewError(null);
-      setPreviewLoading(true);
-      if (previewBlobUrl) {
-        URL.revokeObjectURL(previewBlobUrl);
-        setPreviewBlobUrl(null);
-      }
-
-      const res = await fetch("/api/prediction/preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          templateId: selectedTemplate.id,
-          headerValues,
-          rows,
-          isLast: isLastPrediction,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP ${res.status}: Failed to generate preview`);
-      }
-      
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setPreviewBlobUrl(url);
-    } catch (err: any) {
-      setPreviewError(err.message);
-      showNotification(err.message || "Failed to generate preview", "error");
-    } finally {
-      setPreviewLoading(false);
-    }
-  };
+  // Removed manual handleGeneratePreview since we now use real-time ClientSidePreview.
 
   // Download Image
   const handleDownload = async () => {
@@ -579,7 +531,6 @@ export default function PredictionsPage() {
                 return;
               }
               setActiveTab("generator");
-              handleGeneratePreview();
             }}
             className={`px-4 py-2 text-sm rounded-xl transition ${
               activeTab === "generator" ? "bg-white/10 text-foreground font-medium" : "text-muted hover:text-foreground"
@@ -912,23 +863,20 @@ export default function PredictionsPage() {
                 </div>
 
                 {/* Preview Thumbnail */}
-                <div className="flex-1 bg-black/40 rounded-2xl border border-border p-3 flex items-center justify-center relative min-h-[160px]">
-                  {previewLoading ? (
-                    <RefreshCw className="w-8 h-8 text-teal-400 animate-spin" />
-                  ) : previewBlobUrl ? (
-                    <img 
-                      src={previewBlobUrl} 
-                      alt="Prediction Preview" 
-                      onClick={() => setIsPreviewModalOpen(true)}
-                      className="max-h-[260px] w-auto object-contain rounded-lg shadow-lg cursor-zoom-in hover:brightness-95 transition" 
-                      title="Click to view full screen"
+                <div 
+                  className="flex-1 bg-black/40 rounded-2xl border border-border p-3 flex items-center justify-center relative min-h-[160px] cursor-zoom-in"
+                  onClick={() => { if (selectedTemplate) setIsPreviewModalOpen(true); }}
+                  title="Click to view full screen"
+                >
+                  <div className="w-full h-[260px] rounded-lg overflow-hidden relative">
+                    <ClientSidePreview 
+                      template={selectedTemplate} 
+                      headerValues={headerValues} 
+                      rows={rows} 
+                      isLastPrediction={isLastPrediction} 
                     />
-                  ) : (
-                    <div className="text-center text-xs text-muted">
-                      <Eye className="w-10 h-10 mx-auto opacity-30 mb-1" />
-                      <p>Click Preview to compile.</p>
-                    </div>
-                  )}
+                    <div className="absolute inset-0 hover:bg-black/10 transition z-10"></div>
+                  </div>
                 </div>
 
                 {/* Telegram Custom Chat ID Override */}
@@ -946,20 +894,11 @@ export default function PredictionsPage() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="grid grid-cols-3 gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleGeneratePreview}
-                    disabled={previewLoading}
-                    className="bg-surface-2 text-foreground border border-border rounded-xl py-2 px-1 text-xs font-semibold hover:bg-surface-3 transition"
-                  >
-                    Preview
-                  </button>
+                <div className="grid grid-cols-2 gap-2 mt-4">
                   <button
                     type="button"
                     onClick={handleDownload}
-                    disabled={!previewBlobUrl || previewLoading}
-                    className="bg-surface-2 text-foreground border border-border rounded-xl py-2 px-1 text-xs font-semibold hover:bg-surface-3 transition disabled:opacity-40"
+                    className="bg-surface-2 text-foreground border border-border rounded-xl py-2 px-1 text-xs font-semibold hover:bg-surface-3 transition"
                   >
                     Download
                   </button>
@@ -1132,18 +1071,21 @@ export default function PredictionsPage() {
       )}
 
       {/* Fullscreen Preview Modal */}
-      {isPreviewModalOpen && previewBlobUrl && (
+      {isPreviewModalOpen && selectedTemplate && (
         <div 
           className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-zoom-out"
           onClick={() => setIsPreviewModalOpen(false)}
         >
-          <div className="relative max-w-5xl max-h-[90vh] flex flex-col items-center gap-4">
-            <img 
-              src={previewBlobUrl} 
-              alt="Fullscreen Preview" 
-              className="max-h-[80vh] w-auto object-contain rounded-xl shadow-2xl border border-white/10" 
-            />
-            <div className="flex gap-4">
+          <div className="relative w-full max-w-5xl h-[85vh] flex flex-col items-center justify-center gap-4 cursor-default" onClick={e => e.stopPropagation()}>
+            <div className="w-full flex-1 relative rounded-xl shadow-2xl border border-white/10 overflow-hidden flex items-center justify-center bg-[#222]">
+              <ClientSidePreview 
+                template={selectedTemplate} 
+                headerValues={headerValues} 
+                rows={rows} 
+                isLastPrediction={isLastPrediction} 
+              />
+            </div>
+            <div className="flex gap-4 mt-2 shrink-0">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
