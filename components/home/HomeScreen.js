@@ -72,7 +72,7 @@ export default function HomeScreen() {
     const timer = setInterval(() => {
       setIsTransitioning(true);
       setCurrentSlideIndex((prev) => prev + 1);
-    }, 2000);
+    }, 3000);
     return () => clearInterval(timer);
   }, []);
 

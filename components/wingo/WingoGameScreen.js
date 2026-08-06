@@ -509,18 +509,15 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
       push("Success", "success");
       setLoading(false);
-      setTimeout(() => {
-        setShowBetLoading(true);
-        setTimeout(() => {
+      setShowBetLoading(true);
+
+      loadData({ showSpinner: false })
+        .then(() => {
           setShowBetLoading(false);
-        }, 1000);
-      }, 100);
-      setShowPurpleLine(false);
-      try {
-        await loadData({ showSpinner: true });
-      } finally {
-        setShowPurpleLine(true);
-      }
+        })
+        .catch(() => {
+          setShowBetLoading(false);
+        });
     } catch (err) {
       setBalance(prev => prev + deductedAmount);
       setMyBets(prev => prev.filter(b => b.id !== generatedId));

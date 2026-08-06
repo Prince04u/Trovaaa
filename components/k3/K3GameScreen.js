@@ -756,14 +756,24 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
 
       setCenterToast({ message: "Success", type: "success" });
       setLoading(false);
-      setTimeout(() => {
-        setShowBetLoading(true);
-        setTimeout(() => {
+
+      let dataLoaded = false;
+      const dataPromise = (loadDataRef.current ? loadDataRef.current() : Promise.resolve())
+        .then(() => {
+          dataLoaded = true;
           setShowBetLoading(false);
-        }, 1000);
-      }, 100);
-      loadDataRef.current && loadDataRef.current();
-      setTimeout(() => setCenterToast(null), 1000);
+        })
+        .catch(() => {
+          dataLoaded = true;
+          setShowBetLoading(false);
+        });
+
+      setTimeout(() => {
+        setCenterToast(null);
+        if (!dataLoaded) {
+          setShowBetLoading(true);
+        }
+      }, 1000);
     } catch (err) {
       setBalance(prev => prev + totalDeducted);
       setMyBets(prev => prev.filter(b => !tempIds.includes(b.id)));

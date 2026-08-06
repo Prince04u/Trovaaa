@@ -32,7 +32,7 @@ export default function LoginPage() {
     try {
       const response = await loginRequest(form);
       saveAuth(response.data);
-      router.push("/");
+      router.push("/account");
     } catch (err) {
       pushToast("Password error");
       setLoading(false);
@@ -55,7 +55,7 @@ export default function LoginPage() {
       </header>
 
       {/* Form Section — recharge_box from reference */}
-      <div className="recharge_box w-full flex-1 box-border" style={{ marginTop: '99px', padding: '24px' }}>
+      <div className="recharge_box w-full flex-1 box-border" style={{ marginTop: '24px', padding: '24px' }}>
         {error && (
           <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
             {error}

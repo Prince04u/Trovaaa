@@ -41,8 +41,8 @@ export function BetConfirmModal({
         setShowLoading(true);
         setTimeout(() => {
           setShowLoading(false);
-        }, 1000);
-      }, 100);
+        }, 1500);
+      }, 1000);
     },
   });
 
