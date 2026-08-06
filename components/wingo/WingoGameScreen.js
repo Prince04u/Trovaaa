@@ -486,9 +486,14 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       push(`Bet amount must be between ₹${betLimits.minBetAmount} and ₹${betLimits.maxBetAmount.toLocaleString("en-IN")}`, "error");
       return;
     }
+    if (balance < totalAmount) {
+      push("Your balance is insufficient", "error");
+      return;
+    }
+    
     setLoading(true);
     const deductedAmount = totalAmount;
-    setBalance(prev => Math.max(0, prev - deductedAmount));
+    setBalance(prev => prev - deductedAmount);
     const { betType, betValue } = betSheet;
     const generatedId = `opt-${Date.now()}`;
     const durationSecs = duration === "parity" || duration === "bcone" ? 180 : duration === "sapre" ? 60 : duration === "emerd" ? 300 : duration === "30s" ? 30 : duration === "1m" ? 60 : duration === "3m" ? 180 : duration === "5m" ? 300 : 600;
