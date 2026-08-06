@@ -15,7 +15,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{ background: "#fafafa", margin: 0, padding: 0 }}>
+      <body className="antialiased">
         <PlatformRoot>{children}</PlatformRoot>
       </body>
     </html>
