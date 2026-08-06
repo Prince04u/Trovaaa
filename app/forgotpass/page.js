@@ -1,11 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
-import { changePassword } from "@/lib/authApi";
 import { BACK_ICON_B64, CHAT_ICON_B64 } from "@/components/auth/AuthIconsData";
 
 export default function ForgotPasswordPage() {
@@ -21,18 +20,54 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
+  const [otpSending, setOtpSending] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSendOtp = () => {
+  // Countdown timer for OTP
+  useEffect(() => {
+    if (otpCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setOtpCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [otpCountdown]);
+
+  const handleSendOtp = async () => {
     if (!form.mobile) {
       setError("Please enter mobile number first");
       return;
     }
-    setOtpCountdown(60);
+    setError("");
+    setOtpSending(true);
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: form.mobile }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Failed to send OTP");
+      } else {
+        setSuccess("Verification code sent successfully!");
+        setOtpCountdown(60);
+        setTimeout(() => setSuccess(""), 3000);
+      }
+    } catch (err) {
+      setError("Failed to send OTP. Please check your network connection.");
+    } finally {
+      setOtpSending(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -40,20 +75,44 @@ export default function ForgotPasswordPage() {
     setError("");
     setSuccess("");
 
+    if (!form.mobile) {
+      setError("Please enter mobile number");
+      return;
+    }
+    if (!form.verificationCode) {
+      setError("Please enter the verification code");
+      return;
+    }
+    if (!form.newPassword) {
+      setError("Please enter a new password");
+      return;
+    }
+    if (form.newPassword.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await changePassword({
-        mobile: form.mobile,
-        password: form.newPassword
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobile: form.mobile,
+          code: form.verificationCode,
+          password: form.newPassword,
+        }),
       });
-      setSuccess("Password reset successfully. You can now login.");
-      setTimeout(() => router.push("/login"), 2000);
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Password reset failed. Please try again.");
+      } else {
+        setSuccess("Password reset successfully. Redirecting to login...");
+        setTimeout(() => router.push("/login"), 2000);
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Password reset failed. Please try again."
-      );
+      setError("Password reset failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -113,10 +172,10 @@ export default function ForgotPasswordPage() {
             <button
               type="button"
               onClick={handleSendOtp}
-              disabled={otpCountdown > 0}
+              disabled={otpCountdown > 0 || otpSending}
               className="van-otp-btn shrink-0"
             >
-              {otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
+              {otpSending ? "Sending..." : otpCountdown > 0 ? `${otpCountdown}s` : "OTP"}
             </button>
           </div>
 

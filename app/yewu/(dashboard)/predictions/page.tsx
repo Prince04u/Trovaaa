@@ -151,6 +151,18 @@ export default function PredictionsPage() {
     }
   }, [selectedTemplate]);
 
+  // Auto-refresh preview when rows/headerValues/isLastPrediction change (debounced)
+  const previewDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (!selectedTemplate || activeTab !== "generator") return;
+    if (previewDebounceRef.current) clearTimeout(previewDebounceRef.current);
+    previewDebounceRef.current = setTimeout(() => {
+      handleGeneratePreview();
+    }, 800);
+    return () => {
+      if (previewDebounceRef.current) clearTimeout(previewDebounceRef.current);
+    };
+  }, [rows, headerValues, isLastPrediction]);
 
 
   // Save targeted channel username to DB
