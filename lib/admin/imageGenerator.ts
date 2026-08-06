@@ -12,18 +12,17 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
-async function getImageBuffer(urlOrPath: string): Promise<Buffer> {
+async function getImageBuffer(urlOrPath: string, origin: string): Promise<Buffer> {
   if (urlOrPath.startsWith("http://") || urlOrPath.startsWith("https://")) {
     const res = await fetch(urlOrPath);
     if (!res.ok) throw new Error(`Failed to fetch remote image: ${res.statusText}`);
     return Buffer.from(await res.arrayBuffer());
   } else {
-    const relativePath = urlOrPath.startsWith("/") ? urlOrPath.slice(1) : urlOrPath;
-    const absolutePath = path.join(process.cwd(), "public", relativePath);
-    if (!fs.existsSync(absolutePath)) {
-      throw new Error(`Local file not found: ${absolutePath}`);
-    }
-    return fs.readFileSync(absolutePath);
+    // Construct full URL using origin for local images on Vercel
+    const fullUrl = new URL(urlOrPath, origin).toString();
+    const res = await fetch(fullUrl);
+    if (!res.ok) throw new Error(`Failed to fetch local image via URL: ${fullUrl}`);
+    return Buffer.from(await res.arrayBuffer());
   }
 }
 
@@ -40,18 +39,20 @@ export async function generatePredictionImage(
   template: { imageUrl: string; fields: any },
   headerValues: Record<string, string>,
   rows: TableRow[],
-  isLast: boolean
+  isLast: boolean,
+  origin: string
 ): Promise<Buffer> {
-  const baseImageBuffer = await getImageBuffer(template.imageUrl);
+  const baseImageBuffer = await getImageBuffer(template.imageUrl, origin);
   
-  // Scale the base image template buffer to 2x (2048 width) dynamically using high-quality Lanczos3 interpolation!
+  const metadata = await sharp(baseImageBuffer).metadata();
+  const width = 2048;
+  const baseHeight = Math.round((metadata.height! * width) / metadata.width!);
+
+  // Scale the base image template buffer dynamically using high-quality Lanczos3 interpolation!
   const baseImageResized = await sharp(baseImageBuffer)
-    .resize({ width: 2048, height: 832, kernel: sharp.kernel.lanczos3 })
+    .resize({ width, height: baseHeight, kernel: sharp.kernel.lanczos3 })
     .png()
     .toBuffer();
-
-  const width = 2048;
-  const baseHeight = 832;
 
   const N = rows.length;
   const rowHeight = 60; // 30 * 2
@@ -88,12 +89,10 @@ export async function generatePredictionImage(
     if (align === "left") textAnchor = "start";
     else if (align === "right") textAnchor = "end";
 
-    let shadowStyle = "";
+    let textShadowStyle = "";
     if (field.shadowColor) {
-      const ox = (field.shadowOffsetX !== undefined ? field.shadowOffsetX : 2) * 2;
-      const oy = (field.shadowOffsetY !== undefined ? field.shadowOffsetY : 2) * 2;
-      const blur = (field.shadowBlur !== undefined ? field.shadowBlur : 4) * 2;
-      shadowStyle = `text-shadow: ${ox}px ${oy}px ${blur}px ${field.shadowColor};`;
+      // SVG filters are safer, but for now we omit text-shadow to prevent librsvg crash on Vercel
+      // shadowStyle = ...
     }
 
     svgHeaderTexts += `
@@ -109,7 +108,7 @@ export async function generatePredictionImage(
         opacity="${opacity}"
         letter-spacing="${letterSpacing}px"
         transform="rotate(${rotation}, ${x}, ${y})"
-        style="${shadowStyle} dominant-baseline: alphabetic;"
+        style="dominant-baseline: alphabetic;"
       >${escapeHtml(value)}</text>
     `;
   }

@@ -12,6 +12,20 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "5mb",
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/admin/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/admin',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

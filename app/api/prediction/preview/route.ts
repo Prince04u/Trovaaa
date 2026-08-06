@@ -21,7 +21,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Template not found" }, { status: 404 });
     }
 
-    const imageBuffer = await generatePredictionImage(template, headerValues || {}, rows || [], !!isLast);
+    const url = new URL(req.url);
+    const origin = url.origin;
+    const imageBuffer = await generatePredictionImage(template, headerValues || {}, rows || [], !!isLast, origin);
 
     return new Response(imageBuffer, {
       headers: {
