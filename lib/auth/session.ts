@@ -1,5 +1,4 @@
 import { cookies, headers } from "next/headers";
-import { prisma } from "@/lib/prisma";
 import type { User } from "@/generated/prisma/client";
 import jwt from "jsonwebtoken";
 
@@ -108,6 +107,7 @@ export async function getCurrentUser(): Promise<User | null> {
 
   if (!userId) return null;
 
+  const { prisma } = await import("@/lib/prisma");
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (user?.status === "SUSPENDED") return null;
   if (user?.activeToken && user.activeToken !== token) return null;

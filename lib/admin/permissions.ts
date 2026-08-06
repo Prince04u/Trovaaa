@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 import type { User } from "@/generated/prisma/client";
 import { getAdminPathPrefix } from "@/lib/admin/path";
@@ -34,6 +33,7 @@ export const PERMISSION_CATALOG = [
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]["key"];
 
 export async function getStaffPermissionKeys(userId: string): Promise<Set<string>> {
+  const { prisma } = await import("@/lib/prisma");
   const rows = await prisma.staffPermission.findMany({ where: { userId }, select: { key: true } });
   return new Set(rows.map((r) => r.key));
 }
