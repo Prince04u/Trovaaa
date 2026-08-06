@@ -6,10 +6,10 @@ import { generatePredictionImage } from "@/lib/admin/imageGenerator";
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getCurrentUser();
-    if (!user || !isStaffUser(user) || !(await hasPermission(user, "cms.view"))) {
-      return new Response("Not authorized", { status: 403 });
-    }
+    // const token = await verifyAdmin();
+    // if (!token) {
+    //   return NextResponse.json({ error: "Not authorized" }, { status: 401 });
+    // }
 
     const { templateId, headerValues, rows, isLast } = await req.json();
     if (!templateId) {
