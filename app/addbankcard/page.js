@@ -48,7 +48,7 @@ export default function AddBankCardPage() {
             state: "",
             city: "",
             address: "",
-            mobileNumber: phoneNum,
+            mobileNumber: "",
             email: "",
             accountPhone: phoneNum,
             code: "",
@@ -61,7 +61,7 @@ export default function AddBankCardPage() {
       setForm((prev) => ({
         ...prev,
         accountPhone: phoneNum,
-        mobileNumber: phoneNum,
+        mobileNumber: "",
       }));
     }
   }, []);
@@ -78,8 +78,30 @@ export default function AddBankCardPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleMobileNumberChange = (e) => {
+    let val = e.target.value;
+    const trimmed = val.trim();
+    if (trimmed.length === 10 && /^\d+$/.test(trimmed)) {
+      val = "+91" + trimmed;
+    } else if (trimmed.length === 12 && trimmed.startsWith("91") && /^\d+$/.test(trimmed)) {
+      val = "+91" + trimmed;
+    }
+    setForm((prev) => ({ ...prev, mobileNumber: val }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.mobileNumber) {
+      pushToast("Mobile number is required");
+      return;
+    }
+
+    if (!/^\+91\d{10}$/.test(form.mobileNumber)) {
+      pushToast("Invalid phone number");
+      return;
+    }
+
     setSubmitLoading(true);
     try {
       await addWithdrawAccount({
@@ -287,10 +309,14 @@ export default function AddBankCardPage() {
             type="text"
             name="mobileNumber"
             value={form.mobileNumber}
+            onChange={handleMobileNumberChange}
+            onFocus={(e) => {
+              if (!form.mobileNumber) {
+                setForm((prev) => ({ ...prev, mobileNumber: "+91" }));
+              }
+            }}
             placeholder=""
-            className={inputClass + " opacity-60 cursor-not-allowed"}
-            readOnly
-            disabled
+            className={inputClass}
           />
           <div className={underlineClass}></div>
         </div>
