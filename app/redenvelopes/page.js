@@ -135,26 +135,26 @@ export default function PublicRedEnvelopesPage() {
 
       {/* Main Claim Card */}
       <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[510px]">
+        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[480px]">
           
           <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
 
           {/* Red Envelope Pouch Illustration with Value Overlay */}
-          <div className="relative w-[280px] h-[330px] my-2 flex items-center justify-center overflow-visible">
+          <div className="relative w-[230px] h-[230px] my-6 flex items-center justify-center overflow-visible">
             <img
               src="/images/red_envelope_pouch.png"
               alt="Red Envelope Pouch"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain scale-[1.5]"
             />
             {/* Amount overlay on the bag */}
-            <div className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
-              <span className="text-[28px] font-semibold text-[#ffd54f] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
+            <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
+              <span className="text-[32px] font-semibold text-[#ffd54f] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
                 ₹ {(envelope?.amount ?? 0).toFixed(2)}
               </span>
               
               {/* Success Badge overlay */}
               {isClaimed && (
-                <div className="mt-3 bg-[#3e3e3e]/90 rounded-lg px-4 py-1 flex items-center justify-center border border-[#525252]/50 shadow-md">
+                <div className="mt-4 bg-[#3e3e3e]/90 rounded-lg px-4 py-1 flex items-center justify-center border border-[#525252]/50 shadow-md">
                   <span className="text-[11px] font-semibold text-white tracking-widest">success</span>
                 </div>
               )}
