@@ -140,7 +140,7 @@ export default function AccountScreen() {
         <div className="mine_top_items flex items-center justify-between w-full mt-[12px] px-[20px] py-[5px] box-border">
           {/* Balance */}
           <div className="top_item flex flex-col items-center w-[80px]">
-            <div className="text-[14px] font-normal leading-tight">₹ {Number(balance || 0).toFixed(2)}</div>
+            <div className="text-[14px] font-normal leading-tight whitespace-nowrap">₹ {Number(balance || 0).toFixed(2)}</div>
             <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Balance</div>
             <Link 
               href="/recharge" 
@@ -152,7 +152,7 @@ export default function AccountScreen() {
 
           {/* Commission */}
           <div className="top_item flex flex-col items-center w-[80px]">
-            <div className="text-[14px] font-normal leading-tight">₹ 0</div>
+            <div className="text-[14px] font-normal leading-tight whitespace-nowrap">₹ 0</div>
             <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Commission</div>
             <Link 
               href="/reward" 
@@ -164,7 +164,7 @@ export default function AccountScreen() {
 
           {/* Interest */}
           <div className="top_item flex flex-col items-center w-[80px]">
-            <div className="text-[14px] font-normal leading-tight">₹ 0</div>
+            <div className="text-[14px] font-normal leading-tight whitespace-nowrap">₹ 0</div>
             <div className="text-[12px] font-normal tracking-wide opacity-90 leading-tight mt-[3px]">Interest</div>
             <Link 
               href="/interest" 
@@ -320,33 +320,18 @@ export default function AccountScreen() {
           )}
         </div>
 
-        <div className="flex flex-col">
-          <button
-            type="button"
-            onClick={() => setDownloadOpen(!downloadOpen)}
-            className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-left bg-transparent w-full box-border cursor-pointer outline-none"
-          >
-            <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
-            <div className="flex-grow flex items-center justify-between">
-              <span className="text-[15px] font-normal text-[#333333]">App Download</span>
-              <span className={`material-icons-outlined text-[18px] text-[#c8c9cc] font-light transition-transform duration-200 ${downloadOpen ? "rotate-180" : ""}`}>
-                keyboard_arrow_down
-              </span>
-            </div>
-          </button>
-
-          {downloadOpen && (
-            <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
-              <a
-                href="/luvomall_1.0.0.apk"
-                download="app.apk"
-                className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#4e4e4e] hover:text-black hover:bg-gray-100 text-decoration-none"
-              >
-                Android Download
-              </a>
-            </div>
-          )}
-        </div>
+        {/* App Download (Direct Link) */}
+        <a
+          href="/luvomall_1.0.0.apk"
+          download="app.apk"
+          className="flex items-center py-[15px] pr-[15px] hover:bg-gray-50 text-decoration-none w-full box-border cursor-pointer"
+        >
+          <img src={REF_ICONS.appDownload} alt="App Download" className="w-[24px] h-[24px] object-contain shrink-0 opacity-80 mr-[20px]" />
+          <div className="flex-grow flex items-center justify-between">
+            <span className="text-[15px] font-normal text-[#333333]">App Download</span>
+            <span className="material-icons-outlined text-[18px] text-[#c8c9cc] font-light">keyboard_arrow_down</span>
+          </div>
+        </a>
 
         {/* Complaints & Suggestions */}
         <Link
@@ -399,17 +384,28 @@ export default function AccountScreen() {
         <button
           type="button"
           onClick={() => setShowLogoutModal(true)}
-          className="ripplegrey w-[350px] max-w-[90%] h-[36px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] font-normal rounded-[2px] border-none outline-none shadow-none cursor-pointer flex items-center justify-center"
+          className="ripplegrey w-[220px] h-[40px] bg-white border border-[#dddddd] text-[#222] text-[15px] font-normal rounded-[4px] shadow-sm cursor-pointer flex items-center justify-center"
         >
           Logout
         </button>
       </section>
 
-      {/* Floating Customer Service Button (Online) */}
-      <Link href="/customer-service" className="fixed right-[10px] top-[40%] bg-white rounded-full w-[60px] h-[60px] shadow-[0px_2px_10px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center z-50 text-decoration-none">
-        <span className="material-icons-outlined text-[#009688] text-[28px] mb-[2px]">support_agent</span>
-        <span className="text-[#999] text-[12px] font-light">Online</span>
-      </Link>
+      {/* Floating Telegram Support Button */}
+      <a
+        href="https://t.me/Apexking11"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed right-[15px] top-[40%] bg-white rounded-full w-[65px] h-[65px] border border-[#009688] shadow-[0px_2px_10px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center z-50 text-decoration-none"
+      >
+        <svg viewBox="0 0 24 24" className="w-[30px] h-[30px] mb-[2px]">
+          <circle cx="12" cy="12" r="12" fill="#2AABEE" />
+          <path
+            d="M17.5 7.97l-2.27 10.7c-.17.75-.62.93-1.25.58l-3.46-2.55-1.67 1.6c-.18.18-.34.34-.7.34l.25-3.5 6.38-5.76c.28-.25-.06-.39-.43-.14l-7.88 4.96-3.4-1.06c-.74-.23-.75-.74.15-1.1l13.3-5.13c.6-.22 1.14.15.93 1.2z"
+            fill="white"
+          />
+        </svg>
+        <span className="text-[#009688] text-[11px] font-medium leading-none">Telegram</span>
+      </a>
 
       {/* Notice Modal Dialog */}
       {showNotice && (

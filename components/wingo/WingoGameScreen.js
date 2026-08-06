@@ -447,23 +447,22 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     }, 150);
   };
 
+  const reloadInitiatedRef = useRef(false);
+
   useEffect(() => {
-    if (remainingSeconds === 0) {
-      autoReloadTimerRef.current = setTimeout(() => {
-        setRefreshing(true);
-        setTimeout(() => {
-          if (typeof window !== "undefined") {
-            window.location.reload();
-          }
-        }, 150);
-      }, 3000);
-      return () => {
-        if (autoReloadTimerRef.current) {
-          clearTimeout(autoReloadTimerRef.current);
+    if (period && remainingSeconds === 0 && !reloadInitiatedRef.current) {
+      reloadInitiatedRef.current = true;
+      setRefreshing(true);
+      const timer = setTimeout(() => {
+        if (typeof window !== "undefined") {
+          window.location.reload();
         }
-      };
+      }, 1500);
+      return () => clearTimeout(timer);
+    } else if (remainingSeconds > 0) {
+      reloadInitiatedRef.current = false;
     }
-  }, [remainingSeconds]);
+  }, [remainingSeconds, period]);
 
   const openBetSheet = (betType, betValue) => {
     if (showCountdownOverlay || maintenanceMode || blocksAction("bet")) return;
@@ -539,17 +538,19 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         myBetsRef.current = myBetsRef.current.map(b => b.id === generatedId ? updatedBet : b);
       }
 
-      push("Success", "success");
       setLoading(false);
-      setShowBetLoading(true);
+      setTimeout(() => {
+        push("Success", "success");
+        setShowBetLoading(true);
 
-      loadData({ showSpinner: false })
-        .then(() => {
-          setShowBetLoading(false);
-        })
-        .catch(() => {
-          setShowBetLoading(false);
-        });
+        loadData({ showSpinner: false })
+          .then(() => {
+            setShowBetLoading(false);
+          })
+          .catch(() => {
+            setShowBetLoading(false);
+          });
+      }, 200);
     } catch (err) {
       setBalance(prev => prev + deductedAmount);
       setMyBets(prev => prev.filter(b => b.id !== generatedId));
@@ -1125,7 +1126,34 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       <PreSaleRulesModal isOpen={rulesOpen} onClose={() => setRulesOpen(false)} />
 
       {/* Outcome popups */}
-      <OutcomePopup popup={outcomePopup} onClose={() => setOutcomePopup(null)} />
+      {outcomePopup && (
+        <OutcomePopup
+          show={true}
+          onClose={() => setOutcomePopup(null)}
+          type={outcomePopup.type}
+          amount={outcomePopup.amount}
+          gameName="Wingo"
+          periodId={outcomePopup.periodId}
+          balance={balance}
+          resultDetails={
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              {outcomePopup.resultColors?.map((c, i) => (
+                <span key={i} className={`wg-result-dot ${c.toLowerCase()}`} style={{ width: "16px", height: "16px", borderRadius: "50%", display: "inline-block" }} />
+              ))}
+              {outcomePopup.resultNumber != null && (
+                <span style={{ fontWeight: "bold", fontSize: "14px", color: "#FFE9A8", marginLeft: "4px" }}>
+                  {outcomePopup.resultNumber}
+                </span>
+              )}
+              {outcomePopup.size && (
+                <span style={{ fontSize: "12px", color: "#ccc", marginLeft: "4px" }}>
+                  ({outcomePopup.size})
+                </span>
+              )}
+            </div>
+          }
+        />
+      )}
 
       <LoadingDialog visible={showBetLoading || refreshing} />
       <ToastStack toasts={toasts} />

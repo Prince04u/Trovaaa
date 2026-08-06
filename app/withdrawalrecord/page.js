@@ -42,8 +42,8 @@ export default function WithdrawalRecordPage() {
       note = JSON.parse(noteStr || "{}");
     } catch (e) {}
 
-    if (status === "rejected" || status === "REJECTED") {
-      return <span className="text-[#f44336]">Failed</span>;
+    if (status === "rejected" || status === "REJECTED" || status === "failed" || status === "FAILED") {
+      return null;
     }
     if (status === "pending" || status === "PENDING") {
       return <span className="text-[#ff9800]">Applying</span>;

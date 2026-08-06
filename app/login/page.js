@@ -34,7 +34,7 @@ export default function LoginPage() {
       saveAuth(response.data);
       router.push("/account");
     } catch (err) {
-      pushToast("Password error");
+      pushToast("Password error", "error", 3000);
       setLoading(false);
     }
   };
