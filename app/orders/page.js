@@ -86,11 +86,73 @@ export default function OrdersPage() {
             {filteredOrders.map((bet) => {
               const id = bet._id || bet.id;
               const isExpanded = expandedBetId === id;
-              const dateStr = bet.createdAt ? new Date(bet.createdAt).toLocaleString("en-IN") : "";
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
               const stateColor = bet.state === "won" ? "text-[#4caf50]" : bet.state === "pending" ? "text-[#ff9800]" : "text-[#f44336]";
-              const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
+
+              const feeVal = Number(bet.amount || 0) * 0.05;
+              const deliveryVal = Number(bet.amount || 0) - feeVal;
+
+              let calculatedWinAmount = deliveryVal * 2; 
+              const typeUpper = String(bet.betType || bet.details?.betType || "").toUpperCase();
+              const valueUpper = String(bet.betValue || bet.details?.betValue || "").toUpperCase();
+              const amountVal = Number(bet.amount || 0);
+
+              if (typeUpper === "NUMBER") {
+                calculatedWinAmount = amountVal * 8.6;
+              } else if (typeUpper === "COLOR") {
+                if (valueUpper === "VIOLET") {
+                  calculatedWinAmount = amountVal * 4.5;
+                } else {
+                  const colors = bet.resultColors || [];
+                  const isVioletWin = colors.includes("violet");
+                  if (isVioletWin) {
+                    calculatedWinAmount = amountVal * 1.425;
+                  } else {
+                    calculatedWinAmount = amountVal * 1.9;
+                  }
+                }
+              } else if (typeUpper === "BIG_SMALL") {
+                calculatedWinAmount = amountVal * 1.9;
+              }
+
+              let contractMoney = 10;
+              let contractCount = 1;
+              const presets = [10000, 1000, 100, 10];
+              for (const p of presets) {
+                if (amountVal >= p && amountVal % p === 0) {
+                  contractMoney = p;
+                  contractCount = amountVal / p;
+                  break;
+                }
+              }
+              if (amountVal < 10) {
+                contractMoney = 1;
+                contractCount = amountVal;
+              }
+
+              const amountStr = bet.state === "pending" 
+                ? "" 
+                : bet.state === "won" 
+                ? `+${Number(calculatedWinAmount).toFixed(2)}` 
+                : `-${Number(deliveryVal).toFixed(2)}`;
+
               const displayPeriodId = formatPeriodId(bet.periodId);
+
+              const formatCreateTime = (isoStr) => {
+                if (!isoStr) return "";
+                try {
+                  const d = new Date(isoStr);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const hh = String(d.getHours()).padStart(2, "0");
+                  const min = String(d.getMinutes()).padStart(2, "0");
+                  const ss = String(d.getSeconds()).padStart(2, "0");
+                  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+                } catch {
+                  return isoStr;
+                }
+              };
               
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
@@ -116,19 +178,23 @@ export default function OrdersPage() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Contract Money</span>
-                        <span>?{Number(bet.amount).toFixed(2)}</span>
+                        <span>₹{contractMoney.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Contract Count</span>
+                        <span>{contractCount}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Fee</span>
-                        <span>?{Number(bet.tax || 0).toFixed(2)}</span>
+                        <span>₹{Number(feeVal).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Delivery</span>
-                        <span>?{Number(bet.amountAfterTax || 0).toFixed(2)}</span>
+                        <span>₹{Number(deliveryVal).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Select</span>
-                        <span className="text-[#4caf50] capitalize">{bet.details?.betValue || "-"}</span>
+                        <span className="text-[#4caf50] capitalize">{bet.details?.betValue || bet.betValue || "-"}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Status</span>
@@ -140,7 +206,7 @@ export default function OrdersPage() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Create Time</span>
-                        <span>{dateStr}</span>
+                        <span>{formatCreateTime(bet.createdAt)}</span>
                       </div>
                     </div>
                   )}

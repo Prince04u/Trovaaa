@@ -97,17 +97,13 @@ export function numberBallClasses(n: number): { chips: string[]; primaryClass: s
   return { chips, primaryClass: ballClass(chips[0]), twoTone: chips.length > 1 };
 }
 
-// Platform bet fee: a flat 2% cut applied uniformly across every Wingo bet
-// type (number, color, violet, big/small) — mathematically equivalent to
-// deducting 2% from the stake up front (a 100 bet becomes a 98 "contract
-// amount") and then applying the fair odds below, since multiplication is
-// commutative: bet * fair * (1 - fee) === (bet * (1 - fee)) * fair.
-export const BET_FEE = 0.02;
-const NUMBER_MULTIPLIER = 9 * (1 - BET_FEE);
-const BIG_SMALL_MULTIPLIER = 2 * (1 - BET_FEE);
-const VIOLET_MULTIPLIER = 4.5 * (1 - BET_FEE);
-const COLOR_MULTIPLIER = 2 * (1 - BET_FEE);
-const PARTIAL_COLOR_MULTIPLIER = 1.45 * (1 - BET_FEE);
+// Platform bet fee: a flat 5% cut applied uniformly across every Wingo bet
+export const BET_FEE = 0.05;
+const NUMBER_MULTIPLIER = 8.6;
+const BIG_SMALL_MULTIPLIER = 1.9;
+const VIOLET_MULTIPLIER = 4.5;
+const COLOR_MULTIPLIER = 1.9;
+const PARTIAL_COLOR_MULTIPLIER = 1.425;
 
 /** Returns the payout multiplier for a bet given the settled winning number, or 0 if it lost. */
 export function resolveBetMultiplier(

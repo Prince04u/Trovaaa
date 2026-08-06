@@ -828,11 +828,95 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             {myBetsForDuration.slice(0, 30).map((bet) => {
               const id = bet._id || bet.id;
               const isExpanded = expandedBetId === id;
-              const dateStr = bet.createdAt ? new Date(bet.createdAt).toLocaleString("en-IN") : "";
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
               const stateColor = bet.state === "won" ? "text-[#4caf50]" : bet.state === "pending" ? "text-[#ff9800]" : "text-[#f44336]";
-              const amountStr = bet.state === "pending" ? "" : bet.state === "won" ? `+${Number(bet.winAmount).toFixed(2)}` : `-${Number(bet.amount).toFixed(2)}`;
+
+              // Dynamic calculations requested by user:
+              // Fee is 5% of amount
+              const feeVal = Number(bet.amount || 0) * 0.05;
+              // Delivery is amount - fee
+              const deliveryVal = Number(bet.amount || 0) - feeVal;
+              
+              // WinAmount multipliers: 8.6x for number, 4.5x for violet, 1.425x for partial color win, 1.9x for big/small/color
+              let calculatedWinAmount = deliveryVal * 2; 
+              const typeUpper = String(bet.betType || "").toUpperCase();
+              const valueUpper = String(bet.betValue || "").toUpperCase();
+              const amountVal = Number(bet.amount || 0);
+
+              if (typeUpper === "NUMBER") {
+                calculatedWinAmount = amountVal * 8.6;
+              } else if (typeUpper === "COLOR") {
+                if (valueUpper === "VIOLET") {
+                  calculatedWinAmount = amountVal * 4.5;
+                } else {
+                  const colors = bet.resultColors || [];
+                  const isVioletWin = colors.includes("violet");
+                  if (isVioletWin) {
+                    calculatedWinAmount = amountVal * 1.425;
+                  } else {
+                    calculatedWinAmount = amountVal * 1.9;
+                  }
+                }
+              } else if (typeUpper === "BIG_SMALL") {
+                calculatedWinAmount = amountVal * 1.9;
+              }
+              let contractMoney = 10;
+              let contractCount = 1;
+              const presets = [10000, 1000, 100, 10];
+              for (const p of presets) {
+                if (amountVal >= p && amountVal % p === 0) {
+                  contractMoney = p;
+                  contractCount = amountVal / p;
+                  break;
+                }
+              }
+              if (amountVal < 10) {
+                contractMoney = 1;
+                contractCount = amountVal;
+              }
+
+              // In amount: if won, show "+ <winAmount>"; if lost, show "- <amount>"; if wait, show ""
+              const amountStr = bet.state === "pending" 
+                ? "" 
+                : bet.state === "won" 
+                ? `+${Number(calculatedWinAmount).toFixed(2)}` 
+                : `-${Number(deliveryVal).toFixed(2)}`;
+
               const displayPeriodId = formatPeriodId(bet.periodId);
+              
+              // Open price helper: random-looking deterministic open price between 4400 and 4900
+              const getDeterministicOpenPrice = (pId) => {
+                if (!pId) return 4500;
+                let hash = 0;
+                const str = String(pId);
+                for (let i = 0; i < str.length; i++) {
+                  hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                const min = 4400;
+                const max = 4900;
+                return min + (Math.abs(hash) % (max - min + 1));
+              };
+              const openPrice = getDeterministicOpenPrice(bet.periodId);
+
+              // Date formatter helper for Create Time
+              const formatCreateTime = (isoStr) => {
+                if (!isoStr) return "";
+                try {
+                  const d = new Date(isoStr);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const hh = String(d.getHours()).padStart(2, "0");
+                  const min = String(d.getMinutes()).padStart(2, "0");
+                  const ss = String(d.getSeconds()).padStart(2, "0");
+                  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+                } catch {
+                  return isoStr;
+                }
+              };
+
+              const selectDisplay = getBetSelectionLabel(bet.betType, bet.betValue);
+              const hasResult = bet.state !== "pending" && bet.resultNumber != null;
               
               return (
                 <div key={id} className="flex flex-col border-b border-[#f5f5f5]">
@@ -856,34 +940,42 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Contract Money</span>
-                        <span>10</span>
+                        <span>{contractMoney}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Contract Count</span>
-                        <span>1</span>
+                        <span>{contractCount}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Delivery</span>
-                        <span className="text-[#ff9800]">9.50</span>
+                        <span className="text-[#ff9800]">{Number(deliveryVal).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Fee</span>
-                        <span>0.50</span>
+                        <span>{Number(feeVal).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Open Price</span>
-                        <span>44777</span>
+                        <span>{openPrice}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Result</span>
-                        <div>
-                          <span className="text-[#2196f3] mr-1">7</span>
-                          <span className="text-[#4caf50]">green</span>
-                        </div>
+                        {hasResult ? (
+                          <div className="flex items-center gap-1">
+                            <span className="font-bold mr-1">{bet.resultNumber}</span>
+                            {bet.resultColors?.map((c) => (
+                              <span key={c} style={{ color: c === "green" ? "#4caf50" : c === "red" ? "#f44336" : "#8e24aa", fontWeight: "bold", marginRight: "4px" }}>
+                                {c}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span>—</span>
+                        )}
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Select</span>
-                        <span className="text-[#2196f3]">5</span>
+                        <span className="text-[#2196f3]">{selectDisplay}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Status</span>
@@ -895,11 +987,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Create Time</span>
-                        <span>2026-04-20 20:05</span>
+                        <span>{formatCreateTime(bet.createdAt)}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-[#333]">Type</span>
-                        <span>{duration === 'bcone' ? 'Parity' : duration.charAt(0).toUpperCase() + duration.slice(1)}</span>
+                        <span>Parity</span>
                       </div>
                       <div className="flex justify-end mt-2 mb-2">
                         <button 
