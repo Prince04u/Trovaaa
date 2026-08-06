@@ -33,8 +33,8 @@ export default function LoginPage() {
     
     // Clear form when user switches tabs or hides browser
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        setForm({ mobile: "", password: "" });
+      if (document.visibilityState === "visible") {
+        window.location.reload();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);

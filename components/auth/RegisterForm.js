@@ -49,14 +49,8 @@ export default function RegisterForm() {
     setOtpCountdown(0);
     
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        setForm({
-          mobile: "",
-          verificationCode: "",
-          password: "",
-          inviteCode: searchParams.get("ref")?.trim().toUpperCase() || "",
-        });
-        setOtpCountdown(0);
+      if (document.visibilityState === "visible") {
+        window.location.reload();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
