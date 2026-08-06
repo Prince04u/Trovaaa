@@ -27,6 +27,7 @@ export async function getAuthUser(req: Request) {
     });
 
     if (user?.status === "SUSPENDED") return null;
+    if (user?.activeToken && user.activeToken !== token) return null;
     return user;
   } catch (err) {
     return null;

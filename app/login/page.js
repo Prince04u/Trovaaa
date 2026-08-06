@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
@@ -19,6 +19,17 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { toasts, push: pushToast } = useToasts();
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (sessionStorage.getItem("show_relogin_toast") === "true") {
+        sessionStorage.removeItem("show_relogin_toast");
+        setTimeout(() => {
+          pushToast("Please log in again", "error", 3000);
+        }, 100);
+      }
+    }
+  }, [pushToast]);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -27,6 +38,12 @@ export default function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+
+    if (!/^\+91\d{10}$/.test(form.mobile)) {
+      pushToast("Invalid phone number", "error", 3000);
+      return;
+    }
+
     setLoading(true);
 
     try {

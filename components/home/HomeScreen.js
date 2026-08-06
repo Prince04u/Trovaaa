@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import BottomNav from "./BottomNav";
+import { REF_ICONS } from "@/components/account/ReferenceIcons";
 
 const PRODUCTS = [
   {
@@ -56,6 +57,7 @@ const PRODUCTS = [
 ];
 
 export default function HomeScreen() {
+  const [showNotice, setShowNotice] = useState(false);
   const BANNERS = [
     "https://apex-king.com/img/img1.a0c0ceb8.jpg",
     "https://apex-king.com/img/img2.d20d91c8.jpg",
@@ -111,16 +113,26 @@ export default function HomeScreen() {
       <section className="bg-[#f2f2f2] h-[50px] flex items-center justify-between text-xs font-normal select-none w-full relative z-10 px-[15px]" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }}>
         <img src="/logo.png" alt="Logo" className="h-[40px] w-auto object-contain" />
         <span className="text-[14px] text-[#666666] absolute left-1/2 -translate-x-1/2">Open with an app</span>
-        <a
-          href="/luvomall_1.0.0.apk"
-          download="app.apk"
-          className="cursor-pointer flex items-center justify-center"
-          aria-label="Download App"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-[22px] h-[22px] text-[#666666]">
-            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
-          </svg>
-        </a>
+        <div className="flex items-center gap-3">
+          <button 
+            type="button"
+            onClick={() => setShowNotice(true)} 
+            className="w-[32px] h-[32px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
+            aria-label="Notifications"
+          >
+            <img src={REF_ICONS.notice} alt="Notice" className="w-[20px] h-[20px] object-contain" />
+          </button>
+          <a
+            href="/luvomall_1.0.0.apk"
+            download="app.apk"
+            className="cursor-pointer flex items-center justify-center"
+            aria-label="Download App"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-[22px] h-[22px] text-[#666666]">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+            </svg>
+          </a>
+        </div>
       </section>
 
       {/* Main welcome titles matching luvomall.games indexs.vue */}
@@ -192,6 +204,27 @@ export default function HomeScreen() {
       </section>
 
       <BottomNav />
+
+      {/* Notice Modal Dialog */}
+      {showNotice && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-[4px] w-full max-w-[480px] p-6 shadow-lg flex flex-col justify-between min-h-[160px]">
+            <div>
+              <h3 className="text-[20px] font-normal text-[#222222] m-0 mb-4">Notice</h3>
+              <p className="text-[14px] text-[#555555] m-0">No New Notice</p>
+            </div>
+            <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                onClick={() => setShowNotice(false)}
+                className="bg-transparent border-none text-[#00A091] font-medium text-[14px] tracking-wide cursor-pointer outline-none hover:opacity-80"
+              >
+                CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

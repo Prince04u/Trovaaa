@@ -49,7 +49,7 @@ export default function AddBankCardPage() {
             state: "",
             city: "",
             address: "",
-            mobileNumber: "",
+            mobileNumber: phoneNum,
             email: "",
             accountPhone: phoneNum,
             code: ""
@@ -59,7 +59,7 @@ export default function AddBankCardPage() {
         }
       }
     } else {
-      setForm(prev => ({ ...prev, accountPhone: phoneNum }));
+      setForm(prev => ({ ...prev, accountPhone: phoneNum, mobileNumber: phoneNum }));
     }
   }, []);
 
@@ -168,7 +168,7 @@ export default function AddBankCardPage() {
         <div className="w-full px-4"><input type="text" name="address" value={form.address} onChange={handleChange} placeholder="Address" className={inputClass} /></div>
         <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
 
-        <div className="w-full px-4"><input type="text" name="mobileNumber" value={form.mobileNumber} onChange={handleChange} placeholder="Mobile Number" className={inputClass} /></div>
+        <div className="w-full px-4"><input type="text" name="mobileNumber" value={form.mobileNumber} placeholder="Mobile Number" className={inputClass + " opacity-60 cursor-not-allowed"} readOnly disabled /></div>
         <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
 
         <div className="w-full px-4"><input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Email" className={inputClass} /></div>

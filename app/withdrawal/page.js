@@ -17,6 +17,7 @@ export default function WithdrawalPage() {
   const [password, setPassword] = useState("");
   const [banks, setBanks] = useState([]);
   const [bankAccountId, setBankAccountId] = useState("");
+  const [bankDropdownOpen, setBankDropdownOpen] = useState(false);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
 
@@ -163,7 +164,11 @@ export default function WithdrawalPage() {
 
         {/* Details Form */}
         <div className="flex flex-col mt-4 w-full">
-          <Link href="/addbankcard" className="flex items-center justify-between py-3.5 text-decoration-none border-b border-[#f2f3f5] w-full">
+          <button
+            type="button"
+            onClick={() => setBankDropdownOpen(!bankDropdownOpen)}
+            className="flex items-center justify-between py-3.5 bg-transparent border-none outline-none cursor-pointer w-full text-left p-0"
+          >
             <div className="flex items-center">
               {/* Icon 2: Grey outline card with chip in bottom right */}
               <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
@@ -174,10 +179,50 @@ export default function WithdrawalPage() {
               <span className="text-[14px] text-[#4e4e4e] font-normal">{selectedBank ? `${selectedBank.bankName} - ${selectedBank.accountNumber.slice(-4)}` : "Select Bank Card"}</span>
             </div>
             {/* Down Arrow icon v matching Apex King */}
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+            <svg 
+              width="12" 
+              height="8" 
+              viewBox="0 0 12 8" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`shrink-0 transition-transform duration-200 ${bankDropdownOpen ? "rotate-180" : ""}`}
+            >
               <path d="M1 1.5L6 6.5L11 1.5" stroke="#969799" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </Link>
+          </button>
+
+          <div
+            className="transition-all duration-300 ease-in-out overflow-hidden w-full"
+            style={{
+              maxHeight: bankDropdownOpen ? `${banks.length * 44 + 44}px` : "0px",
+              opacity: bankDropdownOpen ? 1 : 0,
+            }}
+          >
+            <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0] w-full">
+              {banks.map((bank) => (
+                <button
+                  key={bank.id}
+                  type="button"
+                  onClick={() => {
+                    setBankAccountId(bank.id);
+                    setBankDropdownOpen(false);
+                  }}
+                  className="h-[44px] pl-[30px] pr-[18px] flex items-center justify-between text-[14px] text-[#555555] hover:bg-gray-100 border-b border-[#f5f5f5] w-full bg-transparent border-none cursor-pointer text-left"
+                >
+                  <span>{bank.bankName} - {bank.accountNumber}</span>
+                  {bankAccountId === bank.id && (
+                    <span className="material-icons-outlined text-[#009688] text-[18px] select-none">check</span>
+                  )}
+                </button>
+              ))}
+              <Link
+                href="/addbankcard"
+                className="h-[44px] pl-[30px] pr-[18px] flex items-center text-[14px] text-[#009688] hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
+              >
+                + Add new bank card
+              </Link>
+            </div>
+          </div>
           
           <div className="flex items-center py-3.5 border-b border-[#f2f3f5] w-full">
             {/* Icon 3: Grey key outline with circular head and teeth */}

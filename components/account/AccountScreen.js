@@ -132,7 +132,7 @@ export default function AccountScreen() {
             className="notice w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0 mt-1"
             aria-label="Notifications"
           >
-            <Bell size={20} className="text-[#009688]" />
+            <img src={REF_ICONS.notice} alt="Notice" className="w-[24px] h-[24px] object-contain" />
           </button>
         </div>
 
@@ -372,8 +372,14 @@ export default function AccountScreen() {
             </div>
           </button>
 
-          {aboutOpen && (
-            <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0]">
+          <div
+            className="transition-all duration-300 ease-in-out overflow-hidden w-full"
+            style={{
+              maxHeight: aboutOpen ? "88px" : "0px",
+              opacity: aboutOpen ? 1 : 0,
+            }}
+          >
+            <div className="flex flex-col bg-[#fcfcfc] border-t border-[#f0f0f0] w-full">
               <Link
                 href="/privacypolicy"
                 className="h-[44px] pl-[60px] pr-[18px] flex items-center text-[15px] text-[#555555] hover:text-black hover:bg-gray-100 text-decoration-none border-b border-[#f5f5f5]"
@@ -387,16 +393,17 @@ export default function AccountScreen() {
                 Risk Disclosure Agreement
               </Link>
             </div>
-          )}
+          </div>
         </div>
       </section>
 
-      {/* Logout Row - Light Gray Container */}
+      {/* Logout Row - Exact Screenshot Styling */}
       <section className="bg-transparent py-[20px] flex justify-center items-center w-full select-none">
         <button
           type="button"
           onClick={() => setShowLogoutModal(true)}
-          className="ripplegrey w-[220px] h-[40px] bg-white border border-[#dddddd] text-[#222] text-[15px] font-normal rounded-[4px] shadow-sm cursor-pointer flex items-center justify-center"
+          className="w-[240px] h-[44px] bg-white text-[#323233] text-[15px] font-normal cursor-pointer flex items-center justify-center outline-none shadow-sm transition-colors"
+          style={{ border: "1px solid #ebedf0", borderRadius: "4px" }}
         >
           Logout
         </button>
@@ -404,7 +411,7 @@ export default function AccountScreen() {
 
       {/* Floating Telegram Support Button */}
       <a
-        href="https://t.me/Apexking11"
+        href="https://t.me/luvomall"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed right-[15px] top-[40%] bg-white rounded-full w-[65px] h-[65px] border border-[#009688] shadow-[0px_2px_10px_rgba(0,0,0,0.15)] flex flex-col items-center justify-center z-50 text-decoration-none"

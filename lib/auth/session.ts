@@ -30,6 +30,13 @@ export async function createAdminSession(userId: string) {
     path: "/",
     maxAge: ttl,
   });
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { activeToken: token },
+  });
+
+  return token;
 }
 
 export async function createSession(userId: string, rememberMe: boolean) {
@@ -53,6 +60,13 @@ export async function createSession(userId: string, rememberMe: boolean) {
     path: "/",
     maxAge: ttl,
   });
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { activeToken: token },
+  });
+
+  return token;
 }
 
 export async function destroySession() {
@@ -96,6 +110,7 @@ export async function getCurrentUser(): Promise<User | null> {
 
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (user?.status === "SUSPENDED") return null;
+  if (user?.activeToken && user.activeToken !== token) return null;
 
   return user;
 }
