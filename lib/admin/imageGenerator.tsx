@@ -85,7 +85,7 @@ export async function generatePredictionImage(
         alignItems: "center",
         fontSize: (field.fontSize || 24) * 2,
         color: field.color || "#ffffff",
-        fontWeight: field.fontWeight || "normal",
+        fontWeight: field.fontWeight === "bold" ? 700 : 400,
         fontStyle: field.fontStyle || "normal",
         letterSpacing: (field.letterSpacing || 0) * 2,
         opacity: field.opacity !== undefined ? field.opacity : 1,
@@ -128,12 +128,12 @@ export async function generatePredictionImage(
         position: "absolute", top: rowY, left: 38, width: 1972, height: 60, display: "flex", backgroundColor: bgFill,
         borderLeft: "2px solid #e05307", borderRight: "2px solid #e05307", borderBottom: `2px solid ${bottomLineColor}`
       }}>
-        <div style={{ display: "flex", width: 350, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: "#222222" }}>{r.period}</div>
-        <div style={{ display: "flex", width: 322, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: "#222222" }}>{r.project}</div>
-        <div style={{ display: "flex", width: 314, borderRight: "2px solid #d3d3d3", backgroundColor: colourBg, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: "#ffffff" }}>{r.colour}</div>
-        <div style={{ display: "flex", width: 316, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: "#222222" }}>{r.amount}</div>
-        <div style={{ display: "flex", width: 330, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: resultColor }}>{resultText}</div>
-        <div style={{ display: "flex", width: 340, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: "bold", color: profitColor }}>{profitText}</div>
+        <div style={{ display: "flex", width: 350, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222" }}>{r.period}</div>
+        <div style={{ display: "flex", width: 322, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222" }}>{r.project}</div>
+        <div style={{ display: "flex", width: 314, borderRight: "2px solid #d3d3d3", backgroundColor: colourBg, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#ffffff" }}>{r.colour}</div>
+        <div style={{ display: "flex", width: 316, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: "#222222" }}>{r.amount}</div>
+        <div style={{ display: "flex", width: 330, borderRight: "2px solid #d3d3d3", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: resultColor }}>{resultText}</div>
+        <div style={{ display: "flex", width: 340, alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 700, color: profitColor }}>{profitText}</div>
       </div>
     );
   });
@@ -144,8 +144,8 @@ export async function generatePredictionImage(
       borderLeft: "2px solid #e05307", borderRight: "2px solid #e05307", borderBottom: "2px solid #e05307",
       alignItems: "center", justifyContent: "flex-end", paddingRight: 35
     }}>
-      <div style={{ display: "flex", fontSize: 36, fontWeight: "bold", color: "#222222", marginRight: 15 }}>Total Profit = </div>
-      <div style={{ display: "flex", fontSize: 44, fontWeight: "bold", color: totalProfit >= 0 ? "#0f9d58" : "#ef4444" }}>₹{totalProfit}</div>
+      <div style={{ display: "flex", fontSize: 36, fontWeight: 700, color: "#222222", marginRight: 15 }}>Total Profit = </div>
+      <div style={{ display: "flex", fontSize: 44, fontWeight: 700, color: totalProfit >= 0 ? "#0f9d58" : "#ef4444" }}>₹{totalProfit}</div>
     </div>
   ) : null;
 
