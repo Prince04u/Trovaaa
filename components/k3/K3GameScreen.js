@@ -160,6 +160,8 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
           if (remaining > 0) {
             newPeriod = { ...parsed, remainingSeconds: Math.round(remaining) };
             endsAtRef.current = Date.now() + remaining * 1000;
+          } else {
+            newPeriod = { ...parsed, remainingSeconds: 0 };
           }
         } catch (e) {}
       }
@@ -183,6 +185,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
     myBetsRef.current = newBets;
   }
   const [loading, setLoading] = useState(false);
+  const [showBetLoading, setShowBetLoading] = useState(false);
   const [error, setError] = useState("");
   const [historyTab, setHistoryTab] = useState("game");
   const [expandedBetId, setExpandedBetId] = useState(null);
@@ -752,8 +755,12 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
       });
 
       setCenterToast({ message: "Success", type: "success" });
+      setLoading(false);
       setTimeout(() => {
-        setLoading(false);
+        setShowBetLoading(true);
+        setTimeout(() => {
+          setShowBetLoading(false);
+        }, 1000);
       }, 100);
       loadDataRef.current && loadDataRef.current();
       setTimeout(() => setCenterToast(null), 1000);
@@ -1666,7 +1673,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
         </>
       )}
       <ToastStack toasts={toasts} />
-      <LoadingDialog visible={loading} />
+      <LoadingDialog visible={showBetLoading} />
     </div>
   );
 }

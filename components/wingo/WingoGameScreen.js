@@ -108,6 +108,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           if (remaining > 0) {
             newPeriod = { ...parsed, remainingSeconds: Math.round(remaining) };
             endsAtRef.current = Date.now() + remaining * 1000;
+          } else {
+            newPeriod = { ...parsed, remainingSeconds: 0 };
           }
         } catch {}
       }
@@ -133,6 +135,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
   const [historyTab, setHistoryTab] = useState("game");
   const [loading, setLoading] = useState(false);
+  const [showBetLoading, setShowBetLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [showPurpleLine, setShowPurpleLine] = useState(true);
   const [gameHistoryPage, setGameHistoryPage] = useState(1);
@@ -505,8 +508,12 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       }
 
       push("Success", "success");
+      setLoading(false);
       setTimeout(() => {
-        setLoading(false);
+        setShowBetLoading(true);
+        setTimeout(() => {
+          setShowBetLoading(false);
+        }, 1000);
       }, 100);
       setShowPurpleLine(false);
       try {
@@ -910,11 +917,11 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Slide-Up Betting Dialog Ticket */}
       {betSheet && (
         <div 
-          className="fixed inset-0 z-[200] bg-black/45 flex items-end md:items-center justify-center select-none pb-0 md:p-4" 
+          className="fixed inset-0 z-[200] bg-black/45 flex items-center justify-center select-none p-4" 
           onClick={() => setBetSheet(null)}
         >
           <div 
-            className="bg-white w-full md:max-w-[450px] rounded-t-[16px] md:rounded-lg overflow-hidden shadow-2xl relative pb-6 md:pb-0 transition-all duration-300 transform translate-y-0" 
+            className="bg-white w-[90%] max-w-[340px] rounded-[12px] overflow-hidden shadow-2xl relative pb-0 transition-all duration-300 transform translate-y-0" 
             onClick={(e) => e.stopPropagation()}
           >
             <div className={`wg-sheet-header ${betTheme}`}>
@@ -999,7 +1006,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
       {/* Outcome popups */}
       <OutcomePopup popup={outcomePopup} onClose={() => setOutcomePopup(null)} />
 
-      <LoadingDialog visible={loading || refreshing} />
+      <LoadingDialog visible={showBetLoading || refreshing} />
       <ToastStack toasts={toasts} />
     </main>
   );

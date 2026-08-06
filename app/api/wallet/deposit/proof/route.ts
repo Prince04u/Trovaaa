@@ -33,7 +33,8 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = await file.arrayBuffer();
-    const screenshotUrl = await uploadImage(buffer, file.type, ext);
+    const base64Data = Buffer.from(buffer).toString("base64");
+    const screenshotUrl = `data:${file.type};base64,${base64Data}`;
 
     return NextResponse.json({
       success: true,

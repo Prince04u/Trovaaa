@@ -32,12 +32,9 @@ export default function LoginPage() {
     try {
       const response = await loginRequest(form);
       saveAuth(response.data);
-      pushToast("Success");
-      setTimeout(() => {
-        router.push("/");
-      }, 500);
+      router.push("/");
     } catch (err) {
-      pushToast("password error");
+      pushToast("Password error");
       setLoading(false);
     }
   };
@@ -93,18 +90,26 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Sub-buttons: Register & Forgot Password — 310px container, 25px top margin */}
+          {/* Sub-buttons: Register & Forgot Password — 240px container, 25px top margin */}
           <div className="flex justify-center w-full" style={{ padding: '0' }}>
-            <div className="flex justify-between" style={{ width: '310px', marginTop: '25px' }}>
+            <div className="flex justify-between" style={{ width: '240px', marginTop: '25px' }}>
               <Link 
                 href="/register" 
-                className="ripplegrey flex items-center justify-center rounded-[2px] h-[40px] px-[15px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] text-decoration-none border-none outline-none shadow-none cursor-pointer font-normal"
+                className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[15px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
+                style={{
+                  border: '1px solid #ebedf0',
+                  boxShadow: '0 1px 5px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'
+                }}
               >
                 Register
               </Link>
               <Link 
                 href="/forgotpass" 
-                className="ripplegrey flex items-center justify-center rounded-[2px] h-[40px] px-[15px] bg-[#f5f5f5] text-[rgba(0,0,0,0.87)] text-[14px] text-decoration-none border-none outline-none shadow-none cursor-pointer font-normal"
+                className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[12px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
+                style={{
+                  border: '1px solid #ebedf0',
+                  boxShadow: '0 1px 5px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'
+                }}
               >
                 Forgot Password?
               </Link>

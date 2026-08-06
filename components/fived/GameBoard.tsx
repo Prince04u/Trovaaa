@@ -252,9 +252,7 @@ export function GameBoard({ mode, modeLabel }: { mode: string; modeLabel: string
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        if (parsed && parsed.endsAt && Date.now() < parsed.endsAt) {
-          return parsed;
-        }
+        return parsed;
       } catch (e) {}
     }
     return undefined;

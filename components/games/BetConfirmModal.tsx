@@ -33,23 +33,17 @@ export function BetConfirmModal({
   const [showLoading, setShowLoading] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: () => {
-      setShowLoading(true);
-      return mutationFn(amount);
-    },
+    mutationFn: () => mutationFn(amount),
     onSuccess: (result) => {
-      if ("error" in result) {
-        setShowLoading(false);
-        return;
-      }
-      setTimeout(() => {
-        setShowLoading(false);
-      }, 100);
+      if ("error" in result) return;
       onSuccess(amount, result);
+      setTimeout(() => {
+        setShowLoading(true);
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 1000);
+      }, 100);
     },
-    onError: () => {
-      setShowLoading(false);
-    }
   });
 
   if (!open) return null;
@@ -59,7 +53,7 @@ export function BetConfirmModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 px-4 pb-4 sm:pb-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
       onClick={onClose}
     >
       <div

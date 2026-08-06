@@ -66,6 +66,7 @@ export default function HomeScreen() {
   const SLIDES = [...BANNERS, BANNERS[0]];
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [touchStart, setTouchStart] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -79,7 +80,31 @@ export default function HomeScreen() {
     if (currentSlideIndex >= SLIDES.length - 1) {
       setIsTransitioning(false);
       setCurrentSlideIndex(0);
+    } else if (currentSlideIndex < 0) {
+      setIsTransitioning(false);
+      setCurrentSlideIndex(BANNERS.length - 1);
     }
+  };
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+
+    if (diff > 50) {
+      // Swipe left -> next
+      setIsTransitioning(true);
+      setCurrentSlideIndex((prev) => prev + 1);
+    } else if (diff < -50) {
+      // Swipe right -> prev
+      setIsTransitioning(true);
+      setCurrentSlideIndex((prev) => prev - 1);
+    }
+    setTouchStart(null);
   };
   return (
     <main className="min-h-screen bg-[#F7F7F7] pb-24 flex flex-col w-full max-w-none m-0 relative select-none text-[#222222]">
@@ -108,7 +133,9 @@ export default function HomeScreen() {
       {/* Image Banner Carousel */}
       <section 
         className="w-full bg-white relative select-none border-b border-gray-200 overflow-hidden"
-        style={{ aspectRatio: "716 / 500" }}
+        style={{ aspectRatio: "375 / 500" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         <div 
           className="flex h-full"
@@ -127,17 +154,6 @@ export default function HomeScreen() {
                 className="w-full h-full object-cover block"
               />
             </div>
-          ))}
-        </div>
-        {/* Carousel Indicators */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-          {BANNERS.map((_, index) => (
-            <div 
-              key={index} 
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                index === (currentSlideIndex % BANNERS.length) ? "bg-[#009688] w-3" : "bg-white/60"
-              }`}
-            />
           ))}
         </div>
       </section>
