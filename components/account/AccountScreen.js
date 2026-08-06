@@ -129,10 +129,10 @@ export default function AccountScreen() {
           <button 
             type="button"
             onClick={() => setShowNotice(true)} 
-            className="notice w-[32px] h-[32px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
+            className="notice w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0"
             aria-label="Notifications"
           >
-            <img src="/apex_bell.png" alt="Notifications" style={{ width: '18px', height: '18px' }} />
+            <img src="/apex_bell.png" alt="Notifications" style={{ width: '24px', height: '24px' }} />
           </button>
         </div>
 
