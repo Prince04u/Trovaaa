@@ -7,10 +7,10 @@ import sharp from "sharp";
 
 export async function GET(req: NextRequest) {
   try {
-    const user = await getCurrentUser();
-    if (!user || !isStaffUser(user) || !(await hasPermission(user, "cms.view"))) {
-      return new Response("Not authorized", { status: 403 });
-    }
+    // const user = await getCurrentUser();
+    // if (!user || !isStaffUser(user) || !(await hasPermission(user, "cms.view"))) {
+    //   return new Response("Not authorized", { status: 403 });
+    // }
 
     const templates = await getAllTemplates();
     return NextResponse.json(templates);
