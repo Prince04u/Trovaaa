@@ -4,6 +4,7 @@ import { logoutAction } from "@/lib/actions/auth";
 import { getEffectivePermissions } from "@/lib/admin/permissions";
 import { AdminSidebar } from "./AdminSidebar";
 import { getAdminPathPrefix } from "@/lib/admin/path";
+import { DarkModeToggle } from "@/components/admin/DarkModeToggle";
 
 const NAV_GROUPS = [
   {
@@ -86,6 +87,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
             <span className="text-xs text-muted hidden sm:inline">
               {staff.displayName} · {staff.role}
             </span>
+            <DarkModeToggle />
             <form action={logoutAction}>
               <button className="text-xs text-red hover:underline">Log out</button>
             </form>

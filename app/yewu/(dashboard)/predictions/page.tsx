@@ -930,6 +930,7 @@ export default function PredictionsPage() {
                 {/* Action Buttons */}
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   <button
+                    type="button"
                     onClick={handleGeneratePreview}
                     disabled={previewLoading}
                     className="bg-surface-2 text-foreground border border-border rounded-xl py-2 px-1 text-xs font-semibold hover:bg-surface-3 transition"
@@ -937,6 +938,7 @@ export default function PredictionsPage() {
                     Preview
                   </button>
                   <button
+                    type="button"
                     onClick={handleDownload}
                     disabled={!previewBlobUrl || previewLoading}
                     className="bg-surface-2 text-foreground border border-border rounded-xl py-2 px-1 text-xs font-semibold hover:bg-surface-3 transition disabled:opacity-40"
@@ -944,6 +946,7 @@ export default function PredictionsPage() {
                     Download
                   </button>
                   <button
+                    type="button"
                     onClick={handleSendTelegram}
                     disabled={previewLoading}
                     className="bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl py-2 px-1 text-xs font-bold hover:brightness-110 shadow-lg transition"
