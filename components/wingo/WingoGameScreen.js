@@ -433,6 +433,38 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
     }
   }, [showCountdownOverlay, betSheet]);
 
+  const autoReloadTimerRef = useRef(null);
+
+  const handleContinue = () => {
+    if (autoReloadTimerRef.current) {
+      clearTimeout(autoReloadTimerRef.current);
+    }
+    setRefreshing(true);
+    setTimeout(() => {
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+    }, 150);
+  };
+
+  useEffect(() => {
+    if (remainingSeconds === 0) {
+      autoReloadTimerRef.current = setTimeout(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+          if (typeof window !== "undefined") {
+            window.location.reload();
+          }
+        }, 150);
+      }, 3000);
+      return () => {
+        if (autoReloadTimerRef.current) {
+          clearTimeout(autoReloadTimerRef.current);
+        }
+      };
+    }
+  }, [remainingSeconds]);
+
   const openBetSheet = (betType, betValue) => {
     if (showCountdownOverlay || maintenanceMode || blocksAction("bet")) return;
     setBetSheet({ betType, betValue });
@@ -617,7 +649,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                   </div>
                 ) : (
                   <button 
-                    onClick={() => window.location.reload()} 
+                    onClick={handleContinue} 
                     style={{
                       backgroundColor: "#ff9800",
                       color: "#ffffff",
