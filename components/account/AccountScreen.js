@@ -132,7 +132,7 @@ export default function AccountScreen() {
             className="notice w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center border-none cursor-pointer shrink-0 outline-none p-0 mt-1"
             aria-label="Notifications"
           >
-            <Bell size={20} className="text-[#009688]" />
+            <img src="/apex_bell.png" alt="Notifications" style={{ width: '22px', height: '22px' }} />
           </button>
         </div>
 
