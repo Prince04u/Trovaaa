@@ -172,7 +172,7 @@ export default function AddBankCardPage() {
             name="actualName"
             value={form.actualName}
             onChange={handleChange}
-            placeholder="Actual Name"
+            placeholder=""
             className={inputClass}
             required
           />
@@ -187,7 +187,7 @@ export default function AddBankCardPage() {
             name="ifscCode"
             value={form.ifscCode}
             onChange={handleChange}
-            placeholder="IFSC Code"
+            placeholder=""
             className={inputClass}
             required
           />
@@ -202,7 +202,7 @@ export default function AddBankCardPage() {
             name="bankName"
             value={form.bankName}
             onChange={handleChange}
-            placeholder="Bank Name"
+            placeholder=""
             className={inputClass}
             required
           />
@@ -217,7 +217,7 @@ export default function AddBankCardPage() {
             name="bankAccount"
             value={form.bankAccount}
             onChange={handleChange}
-            placeholder="Bank Account"
+            placeholder=""
             className={inputClass}
             required
           />
@@ -232,7 +232,7 @@ export default function AddBankCardPage() {
             name="usdtAddress"
             value={form.usdtAddress}
             onChange={handleChange}
-            placeholder="USDT Address"
+            placeholder=""
             className={inputClass}
           />
           <div className={underlineClass}></div>
@@ -246,7 +246,7 @@ export default function AddBankCardPage() {
             name="state"
             value={form.state}
             onChange={handleChange}
-            placeholder="State/Territory"
+            placeholder=""
             className={inputClass}
           />
           <div className={underlineClass}></div>
@@ -260,7 +260,7 @@ export default function AddBankCardPage() {
             name="city"
             value={form.city}
             onChange={handleChange}
-            placeholder="City"
+            placeholder=""
             className={inputClass}
           />
           <div className={underlineClass}></div>
@@ -274,7 +274,7 @@ export default function AddBankCardPage() {
             name="address"
             value={form.address}
             onChange={handleChange}
-            placeholder="Address"
+            placeholder=""
             className={inputClass}
           />
           <div className={underlineClass}></div>
@@ -287,7 +287,7 @@ export default function AddBankCardPage() {
             type="text"
             name="mobileNumber"
             value={form.mobileNumber}
-            placeholder="Mobile Number"
+            placeholder=""
             className={inputClass + " opacity-60 cursor-not-allowed"}
             readOnly
             disabled
@@ -303,7 +303,7 @@ export default function AddBankCardPage() {
             name="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="Email"
+            placeholder=""
             className={inputClass}
           />
           <div className={underlineClass}></div>
@@ -325,7 +325,7 @@ export default function AddBankCardPage() {
               name="code"
               value={form.code}
               onChange={handleChange}
-              placeholder="Verification Code"
+              placeholder=""
               className="w-full bg-transparent text-[15px] text-[#323233] placeholder-[#adadad] outline-none border-none p-0 h-[28px]"
               required
             />
