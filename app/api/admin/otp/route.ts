@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUser } from "@/lib/auth/jwt";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth/session";
+import { hasPermission, isStaffUser } from "@/lib/admin/permissions";
 
 export async function GET(req: NextRequest) {
   try {
-    const user = await getAuthUser(req);
-    if (!user || (user.role !== "SUPER_ADMIN" && user.role !== "STAFF")) {
-      return NextResponse.json({ message: "Not authorized" }, { status: 401 });
+    const user = await getCurrentUser();
+    if (!user || !isStaffUser(user) || !(await hasPermission(user, "results.view"))) {
+      return NextResponse.json({ message: "Not authorized" }, { status: 403 });
     }
 
     const otps = await prisma.otp.findMany({
@@ -21,9 +22,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getAuthUser(req);
-    if (!user || (user.role !== "SUPER_ADMIN" && user.role !== "STAFF")) {
-      return NextResponse.json({ message: "Not authorized" }, { status: 401 });
+    const user = await getCurrentUser();
+    if (!user || !isStaffUser(user) || !(await hasPermission(user, "results.view"))) {
+      return NextResponse.json({ message: "Not authorized" }, { status: 403 });
     }
 
     const { phone, code } = await req.json();

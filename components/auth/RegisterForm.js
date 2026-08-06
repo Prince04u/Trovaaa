@@ -57,7 +57,11 @@ export default function RegisterForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || "Failed to send OTP");
+        if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
+          pushToast("Verification Code is false", "error");
+        } else {
+          setError(data.message || "Failed to send OTP");
+        }
       } else {
         setTimeout(() => {
           pushToast("success", "success");
@@ -105,10 +109,12 @@ export default function RegisterForm() {
         }, 1500);
       }, 1000);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+      const errMsg = err.response?.data?.message || "Registration failed. Please try again.";
+      if (errMsg.toLowerCase().includes("verification") || errMsg.toLowerCase().includes("false")) {
+        pushToast("Verification Code is false", "error");
+      } else {
+        setError(errMsg);
+      }
       setLoading(false);
     }
   };
@@ -221,7 +227,7 @@ export default function RegisterForm() {
               className="van-btn-teal"
               style={{ width: '65%', maxWidth: '640px' }}
             >
-              {loading ? "Registering..." : "Register"}
+              Register
             </button>
           </div>
         </form>

@@ -1123,7 +1123,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                 CANCEL
               </button>
               <button type="button" className="wg-sheet-btn-submit" style={{ color: '#009688' }} onClick={submitBet} disabled={loading}>
-                {loading ? "SUBMITTING..." : "CONFIRM"}
+                CONFIRM
               </button>
             </div>
           </div>

@@ -17,20 +17,20 @@ export async function POST(req: NextRequest) {
     });
 
     if (!storedOtp) {
-      return NextResponse.json({ message: "Verification code has expired or was not requested." }, { status: 400 });
+      return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
     }
 
     // Check expiration (5 minutes / 300 seconds)
     const expiresAt = new Date(storedOtp.createdAt.getTime() + 5 * 60 * 1000);
     if (new Date() > expiresAt) {
       await prisma.otp.delete({ where: { phone: cleanMobile } }).catch(() => {});
-      return NextResponse.json({ message: "Verification code has expired." }, { status: 400 });
+      return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
     }
 
     // If it's a custom admin code or mock session
     if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
       if (storedOtp.code !== cleanCode) {
-        return NextResponse.json({ message: "Invalid verification code." }, { status: 400 });
+        return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
       }
     } else {
       // Production HyperAPI verification
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       if (!verifyRes.success) {
         // Fallback: check if the database code matches directly (allows admin custom overrides)
         if (storedOtp.code !== cleanCode) {
-          return NextResponse.json({ message: verifyRes.message || "Invalid verification code." }, { status: 400 });
+          return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
         }
       }
     }
