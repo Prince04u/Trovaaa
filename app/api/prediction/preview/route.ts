@@ -6,10 +6,10 @@ import { generatePredictionImage } from "@/lib/admin/imageGenerator";
 
 export async function POST(req: NextRequest) {
   try {
-    // const token = await verifyAdmin();
-    // if (!token) {
-    //   return NextResponse.json({ error: "Not authorized" }, { status: 401 });
-    // }
+    const user = await getCurrentUser();
+    if (!user || !isStaffUser(user) || !(await hasPermission(user, "cms.view"))) {
+      return new Response("Not authorized", { status: 403 });
+    }
 
     const { templateId, headerValues, rows, isLast } = await req.json();
     if (!templateId) {
@@ -25,10 +25,13 @@ export async function POST(req: NextRequest) {
     const origin = url.origin;
     const imageBuffer = await generatePredictionImage(template, headerValues || {}, rows || [], !!isLast, origin);
 
-    return new Response(imageBuffer, {
+    // Convert Buffer to ArrayBuffer to prevent Next.js Response from corrupting binary data
+    const arrayBuffer = imageBuffer.buffer.slice(imageBuffer.byteOffset, imageBuffer.byteOffset + imageBuffer.byteLength);
+
+    return new Response(arrayBuffer, {
       headers: {
         "Content-Type": "image/png",
-        "Cache-Control": "no-store, max-age=0",
+        "Cache-Control": "no-cache",
       },
     });
   } catch (error: any) {
