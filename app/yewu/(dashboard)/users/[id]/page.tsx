@@ -5,7 +5,7 @@ import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { formatAmount } from "@/lib/format";
 import { getUserDetail } from "@/lib/admin/users";
 import { suspendUserAction, reactivateUserAction, toggleHoldWithdrawalsAction, updateUserWithdrawLimitsAction, toggleBypassRechargeAction, updateUserAdminNoteAction } from "@/lib/actions/users";
-import { AdjustBalanceForm } from "@/app/admin/(dashboard)/wallet/AdjustBalanceForm";
+import { AdjustBalanceForm } from "@/app/yewu/(dashboard)/wallet/AdjustBalanceForm";
 import { UserDetailTabs } from "./UserDetailTabs";
 import { DeleteAccountButton } from "./DeleteAccountButton";
 import { prisma } from "@/lib/prisma";
