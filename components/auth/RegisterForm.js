@@ -25,9 +25,7 @@ export default function RegisterForm() {
 
   const [agree, setAgree] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
-  const [passwordError, setPasswordError] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const { toasts, push: pushToast } = useToasts();
 
@@ -42,26 +40,21 @@ export default function RegisterForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (name === "password" && value) {
-      setPasswordError(false);
-    }
   };
 
   const handleSendOtp = async () => {
     if (!form.mobile) {
-      setError("Please enter mobile number first");
+      pushToast("Mobile Number is required");
       return;
     }
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Invalid phone number", "error");
+      pushToast("Mobile Number is false");
       return;
     }
     if (!form.password) {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
+      pushToast("Password is required");
+      return;
     }
-    setError("");
     try {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
@@ -71,37 +64,46 @@ export default function RegisterForm() {
       const data = await res.json();
       if (!res.ok) {
         if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
-          pushToast("Verification Code is false", "error");
+          pushToast("Verification Code is false");
         } else {
-          setError(data.message || "Failed to send OTP");
+          pushToast(data.message || "Failed to send OTP");
         }
       } else {
         setTimeout(() => {
-          pushToast("success", "success");
+          pushToast("success");
           setOtpCountdown(180);
         }, 1000);
       }
     } catch (err) {
-      setError("Failed to send OTP. Please check your network connection.");
+      pushToast("Failed to send OTP");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+
+    if (!form.mobile) {
+      pushToast("Mobile Number is required");
+      return;
+    }
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Invalid phone number", "error");
+      pushToast("Mobile Number is false");
       return;
     }
 
     if (!form.verificationCode) {
-      setError("Please enter the verification code.");
+      pushToast("Verification Code is required");
+      return;
+    }
+    
+    if (!form.password) {
+      pushToast("Password is required");
       return;
     }
 
     if (!agree) {
-      setError("Please agree to the Privacy Policy");
+      pushToast("Please agree to the Privacy Policy");
       return;
     }
 
@@ -118,16 +120,16 @@ export default function RegisterForm() {
 
       setLoading(false);
       
-      pushToast("success", "success");
+      pushToast("success");
       setTimeout(() => {
         router.push("/login");
       }, 2000);
     } catch (err) {
-      const errMsg = err.response?.data?.message || "Registration failed. Please try again.";
+      const errMsg = err.response?.data?.message || "Registration failed";
       if (errMsg.toLowerCase().includes("verification") || errMsg.toLowerCase().includes("false")) {
-        pushToast("Verification Code is false", "error");
+        pushToast("Verification Code is false");
       } else {
-        setError(errMsg);
+        pushToast(errMsg);
       }
       setLoading(false);
     }
@@ -150,12 +152,6 @@ export default function RegisterForm() {
 
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
-        {error && (
-          <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
-            {error}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit} className="w-full flex flex-col">
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
@@ -209,11 +205,6 @@ export default function RegisterForm() {
               onChange={handleChange}
               placeholder="Password"
             />
-            {passwordError && (
-              <p className="text-[12px] text-red-600 font-normal mt-1.5 pl-1.5 text-left">
-                Password is required
-              </p>
-            )}
           </div>
 
           {/* Recommendation Code (Invite Code) — 35px margin-bottom */}
