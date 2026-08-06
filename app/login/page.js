@@ -50,17 +50,17 @@ export default function LoginPage() {
     event.preventDefault();
 
     if (!form.mobile) {
-      setTimeout(() => pushToast("Mobile Number is required"), 1000);
+      pushToast("Mobile Number is required");
       return;
     }
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      setTimeout(() => pushToast("Mobile Number is false"), 1000);
+      pushToast("Mobile Number is false");
       return;
     }
 
     if (!form.password) {
-      setTimeout(() => pushToast("Password is required"), 1000);
+      pushToast("Password is required");
       return;
     }
 
@@ -71,7 +71,7 @@ export default function LoginPage() {
       saveAuth(response.data);
       router.push("/account");
     } catch (err) {
-      setTimeout(() => pushToast("Password error", "error", 3000), 1000);
+      pushToast("Password error", "error", 3000);
       setLoading(false);
     }
   };
