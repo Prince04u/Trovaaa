@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/home/BottomNav";
-import { Bell } from "lucide-react";
 import { clearAuth, getToken, getUser } from "@/lib/auth";
 import { getBalance } from "@/lib/walletApi";
 import { getProfile } from "@/lib/userApi";
@@ -26,7 +25,6 @@ export default function AccountScreen() {
   // Accordion state
   const [walletOpen, setWalletOpen] = useState(false);
   const [securityOpen, setSecurityOpen] = useState(false);
-  const [downloadOpen, setDownloadOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
   // Modals state
