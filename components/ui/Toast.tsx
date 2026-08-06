@@ -12,7 +12,8 @@ export function useToasts() {
 
   const push = useCallback((message: string, type: ToastItem["type"] = "success", duration: number = 2000) => {
     const id = ++idRef.current;
-    setToasts((t) => [...t, { id, message, type }]);
+    // Replace array instead of appending to prevent stacking
+    setToasts([{ id, message, type }]);
     setTimeout(() => {
       setToasts((t) => t.filter((x) => x.id !== id));
     }, duration);
