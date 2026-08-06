@@ -31,7 +31,7 @@ export default function AddBankCardPage() {
   useEffect(() => {
     const user = getUser();
     let phoneNum = user?.mobile || user?.phone || "";
-    
+
     // Check if edit mode is active
     const searchParams = new URLSearchParams(window.location.search);
     const isEdit = searchParams.get("edit") === "true";
@@ -89,7 +89,7 @@ export default function AddBankCardPage() {
         mobile: form.accountPhone,
       });
       sessionStorage.removeItem("edit_bank_card");
-      
+
       setTimeout(() => {
         pushToast("success", "success");
         setTimeout(() => {
@@ -146,7 +146,7 @@ export default function AddBankCardPage() {
       <form onSubmit={handleSubmit} className="flex flex-col w-full bg-white mt-1">
         <div className="w-full px-4"><input type="text" name="actualName" value={form.actualName} onChange={handleChange} placeholder="Actual Name" className={inputClass} required /></div>
         <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
-        
+
         <div className="w-full px-4"><input type="text" name="ifscCode" value={form.ifscCode} onChange={handleChange} placeholder="IFSC Code" className={inputClass} required /></div>
         <div className="w-[calc(100%-2rem)] mx-auto h-[1px] bg-[#f0f0f0]"></div>
 
@@ -185,14 +185,14 @@ export default function AddBankCardPage() {
         <div className="w-full px-4 pt-3 pb-3 flex flex-row items-end justify-between border-b border-[#e5e5e5]">
           <div className="flex flex-col flex-1">
             <span className="text-[12px] text-[#adadad] mb-1">Code</span>
-            <input 
-              type="text" 
-              name="code" 
-              value={form.code} 
-              onChange={handleChange} 
-              placeholder="Verification Code" 
+            <input
+              type="text"
+              name="code"
+              value={form.code}
+              onChange={handleChange}
+              placeholder="Verification Code"
               className="w-full bg-transparent text-[13px] text-[#333] placeholder-[#adadad] outline-none border-none py-[2px]"
-              required 
+              required
             />
           </div>
           <button
@@ -212,7 +212,7 @@ export default function AddBankCardPage() {
             disabled={submitLoading}
             className="w-full max-w-[600px] bg-[#009688] text-white py-[12px] rounded-[4px] font-normal text-[16px] border-none cursor-pointer hover:opacity-90 shadow-md disabled:opacity-50"
           >
-            {submitLoading ? "Adding..." : "Continue"}
+            {"Continue"}
           </button>
         </div>
       </form>

@@ -27,10 +27,10 @@ export default function LoginPage() {
         }, 100);
       }
     }
-    
+
     // Clear form on initial mount to defeat bfcache/browser restore
     setForm({ mobile: "", password: "" });
-    
+
     // Clear form when user switches tabs or hides browser
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -81,8 +81,8 @@ export default function LoginPage() {
       {/* Top Teal Navbar — exact luvomall.games reference */}
       <header className="w-full bg-[#009688] text-white px-[15px] h-[56px] flex items-center gap-[30px] sticky top-0 z-40 select-none box-border"
         style={{ boxShadow: '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)' }}>
-        <button 
-          onClick={() => router.back()} 
+        <button
+          onClick={() => router.back()}
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
@@ -112,20 +112,20 @@ export default function LoginPage() {
 
           {/* Login Button — exactly 240px wide, 44px tall, centered */}
           <div className="flex justify-center w-full" style={{ padding: '15px 0 0 0' }}>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="login_btn ripple van-btn-teal w-[240px] h-[44px] bg-[#009688] text-white text-[14px] font-normal border-none outline-none shadow-none cursor-pointer flex items-center justify-center rounded-[2px]"
             >
-              {loading ? "Logging in..." : "Login"}
+              {"Login"}
             </button>
           </div>
 
           {/* Sub-buttons: Register & Forgot Password — 240px container, 25px top margin */}
           <div className="flex justify-center w-full" style={{ padding: '0' }}>
             <div className="flex justify-between" style={{ width: '240px', marginTop: '25px' }}>
-              <Link 
-                href="/register" 
+              <Link
+                href="/register"
                 className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[15px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
                 style={{
                   border: '1px solid #ebedf0',
@@ -134,8 +134,8 @@ export default function LoginPage() {
               >
                 Register
               </Link>
-              <Link 
-                href="/forgotpass" 
+              <Link
+                href="/forgotpass"
                 className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[12px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
                 style={{
                   border: '1px solid #ebedf0',

@@ -18,17 +18,17 @@ export default function PhoneInput({ value, onChange, id = "mobile", name = "mob
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-        <img 
-          src={PHONE_ICON_B64} 
-          alt="Mobile Number" 
-          width="20" 
-          height="20" 
-          style={{ 
-            display: 'block', 
-            width: '20px', 
+        <img
+          src={PHONE_ICON_B64}
+          alt="Mobile Number"
+          width="20"
+          height="20"
+          style={{
+            display: 'block',
+            width: '20px',
             height: '20px',
             filter: value ? "invert(24%) sepia(87%) saturate(2256%) hue-rotate(264deg) brightness(97%) contrast(92%)" : "none"
-          }} 
+          }}
         />
       </div>
       <input

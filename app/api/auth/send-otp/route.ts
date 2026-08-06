@@ -7,7 +7,7 @@ import { sendOtp } from "@/lib/otp";
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
-    
+
     // IP limit: max 3 OTP requests per IP per minute
     const ipLimiter = await rateLimit("otp_ip", ip, 3, 60);
     if (!ipLimiter.success) {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     // Generate a secure 6-digit verification code
     const isProd = process.env.NODE_ENV === "production";
-    const code = isProd 
+    const code = isProd
       ? String(crypto.randomInt(100000, 999999))
       : "123456";
 
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       });
     } else {
       console.log(`[OTP] Dev mockup OTP code generated for ${cleanMobile}: ${code}`);
-      
+
       await prisma.otp.upsert({
         where: { phone: cleanMobile },
         update: { code, sessionId: "mock_session", createdAt: new Date() },
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        message: `Verification code sent successfully (Dev mockup: use code ${code}).`,
+        message: `Verification code sent successfully `,
       });
     }
   } catch (error: any) {

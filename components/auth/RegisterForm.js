@@ -25,7 +25,9 @@ export default function RegisterForm() {
 
   const [agree, setAgree] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
+  const [passwordError, setPasswordError] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const { toasts, push: pushToast } = useToasts();
 
@@ -37,102 +39,84 @@ export default function RegisterForm() {
     return () => clearInterval(interval);
   }, [otpCountdown]);
 
-  // Clear form when user switches tabs or hides browser, and on mount
-  useEffect(() => {
-    // Force clear on initial mount to defeat bfcache/browser restore
-    setForm({
-      mobile: "",
-      verificationCode: "",
-      password: "",
-      inviteCode: searchParams.get("ref")?.trim().toUpperCase() || "",
-    });
-    setOtpCountdown(0);
-    
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        window.location.reload();
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [searchParams]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (name === "password" && value) {
+      setPasswordError(false);
+    }
   };
 
   const handleSendOtp = async () => {
     if (!form.mobile) {
-      pushToast("Mobile Number is required");
+      pushToast("Mobile number is required", "error");
       return;
     }
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Invalid phone number");
+      pushToast("Invalid phone number", "error");
       return;
     }
-    if (!form.password) {
-      pushToast("Password is required");
-      return;
-    }
+    // if (!form.password) {
+    //   setPasswordError(true);
+    // } else {
+    //   setPasswordError(false);
+    // }
+    setError("");
     try {
+      setTimeout(() => {
+        pushToast("success", "success");
+        setOtpCountdown(180);
+      }, 1000);
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mobile: form.mobile }),
       });
+
       const data = await res.json();
       if (!res.ok) {
         if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
-          pushToast("Verification Code is false");
+          pushToast("Verification Code is false", "error");
         } else {
-          pushToast(data.message || "Failed to send OTP");
+          setError(data.message || "Failed to send OTP");
         }
       } else {
-        setTimeout(() => {
-          pushToast("success");
-          setOtpCountdown(180);
-        }, 1000);
+
       }
     } catch (err) {
-      pushToast("Failed to send OTP");
+      setError("Failed to send OTP. Please check your network connection.");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    if (!form.mobile) {
-      pushToast("Mobile Number is required");
+    if (!/^\+91\d{10}$/.test(form.mobile)) {
+      pushToast("Invalid phone number", "error");
       return;
     }
 
     if (!form.verificationCode) {
-      pushToast("Verification Code is required");
-      return;
-    }
-
-    if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Invalid phone number");
-      return;
-    }
-    
-    if (!form.password) {
-      pushToast("Password is required");
-      return;
-    }
-
-    if (!form.inviteCode) {
-      pushToast("Invalid parameters");
+      setError("Please enter the verification code.");
       return;
     }
 
     if (!agree) {
-      pushToast("Please agree to the Privacy Policy");
+      setError("Please agree to the Privacy Policy");
       return;
     }
 
     setLoading(true);
+
+    if (form.inviteCode.length === 0) {
+      setTimeout(() => {
+        setLoading(false);
+        pushToast("Invalid parameters");
+
+      }, 2000);
+      return;
+    }
 
     try {
       await registerRequest({
@@ -144,17 +128,17 @@ export default function RegisterForm() {
       });
 
       setLoading(false);
-      
-      pushToast("success");
+
+      pushToast("success", "success");
       setTimeout(() => {
         router.push("/login");
       }, 2000);
     } catch (err) {
-      const errMsg = err.response?.data?.message || "Registration failed";
+      const errMsg = err.response?.data?.message || "Registration failed. Please try again.";
       if (errMsg.toLowerCase().includes("verification") || errMsg.toLowerCase().includes("false")) {
-        pushToast("Verification Code is false");
+        pushToast("Verification Code is false", "error");
       } else {
-        pushToast(errMsg);
+        setError(errMsg);
       }
       setLoading(false);
     }
@@ -165,8 +149,8 @@ export default function RegisterForm() {
       {/* Top Teal Navbar — exact luvomall.games reference */}
       <header className="w-full bg-[#009688] text-white px-[15px] h-[56px] flex items-center gap-[30px] sticky top-0 z-40 select-none box-border"
         style={{ boxShadow: '0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)' }}>
-        <button 
-          onClick={() => router.back()} 
+        <button
+          onClick={() => router.back()}
           className="hover:opacity-85 cursor-pointer p-0 border-none bg-transparent text-white flex items-center justify-center shrink-0"
           aria-label="Go back"
         >
@@ -177,7 +161,13 @@ export default function RegisterForm() {
 
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
-        <form onSubmit={handleSubmit} className="w-full flex flex-col" autoComplete="off" noValidate>
+        {error && (
+          <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="w-full flex flex-col">
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />
@@ -187,17 +177,17 @@ export default function RegisterForm() {
           <div className="w-full flex flex-row justify-between items-center" style={{ marginBottom: '24px' }}>
             <div className="van-card-input" style={{ width: '72%' }}>
               <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>
-                <img 
-                  src={CHAT_ICON_B64} 
-                  alt="Verification Code" 
-                  width="20" 
-                  height="20" 
-                  style={{ 
-                    display: 'block', 
-                    width: '20px', 
+                <img
+                  src={CHAT_ICON_B64}
+                  alt="Verification Code"
+                  width="20"
+                  height="20"
+                  style={{
+                    display: 'block',
+                    width: '20px',
                     height: '20px',
                     filter: form.verificationCode ? "invert(24%) sepia(87%) saturate(2256%) hue-rotate(264deg) brightness(97%) contrast(92%)" : "none"
-                  }} 
+                  }}
                 />
               </div>
               <input
@@ -210,7 +200,7 @@ export default function RegisterForm() {
                 style={{ color: 'rgba(0,0,0,.87)' }}
               />
             </div>
-            
+
             <button
               type="button"
               onClick={handleSendOtp}
@@ -230,6 +220,11 @@ export default function RegisterForm() {
               onChange={handleChange}
               placeholder="Password"
             />
+            {passwordError && (
+              <p className="text-[12px] text-red-600 font-normal mt-1.5 pl-1.5 text-left">
+                Password is required
+              </p>
+            )}
           </div>
 
           {/* Recommendation Code (Invite Code) — 35px margin-bottom */}
@@ -267,8 +262,8 @@ export default function RegisterForm() {
 
           {/* Register Action Button — 65% width from reference */}
           <div className="flex justify-center w-full" style={{ padding: '15px 0 0 0' }}>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="van-btn-teal"
               style={{ width: '65%', maxWidth: '640px' }}
@@ -291,15 +286,15 @@ export default function RegisterForm() {
             <div className="bg-[#f5f5f5] px-5 py-4 border-b border-[#e5e5e5] shrink-0">
               <h3 className="text-[18px] font-medium text-[#222222] m-0">Privacy Policy</h3>
             </div>
-            
+
             {/* Scrollable Legal Content */}
             <div className="flex-grow overflow-y-auto p-5 text-[13.5px] text-[#333333] leading-relaxed space-y-4 text-left">
               <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-              
+
               <h4 className="text-[15px] font-semibold text-[#111] mt-4 mb-2">Interpretation and Definitions</h4>
               <h5 className="text-[14px] font-medium text-[#222] mt-3">Interpretation</h5>
               <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-              
+
               <h5 className="text-[14px] font-medium text-[#222] mt-3">Definitions</h5>
               <p>For the purposes of this Privacy Policy:</p>
               <ul className="list-decimal pl-5 space-y-2">
@@ -338,7 +333,7 @@ export default function RegisterForm() {
               <h4 className="text-[15px] font-semibold text-[#111] mt-5 mb-2">Security of Your Personal Data</h4>
               <p>No method of transmission is 100% secure. While We strive to use commercially acceptable means, We cannot guarantee its absolute security.</p>
             </div>
-            
+
             {/* Footer */}
             <div className="flex justify-end px-5 py-3 border-t border-[#e5e5e5] bg-[#f9f9f9] shrink-0">
               <button
