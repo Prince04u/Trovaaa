@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #F7F7F7;
   --surface: #FFFFFF;
@@ -17,6 +20,15 @@
   --violet: #8E24AA;
   --blue: #2196F3;
   --orange: #FF9800;
+}
+
+.dark {
+  --background: #09090b;
+  --surface: #18181b;
+  --surface-2: #27272a;
+  --border: #3f3f46;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
 }
 
 @theme inline {
