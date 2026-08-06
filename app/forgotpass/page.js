@@ -24,6 +24,20 @@ export default function ForgotPasswordPage() {
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [otpSending, setOtpSending] = useState(false);
 
+  useEffect(() => {
+    // Clear form on initial mount to defeat bfcache/browser restore
+    setForm({ mobile: "", verificationCode: "", newPassword: "" });
+
+    // Clear form when user switches tabs or hides browser
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        window.location.reload();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
