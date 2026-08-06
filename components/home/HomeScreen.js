@@ -175,12 +175,12 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      {/* Main welcome titles matching luvomall.games indexs.vue */}
-      <section className="py-6 text-center select-none flex flex-col gap-1 bg-white w-full border-b border-gray-100">
-        <h1 className="text-[24px] font-normal leading-tight text-[#009688] m-0">
+      {/* Main welcome titles matching apex-king */}
+      <section className="h-[80px] flex flex-col items-center justify-center text-center select-none bg-white w-full border-b border-gray-100">
+        <h1 className="text-[28px] font-normal leading-normal text-[#009688] m-0">
           Welcome Back
         </h1>
-        <span className="text-[14px] text-[#8A8A8A] font-normal leading-normal mt-1">
+        <span className="text-[16px] text-[#9A9A9A] font-normal leading-normal">
           Quality Guarantee
         </span>
       </section>
