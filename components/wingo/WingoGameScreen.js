@@ -636,7 +636,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <ul className="center_top">
             <li>
               <ul className="top_ol">
-                <img src="/apex_win_record.png" alt="Trophy" className="inline-block mr-[10px] opacity-60 align-middle" style={{ width: '20px', height: '20px' }} />
+                <img src="/images/art/trophy.png" alt="Trophy" className="inline-block mr-[10px] opacity-60 align-middle" style={{ width: '20px', height: '20px' }} />
                 <span>Period</span>
               </ul>
               <ul className="bot_ol">
@@ -701,7 +701,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         <div className="content">
           <div className="content_con select-none">
             <div className="content_title flex flex-col items-center justify-center py-[12px] bg-white text-[#666] text-[14px]">
-              <img src="/apex_win_record.png" alt="Trophy" className="inline-block mb-1 opacity-60" style={{ width: '20px', height: '20px' }} />
+              <img src="/images/art/trophy.png" alt="Trophy" className="inline-block mb-1 opacity-60" style={{ width: '20px', height: '20px' }} />
               <span className="font-light">{duration === 'bcone' || duration === 'parity' ? 'Parity Record' : duration.charAt(0).toUpperCase() + duration.slice(1) + ' Record'}</span>
             </div>
             <div className="h-[1px] w-full bg-[#009688]" />
