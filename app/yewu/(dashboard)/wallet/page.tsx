@@ -261,7 +261,7 @@ export default async function AdminWalletPage({
       <section className="card-surface rounded-2xl p-6 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="font-semibold">Deposit history</h2>
-          <CsvExportBar href="/api/admin/wallet/export" extraParams={{ type: "deposit", q }} />
+          <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "deposit", q }} />
         </div>
         <HistoryTable rows={depositHistory} />
       </section>
@@ -269,7 +269,7 @@ export default async function AdminWalletPage({
       <section className="card-surface rounded-2xl p-6 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="font-semibold">Withdrawal history</h2>
-          <CsvExportBar href="/api/admin/wallet/export" extraParams={{ type: "withdraw", q }} />
+          <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "withdraw", q }} />
         </div>
         <HistoryTable rows={withdrawHistory} isWithdraw={true} />
       </section>

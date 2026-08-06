@@ -69,7 +69,7 @@ export async function saveDepositChannelAction(_prevState: AdminActionState, for
     await logActivity("DEPOSIT_CHANNEL_CREATED", `Deposit channel "${data.label}" created`, staff.id, { id: created.id });
   }
 
-  revalidatePath("/admin/deposit-channels");
+  revalidatePath("/yewu/deposit-channels");
   revalidatePath("/wallet");
   return { success: "Saved." };
 }
@@ -79,7 +79,7 @@ export async function deleteDepositChannelAction(formData: FormData) {
   const id = String(formData.get("id"));
   const channel = await prisma.depositChannel.delete({ where: { id } });
   await logActivity("DEPOSIT_CHANNEL_DELETED", `Deposit channel "${channel.label}" deleted`, staff.id, { id });
-  revalidatePath("/admin/deposit-channels");
+  revalidatePath("/yewu/deposit-channels");
   revalidatePath("/wallet");
 }
 
@@ -96,7 +96,7 @@ export async function saveDepositFallbackMessageAction(_prevState: AdminActionSt
     create: { key: "depositChannelsFallbackMessage", value: parsed.data.message },
   });
   await logActivity("DEPOSIT_FALLBACK_MESSAGE_CHANGED", "Deposit fallback message updated", staff.id);
-  revalidatePath("/admin/deposit-channels");
+  revalidatePath("/yewu/deposit-channels");
   revalidatePath("/wallet");
   return { success: "Saved." };
 }
@@ -113,7 +113,7 @@ export async function updateDepositChannelsOrderAction(ids: string[]) {
     )
   );
 
-  revalidatePath("/admin/deposit-channels");
+  revalidatePath("/yewu/deposit-channels");
   revalidatePath("/wallet");
 }
 
@@ -135,7 +135,7 @@ export async function saveDepositMaintenanceModeAction(_prevState: AdminActionSt
   });
 
   await logActivity("DEPOSIT_MAINTENANCE_TOGGLED", `Deposit maintenance toggled to ${enabled}`, staff.id);
-  revalidatePath("/admin/deposit-channels");
+  revalidatePath("/yewu/deposit-channels");
   revalidatePath("/wallet");
   return { success: "Saved." };
 }

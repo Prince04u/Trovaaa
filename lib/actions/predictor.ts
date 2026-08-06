@@ -27,7 +27,7 @@ export async function createPredictorKeyAction(formData: FormData) {
   });
 
   await logActivity("PREDICTOR_KEY_CREATED", `Staff issued secure predictor key ${newKey.key} to ${description}`, staff.id, { keyId: newKey.id });
-  revalidatePath("/admin/predictor-keys");
+  revalidatePath("/yewu/predictor-keys");
   return { success: true, key: newKey };
 }
 
@@ -45,7 +45,7 @@ export async function togglePredictorKeyAction(formData: FormData) {
 
   const stateStr = updated.isActive ? "Activated" : "Suspended";
   await logActivity("PREDICTOR_KEY_TOGGLED", `Staff ${stateStr} predictor key ${updated.key}`, staff.id, { keyId: id });
-  revalidatePath("/admin/predictor-keys");
+  revalidatePath("/yewu/predictor-keys");
   return { success: true };
 }
 
@@ -55,7 +55,7 @@ export async function deletePredictorKeyAction(formData: FormData) {
 
   const deleted = await prisma.predictorKey.delete({ where: { id } });
   await logActivity("PREDICTOR_KEY_DELETED", `Staff deleted predictor key ${deleted.key}`, staff.id, { keyId: id });
-  revalidatePath("/admin/predictor-keys");
+  revalidatePath("/yewu/predictor-keys");
   return { success: true };
 }
 

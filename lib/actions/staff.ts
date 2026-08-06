@@ -69,7 +69,7 @@ export async function createStaffAction(_prevState: AdminActionState, formData: 
 
   await logAudit(actor.id, "STAFF_CREATED", "User", staff.id, { phone: parsed.data.phone });
   await logActivity("STAFF_CREATED", `New staff account created (${staff.displayName})`, actor.id);
-  revalidatePath("/admin/staff");
+  revalidatePath("/yewu/staff");
   return { success: `Staff account created for ${parsed.data.phone}.` };
 }
 
@@ -93,7 +93,7 @@ export async function setStaffPermissionsAction(_prevState: AdminActionState, fo
 
   await logAudit(actor.id, "STAFF_PERMISSIONS_UPDATED", "User", userId, { permissions: selectedKeys });
   await logActivity("STAFF_PERMISSIONS_UPDATED", `Permissions updated for ${target.displayName}`, actor.id);
-  revalidatePath("/admin/staff");
+  revalidatePath("/yewu/staff");
   return { success: `Permissions updated (${selectedKeys.length} granted).` };
 }
 
@@ -120,5 +120,5 @@ export async function deleteStaffAction(formData: FormData) {
 
   await logAudit(actor.id, "STAFF_DELETED", "User", userId, { displayName: target.displayName, phone: target.phone });
   await logActivity("STAFF_DELETED", `Staff account removed (${target.displayName})`, actor.id);
-  revalidatePath("/admin/staff");
+  revalidatePath("/yewu/staff");
 }

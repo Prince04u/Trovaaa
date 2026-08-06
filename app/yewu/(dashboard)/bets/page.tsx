@@ -89,7 +89,7 @@ export default async function AdminBetsPage({
           Apply
         </button>
         <div className="ml-auto">
-          <CsvExportBar href="/api/admin/bets/export" extraParams={{ game, q }} />
+          <CsvExportBar href="/api/yewu/bets/export" extraParams={{ game, q }} />
         </div>
       </form>
 

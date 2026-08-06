@@ -120,7 +120,7 @@ export default async function UsersPage({
           Search
         </button>
         <div className="ml-auto">
-          <CsvExportBar href="/api/admin/users/export" extraParams={{ q }} />
+          <CsvExportBar href="/api/yewu/users/export" extraParams={{ q }} />
         </div>
       </form>
 

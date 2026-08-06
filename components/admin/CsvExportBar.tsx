@@ -8,7 +8,7 @@ export function CsvExportBar({
   href,
   extraParams,
 }: {
-  /** e.g. "/api/admin/activity/export" */
+  /** e.g. "/api/yewu/activity/export" */
   href: string;
   extraParams?: Record<string, string>;
 }) {

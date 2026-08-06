@@ -16,7 +16,7 @@ export function AdminSidebar({ groups }: { groups: NavGroup[] }) {
     setIsOpen(false);
   }, [pathname]);
 
-  const prefix = pathname ? `/${pathname.split("/")[1]}` : "/admin";
+  const prefix = pathname ? `/${pathname.split("/")[1]}` : "/yewu";
 
   function isActive(href: string) {
     if (href === prefix) return pathname === prefix;

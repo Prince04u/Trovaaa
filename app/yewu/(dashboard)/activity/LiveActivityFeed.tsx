@@ -13,7 +13,7 @@ type ActivityItem = {
 };
 
 async function fetchFeed(): Promise<{ feed: ActivityItem[] }> {
-  const res = await fetch("/api/admin/activity", { cache: "no-store" });
+  const res = await fetch("/api/yewu/activity", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load activity");
   return res.json();
 }

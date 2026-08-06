@@ -33,7 +33,7 @@ export function SunpaysSyncButton() {
     setShowSafe(false);
     setShowCredited(false);
     try {
-      const res = await fetch("/api/admin/deposits/sunpays-sync", {
+      const res = await fetch("/api/yewu/deposits/sunpays-sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ all: true, dryRun: true }),
@@ -61,7 +61,7 @@ export function SunpaysSyncButton() {
     setError("");
     setResult(null);
     try {
-      const res = await fetch("/api/admin/deposits/sunpays-sync", {
+      const res = await fetch("/api/yewu/deposits/sunpays-sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ all: true }),

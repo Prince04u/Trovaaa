@@ -25,7 +25,7 @@ export default async function AdminActivityPage({
       <section className="card-surface rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <h2 className="font-semibold">Audit log</h2>
-          <CsvExportBar href="/api/admin/activity/export" extraParams={action ? { action } : undefined} />
+          <CsvExportBar href="/api/yewu/activity/export" extraParams={action ? { action } : undefined} />
         </div>
         <form method="get" className="flex gap-2 mb-4">
           <input

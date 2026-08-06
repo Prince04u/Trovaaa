@@ -138,8 +138,8 @@ export async function approveDepositAction(formData: FormData) {
     }
   }
 
-  revalidatePath("/admin/wallet");
-  revalidatePath("/admin/users/[id]", "page");
+  revalidatePath("/yewu/wallet");
+  revalidatePath("/yewu/users/[id]", "page");
 }
 
 export async function rejectDepositAction(formData: FormData) {
@@ -196,7 +196,7 @@ export async function rejectDepositAction(formData: FormData) {
     console.error("Failed to send manual rejection Telegram notification:", err);
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
 }
 
 export async function undoDepositAction(formData: FormData) {
@@ -347,7 +347,7 @@ export async function approveWithdrawAction(formData: FormData) {
     }
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
 }
 
 export async function rejectWithdrawAction(formData: FormData) {
@@ -432,7 +432,7 @@ export async function rejectWithdrawAction(formData: FormData) {
     console.error("Failed to send rejection Telegram notification:", err);
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
 }
 
 function resolveBankNameFromIfsc(ifsc: string): string {
@@ -622,7 +622,7 @@ export async function dispatchSunpaysPayoutAction(formData: FormData) {
     // Do not throw the error to prevent Next.js runtime error boundary crash.
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   revalidatePath(getAdminPathPrefix() + "/payouts");
   revalidatePath(getAdminPathPrefix() + "/wallet");
 }
@@ -682,7 +682,7 @@ export async function forceSuccessSunpaysPayoutAction(formData: FormData) {
     console.error("Failed to send payout force success Telegram notification:", err);
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   revalidatePath(getAdminPathPrefix() + "/payouts");
   revalidatePath(getAdminPathPrefix() + "/wallet");
 }
@@ -770,7 +770,7 @@ export async function forceFailSunpaysPayoutAction(formData: FormData) {
     console.error("Failed to send payout force fail Telegram notification:", err);
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   revalidatePath(getAdminPathPrefix() + "/payouts");
   revalidatePath(getAdminPathPrefix() + "/wallet");
 }
@@ -862,7 +862,7 @@ export async function undoSunpaysPayoutFailureAction(formData: FormData) {
     console.error("Failed to send payout undo fail Telegram notification:", err);
   }
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   revalidatePath(getAdminPathPrefix() + "/payouts");
   revalidatePath(getAdminPathPrefix() + "/wallet");
 }
@@ -926,8 +926,8 @@ export async function dispatchMockPayoutAction(formData: FormData) {
     console.error("Failed to send mock payout Telegram notification:", err);
   }
 
-  revalidatePath("/admin/payouts");
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/payouts");
+  revalidatePath("/yewu/wallet");
 }
 
 const adjustSchema = z.object({
@@ -987,7 +987,7 @@ export async function adjustBalanceAction(_prevState: AdminActionState, formData
     userId: user.id,
   });
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   return { success: `Adjusted ${user.displayName}'s balance by ${formatAmount(parsed.data.amount)}. New balance: ${formatAmount(updated.balance)}` };
 }
 
@@ -1007,7 +1007,7 @@ export async function setResultModeAction(_prevState: AdminActionState, formData
 
   await logAudit(staff.id, "RESULT_MODE_CHANGED", "Setting", "resultMode", { mode: parsed.data.mode });
   await logActivity("RESULT_MODE_CHANGED", `Result mode changed to ${parsed.data.mode}`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `Result mode set to ${parsed.data.mode}` };
 }
 
@@ -1029,7 +1029,7 @@ export async function setWinningPercentageAction(_prevState: AdminActionState, f
 
   await logAudit(staff.id, "WINNING_PERCENTAGE_CHANGED", "Setting", "winningPercentage", { percentage: parsed.data.percentage });
   await logActivity("WINNING_PERCENTAGE_CHANGED", `Winning percentage set to ${parsed.data.percentage}%`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `Winning percentage set to ${parsed.data.percentage}%` };
 }
 
@@ -1052,7 +1052,7 @@ export async function setBrahmastraProfitsAction(_prevState: AdminActionState, f
   const statusStr = parsed.data.enabled === "true" ? "ENABLED" : "DISABLED";
   await logAudit(staff.id, "BRAHMASTRA_PROFITS_CHANGED", "Setting", "brahmastraProfits", { enabled: parsed.data.enabled });
   await logActivity("BRAHMASTRA_PROFITS_CHANGED", `Brahmastra mode is now ${statusStr}`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `Brahmastra Mode is now ${statusStr}` };
 }
 
@@ -1111,7 +1111,7 @@ export async function setResultOverrideAction(_prevState: AdminActionState, form
   await prisma.resultOverride.create({ data: { mode, roundNumber: resolvedRoundNumber, number, createdById: staff.id } });
   await logAudit(staff.id, "RESULT_OVERRIDE_SET", "ResultOverride", `${mode}:${resolvedRoundNumber}`, { number });
   await logActivity("RESULT_OVERRIDE_SET", `Manual override: ${mode} round #${resolvedRoundNumber} → ${number}`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `Override set — round #${resolvedRoundNumber} (${mode}) will settle as ${number}` };
 }
 
@@ -1161,7 +1161,7 @@ export async function createGiftCodeAction(_prevState: AdminActionState, formDat
 
   await logAudit(staff.id, "GIFT_CODE_CREATED", "GiftCode", giftCode.id, { code, amount: parsed.data.amount });
   await logActivity("GIFT_CODE_CREATED", `Gift code "${code}" created (${formatAmount(parsed.data.amount)})`, staff.id);
-  revalidatePath("/admin/gift-codes");
+  revalidatePath("/yewu/gift-codes");
   return { success: `Gift code "${code}" created (${formatAmount(parsed.data.amount)}, up to ${parsed.data.maxRedemptions} redemptions).` };
 }
 
@@ -1173,7 +1173,7 @@ export async function toggleGiftCodeActiveAction(formData: FormData) {
 
   await prisma.giftCode.update({ where: { id }, data: { isActive: !giftCode.isActive } });
   await logAudit(staff.id, giftCode.isActive ? "GIFT_CODE_DEACTIVATED" : "GIFT_CODE_ACTIVATED", "GiftCode", id);
-  revalidatePath("/admin/gift-codes");
+  revalidatePath("/yewu/gift-codes");
 }
 
 const broadcastEventSchema = z.object({
@@ -1228,7 +1228,7 @@ export async function broadcastEventRewardAction(_prevState: AdminActionState, f
   });
   await logActivity("EVENT_REWARD_BROADCAST", `Event "${parsed.data.label}" (${formatAmount(parsed.data.amount)}) sent to ${created.count} users`, staff.id);
 
-  revalidatePath("/admin/gift-codes");
+  revalidatePath("/yewu/gift-codes");
   return { success: `Sent "${parsed.data.label}" (${formatAmount(parsed.data.amount)}) to ${created.count} users.` };
 }
 
@@ -1262,7 +1262,7 @@ export async function saveBonusSettingsAction(_prevState: AdminActionState, form
 
   await saveBonusSettings({ ...parsed.data, achievements });
   await logActivity("BONUS_SETTINGS_UPDATED", "Bonus & reward settings updated", staff.id);
-  revalidatePath("/admin/bonuses");
+  revalidatePath("/yewu/bonuses");
   return { success: "Bonus settings saved." };
 }
 
@@ -1337,7 +1337,7 @@ export async function resetPartnerBalanceAction(userId: string): Promise<AdminAc
     });
 
     await logActivity("PARTNER_BALANCE_RESET", `Reset balance for partner ${user.displayName} (UID ${user.uid}) to ₹50,000`, staff.id);
-    revalidatePath("/admin/users");
+    revalidatePath("/yewu/users");
     return { success: "Balance successfully reset to ₹50,000!" };
   } catch (err) {
     const errorObj = err as Error;
@@ -1369,7 +1369,7 @@ export async function adjustPartnerBalanceAction(userId: string, amount: number)
     });
 
     await logActivity("PARTNER_BALANCE_ADJUSTED", `Adjusted balance for partner ${user.displayName} (UID ${user.uid}) by ₹${amount}`, staff.id);
-    revalidatePath("/admin/users");
+    revalidatePath("/yewu/users");
     return { success: `Successfully adjusted balance by ₹${amount}!` };
   } catch (err) {
     const errorObj = err as Error;
@@ -1413,7 +1413,7 @@ export async function updateWithdrawalRejectReasonAction(formData: FormData) {
     },
   });
 
-  revalidatePath("/admin/wallet");
+  revalidatePath("/yewu/wallet");
   revalidatePath(getAdminPathPrefix() + "/wallet");
   revalidatePath(getAdminPathPrefix() + `/users/${withdraw.userId}`);
 }

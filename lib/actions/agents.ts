@@ -58,7 +58,7 @@ export async function saveAgentAction(_prevState: AdminActionState, formData: Fo
     await logAudit(staff.id, "AGENT_CREATED", "Agent", created.id, { inviteCode });
   }
 
-  revalidatePath("/admin/agents");
+  revalidatePath("/yewu/agents");
   return { success: "Saved." };
 }
 
@@ -73,5 +73,5 @@ export async function toggleAgentStatusAction(formData: FormData) {
   });
   await logAudit(staff.id, makeActive ? "AGENT_ACTIVATED" : "AGENT_DEACTIVATED", "Agent", id);
   await logActivity(makeActive ? "AGENT_ACTIVATED" : "AGENT_DEACTIVATED", `Agent "${agent.name}" ${makeActive ? "activated" : "deactivated"}`, staff.id);
-  revalidatePath("/admin/agents");
+  revalidatePath("/yewu/agents");
 }

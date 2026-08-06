@@ -22,7 +22,7 @@ export type UserDto = {
 };
 
 export function UserRow({ user }: { user: UserDto }) {
-  const prefix = typeof window !== "undefined" ? "/" + window.location.pathname.split("/")[1] : "/admin";
+  const prefix = typeof window !== "undefined" ? "/" + window.location.pathname.split("/")[1] : "/yewu";
 
   return (
     <div className="flex items-center justify-between py-3 gap-3 border-b border-border/50 last:border-0">

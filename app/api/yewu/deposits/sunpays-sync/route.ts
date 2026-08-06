@@ -8,7 +8,7 @@ import { applyDepositCredit } from "@/lib/wallet/creditDeposit";
 import { distributeRechargeBonus } from "@/lib/actions/commissions";
 
 /**
- * POST /api/admin/deposits/sunpays-sync
+ * POST /api/yewu/deposits/sunpays-sync
  *
  * Bulk-approve PENDING Sunpays deposits that were successful on the gateway
  * but never got their IPN callback.
@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
 }
 
 /**
- * GET /api/admin/deposits/sunpays-sync
+ * GET /api/yewu/deposits/sunpays-sync
  * Returns all pending Sunpays deposits with already-credited flag.
  */
 export async function GET(req: NextRequest) {

@@ -81,14 +81,14 @@ export async function getCurrentUser(): Promise<User | null> {
   const reqHeaders = await headers();
   const pathname = reqHeaders.get("x-pathname") || "";
   const referer = reqHeaders.get("referer") || "";
-  const adminPrefix = process.env.ADMIN_PANEL_PATH || "/admin";
+  const adminPrefix = process.env.ADMIN_PANEL_PATH || "/yewu";
   
   // Prioritize the admin session cookie if the request is on the admin path or referer
   const isAdminRequest = 
     pathname.startsWith(adminPrefix) || 
-    pathname.startsWith("/admin") ||
+    pathname.startsWith("/yewu") ||
     referer.includes(adminPrefix) || 
-    referer.includes("/admin");
+    referer.includes("/yewu");
 
   const token = isAdminRequest
     ? (cookieStore.get("luckynova_admin_session")?.value || cookieStore.get(COOKIE_NAME)?.value || cookieStore.get("luckynova_jwt")?.value)

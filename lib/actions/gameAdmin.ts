@@ -70,7 +70,7 @@ export async function setK3OverrideAction(_prevState: AdminActionState, formData
   await prisma.k3ResultOverride.create({ data: { mode, roundNumber: resolvedRoundNumber, dice1, dice2, dice3, createdById: staff.id } });
   await logAudit(staff.id, "K3_OVERRIDE_SET", "K3ResultOverride", `${mode}:${resolvedRoundNumber}`, { dice1, dice2, dice3 });
   await logActivity("RESULT_OVERRIDE_SET", `K3 override: ${mode} round #${resolvedRoundNumber} → ${dice1}-${dice2}-${dice3}`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `K3 round #${resolvedRoundNumber} (${mode}) will settle as ${dice1}-${dice2}-${dice3} (sum ${dice1 + dice2 + dice3})` };
 }
 
@@ -130,7 +130,7 @@ export async function setFiveDOverrideAction(_prevState: AdminActionState, formD
   await prisma.fiveDResultOverride.create({ data: { mode, roundNumber: resolvedRoundNumber, a, b, c, d, e, createdById: staff.id } });
   await logAudit(staff.id, "FIVED_OVERRIDE_SET", "FiveDResultOverride", `${mode}:${resolvedRoundNumber}`, { a, b, c, d, e });
   await logActivity("RESULT_OVERRIDE_SET", `5D override: ${mode} round #${resolvedRoundNumber} → ${a}${b}${c}${d}${e}`, staff.id);
-  revalidatePath("/admin/results");
+  revalidatePath("/yewu/results");
   return { success: `5D round #${resolvedRoundNumber} (${mode}) will settle as ${a}${b}${c}${d}${e}` };
 }
 
@@ -173,7 +173,7 @@ export async function saveGameArtAction(_prevState: AdminActionState, formData: 
   });
 
   await logAudit(staff.id, "GAME_ART_CHANGED", "Setting", gameArtSettingKey(slot), { url });
-  revalidatePath("/admin/game-assets");
+  revalidatePath("/yewu/game-assets");
   revalidatePath("/dashboard");
   revalidatePath("/games");
   return { success: "Image saved — it is live on the site now." };
@@ -187,7 +187,7 @@ export async function resetGameArtAction(_prevState: AdminActionState, formData:
 
   await prisma.setting.deleteMany({ where: { key: gameArtSettingKey(slot) } });
   await logAudit(staff.id, "GAME_ART_RESET", "Setting", gameArtSettingKey(slot));
-  revalidatePath("/admin/game-assets");
+  revalidatePath("/yewu/game-assets");
   revalidatePath("/dashboard");
   revalidatePath("/games");
   return { success: "Reverted to the default artwork." };
@@ -199,7 +199,7 @@ export async function deleteWingoOverrideAction(id: string): Promise<AdminAction
     const target = await prisma.resultOverride.delete({ where: { id } });
     await logAudit(staff.id, "RESULT_OVERRIDE_DELETED", "ResultOverride", target.id, { mode: target.mode, roundNumber: target.roundNumber.toString() });
     await logActivity("RESULT_OVERRIDE_DELETED", `Cancelled Wingo override: ${target.mode} round #${target.roundNumber}`, staff.id);
-    revalidatePath("/admin/results");
+    revalidatePath("/yewu/results");
     return { success: "Wingo override cancelled successfully!" };
   } catch (err: any) {
     return { error: err.message || "Failed to cancel Wingo override" };
@@ -212,7 +212,7 @@ export async function deleteK3OverrideAction(id: string): Promise<AdminActionSta
     const target = await prisma.k3ResultOverride.delete({ where: { id } });
     await logAudit(staff.id, "K3_OVERRIDE_DELETED", "K3ResultOverride", target.id, { mode: target.mode, roundNumber: target.roundNumber.toString() });
     await logActivity("RESULT_OVERRIDE_DELETED", `Cancelled K3 override: ${target.mode} round #${target.roundNumber}`, staff.id);
-    revalidatePath("/admin/results");
+    revalidatePath("/yewu/results");
     return { success: "K3 override cancelled successfully!" };
   } catch (err: any) {
     return { error: err.message || "Failed to cancel K3 override" };
@@ -225,7 +225,7 @@ export async function deleteFiveDOverrideAction(id: string): Promise<AdminAction
     const target = await prisma.fiveDResultOverride.delete({ where: { id } });
     await logAudit(staff.id, "FIVED_OVERRIDE_DELETED", "FiveDResultOverride", target.id, { mode: target.mode, roundNumber: target.roundNumber.toString() });
     await logActivity("RESULT_OVERRIDE_DELETED", `Cancelled 5D override: ${target.mode} round #${target.roundNumber}`, staff.id);
-    revalidatePath("/admin/results");
+    revalidatePath("/yewu/results");
     return { success: "5D override cancelled successfully!" };
   } catch (err: any) {
     return { error: err.message || "Failed to cancel 5D override" };

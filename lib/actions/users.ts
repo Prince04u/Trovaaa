@@ -16,7 +16,7 @@ export async function suspendUserAction(formData: FormData) {
   const target = await prisma.user.update({ where: { id: userId }, data: { status: "SUSPENDED" } });
   await logAudit(staff.id, "USER_SUSPENDED", "User", userId, { phone: target.phone });
   await logActivity("USER_SUSPENDED", `${target.displayName} was suspended`, staff.id, { userId });
-  revalidatePath("/admin/users");
+  revalidatePath("/yewu/users");
 }
 
 export async function reactivateUserAction(formData: FormData) {
@@ -26,7 +26,7 @@ export async function reactivateUserAction(formData: FormData) {
   const target = await prisma.user.update({ where: { id: userId }, data: { status: "ACTIVE" } });
   await logAudit(staff.id, "USER_REACTIVATED", "User", userId, { phone: target.phone });
   await logActivity("USER_REACTIVATED", `${target.displayName} was reactivated`, staff.id, { userId });
-  revalidatePath("/admin/users");
+  revalidatePath("/yewu/users");
 }
 
 export async function toggleHoldWithdrawalsAction(formData: FormData) {
@@ -45,8 +45,8 @@ export async function toggleHoldWithdrawalsAction(formData: FormData) {
   await logAudit(staff.id, actionName, "User", userId, { phone: target.phone });
   await logActivity(actionName, logMessage, staff.id, { userId });
   
-  revalidatePath(`/admin/users/${userId}`);
-  revalidatePath("/admin/users");
+  revalidatePath(`/yewu/users/${userId}`);
+  revalidatePath("/yewu/users");
 }
 
 export async function updateUserWithdrawLimitsAction(formData: FormData) {
@@ -82,8 +82,8 @@ export async function updateUserWithdrawLimitsAction(formData: FormData) {
     { userId }
   );
 
-  revalidatePath(`/admin/users/${userId}`);
-  revalidatePath("/admin/users");
+  revalidatePath(`/yewu/users/${userId}`);
+  revalidatePath("/yewu/users");
 }
 
 export async function toggleBypassRechargeAction(formData: FormData) {
@@ -104,8 +104,8 @@ export async function toggleBypassRechargeAction(formData: FormData) {
   await logAudit(staff.id, actionName, "User", userId, { phone: target.phone });
   await logActivity(actionName, logMessage, staff.id, { userId });
 
-  revalidatePath(`/admin/users/${userId}`);
-  revalidatePath("/admin/users");
+  revalidatePath(`/yewu/users/${userId}`);
+  revalidatePath("/yewu/users");
 }
 
 export async function updateUserAdminNoteAction(formData: FormData) {
@@ -122,10 +122,10 @@ export async function updateUserAdminNoteAction(formData: FormData) {
   await logAudit(staff.id, "USER_ADMIN_NOTE_UPDATED", "User", userId, { note: finalNote });
   await logActivity("USER_ADMIN_NOTE_UPDATED", `Updated admin note for ${target.displayName}`, staff.id, { userId });
 
-  revalidatePath(`/admin/users/${userId}`);
-  revalidatePath("/admin/users");
-  revalidatePath("/admin/customer-service");
-  revalidatePath("/admin/payouts");
+  revalidatePath(`/yewu/users/${userId}`);
+  revalidatePath("/yewu/users");
+  revalidatePath("/yewu/customer-service");
+  revalidatePath("/yewu/payouts");
 }
 
 export async function deleteWithdrawalAccountAction(formData: FormData) {
@@ -161,5 +161,5 @@ export async function deleteWithdrawalAccountAction(formData: FormData) {
   });
   await logActivity("USER_WITHDRAW_ACCOUNT_DELETED", `Deleted bound ${account.type.toUpperCase()} card/account (${detailString})`, staff.id, { userId });
 
-  revalidatePath(`/admin/users/${userId}`);
+  revalidatePath(`/yewu/users/${userId}`);
 }

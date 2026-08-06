@@ -117,7 +117,7 @@ export async function createCmsContentAction(_prevState: AdminActionState, formD
   await snapshotVersion(content, staff.id);
   await logAudit(staff.id, "CMS_CREATED", "CmsContent", content.id, { type: content.type, title: content.title });
 
-  revalidatePath("/admin/cms");
+  revalidatePath("/yewu/cms");
   return { success: "Content created as a draft." };
 }
 
@@ -134,8 +134,8 @@ export async function updateCmsContentAction(_prevState: AdminActionState, formD
   await snapshotVersion(content, staff.id);
   await logAudit(staff.id, "CMS_UPDATED", "CmsContent", content.id);
 
-  revalidatePath("/admin/cms");
-  revalidatePath(`/admin/cms/${id}`);
+  revalidatePath("/yewu/cms");
+  revalidatePath(`/yewu/cms/${id}`);
   return { success: "Content updated." };
 }
 
@@ -164,8 +164,8 @@ export async function publishCmsContentAction(formData: FormData) {
     });
   }
 
-  revalidatePath("/admin/cms");
-  revalidatePath("/admin/promo-banners");
+  revalidatePath("/yewu/cms");
+  revalidatePath("/yewu/promo-banners");
   revalidatePath("/dashboard");
 }
 
@@ -180,8 +180,8 @@ export async function archiveCmsContentAction(formData: FormData) {
   await snapshotVersion(content, staff.id);
   await logAudit(staff.id, "CMS_ARCHIVED", "CmsContent", content.id);
 
-  revalidatePath("/admin/cms");
-  revalidatePath("/admin/promo-banners");
+  revalidatePath("/yewu/cms");
+  revalidatePath("/yewu/promo-banners");
   revalidatePath("/dashboard");
 }
 
@@ -203,8 +203,8 @@ export async function toggleCmsVisibilityAction(formData: FormData) {
   await snapshotVersion(content, staff.id);
   await logAudit(staff.id, makeVisible ? "CMS_PUBLISHED" : "CMS_ARCHIVED", "CmsContent", content.id);
 
-  revalidatePath("/admin/promo-banners");
-  revalidatePath("/admin/cms");
+  revalidatePath("/yewu/promo-banners");
+  revalidatePath("/yewu/cms");
   revalidatePath("/dashboard");
 }
 
@@ -217,8 +217,8 @@ export async function deleteCmsContentAction(formData: FormData) {
   });
   await logAudit(staff.id, "CMS_DELETED", "CmsContent", id, { title: content.title, type: content.type });
 
-  revalidatePath("/admin/promo-banners");
-  revalidatePath("/admin/cms");
+  revalidatePath("/yewu/promo-banners");
+  revalidatePath("/yewu/cms");
   revalidatePath("/dashboard");
 }
 
@@ -240,5 +240,5 @@ export async function addBlankSlideAction(formData: FormData) {
   await snapshotVersion(content, staff.id);
   await logAudit(staff.id, "CMS_CREATED", "CmsContent", content.id, { type });
 
-  revalidatePath("/admin/promo-banners");
+  revalidatePath("/yewu/promo-banners");
 }

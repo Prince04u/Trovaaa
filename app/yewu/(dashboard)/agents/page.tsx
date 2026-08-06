@@ -84,7 +84,7 @@ export default async function AgentsPage({
             Apply filters
           </button>
           <div className="ml-auto">
-            <CsvExportBar href="/api/admin/agents/export" extraParams={{ q, type, status }} />
+            <CsvExportBar href="/api/yewu/agents/export" extraParams={{ q, type, status }} />
           </div>
         </form>
 

@@ -22,7 +22,7 @@ export default function AdminOtpPage() {
 
   const fetchOtps = async () => {
     try {
-      const res = await fetch("/api/admin/otp");
+      const res = await fetch("/api/yewu/otp");
       const resData = await res.json();
       if (res.ok && resData.success) {
         setOtps(resData.data);
@@ -46,7 +46,7 @@ export default function AdminOtpPage() {
     setError("");
     setSubmitting(true);
     try {
-      const res = await fetch("/api/admin/otp", {
+      const res = await fetch("/api/yewu/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: customPhone, code: customCode }),

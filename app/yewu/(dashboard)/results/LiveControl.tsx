@@ -30,7 +30,7 @@ type StateDto = {
 };
 
 async function fetchState(mode: string): Promise<StateDto> {
-  const res = await fetch(`/api/admin/results/state?game=wingo&mode=${mode}`, { cache: "no-store" });
+  const res = await fetch(`/api/yewu/results/state?game=wingo&mode=${mode}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load state");
   return res.json();
 }
