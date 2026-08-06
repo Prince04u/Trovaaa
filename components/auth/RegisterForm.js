@@ -68,7 +68,7 @@ export default function RegisterForm() {
       return;
     }
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Mobile Number is false");
+      pushToast("Invalid phone number");
       return;
     }
     if (!form.password) {
@@ -107,13 +107,13 @@ export default function RegisterForm() {
       return;
     }
 
-    if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Mobile Number is false");
+    if (!form.verificationCode) {
+      pushToast("Verification Code is required");
       return;
     }
 
-    if (!form.verificationCode) {
-      pushToast("Verification Code is required");
+    if (!/^\+91\d{10}$/.test(form.mobile)) {
+      pushToast("Invalid phone number");
       return;
     }
     

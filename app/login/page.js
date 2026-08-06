@@ -55,7 +55,7 @@ export default function LoginPage() {
     }
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
-      pushToast("Mobile Number is false");
+      pushToast("Invalid phone number");
       return;
     }
 
