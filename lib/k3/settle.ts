@@ -154,11 +154,6 @@ async function settleOneRound(mode: K3Mode, roundNumber: bigint) {
     console.error("Redis lock error in K3 settleOneRound:", err);
   }
   if (!gotLock) {
-    for (let i = 0; i < 15; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const cached = await redis.get(`k3:settled-cache:${mode}:${roundNumber}`).catch(() => null);
-      if (cached === "1") break;
-    }
     return prisma.k3Result.findUnique({ where: { mode_roundNumber: { mode, roundNumber } } });
   }
 

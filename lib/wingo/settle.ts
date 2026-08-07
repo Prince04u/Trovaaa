@@ -157,11 +157,6 @@ async function settleOneRound(mode: WingoMode, roundNumber: bigint) {
     console.error("Redis lock error in Wingo settleOneRound:", err);
   }
   if (!gotLock) {
-    for (let i = 0; i < 15; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const cached = await redis.get(`wingo:settled-cache:${mode}:${roundNumber}`).catch(() => null);
-      if (cached === "1") break;
-    }
     return prisma.wingoResult.findUnique({ where: { mode_roundNumber: { mode, roundNumber } } });
   }
 

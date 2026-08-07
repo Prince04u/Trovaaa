@@ -156,7 +156,6 @@ async function settleOneRound(mode: FiveDMode, roundNumber: bigint) {
     console.error("Redis lock error in 5D settleOneRound:", err);
   }
   if (!gotLock) {
-    await new Promise((resolve) => setTimeout(resolve, 300));
     return prisma.fiveDResult.findUnique({ where: { mode_roundNumber: { mode, roundNumber } } });
   }
 
