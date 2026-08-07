@@ -42,12 +42,6 @@ export default function PublicRedEnvelopesPage() {
         }
       }
 
-      if (!user) {
-        const redirectPath = cleanCode ? `/login?redirect=${encodeURIComponent(`/redenvelopes?code=${cleanCode}`)}` : "/login";
-        router.push(redirectPath);
-        return;
-      }
-
       if (!cleanCode) {
         setErrorMsg("Invalid Red Envelope Link");
         setLoading(false);
@@ -77,6 +71,13 @@ export default function PublicRedEnvelopesPage() {
   };
 
   const handleContinue = async () => {
+    const user = getUser();
+    if (!user) {
+      const currentUrl = window.location.pathname + window.location.search;
+      router.push(`/login?redirect=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
     if (isClaimed) {
       router.push("/account");
       return;
