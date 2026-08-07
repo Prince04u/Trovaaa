@@ -166,12 +166,12 @@ export default function PublicRedEnvelopesPage() {
       <div className="w-full h-[130px] bg-[#d32f2f] rounded-b-[45%] absolute top-[50px] left-0 z-0 shadow-inner"></div>
 
       {/* Main Claim Card */}
-      <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-        <div className="w-full max-w-[340px] bg-white rounded-[16px] p-8 pt-6 flex flex-col items-center shadow-lg border border-[#eee] self-start mt-12">
+      <div className="flex-1 flex items-center justify-center px-4 relative z-10">
+        <div className="w-full max-w-[340px] bg-white rounded-[16px] p-8 pt-6 flex flex-col items-center shadow-lg border border-[#eee]">
           <h2 className="text-[22px] font-bold text-[#111] mt-0 mb-2 tracking-wide text-center w-full">Surprise</h2>
 
           {/* Red Envelope Pouch Illustration with Value Overlay */}
-          <div className="relative w-[250px] h-[250px] my-4 flex items-center justify-center">
+          <div className="relative w-[290px] h-[290px] my-4 flex items-center justify-center">
             <img
               src="/images/red_envelope_pouch.png"
               alt="Red Envelope Pouch"
@@ -180,8 +180,8 @@ export default function PublicRedEnvelopesPage() {
             {/* Amount overlay on the bag */}
             <div className="absolute top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
               <span className="font-bold tracking-wide font-sans drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.65)] select-all bg-gradient-to-t from-[#f4d497] to-[#fff] bg-clip-text text-transparent">
-                <span className="text-[17px] mr-0.5">₹</span>
-                <span className="text-[26px]">{(envelope?.amount ?? 0).toFixed(2)}</span>
+                <span className="text-[20px] mr-0.5">₹</span>
+                <span className="text-[30px]">{(envelope?.amount ?? 0).toFixed(2)}</span>
               </span>
             </div>
           </div>

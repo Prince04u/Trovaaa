@@ -277,19 +277,19 @@ export default function RedEnvelopePage() {
         <div className="w-[120%] h-[160px] bg-[#d32f2f] absolute top-[50px] left-[-10%] z-0" style={{ borderBottomLeftRadius: '50%', borderBottomRightRadius: '50%' }}></div>
 
         {/* Main Claim Card */}
-        <div className="flex-1 flex justify-center px-4 mt-6 relative z-10">
-          <div className="w-full max-w-[340px] bg-white rounded-[2px] p-6 pt-8 flex flex-col items-center shadow-md self-start mt-4">
+        <div className="flex-1 flex items-center justify-center px-4 relative z-10">
+          <div className="w-full max-w-[340px] bg-white rounded-[2px] p-6 pt-8 flex flex-col items-center shadow-md">
             <h2 className="text-[24px] font-bold text-[#111] mt-0 mb-4 tracking-wide text-center w-full">Surprise</h2>
 
             {/* Red Envelope Pouch Illustration */}
-            <div className="relative w-[240px] h-[240px] my-2 flex items-center justify-center">
+            <div className="relative w-[290px] h-[290px] my-2 flex items-center justify-center">
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
                 className="w-full h-full object-contain mix-blend-multiply"
               />
               <div className="absolute top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full px-4">
-                <span className="font-bold tracking-wide font-sans drop-shadow-md text-[#fae1a2] text-[28px] whitespace-nowrap">
+                <span className="font-bold tracking-wide font-sans drop-shadow-md text-[#fae1a2] text-[30px] whitespace-nowrap">
                   ₹ {(claimEnvelope?.amount ?? 0).toFixed(2)}
                 </span>
               </div>
