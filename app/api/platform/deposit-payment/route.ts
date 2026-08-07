@@ -268,6 +268,10 @@ export async function GET(request: NextRequest) {
       const usdtRate = 95; // stable exchange rate fallback
       const amountInr = Math.round(amount * usdtRate);
 
+      if (amountInr < 1200) {
+        return NextResponse.json({ error: "To little money" }, { status: 400 });
+      }
+
       // 1. Create a PENDING deposit request in database
       const now = new Date();
       const dd = String(now.getDate()).padStart(2, '0');

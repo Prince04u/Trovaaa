@@ -87,13 +87,10 @@ export async function requestDepositAction(_prevState: ActionState, formData: Fo
 
   if (isTrc20 || isBep20) {
     const payCurrency = isTrc20 ? "usdttrc20" : "usdtbsc";
-    const amountInUsd = amount / 97;
 
-    // Enforce minimum limit of $1 USD for USDT (Bep20) and $12 USD for USDT (TRC20)
-    const minAllowedUsd = isTrc20 ? 12 : 1;
-    if (amountInUsd < minAllowedUsd) {
+    if (amount < 1200) {
       return {
-        error: `Minimum deposit for ${isTrc20 ? "USDT (TRC20)" : "USDT (Bep20)"} is $${minAllowedUsd} USD (₹${minAllowedUsd * 97} INR).`,
+        error: "To little money",
       };
     }
 

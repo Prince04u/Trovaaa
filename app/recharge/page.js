@@ -217,7 +217,11 @@ export default function RechargePage() {
     
     const selectedChannel = channels.find(c => c.id === paymentType);
     if (selectedChannel && (parsedAmount < selectedChannel.min || parsedAmount > selectedChannel.max)) {
-      setError(`Amount must be between ₹${selectedChannel.min} and ₹${selectedChannel.max}`);
+      if (selectedChannel.type === "crypto" && parsedAmount < selectedChannel.min) {
+        setError("To little money");
+      } else {
+        setError(`Amount must be between ₹${selectedChannel.min} and ₹${selectedChannel.max}`);
+      }
       return;
     }
 
