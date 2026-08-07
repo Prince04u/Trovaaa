@@ -22,6 +22,11 @@ export async function POST(req: NextRequest) {
     const cleanMobile = String(mobile).trim().toLowerCase();
     const cleanAction = String(action || "register").trim().toLowerCase();
 
+    const isEmail = cleanMobile.includes("@");
+    if (!isEmail && !/^\+91\d{10}$/.test(cleanMobile)) {
+      return NextResponse.json({ message: "Invalid phone number format. Must be +91 followed by 10 digits." }, { status: 400 });
+    }
+
     // Mobile number limit: max 1 OTP request per phone/email per minute
     const mobileLimiter = await rateLimit("otp_mobile", cleanMobile, 1, 60);
     if (!mobileLimiter.success) {

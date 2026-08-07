@@ -20,9 +20,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Phone number/email and password are required." }, { status: 400 });
     }
 
-    const isEmail = mobile.includes("@");
+    const cleanMobile = String(mobile).trim();
+    const isEmail = cleanMobile.includes("@");
+    if (!isEmail && !/^\+91\d{10}$/.test(cleanMobile)) {
+      return NextResponse.json({ message: "Invalid phone number format. Must be +91 followed by 10 digits." }, { status: 400 });
+    }
+
     const user = await prisma.user.findUnique({
-      where: isEmail ? { email: mobile.toLowerCase().trim() } : { phone: mobile.trim() },
+      where: isEmail ? { email: cleanMobile.toLowerCase() } : { phone: cleanMobile },
     });
 
     if (!user) {
