@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
 import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
@@ -12,8 +12,10 @@ import { BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 import LoadingDialog from "@/components/auth/LoadingDialog";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
 
-export default function LoginPage() {
+function LoginFormComponent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams ? searchParams.get("redirect") : null;
   const [form, setForm] = useState({ mobile: "", password: "" });
   const [loading, setLoading] = useState(false);
   const { toasts, push: pushToast } = useToasts();
@@ -69,7 +71,11 @@ export default function LoginPage() {
     try {
       const response = await loginRequest(form);
       saveAuth(response.data);
-      router.push("/account");
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        router.push("/account");
+      }
     } catch (err) {
       pushToast("Password error", "error", 3000);
       setLoading(false);
@@ -153,6 +159,13 @@ export default function LoginPage() {
       <LoadingDialog visible={loading} />
       <ToastStack toasts={toasts} />
     </main>
+  );
+}
 
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#fafafa] flex items-center justify-center text-sm text-[#999]">Loading...</div>}>
+      <LoginFormComponent />
+    </Suspense>
   );
 }

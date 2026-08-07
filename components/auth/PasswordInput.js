@@ -2,7 +2,7 @@
 
 import { KEY_ICON_B64 } from "@/components/auth/AuthIconsData";
 
-export default function PasswordInput({ id = "password", name = "password", value, onChange, placeholder = "Password", required = true, minLength }) {
+export default function PasswordInput({ id = "password", name = "password", value, onChange, placeholder = "Password", required = false, minLength }) {
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>

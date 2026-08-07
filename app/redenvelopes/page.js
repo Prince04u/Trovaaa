@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUser } from "@/lib/auth";
+import { getUser, getToken } from "@/lib/auth";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function PublicRedEnvelopesPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function PublicRedEnvelopesPage() {
     // Authenticate first
     const user = getUser();
     if (!user) {
-      const redirectPath = cleanCode ? `/login?redirect=/redenvelopes?code=${cleanCode}` : "/login";
+      const redirectPath = cleanCode ? `/login?redirect=${encodeURIComponent(`/redenvelopes?code=${cleanCode}`)}` : "/login";
       router.push(redirectPath);
       return;
     }
@@ -63,27 +64,37 @@ export default function PublicRedEnvelopesPage() {
 
     setClaiming(true);
     try {
+      const token = getToken();
       const res = await fetch("/api/wallet/red-envelope/claim", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ code }),
       });
       const resData = await res.json();
 
       if (res.ok && resData.success) {
         setIsClaimed(true);
-        pushToast("Red envelope claimed successfully!", "success");
+        pushToast("success", "success");
         setTimeout(() => {
           router.push("/account");
         }, 1500);
       } else if (resData.alreadyClaimed) {
         setIsClaimed(true);
-        pushToast("You have already claimed this red envelope", "error");
+        pushToast("Already claimed", "error");
         setTimeout(() => {
           router.push("/account");
         }, 1500);
       } else {
-        pushToast(resData.message || "Failed to claim Red Envelope", "error");
+        let finalMsg = resData.message || "Failed to claim Red Envelope";
+        if (finalMsg.toLowerCase().includes("specific") || finalMsg.toLowerCase().includes("parameter")) {
+          finalMsg = "Invalid parameter";
+        } else if (finalMsg.toLowerCase().includes("fully") || finalMsg.toLowerCase().includes("already been claimed")) {
+          finalMsg = "This red envelope has already been claimed";
+        }
+        pushToast(finalMsg, "error");
       }
     } catch (err) {
       pushToast("An error occurred. Please try again.", "error");
@@ -95,7 +106,7 @@ export default function PublicRedEnvelopesPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-[#f4f5f6] flex items-center justify-center font-sans">
-        <div className="text-sm text-[#999]">Loading Red Envelope...</div>
+        <LoadingDialog visible={true} />
       </main>
     );
   }
@@ -135,16 +146,15 @@ export default function PublicRedEnvelopesPage() {
 
       {/* Main Claim Card */}
       <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[460px] overflow-hidden">
-          
-          <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
+        <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 pt-3 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[415px] overflow-hidden">
+          <h2 className="text-[26px] font-bold text-black mt-0 mb-1 tracking-wide text-center w-full">Surprise</h2>
 
           {/* Red Envelope Pouch Illustration with Value Overlay */}
-          <div className="relative w-[230px] h-[230px] my-4 flex items-center justify-center overflow-visible">
+          <div className="relative w-[210px] h-[210px] mt-5 mb-5 flex items-center justify-center overflow-visible">
             <img
               src="/images/red_envelope_pouch.png"
               alt="Red Envelope Pouch"
-              className="w-full h-full object-contain scale-[1.9] mix-blend-multiply"
+              className="w-full h-full object-contain scale-[1.75] mix-blend-multiply"
             />
             {/* Amount overlay on the bag */}
             <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
@@ -168,13 +178,14 @@ export default function PublicRedEnvelopesPage() {
               disabled={claiming}
               className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-medium text-[16px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
             >
-              {claiming ? "Claiming..." : "Continue"}
+              Continue
             </button>
           </div>
 
         </div>
       </div>
 
+      <LoadingDialog visible={claiming} />
       <ToastStack toasts={toasts} />
     </main>
   );

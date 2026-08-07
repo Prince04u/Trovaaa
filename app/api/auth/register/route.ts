@@ -42,14 +42,18 @@ export async function POST(req: NextRequest) {
     }
 
     // If it's a custom admin code or mock session
-    if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
+    const storedSessionId = storedOtp.sessionId || "";
+    const isMock = storedSessionId === "admin_custom" || storedSessionId.startsWith("mock_session");
+
+    if (isMock) {
       if (storedOtp.code !== cleanCode) {
         return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
       }
     } else {
       // Production HyperAPI verification
       const { verifyOtp } = await import("@/lib/otp");
-      const verifyRes = await verifyOtp(storedOtp.sessionId || "", cleanCode);
+      const cleanSessionId = storedSessionId.split(":")[0];
+      const verifyRes = await verifyOtp(cleanSessionId, cleanCode);
       if (!verifyRes.success) {
         // Fallback: check if database code matches directly (allows admin custom overrides)
         if (storedOtp.code !== cleanCode) {
@@ -175,9 +179,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Registration failed. Please try again." }, { status: 500 });
     }
 
-    await createSession(createdUser.id, false);
-
-    const token = signToken(createdUser.id);
+    const token = await createSession(createdUser.id, false);
     const mappedRole = createdUser.role === "SUPER_ADMIN" ? "admin" : "player";
 
     // Set cookie for Server Action fallbacks

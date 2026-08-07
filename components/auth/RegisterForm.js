@@ -25,7 +25,6 @@ export default function RegisterForm() {
 
   const [agree, setAgree] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [passwordError, setPasswordError] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -56,12 +55,6 @@ export default function RegisterForm() {
       pushToast("Invalid phone number", "error");
       return;
     }
-    // if (!form.password) {
-    //   setPasswordError(true);
-    // } else {
-    //   setPasswordError(false);
-    // }
-    setError("");
     try {
       setTimeout(() => {
         pushToast("success", "success");
@@ -70,7 +63,7 @@ export default function RegisterForm() {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: form.mobile }),
+        body: JSON.stringify({ mobile: form.mobile, action: "register" }),
       });
 
       const data = await res.json();
@@ -78,19 +71,18 @@ export default function RegisterForm() {
         if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
           pushToast("Verification Code is false", "error");
         } else {
-          setError(data.message || "Failed to send OTP");
+          console.warn("SMS dispatch warning (mock generated):", data.message);
         }
       } else {
 
       }
     } catch (err) {
-      setError("Failed to send OTP. Please check your network connection.");
+      console.error("Failed to fetch send-otp:", err);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!/^\+91\d{10}$/.test(form.mobile)) {
       pushToast("Invalid phone number", "error");
@@ -98,12 +90,12 @@ export default function RegisterForm() {
     }
 
     if (!form.verificationCode) {
-      setError("Please enter the verification code.");
+      pushToast("Verification code is required", "error");
       return;
     }
 
     if (!agree) {
-      setError("Please agree to the Privacy Policy");
+      pushToast("Please check I agree privacy policy", "error");
       return;
     }
 
@@ -112,8 +104,7 @@ export default function RegisterForm() {
     if (form.inviteCode.length === 0) {
       setTimeout(() => {
         setLoading(false);
-        pushToast("Invalid parameters");
-
+        pushToast("Invalid parameters", "error");
       }, 2000);
       return;
     }
@@ -135,11 +126,16 @@ export default function RegisterForm() {
       }, 2000);
     } catch (err) {
       const errMsg = err.response?.data?.message || "Registration failed. Please try again.";
-      if (errMsg.toLowerCase().includes("verification") || errMsg.toLowerCase().includes("false")) {
-        pushToast("Verification Code is false", "error");
-      } else {
-        setError(errMsg);
+      let finalMsg = errMsg;
+      const lowerMsg = errMsg.toLowerCase();
+      if (lowerMsg.includes("verification") || lowerMsg.includes("false")) {
+        finalMsg = "Verification Code is false";
+      } else if (lowerMsg.includes("already registered") || lowerMsg.includes("already exist")) {
+        finalMsg = "This mobile had registered";
+      } else if (lowerMsg.includes("invite") || lowerMsg.includes("referral") || lowerMsg.includes("parameters")) {
+        finalMsg = "Invalid parameters";
       }
+      pushToast(finalMsg, "error");
       setLoading(false);
     }
   };
@@ -161,13 +157,7 @@ export default function RegisterForm() {
 
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
-        {error && (
-          <div className="w-full mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-[2px] text-sm text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" noValidate>
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" />

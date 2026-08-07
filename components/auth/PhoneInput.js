@@ -14,7 +14,7 @@ const cleanValue = (val) => {
   return val;
 };
 
-export default function PhoneInput({ value, onChange, id = "mobile", name = "mobile", placeholder = "Mobile Number", required = true }) {
+export default function PhoneInput({ value, onChange, id = "mobile", name = "mobile", placeholder = "Mobile Number", required = false }) {
   return (
     <div className="van-card-input">
       <div className="w-[20px] flex items-center justify-center shrink-0" style={{ marginRight: '10px' }}>

@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
-import { getUser } from "@/lib/auth";
+import { getUser, getToken } from "@/lib/auth";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
+import LoadingDialog from "@/components/auth/LoadingDialog";
 
 export default function RedEnvelopePage() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function RedEnvelopePage() {
     const user = getUser();
     if (!user) {
       if (codeInUrl) {
-        router.push(`/login?redirect=/redenvelope?code=${codeInUrl}`);
+        router.push(`/login?redirect=${encodeURIComponent(`/redenvelope?code=${codeInUrl}`)}`);
       } else {
         router.push("/login");
       }
@@ -58,7 +59,12 @@ export default function RedEnvelopePage() {
       // In getUser info we check permissions
       const user = getUser();
       // Fetch fresh status or check user object
-      const res = await fetch("/api/users/me");
+      const token = getToken();
+      const res = await fetch("/api/users/me", {
+        headers: {
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        }
+      });
       const resData = await res.json();
       if (res.ok && resData.success) {
         setUserHasPermission(!!resData.data.canCreateRedEnvelope);
@@ -70,7 +76,12 @@ export default function RedEnvelopePage() {
 
   const fetchMyEnvelopes = async () => {
     try {
-      const res = await fetch("/api/wallet/red-envelope/my");
+      const token = getToken();
+      const res = await fetch("/api/wallet/red-envelope/my", {
+        headers: {
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        }
+      });
       const resData = await res.json();
       if (res.ok && resData.success) {
         setMyEnvelopes(resData.data);
@@ -115,9 +126,13 @@ export default function RedEnvelopePage() {
 
     setLaunchLoading(true);
     try {
+      const token = getToken();
       const res = await fetch("/api/wallet/red-envelope/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ amount, password }),
       });
       const resData = await res.json();
@@ -146,27 +161,37 @@ export default function RedEnvelopePage() {
 
     setClaimingState(true);
     try {
+      const token = getToken();
       const res = await fetch("/api/wallet/red-envelope/claim", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ code: claimCode }),
       });
       const resData = await res.json();
 
       if (res.ok && resData.success) {
         setIsClaimed(true);
-        pushToast("Red envelope claimed successfully!", "success");
+        pushToast("success", "success");
         setTimeout(() => {
           router.push("/account");
         }, 1500);
       } else if (resData.alreadyClaimed) {
         setIsClaimed(true);
-        pushToast("You have already claimed this red envelope", "error");
+        pushToast("Already claimed", "error");
         setTimeout(() => {
           router.push("/account");
         }, 1500);
       } else {
-        pushToast(resData.message || "Failed to claim Red Envelope", "error");
+        let finalMsg = resData.message || "Failed to claim Red Envelope";
+        if (finalMsg.toLowerCase().includes("specific") || finalMsg.toLowerCase().includes("parameter")) {
+          finalMsg = "Invalid parameter";
+        } else if (finalMsg.toLowerCase().includes("fully") || finalMsg.toLowerCase().includes("already been claimed")) {
+          finalMsg = "This red envelope has already been claimed";
+        }
+        pushToast(finalMsg, "error");
       }
     } catch (err) {
       pushToast("An error occurred. Please try again.", "error");
@@ -192,7 +217,7 @@ export default function RedEnvelopePage() {
     if (claimLoading) {
       return (
         <main className="min-h-screen bg-[#f4f5f6] flex items-center justify-center font-sans">
-          <div className="text-sm text-[#999]">Loading Red Envelope...</div>
+          <LoadingDialog visible={true} />
         </main>
       );
     }
@@ -232,16 +257,15 @@ export default function RedEnvelopePage() {
 
         {/* Main Claim Card */}
         <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-          <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[460px] overflow-hidden">
-            
-            <h2 className="text-[26px] font-bold text-black mt-4 tracking-wide">Surprise</h2>
+          <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 pt-3 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[415px] overflow-hidden">
+            <h2 className="text-[26px] font-bold text-black mt-0 mb-1 tracking-wide text-center w-full">Surprise</h2>
 
             {/* Red Envelope Pouch Illustration */}
-            <div className="relative w-[230px] h-[230px] my-4 flex items-center justify-center overflow-visible">
+            <div className="relative w-[210px] h-[210px] mt-5 mb-5 flex items-center justify-center overflow-visible">
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
-                className="w-full h-full object-contain scale-[1.9] mix-blend-multiply"
+                className="w-full h-full object-contain scale-[1.75] mix-blend-multiply"
               />
               <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
                 <span className="text-[36px] font-semibold text-[#ffe082] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
@@ -263,13 +287,14 @@ export default function RedEnvelopePage() {
                 disabled={claimingState}
                 className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-medium text-[16px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
               >
-                {claimingState ? "Claiming..." : "Continue"}
+                Continue
               </button>
             </div>
 
           </div>
         </div>
 
+        <LoadingDialog visible={claimingState} />
         <ToastStack toasts={toasts} />
       </main>
     );
@@ -386,6 +411,7 @@ export default function RedEnvelopePage() {
       )}
 
       <BottomNav />
+      <LoadingDialog visible={launchLoading} />
       <ToastStack toasts={toasts} />
     </main>
   );

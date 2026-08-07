@@ -9,7 +9,7 @@ if (!(BigInt.prototype as any).toJSON) {
   };
 }
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const globalForPrisma = globalThis as unknown as { prisma_v4?: PrismaClient };
 
 import { Pool } from "pg";
 
@@ -20,17 +20,17 @@ function createClient() {
 
   const pool = new Pool({ 
     connectionString,
-    max: 1, // Limit each serverless function to exactly 1 connection to prevent EMAXCONN pool exhaustion
+    max: 10, // Increase connection limit to support parallel transaction execution and prevent deadlocks
     idleTimeoutMillis: 10000, // Close idle connections after 10 seconds to release them quickly back to the database pool
   });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma ?? createClient();
+export const prisma = globalForPrisma.prisma_v4 ?? createClient();
 
 // Save to globalThis in both development and production to reuse connections across serverless warm containers
-globalForPrisma.prisma = prisma;
+globalForPrisma.prisma_v4 = prisma;
 
 // Triggered client reload after schema sync: forced refresh v3
 

@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: form.mobile }),
+        body: JSON.stringify({ mobile: form.mobile, action: "reset_pass" }),
       });
 
       const data = await res.json();
@@ -91,13 +91,13 @@ export default function ForgotPasswordPage() {
         if (data.message && (data.message.toLowerCase().includes("verification") || data.message.toLowerCase().includes("false"))) {
           pushToast("Verification Code is false", "error");
         } else {
-          pushToast(data.message || "Failed to send OTP");
+          console.warn("SMS dispatch warning (mock generated):", data.message);
         }
       } else {
 
       }
     } catch (err) {
-      pushToast("Failed to send OTP. Please check your network connection.");
+      console.error("Failed to fetch send-otp in forgotpass:", err);
     }
   };
 
@@ -169,7 +169,7 @@ export default function ForgotPasswordPage() {
       {/* Form Content — recharge_box from reference */}
       <div className="w-full flex-1 box-border" style={{ padding: '24px' }}>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col" noValidate>
           {/* Mobile Number Field — 35px margin-bottom */}
           <div style={{ marginBottom: '35px' }}>
             <PhoneInput value={form.mobile} onChange={handleChange} placeholder="Mobile Number" required={false} />

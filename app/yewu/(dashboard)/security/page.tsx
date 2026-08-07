@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { prisma } from "@/lib/prisma";
 import { getPasswordResetRequests } from "@/lib/admin/queries";
 import { requirePermission } from "@/lib/admin/permissions";
-import { ChangePasswordForm, SuspendUserButton } from "./SecurityForms";
+import { ChangePasswordForm, SuspendUserButton, ChangeNicknameForm } from "./SecurityForms";
 
 export default async function AdminSecurityPage() {
   await requirePermission("security.view");
@@ -34,12 +34,20 @@ export default async function AdminSecurityPage() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Left Side: Change Admin Password Form */}
-        <section className="card-surface rounded-2xl p-6 lg:col-span-1 flex flex-col gap-4">
-          <h2 className="font-semibold text-lg">Change Admin Password</h2>
-          <p className="text-xs text-muted mb-2">Update the password for your active administrator account.</p>
-          <ChangePasswordForm />
-        </section>
+        {/* Left Side: Admin Profile & Password Forms */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          <section className="card-surface rounded-2xl p-6 flex flex-col gap-4">
+            <h2 className="font-semibold text-lg">Change Admin Nickname</h2>
+            <p className="text-xs text-muted mb-2">Update the display nickname for your active administrator account.</p>
+            <ChangeNicknameForm />
+          </section>
+
+          <section className="card-surface rounded-2xl p-6 flex flex-col gap-4">
+            <h2 className="font-semibold text-lg">Change Admin Password</h2>
+            <p className="text-xs text-muted mb-2">Update the password for your active administrator account.</p>
+            <ChangePasswordForm />
+          </section>
+        </div>
 
         {/* Right Side: Multiple Account Detection */}
         <section className="card-surface rounded-2xl p-6 lg:col-span-2 flex flex-col gap-4">

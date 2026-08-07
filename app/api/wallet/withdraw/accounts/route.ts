@@ -103,13 +103,17 @@ export async function POST(req: NextRequest) {
       }
 
       // Verify matching code
-      if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
+      const storedSessionId = storedOtp.sessionId || "";
+      const isMock = storedSessionId === "admin_custom" || storedSessionId.startsWith("mock_session");
+
+      if (isMock) {
         if (storedOtp.code !== cleanCode) {
           return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
         }
       } else {
         const { verifyOtp } = await import("@/lib/otp");
-        const verifyRes = await verifyOtp(storedOtp.sessionId || "", cleanCode);
+        const cleanSessionId = storedSessionId.split(":")[0];
+        const verifyRes = await verifyOtp(cleanSessionId, cleanCode);
         if (!verifyRes.success) {
           if (storedOtp.code !== cleanCode) {
             return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });

@@ -48,6 +48,10 @@ export default function AdminRedEnvelopePage() {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Create Form State
   const [code, setCode] = useState("");
   const [amount, setAmount] = useState("");
@@ -444,68 +448,97 @@ export default function AdminRedEnvelopePage() {
           <div className="card-surface rounded-2xl p-8 text-center bg-surface-1 border border-border">
             <p className="text-muted text-sm font-medium">No red envelopes created yet.</p>
           </div>
-        ) : (
-          <div className="card-surface rounded-2xl overflow-hidden border border-border bg-surface-1">
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-border text-left text-sm">
-                <thead className="bg-surface-2 text-[10px] font-semibold uppercase tracking-wider text-muted">
-                  <tr>
-                    <th className="px-6 py-4">Envelope Code</th>
-                    <th className="px-6 py-4">Value per Claim</th>
-                    <th className="px-6 py-4">Claims Status</th>
-                    <th className="px-6 py-4">Recipient Restriction</th>
-                    <th className="px-6 py-4">Created By</th>
-                    <th className="px-6 py-4">Date Created</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border text-xs">
-                  {envelopes.map((env) => (
-                    <tr key={env.id} className="hover:bg-surface-2 transition-colors">
-                      <td className="px-6 py-4 font-mono font-bold text-gold tracking-wide text-sm">
-                        {env.code}
-                      </td>
-                      <td className="px-6 py-4 font-semibold text-foreground text-sm">
-                        ₹{env.amount.toLocaleString()}
-                      </td>
-                      <td className="px-6 py-4 text-foreground">
-                        <span className="font-mono font-semibold">{env.claimedCount}</span> /{" "}
-                        <span className="font-mono text-muted">{env.maxClaims}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {env.specificUserId ? (
-                          <span className="text-rose-400 font-medium">Single User Restricted</span>
-                        ) : (
-                          <span className="text-teal-400 font-medium">Public (Any User)</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-muted">
-                        {env.creator?.displayName || "Admin"}
-                      </td>
-                      <td className="px-6 py-4 text-muted">
-                        {format(new Date(env.createdAt), "d MMM yyyy, h:mm a")}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button
-                          onClick={() => copyToClipboard(getShareableUrl(env.code))}
-                          className="rounded bg-teal-500/10 text-teal-400 border border-teal-500/30 px-3 py-1 font-semibold hover:bg-teal-500/20 transition mr-2"
-                        >
-                          Copy Link
-                        </button>
-                        <button
-                          onClick={() => handleDeleteEnvelope(env.id)}
-                          className="rounded bg-red/10 text-red border border-red/30 px-3 py-1 font-semibold hover:bg-red/20 transition"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        ) : (() => {
+          const totalPages = Math.ceil(envelopes.length / itemsPerPage);
+          const paginatedEnvelopes = envelopes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+          return (
+            <div className="flex flex-col gap-4">
+              <div className="card-surface rounded-2xl overflow-hidden border border-border bg-surface-1">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-border text-left text-sm">
+                    <thead className="bg-surface-2 text-[10px] font-semibold uppercase tracking-wider text-muted">
+                      <tr>
+                        <th className="px-6 py-4">Envelope Code</th>
+                        <th className="px-6 py-4">Value per Claim</th>
+                        <th className="px-6 py-4">Claims Status</th>
+                        <th className="px-6 py-4">Recipient Restriction</th>
+                        <th className="px-6 py-4">Created By</th>
+                        <th className="px-6 py-4">Date Created</th>
+                        <th className="px-6 py-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border text-xs">
+                      {paginatedEnvelopes.map((env) => (
+                        <tr key={env.id} className="hover:bg-surface-2 transition-colors">
+                          <td className="px-6 py-4 font-mono font-bold text-gold tracking-wide text-sm">
+                            {env.code}
+                          </td>
+                          <td className="px-6 py-4 font-semibold text-foreground text-sm">
+                            ₹{env.amount.toLocaleString()}
+                          </td>
+                          <td className="px-6 py-4 text-foreground">
+                            <span className="font-mono font-semibold">{env.claimedCount}</span> /{" "}
+                            <span className="font-mono text-muted">{env.maxClaims}</span>
+                          </td>
+                          <td className="px-6 py-4">
+                            {env.specificUserId ? (
+                              <span className="text-rose-400 font-medium">Single User Restricted</span>
+                            ) : (
+                              <span className="text-teal-400 font-medium">Public (Any User)</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 text-muted">
+                            {env.creator?.displayName || "Admin"}
+                          </td>
+                          <td className="px-6 py-4 text-muted">
+                            {format(new Date(env.createdAt), "d MMM yyyy, h:mm a")}
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <button
+                              onClick={() => copyToClipboard(getShareableUrl(env.code))}
+                              className="rounded bg-teal-500/10 text-teal-400 border border-teal-500/30 px-3 py-1 font-semibold hover:bg-teal-500/20 transition mr-2"
+                            >
+                              Copy Link
+                            </button>
+                            <button
+                              onClick={() => handleDeleteEnvelope(env.id)}
+                              className="rounded bg-red/10 text-red border border-red/30 px-3 py-1 font-semibold hover:bg-red/20 transition"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-between items-center mt-2 px-2">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="rounded-lg bg-surface border border-border px-4 py-2 text-xs font-semibold hover:bg-surface-3 transition disabled:opacity-50 text-foreground cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-xs text-muted">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="rounded-lg bg-surface border border-border px-4 py-2 text-xs font-semibold hover:bg-surface-3 transition disabled:opacity-50 text-foreground cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          );
+        })()}
       </section>
     </div>
   );

@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     // 1. Check user restriction
     if (envelope.specificUserId && envelope.specificUserId !== user.id) {
-      return NextResponse.json({ message: "This red envelope is only for a specific user" }, { status: 403 });
+      return NextResponse.json({ message: "Invalid parameter" }, { status: 403 });
     }
 
     // 2. Check if already claimed by this user
@@ -89,13 +89,13 @@ export async function POST(req: NextRequest) {
         success: false,
         alreadyClaimed: true,
         amount: envelope.amount,
-        message: "You have already claimed this red envelope"
+        message: "Already claimed"
       }, { status: 400 });
     }
 
     // 3. Check claims limit
     if (envelope.claimedCount >= envelope.maxClaims) {
-      return NextResponse.json({ message: "This red envelope has already been fully claimed" }, { status: 400 });
+      return NextResponse.json({ message: "This red envelope has already been claimed" }, { status: 400 });
     }
 
     // 4. Perform atomic claim transaction
@@ -152,11 +152,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         success: true,
         amount: envelope.amount,
-        message: "Red envelope claimed successfully!"
+        message: "success"
       });
     } catch (txError: any) {
       if (txError.message === "EXCEEDED_LIMIT") {
-        return NextResponse.json({ message: "This red envelope has already been fully claimed" }, { status: 400 });
+        return NextResponse.json({ message: "This red envelope has already been claimed" }, { status: 400 });
       }
       throw txError;
     }

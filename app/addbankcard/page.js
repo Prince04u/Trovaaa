@@ -142,7 +142,7 @@ export default function AddBankCardPage() {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: form.accountPhone }),
+        body: JSON.stringify({ mobile: form.accountPhone, action: "bank_add" }),
       });
       const data = await res.json();
       if (!res.ok) {

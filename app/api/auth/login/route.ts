@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid phone number or password." }, { status: 401 });
     }
 
-    await createSession(user.id, false);
+    const token = await createSession(user.id, false);
     await prisma.user.update({
       where: { id: user.id },
       data: { 
@@ -46,8 +46,6 @@ export async function POST(req: NextRequest) {
         lastLoginIp: ip,
       },
     });
-
-    const token = signToken(user.id);
     const mappedRole = user.role === "SUPER_ADMIN" ? "admin" : "player";
 
     // Set cookie for Server Action fallbacks

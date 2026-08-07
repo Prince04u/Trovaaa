@@ -28,13 +28,17 @@ export async function POST(req: NextRequest) {
     }
 
     // If it's a custom admin code or mock session
-    if (storedOtp.sessionId === "admin_custom" || storedOtp.sessionId === "mock_session") {
+    const storedSessionId = storedOtp.sessionId || "";
+    const isMock = storedSessionId === "admin_custom" || storedSessionId.startsWith("mock_session");
+
+    if (isMock) {
       if (storedOtp.code !== cleanCode) {
         return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
       }
     } else {
       // Production HyperAPI verification
-      const verifyRes = await verifyOtp(storedOtp.sessionId || "", cleanCode);
+      const cleanSessionId = storedSessionId.split(":")[0];
+      const verifyRes = await verifyOtp(cleanSessionId, cleanCode);
       if (!verifyRes.success) {
         // Fallback: check if the database code matches directly (allows admin custom overrides)
         if (storedOtp.code !== cleanCode) {

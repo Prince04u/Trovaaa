@@ -20,6 +20,7 @@ const LEDGER_MAP: Record<LedgerType, { type: string; description: string }> = {
   REWARD_CLAIMED: { type: "referral_bonus", description: "Reward Claimed" },
   GIFT_CODE_REDEEMED: { type: "bonus_credit", description: "Gift Code Redeemed" },
   WATER_REWARD: { type: "bonus_credit", description: "Water Reward" },
+  RED_ENVELOPE_CLAIMED: { type: "bonus_credit", description: "Red Envelope" },
 };
 
 function periodFromMeta(meta: unknown): string | null {
