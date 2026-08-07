@@ -152,20 +152,20 @@ function LoginFormComponent() {
             <div className="flex justify-between" style={{ width: '240px', marginTop: '25px' }}>
               <Link
                 href="/register"
-                className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[15px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
+                className="ripplegrey flex items-center justify-center rounded-[4px] h-[38px] px-[15px] bg-[#f5f5f5] text-[#333] text-[13px] text-decoration-none cursor-pointer font-medium"
                 style={{
-                  border: '1px solid #ebedf0',
-                  boxShadow: '0 1px 5px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'
+                  border: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
                 }}
               >
                 Register
               </Link>
               <Link
                 href="/forgotpass"
-                className="ripplegrey flex items-center justify-center rounded-[2px] h-[38px] px-[12px] bg-white text-[rgba(0,0,0,0.87)] text-[13px] text-decoration-none cursor-pointer font-medium"
+                className="ripplegrey flex items-center justify-center rounded-[4px] h-[38px] px-[12px] bg-[#f5f5f5] text-[#333] text-[13px] text-decoration-none cursor-pointer font-medium"
                 style={{
-                  border: '1px solid #ebedf0',
-                  boxShadow: '0 1px 5px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'
+                  border: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
                 }}
               >
                 Forgot Password?

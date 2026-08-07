@@ -139,6 +139,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
   const [refreshing, setRefreshing] = useState(false);
   const [showPurpleLine, setShowPurpleLine] = useState(true);
   const [gameHistoryPage, setGameHistoryPage] = useState(1);
+  const [myBetsPage, setMyBetsPage] = useState(1);
   const [outcomePopup, setOutcomePopup] = useState(null);
   const myBetsRef = useRef([]);
   const shownOutcomeIdsRef = useRef(new Set());
@@ -825,7 +826,7 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
           <div className="h-[1px] w-full bg-[#009688]" />
           
           <div className="p-0 select-none flex flex-col bg-white">
-            {myBetsForDuration.slice(0, 30).map((bet) => {
+            {myBetsForDuration.slice((myBetsPage - 1) * 10, myBetsPage * 10).map((bet) => {
               const id = bet._id || bet.id;
               const isExpanded = expandedBetId === id;
               const stateText = bet.state === "pending" ? "Wait" : bet.state === "won" ? "Success" : "Fail";
@@ -1015,22 +1016,51 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
               </div>
             )}
 
-            <div className="flex items-center justify-between px-4 py-3 bg-white text-[13px] text-[#999]">
-              <div>1-10 of {myBetsForDuration.length}</div>
-              <div className="flex gap-4">
-                <span className="material-icons-outlined text-[18px] text-[#ccc] cursor-pointer">keyboard_arrow_left</span>
-                <span className="material-icons-outlined text-[18px] text-[#999] cursor-pointer">keyboard_arrow_right</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-center bg-white pb-6 pt-2 border-t border-gray-100">
-              <button 
-                onClick={() => router.push("/orders")}
-                className="bg-[#2196f3] text-white px-8 py-2 rounded-[2px] shadow-sm text-[14px] border-none outline-none cursor-pointer"
-              >
-                My Orders
-              </button>
-            </div>
+            {(() => {
+              const myBetsPageCount = Math.ceil(myBetsForDuration.length / 10);
+              const startIdx = (myBetsPage - 1) * 10;
+              const endIdx = myBetsPage * 10;
+              const hasRecords = myBetsForDuration.length > 0;
+              
+              return (
+                <>
+                  {hasRecords && (
+                    <div className="flex items-center justify-center relative py-4 bg-white text-[13.5px] text-[#888] select-none border-b border-gray-100">
+                      <span>
+                        {startIdx + 1}-{Math.min(endIdx, myBetsForDuration.length)} of {myBetsForDuration.length}
+                      </span>
+                      <div className="absolute right-6 flex items-center gap-8">
+                        <button
+                          type="button"
+                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                          disabled={myBetsPage === 1}
+                          onClick={() => setMyBetsPage((p) => p - 1)}
+                        >
+                          <span className="text-[17px] font-bold">&lt;</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                          disabled={myBetsPage === myBetsPageCount || myBetsPageCount <= 1}
+                          onClick={() => setMyBetsPage((p) => p + 1)}
+                        >
+                          <span className="text-[17px] font-bold">&gt;</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-center bg-white pb-6 pt-4" style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.04)' }}>
+                    <button 
+                      onClick={() => router.push("/orders")}
+                      className="bg-[#2196f3] text-white px-8 py-2 rounded-[4px] shadow-[0_2px_5px_rgba(33,150,243,0.3)] text-[14px] font-medium border-none outline-none cursor-pointer hover:opacity-90 active:scale-95 transition-all"
+                    >
+                      My Orders
+                    </button>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       </div>
