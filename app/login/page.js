@@ -19,6 +19,8 @@ function LoginFormComponent() {
   const [form, setForm] = useState({ mobile: "", password: "" });
   const [loading, setLoading] = useState(false);
   const { toasts, push: pushToast } = useToasts();
+  const [passwordError, setPasswordError] = useState("");
+
 
   useEffect(() => {
     const token = getToken();
@@ -68,6 +70,7 @@ function LoginFormComponent() {
     }
 
     if (!form.password) {
+      setPasswordError("Password is required");
       pushToast("Password is required");
       return;
     }
@@ -117,9 +120,20 @@ function LoginFormComponent() {
               id="password"
               name="password"
               value={form.password}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                if (e.target.value) {
+                  setPasswordError("");
+                }
+              }}
               placeholder="Password"
+              hasError={!!passwordError}
             />
+            {passwordError && (
+              <p className="text-[12px] text-red-600 font-normal mt-1.5 pl-1.5 text-left">
+                {passwordError}
+              </p>
+            )}
           </div>
 
           {/* Login Button — exactly 240px wide, 44px tall, centered */}

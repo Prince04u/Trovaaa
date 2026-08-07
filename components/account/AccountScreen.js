@@ -34,6 +34,8 @@ export default function AccountScreen() {
   const [showNameModal, setShowNameModal] = useState(false);
   const [nicknameInput, setNicknameInput] = useState("");
   const [signedInToday, setSignedInToday] = useState(false);
+  const [noticeText, setNoticeText] = useState("");
+
 
   const loadProfile = async () => {
     try {
@@ -52,10 +54,20 @@ export default function AccountScreen() {
     } catch {}
   };
 
+  const loadNotice = async () => {
+    try {
+      const res = await fetch("/api/platform/announcements");
+      const resData = await res.json();
+      if (resData?.success && resData?.data) {
+        setNoticeText(resData.data);
+      }
+    } catch {}
+  };
+
   useEffect(() => {
     const init = async () => {
       if (getToken()) {
-        await Promise.all([loadProfile(), loadBalance()]);
+        await Promise.all([loadProfile(), loadBalance(), loadNotice()]);
         setMounted(true);
       } else {
         router.replace("/login");
@@ -111,13 +123,9 @@ export default function AccountScreen() {
             <div className="flex flex-col text-[14px] leading-[22px]">
               <div className="flex items-center font-normal tracking-wide mb-[2px]">
                 User:
-                <button
-                  type="button"
-                  onClick={() => setShowNameModal(true)}
-                  className="bg-transparent border-none p-0 m-0 text-white cursor-pointer font-normal outline-none ml-[4px]"
-                >
+                <span className="text-white ml-[4px]">
                   {displayName}
-                </button>
+                </span>
               </div>
               <div className="font-normal tracking-wide">ID: {uid}</div>
             </div>
@@ -429,7 +437,9 @@ export default function AccountScreen() {
           <div className="bg-white rounded-[4px] w-full max-w-[480px] p-6 shadow-lg flex flex-col justify-between min-h-[160px]">
             <div>
               <h3 className="text-[20px] font-normal text-[#222222] m-0 mb-4">Notice</h3>
-              <p className="text-[14px] text-[#555555] m-0">No New Notice</p>
+              <div className="text-[14px] text-[#555555] m-0 whitespace-pre-wrap leading-relaxed">
+                {noticeText || "No New Notice"}
+              </div>
             </div>
             <div className="flex justify-end mt-6">
               <button

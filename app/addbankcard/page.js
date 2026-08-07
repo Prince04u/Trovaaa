@@ -133,10 +133,6 @@ export default function AddBankCardPage() {
   };
 
   const handleSendOtp = async () => {
-    if (!form.accountPhone) {
-      pushToast("Phone number not found.");
-      return;
-    }
     setSubmitLoading(true);
     try {
       const res = await fetch("/api/auth/send-otp", {

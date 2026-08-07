@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(_req: NextRequest) {
-  const list = [
-    { id: "notice-1", content: "Welcome to Luvomall! Deposits via USDT TRC20 are fully automated. Happy gaming!" },
-    { id: "notice-2", content: "Mines multiplier values upgraded. Daily claims credited instantly." },
-  ];
-  return NextResponse.json({ success: true, data: list });
+  try {
+    const setting = await prisma.setting.findUnique({
+      where: { key: "systemNotice" },
+    });
+    const content = setting?.value || "Welcome to Luvomall!";
+    return NextResponse.json({ success: true, data: content });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
 }

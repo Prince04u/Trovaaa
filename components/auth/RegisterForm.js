@@ -84,6 +84,11 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!form.mobile) {
+      pushToast("Mobile number is required", "error");
+      return;
+    }
+
     if (!/^\+91\d{10}$/.test(form.mobile)) {
       pushToast("Invalid phone number", "error");
       return;

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth/jwt";
 import { prisma } from "@/lib/prisma";
 import { startOfDay } from "date-fns";
+import { verifyPassword } from "@/lib/auth/password";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,24 +11,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Not authorized, token invalid or expired" }, { status: 401 });
     }
 
-    const { amount, method, accountDetails } = await req.json();
+    const { amount, method, accountDetails, password } = await req.json();
+
+    // Verify login password:
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
+    if (!dbUser || !dbUser.passwordHash) {
+      return NextResponse.json({ message: "Password error" }, { status: 400 });
+    }
+    const isPasswordCorrect = await verifyPassword(password || "", dbUser.passwordHash);
+    if (!isPasswordCorrect) {
+      return NextResponse.json({ message: "Password error" }, { status: 400 });
+    }
 
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
       return NextResponse.json({ message: "Amount is required and must be positive" }, { status: 400 });
-    }
-
-    // Enforce daily frequency limit:
-    const dailyLimit = user.dailyWithdrawLimit ?? 3;
-    const midnight = startOfDay(new Date());
-    const withdrawalsCountToday = await prisma.withdrawRequest.count({
-      where: {
-        userId: user.id,
-        createdAt: { gte: midnight },
-      },
-    });
-
-    if (withdrawalsCountToday >= dailyLimit) {
-      return NextResponse.json({ message: `You have reached your daily limit of ${dailyLimit} withdrawals today. Please try again tomorrow.` }, { status: 400 });
     }
 
     const numericAmount = Number(amount);
@@ -72,35 +71,15 @@ export async function POST(req: NextRequest) {
       if (numericAmount < 211) {
         return NextResponse.json({ message: "Minimum withdrawal amount is ₹211" }, { status: 400 });
       }
-      const maxLimit = user.maxWithdrawLimit ?? 50000;
-      if (numericAmount > maxLimit) {
-        return NextResponse.json({ message: `Maximum withdrawal amount per request is ₹${maxLimit.toLocaleString("en-IN")}` }, { status: 400 });
-      }
     }
 
     if (!method || !accountDetails) {
       return NextResponse.json({ message: "Withdrawal method and account details are required" }, { status: 400 });
     }
 
-    const approvedDepositCount = await prisma.depositRequest.count({
-      where: { userId: user.id, status: "APPROVED" },
-    });
-
-    if (approvedDepositCount === 0 && !user.bypassRechargeCheck) {
-      return NextResponse.json({
-        message: "You must complete at least one recharge (deposit) to be eligible for withdrawals."
-      }, { status: 400 });
-    }
-
-    if (user.requiredWager > 0) {
+    if (dbUser.requiredWager > 0) {
       return NextResponse.json({ 
-        message: `Need to bet ₹${user.requiredWager.toLocaleString("en-IN")} more to be able to withdraw. Complete your wagering requirement first.` 
-      }, { status: 400 });
-    }
-
-    if (user.holdWithdrawals) {
-      return NextResponse.json({ 
-        message: "Your withdrawals are currently on hold. Please contact support." 
+        message: `Need to bet ₹${dbUser.requiredWager}` 
       }, { status: 400 });
     }
 

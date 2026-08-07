@@ -7,6 +7,7 @@ import AccountSubHeader from "@/components/account/AccountSubHeader";
 import PasswordInput from "@/components/auth/PasswordInput";
 import { getToken } from "@/lib/auth";
 import { changePassword } from "@/lib/authApi";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function SecurityPage() {
   const router = useRouter();
@@ -17,8 +18,8 @@ export default function SecurityPage() {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { toasts, push: pushToast } = useToasts();
+
 
   useEffect(() => {
     setMounted(true);
@@ -29,16 +30,14 @@ export default function SecurityPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
-    setSuccess("");
 
     if (form.newPassword.length < 6) {
-      setError("New password must be at least 6 characters");
+      pushToast("New password must be at least 6 characters", "error");
       return;
     }
 
     if (form.newPassword !== form.confirmPassword) {
-      setError("New passwords do not match");
+      pushToast("Passwords do not match", "error");
       return;
     }
 
@@ -48,10 +47,10 @@ export default function SecurityPage() {
         currentPassword: form.currentPassword,
         newPassword: form.newPassword,
       });
-      setSuccess("Password updated successfully");
+      pushToast("success", "success");
       setForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to change password");
+      pushToast("Password error", "error");
     } finally {
       setLoading(false);
     }
@@ -67,11 +66,10 @@ export default function SecurityPage() {
 
   return (
     <main className="account-page account-sub-page">
+      <ToastStack toasts={toasts} />
       <AccountSubHeader title="Security" />
 
       <form className="account-form" onSubmit={handleSubmit}>
-        {error && <div className="account-form-error">{error}</div>}
-        {success && <div className="account-form-success">{success}</div>}
 
         <section className="account-form-section">
           <label className="account-form-label" htmlFor="current-password">

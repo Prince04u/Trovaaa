@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
       return;
     }
     if (!form.newPassword) {
-      pushToast("Please enter a new password");
+      pushToast("Password is required");
       return;
     }
     if (form.newPassword.length < 6) {

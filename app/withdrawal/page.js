@@ -20,6 +20,16 @@ export default function WithdrawalPage() {
   const [bankDropdownOpen, setBankDropdownOpen] = useState(false);
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const triggerToast = (msg, duration = 2000) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, duration);
+  };
 
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -57,17 +67,16 @@ export default function WithdrawalPage() {
 
   const handleWithdrawal = async (e) => {
     e.preventDefault();
-    setError("");
     if (!amount || Number(amount) <= 0) {
-      setError("Enter valid withdrawal amount");
+      triggerToast("Enter  withdrawal amount");
       return;
     }
     if (!bankAccountId) {
-      setError("Please add a bank account first");
+      triggerToast("Select Bank Card ");
       return;
     }
     if (!password) {
-      setError("Please enter password");
+      setPasswordError("Password is required");
       return;
     }
 
@@ -75,13 +84,13 @@ export default function WithdrawalPage() {
     try {
       const selectedBank = banks.find((b) => b.id === bankAccountId);
       if (!selectedBank) {
-        setError("Selected bank account not found");
         return;
       }
 
       const payload = {
         amount: Number(amount),
         method: "bank",
+        password: password,
         accountDetails: {
           accountName: selectedBank.accountName,
           accountNumber: selectedBank.accountNumber,
@@ -92,14 +101,14 @@ export default function WithdrawalPage() {
 
       await requestWithdraw(payload);
       setTimeout(() => {
-        setShowToast(true);
+        triggerToast("success", 1500);
         setTimeout(() => {
-          setShowToast(false);
           router.push("/withdrawalrecord");
         }, 1500);
       }, 1000);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Failed to submit withdrawal.");
+      const errMsg = err.response?.data?.message || "Failed to request withdrawal.";
+      triggerToast(errMsg);
     } finally {
       setSubmitLoading(false);
     }
@@ -227,27 +236,30 @@ export default function WithdrawalPage() {
           <div className="flex items-center py-3.5 border-b border-[#f2f3f5] w-full">
             {/* Icon 3: Grey key outline with circular head and teeth */}
             <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3 shrink-0">
-              <circle cx="5.5" cy="7.5" r="4" stroke="#757575" strokeWidth="1.6" fill="none"/>
-              <line x1="9.5" y1="7.5" x2="18.5" y2="7.5" stroke="#757575" strokeWidth="1.6"/>
-              <line x1="14.5" y1="7.5" x2="14.5" y2="11.5" stroke="#757575" strokeWidth="1.6"/>
-              <line x1="17" y1="7.5" x2="17" y2="11.5" stroke="#757575" strokeWidth="1.6"/>
+              <circle cx="5.5" cy="7.5" r="4" stroke={passwordError ? "#e53935" : (password ? "#009688" : "#757575")} strokeWidth="1.6" fill="none"/>
+              <line x1="9.5" y1="7.5" x2="18.5" y2="7.5" stroke={passwordError ? "#e53935" : (password ? "#009688" : "#757575")} strokeWidth="1.6"/>
+              <line x1="14.5" y1="7.5" x2="14.5" y2="11.5" stroke={passwordError ? "#e53935" : (password ? "#009688" : "#757575")} strokeWidth="1.6"/>
+              <line x1="17" y1="7.5" x2="17" y2="11.5" stroke={passwordError ? "#e53935" : (password ? "#009688" : "#757575")} strokeWidth="1.6"/>
             </svg>
             <input
               type="password"
               placeholder="Enter your login password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (e.target.value) {
+                  setPasswordError("");
+                }
+              }}
               className="flex-1 text-[14px] outline-none font-normal text-[#323233] bg-transparent border-none placeholder-[#969799] w-full"
             />
           </div>
+          {passwordError && (
+            <p className="text-[12px] text-red-600 font-normal mt-1.5 pl-1.5 text-left w-full">
+              {passwordError}
+            </p>
+          )}
         </div>
-
-        {/* Error Banner */}
-        {error && (
-          <div className="text-[13px] text-[#e53935] text-center font-normal mt-4 px-4 py-2 bg-[#ffebee] border border-[#ffcdd2] rounded-[4px] w-full break-words">
-            {error}
-          </div>
-        )}
 
         {/* Withdrawal Button */}
         <div className="flex justify-center mt-8 w-full">
@@ -269,7 +281,7 @@ export default function WithdrawalPage() {
       {/* Success Toast */}
       {showToast && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c]/95 text-white text-[13.5px] font-normal py-2 px-5 rounded-[8px] shadow-md shadow-black/10 pointer-events-none select-none text-center min-w-[110px]">
-          success
+          {toastMessage || "success"}
         </div>
       )}
     </main>

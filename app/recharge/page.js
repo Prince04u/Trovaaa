@@ -77,7 +77,23 @@ export default function RechargePage() {
   const [amount, setAmount] = useState("");
   const [paymentType, setPaymentType] = useState("");
   const [channels, setChannels] = useState([]);
-  const [error, setError] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const triggerToast = (msg, duration = 2000) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, duration);
+  };
+
+  const setError = (msg) => {
+    if (msg) {
+      triggerToast(msg);
+    }
+  };
+
   
   const [balance, setBalance] = useState(0);
   const [balanceLoading, setBalanceLoading] = useState(true);
@@ -804,12 +820,7 @@ export default function RechargePage() {
           </div>
         </div>
 
-        {/* Error Banner */}
-        {error && (
-          <div className="text-[13px] text-[#e53935] text-center font-normal mt-4 px-4 py-2 bg-[#ffebee] border border-[#ffcdd2] rounded-[4px] w-full break-words">
-            {error}
-          </div>
-        )}
+
 
         {/* Recharge Action Button */}
         <div className="flex justify-center mt-8 w-full">
@@ -832,6 +843,13 @@ export default function RechargePage() {
       {showSuccessToast && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c] text-white text-[15px] font-normal py-2.5 px-7 rounded-[10px] shadow-lg shadow-black/10 pointer-events-none select-none">
           Success
+        </div>
+      )}
+
+      {/* General Toast */}
+      {showToast && (
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-[#4c4c4c]/95 text-white text-[13.5px] font-normal py-2 px-5 rounded-[8px] shadow-md shadow-black/10 pointer-events-none select-none text-center min-w-[110px]">
+          {toastMessage}
         </div>
       )}
     </main>

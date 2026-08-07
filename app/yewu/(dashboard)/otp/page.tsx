@@ -104,6 +104,12 @@ export default function AdminOtpPage() {
   const [updatingNickname, setUpdatingNickname] = useState(false);
   const [nicknameSuccessMsg, setNicknameSuccessMsg] = useState("");
 
+  // Notice State
+  const [noticeContent, setNoticeContent] = useState("");
+  const [noticeSubmitting, setNoticeSubmitting] = useState(false);
+  const [noticeSavedMsg, setNoticeSavedMsg] = useState("");
+
+
   // Tab State
   const [activeTab, setActiveTab] = useState<"actual" | "mock">("actual");
 
@@ -154,9 +160,22 @@ export default function AdminOtpPage() {
     }
   };
 
+  const fetchNotice = async () => {
+    try {
+      const res = await fetch("/api/yewu/notice");
+      const resData = await res.json();
+      if (res.ok && resData.success) {
+        setNoticeContent(resData.data);
+      }
+    } catch (err) {
+      console.error("Failed to load notice:", err);
+    }
+  };
+
   useEffect(() => {
     fetchOtps();
     fetchProfile();
+    fetchNotice();
   }, []);
 
   const handleSetCustomOtp = async (e: React.FormEvent) => {
@@ -184,6 +203,31 @@ export default function AdminOtpPage() {
       setError(err.message || "Failed to set custom OTP");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleSaveNotice = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNoticeSubmitting(true);
+    setNoticeSavedMsg("");
+    setError("");
+    try {
+      const res = await fetch("/api/yewu/notice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: noticeContent }),
+      });
+      const resData = await res.json();
+      if (res.ok && resData.success) {
+        setNoticeSavedMsg("System notice updated successfully!");
+        setTimeout(() => setNoticeSavedMsg(""), 4000);
+      } else {
+        setError(resData.message || "Failed to update notice");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to update notice");
+    } finally {
+      setNoticeSubmitting(false);
     }
   };
 
@@ -284,6 +328,38 @@ export default function AdminOtpPage() {
           </button>
         </form>
       </section>
+
+      {/* Manage System Notice & Announcement Card */}
+      <section className="card-surface rounded-2xl p-6 bg-surface-1 border border-border">
+        <h2 className="font-semibold mb-4 text-gold text-lg">Manage System Notice & Announcement</h2>
+        <form onSubmit={handleSaveNotice} className="flex flex-col gap-4 max-w-3xl">
+          <div className="flex flex-col gap-1.5 w-full">
+            <label className="text-xs text-muted font-medium">Notice Content</label>
+            <textarea
+              rows={4}
+              placeholder="Enter latest announcement text to show in the notice bell popup..."
+              value={noticeContent}
+              onChange={(e) => setNoticeContent(e.target.value)}
+              className="rounded-lg bg-surface border border-border px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted outline-none focus:border-gold/60 w-full resize-y min-h-[100px]"
+            />
+          </div>
+          <div className="flex justify-between items-center w-full">
+            {noticeSavedMsg && (
+              <span className="text-xs text-green font-medium bg-green/10 border border-green/20 px-3 py-1.5 rounded-lg text-green-400">
+                {noticeSavedMsg}
+              </span>
+            )}
+            <button
+              type="submit"
+              disabled={noticeSubmitting}
+              className="rounded-lg bg-gold hover:brightness-110 text-black font-semibold text-sm px-5 py-2.5 transition disabled:opacity-50 h-[40px] cursor-pointer ml-auto"
+            >
+              {noticeSubmitting ? "Saving..." : "Save Notice"}
+            </button>
+          </div>
+        </form>
+      </section>
+
 
       {/* Tabs Header Selector */}
       <section className="flex flex-col gap-6 mt-4">
