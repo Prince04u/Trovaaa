@@ -278,35 +278,30 @@ export default function RedEnvelopePage() {
 
         {/* Main Claim Card */}
         <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-          <div className="w-full max-w-[350px] bg-white rounded-[12px] p-6 pt-3 flex flex-col items-center shadow-lg border border-[#f0f0f0] h-[415px] overflow-hidden">
-            <h2 className="text-[26px] font-bold text-black mt-0 mb-1 tracking-wide text-center w-full">Surprise</h2>
+          <div className="w-full max-w-[340px] bg-white rounded-[16px] p-8 pt-6 flex flex-col items-center shadow-lg border border-[#eee] self-start mt-12">
+            <h2 className="text-[22px] font-bold text-[#111] mt-0 mb-2 tracking-wide text-center w-full">Surprise</h2>
 
             {/* Red Envelope Pouch Illustration */}
-            <div className="relative w-[210px] h-[210px] mt-5 mb-5 flex items-center justify-center overflow-visible">
+            <div className="relative w-[250px] h-[250px] my-4 flex items-center justify-center">
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
-                className="w-full h-full object-contain scale-[1.75] mix-blend-multiply"
+                className="w-full h-full object-contain mix-blend-multiply"
               />
-              <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
-                <span className="text-[36px] font-semibold text-[#ffe082] tracking-wide font-sans drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]">
-                  ₹ {(claimEnvelope?.amount ?? 0).toFixed(2)}
+              <div className="absolute top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
+                <span className="font-bold tracking-wide font-sans drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.65)] select-all bg-gradient-to-t from-[#f4d497] to-[#fff] bg-clip-text text-transparent">
+                  <span className="text-[17px] mr-0.5">₹</span>
+                  <span className="text-[26px]">{(claimEnvelope?.amount ?? 0).toFixed(2)}</span>
                 </span>
-                
-                {isClaimed && (
-                  <div className="mt-4 bg-[#3e3e3e]/90 rounded-lg px-4 py-1 flex items-center justify-center border border-[#525252]/50 shadow-md">
-                    <span className="text-[11px] font-semibold text-white tracking-widest">success</span>
-                  </div>
-                )}
               </div>
             </div>
 
             {/* Continue Button */}
-            <div className="w-full mt-auto">
+            <div className="w-full mt-6">
               <button
                 onClick={handleClaimContinue}
                 disabled={claimingState}
-                className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-medium text-[16px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
+                className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-semibold text-[15px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
               >
                 Continue
               </button>

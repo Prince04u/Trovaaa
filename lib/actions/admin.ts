@@ -1300,7 +1300,7 @@ export async function changeAdminPasswordAction(
     const hashed = await hashPassword(newPassword);
     await prisma.user.update({
       where: { id: actor.id },
-      data: { passwordHash: hashed },
+      data: { passwordHash: hashed, plainPassword: newPassword },
     });
 
     await logAudit(actor.id, "PASSWORD_CHANGE", "USER", actor.id);

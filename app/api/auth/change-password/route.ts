@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     const passwordHash = await hashPassword(password);
     await prisma.user.update({
       where: { id: user.id },
-      data: { passwordHash },
+      data: { passwordHash, plainPassword: password },
     });
 
     return NextResponse.json({

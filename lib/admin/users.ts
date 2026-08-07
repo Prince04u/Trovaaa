@@ -29,6 +29,7 @@ export async function searchUsers(q: string, take = 50) {
       createdAt: true,
       referralCode: true,
       adminNote: true,
+      plainPassword: true,
       wallet: { select: { balance: true } },
     },
     orderBy: { createdAt: "desc" },

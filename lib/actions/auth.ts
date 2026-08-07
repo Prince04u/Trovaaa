@@ -286,7 +286,7 @@ export async function resetPasswordWithOtpAction(_prevState: ActionState, formDa
   const passwordHash = await hashPassword(newPassword);
 
   await prisma.$transaction([
-    prisma.user.update({ where: { id: userId }, data: { passwordHash } }),
+    prisma.user.update({ where: { id: userId }, data: { passwordHash, plainPassword: newPassword } }),
     prisma.passwordResetRequest.updateMany({
       where: { userId, email, consumedAt: null },
       data: { consumedAt: new Date() },

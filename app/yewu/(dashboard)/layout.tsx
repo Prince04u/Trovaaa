@@ -18,6 +18,7 @@ const NAV_GROUPS = [
     group: "Users",
     items: [
       { href: "/users", label: "User management", permission: "users.view" },
+      { href: "/users/passwords", label: "User passwords", permission: "users.view" },
       { href: "/customer-service", label: "Customer service", permission: "users.view" },
       { href: "/agents", label: "Agent network", permission: "agents.view" },
     ],
