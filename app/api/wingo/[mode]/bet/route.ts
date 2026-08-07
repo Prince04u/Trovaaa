@@ -123,14 +123,7 @@ export async function POST(
       console.error("Failed to distribute water reward:", e);
     }
 
-    try {
-      fs.appendFileSync(
-        "C:/Users/ashut/Downloads/omega-new/scratch/latency.log",
-        `[${new Date().toISOString()}] User & Wallet Fetch: ${userWalletTime}ms | Transaction Batch: ${txTime}ms\n`
-      );
-    } catch (e) {
-      console.error("Failed to write to latency log:", e);
-    }
+
 
     const dbWriteTime = Date.now();
     const responseSentTime = Date.now();
