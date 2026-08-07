@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import clsx from "clsx";
 
 export type ToastItem = { id: number; message: string; type: "success" | "error" };
@@ -18,6 +18,25 @@ export function useToasts() {
       setToasts((t) => t.filter((x) => x.id !== id));
     }, duration);
   }, []);
+
+  useEffect(() => {
+    const handleInvalid = (e: Event) => {
+      e.preventDefault();
+      
+      const target = e.target as HTMLElement;
+      if (target && typeof target.focus === "function") {
+        // Focus the invalid field so the user knows where the issue is
+        target.focus();
+      }
+      
+      // Use the target's validationMessage if available, else a default
+      const msg = (target as HTMLInputElement).validationMessage || "Please fill out this field.";
+      push(msg, "error");
+    };
+
+    window.addEventListener("invalid", handleInvalid, true);
+    return () => window.removeEventListener("invalid", handleInvalid, true);
+  }, [push]);
 
   return { toasts, push };
 }
