@@ -751,24 +751,26 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
         </div>
 
         {gameHistoryPageCount > 1 && (
-          <div className="flex items-center justify-center gap-10 py-4 text-[#888] select-none text-[13px]">
-            <span>1-10 of {results.length}</span>
-            <div className="flex items-center gap-8">
+          <div className="flex items-center justify-center relative py-4 bg-white text-[13.5px] text-[#888] select-none border-b border-gray-100">
+            <span>
+              {(gameHistoryPage - 1) * 10 + 1}-{Math.min(gameHistoryPage * 10, results.length)} of {results.length}
+            </span>
+            <div className="absolute right-6 flex items-center gap-8">
               <button
                 type="button"
-                className="disabled:opacity-30 cursor-pointer"
+                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
                 disabled={gameHistoryPage === 1}
                 onClick={() => setGameHistoryPage((p) => p - 1)}
               >
-                <ArrowLeft size={16} />
+                <span className="text-[17px] font-bold">&lt;</span>
               </button>
               <button
                 type="button"
-                className="disabled:opacity-30 cursor-pointer"
+                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
                 disabled={gameHistoryPage === gameHistoryPageCount}
                 onClick={() => setGameHistoryPage((p) => p + 1)}
               >
-                <ArrowRight size={16} />
+                <span className="text-[17px] font-bold">&gt;</span>
               </button>
             </div>
           </div>
