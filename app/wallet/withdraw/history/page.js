@@ -206,8 +206,13 @@ export default function WithdrawHistoryPage() {
             const statusUpper = String(w.status || "").toUpperCase();
 
             if (statusUpper === "REJECTED") {
-              formattedStatus = "Refused";
-              statusClass = "rejected";
+              if (noteDetails.gateway) {
+                formattedStatus = "Refused";
+                statusClass = "rejected";
+              } else {
+                formattedStatus = "";
+                statusClass = "blank";
+              }
             } else if (statusUpper === "PENDING") {
               formattedStatus = "Pending";
               statusClass = "pending";

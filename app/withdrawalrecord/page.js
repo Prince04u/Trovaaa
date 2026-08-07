@@ -45,7 +45,10 @@ export default function WithdrawalRecordPage() {
     const statusUpper = String(status || "").toUpperCase();
 
     if (statusUpper === "REJECTED" || statusUpper === "FAILED") {
-      return <span className="text-[#f44336]">Refused</span>;
+      if (note.gateway) {
+        return <span className="text-[#f44336]">Refused</span>;
+      }
+      return null;
     }
     if (statusUpper === "PENDING") {
       return <span className="text-[#ff9800]">Applying</span>;
