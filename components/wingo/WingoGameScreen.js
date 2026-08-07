@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import LoadingDialog from "@/components/auth/LoadingDialog";
-import { Trophy, ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
+import { Trophy, ArrowLeft, ArrowRight, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getToken, getUser } from "@/lib/auth";
 import { getSocket } from "@/lib/socket";
@@ -758,19 +758,19 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
             <div className="absolute right-6 flex items-center gap-8">
               <button
                 type="button"
-                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888] flex items-center justify-center"
                 disabled={gameHistoryPage === 1}
                 onClick={() => setGameHistoryPage((p) => p - 1)}
               >
-                <span className="text-[17px] font-bold">&lt;</span>
+                <ChevronLeft size={18} />
               </button>
               <button
                 type="button"
-                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888] flex items-center justify-center"
                 disabled={gameHistoryPage === gameHistoryPageCount}
                 onClick={() => setGameHistoryPage((p) => p + 1)}
               >
-                <span className="text-[17px] font-bold">&gt;</span>
+                <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -1034,19 +1034,19 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
                       <div className="absolute right-6 flex items-center gap-8">
                         <button
                           type="button"
-                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888] flex items-center justify-center"
                           disabled={myBetsPage === 1}
                           onClick={() => setMyBetsPage((p) => p - 1)}
                         >
-                          <span className="text-[17px] font-bold">&lt;</span>
+                          <ChevronLeft size={18} />
                         </button>
                         <button
                           type="button"
-                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888]"
+                          className="disabled:opacity-30 cursor-pointer bg-transparent border-none outline-none text-[#888] flex items-center justify-center"
                           disabled={myBetsPage === myBetsPageCount || myBetsPageCount <= 1}
                           onClick={() => setMyBetsPage((p) => p + 1)}
                         >
-                          <span className="text-[17px] font-bold">&gt;</span>
+                          <ChevronRight size={18} />
                         </button>
                       </div>
                     </div>
