@@ -198,7 +198,7 @@ export default function WithdrawHistoryPage() {
 
             const orderNum = getOrderNumber(w);
             const remarks = w.status === "REJECTED" 
-              ? (noteDetails.failureReason || "Rejected by administrator") 
+              ? (noteDetails.failureReason || "Refused by administrator") 
               : (noteDetails.gatewayStatus === "failed" ? noteDetails.failureReason : "—");
 
             let formattedStatus = "Pending";
@@ -206,13 +206,13 @@ export default function WithdrawHistoryPage() {
             const statusUpper = String(w.status || "").toUpperCase();
 
             if (statusUpper === "REJECTED") {
-              formattedStatus = "Rejected";
+              formattedStatus = "Refused";
               statusClass = "rejected";
             } else if (statusUpper === "PENDING") {
               formattedStatus = "Pending";
               statusClass = "pending";
-            } else if (statusUpper === "APPROVED" && noteDetails.gatewayStatus === "success") {
-              formattedStatus = "Success";
+            } else if (statusUpper === "APPROVED") {
+              formattedStatus = "Agree";
               statusClass = "success";
             } else {
               formattedStatus = "Processing";
@@ -333,7 +333,7 @@ export default function WithdrawHistoryPage() {
           color: #e5a93c;
         }
         .withdraw-status-text.success {
-          color: #4ade80;
+          color: #009688;
         }
         .withdraw-status-text.rejected {
           color: #d32f2f;

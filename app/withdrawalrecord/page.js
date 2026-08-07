@@ -42,17 +42,19 @@ export default function WithdrawalRecordPage() {
       note = JSON.parse(noteStr || "{}");
     } catch (e) {}
 
-    if (status === "rejected" || status === "REJECTED" || status === "failed" || status === "FAILED") {
-      return null;
+    const statusUpper = String(status || "").toUpperCase();
+
+    if (statusUpper === "REJECTED" || statusUpper === "FAILED") {
+      return <span className="text-[#f44336]">Refused</span>;
     }
-    if (status === "pending" || status === "PENDING") {
+    if (statusUpper === "PENDING") {
       return <span className="text-[#ff9800]">Applying</span>;
     }
-    if (status === "approved" || status === "APPROVED") {
+    if (statusUpper === "APPROVED") {
       if (note.gatewayStatus === "success") {
         return <span className="text-[#9c27b0]">Withdrawing</span>;
       }
-      return <span className="text-[#4caf50]">Agree</span>;
+      return <span className="text-[#009688]">Agree</span>;
     }
     return <span className="text-[#ff9800]">Applying</span>;
   };
