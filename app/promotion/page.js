@@ -66,11 +66,7 @@ export default function PromotionPage() {
   const copyLink = () => {
     if (!referralLink) return;
     navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => {
-      pushToast("success", "success");
-      setCopied(false);
-    }, 1000);
+    pushToast("success", "success");
   };
 
   const referrals = data?.referrals || [];
@@ -142,7 +138,7 @@ export default function PromotionPage() {
           onClick={copyLink} 
           className="w-full max-w-[340px] bg-[#fdfdfd] border-none text-[#333] text-[15px] py-3 rounded-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] cursor-pointer"
         >
-          {copied ? "Copied!" : "Copy Link"}
+          Copy Link
         </button>
       </div>
 
