@@ -7,6 +7,9 @@ export default function PlatformRoot({ children }) {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
+        if (typeof window !== "undefined" && window.location.pathname.startsWith("/recharge")) {
+          return;
+        }
         window.location.reload();
       }
     };

@@ -172,12 +172,8 @@ export default function RechargePage() {
       setSubmitLoading(true);
       try {
         const res = await getDepositPayment(undefined, undefined, idParam);
-        if (res?.success) {
-          if (res.data?.type === "crypto") {
-            setCryptoDetails(res.data);
-          } else if (res.data?.checkoutUrl) {
-            setActiveCheckoutUrl(res.data.checkoutUrl);
-          }
+        if (res?.success && res.data?.checkoutUrl) {
+          setActiveCheckoutUrl(res.data.checkoutUrl);
         }
       } catch (err) {
         console.error("Failed to load pending deposit:", err);
@@ -247,9 +243,6 @@ export default function RechargePage() {
 
       if (paymentData.type === "crypto") {
         setCryptoDetails(paymentData);
-        if (typeof window !== "undefined") {
-          window.history.pushState(null, "", `/recharge?id=${paymentData.depositId}`);
-        }
         return;
       }
 
@@ -425,12 +418,7 @@ export default function RechargePage() {
         <nav className="bg-white h-[60px] px-6 flex items-center justify-between sticky top-0 z-10 border-b border-[#ebedf0] w-full">
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  window.history.pushState(null, "", "/recharge");
-                }
-                setCryptoDetails(null);
-              }} 
+              onClick={() => setCryptoDetails(null)} 
               className="text-[#323233] bg-transparent border-none outline-none flex items-center p-0 cursor-pointer"
             >
               <span className="material-icons-outlined text-[24px]">arrow_back</span>
