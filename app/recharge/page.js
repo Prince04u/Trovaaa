@@ -77,6 +77,7 @@ export default function RechargePage() {
   const [amount, setAmount] = useState("");
   const [paymentType, setPaymentType] = useState("");
   const [channels, setChannels] = useState([]);
+  const [error, setErrorState] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -89,6 +90,7 @@ export default function RechargePage() {
   };
 
   const setError = (msg) => {
+    setErrorState(msg);
     if (msg) {
       triggerToast(msg);
     }
