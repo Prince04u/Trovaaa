@@ -758,12 +758,11 @@ export function GameBoard({ mode, modeLabel }: { mode: string; modeLabel: string
                           {bet.id}
                           <button
                             type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={() => {
                               navigator.clipboard.writeText(bet.id);
-                              alert("Order ID copied successfully!");
+                              pushToast("Order ID copied successfully!", "success");
                             }}
-                            className="text-gold hover:underline p-0.5"
+                            className="bg-transparent border-none outline-none text-[#ff8093] p-1 flex items-center justify-center cursor-pointer hover:bg-red-50 rounded"
                           >
                             Copy
                           </button>

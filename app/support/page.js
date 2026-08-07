@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import api from "@/lib/api";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 function SupportContent() {
+  const { toasts, push: pushToast } = useToasts();
   const searchParams = useSearchParams();
   const [selectedForm, setSelectedForm] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -67,7 +69,7 @@ function SupportContent() {
 
   const triggerOtp = () => {
     if (!formData.phoneOrEmail) {
-      alert("Please enter your registered phone number or email.");
+      pushToast("Please enter your registered phone number or email.");
       return;
     }
     setOtpSent(true);
@@ -143,7 +145,7 @@ function SupportContent() {
         setOtpSent(false);
       }, 3000);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to submit request. Please try again.");
+      pushToast(err.response?.data?.message || "Failed to submit request. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -1183,6 +1185,7 @@ function SupportContent() {
           to { transform: scale(1); opacity: 1; }
         }
       `}</style>
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

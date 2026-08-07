@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
 import { getToken } from "@/lib/auth";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 const TYPE_OPTIONS = [
   "Suggestion",
@@ -18,6 +19,7 @@ const TYPE_OPTIONS = [
 
 export default function AddComplaintsPage() {
   const router = useRouter();
+  const { toasts, push: pushToast } = useToasts();
   const [type, setType] = useState("Recharge Problem");
   const [tempType, setTempType] = useState("Recharge Problem");
   const [showTypePicker, setShowTypePicker] = useState(false);
@@ -34,7 +36,7 @@ export default function AddComplaintsPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!description.trim()) {
-      alert("Please enter description");
+      pushToast("Please enter description");
       return;
     }
 
@@ -63,10 +65,12 @@ export default function AddComplaintsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to submit complaint");
 
-      alert("Complaint submitted successfully!");
-      router.push("/complaints");
+      pushToast("Complaint submitted successfully!", "success");
+      setTimeout(() => {
+        router.push("/complaints");
+      }, 1000);
     } catch (err) {
-      alert(err.message || "Failed to submit complaint.");
+      pushToast(err.message || "Failed to submit complaint.");
     } finally {
       setLoading(false);
     }
@@ -206,6 +210,7 @@ export default function AddComplaintsPage() {
       )}
 
       <BottomNav />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

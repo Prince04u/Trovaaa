@@ -1254,7 +1254,7 @@ export default function K3GameScreen({ initialPeriod = null, initialResults = []
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     navigator.clipboard.writeText(bet.orderNumber || "");
-                                    alert("Order number copied successfully!");
+                                    pushToast("Order number copied successfully!", "success");
                                   }}
                                   style={{
                                     background: "none",

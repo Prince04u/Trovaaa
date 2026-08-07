@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 type Creator = {
   id: string;
@@ -41,6 +42,7 @@ type PermittedUser = {
 };
 
 export default function AdminRedEnvelopePage() {
+  const { toasts, push: pushToast } = useToasts();
   const [envelopes, setEnvelopes] = useState<RedEnvelope[]>([]);
   const [permittedUsers, setPermittedUsers] = useState<PermittedUser[]>([]);
   const [loadingEnvelopes, setLoadingEnvelopes] = useState(true);
@@ -227,7 +229,7 @@ export default function AdminRedEnvelopePage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert("Copied to clipboard!");
+    pushToast("Copied to clipboard!", "success");
   };
 
   return (
@@ -540,6 +542,7 @@ export default function AdminRedEnvelopePage() {
           );
         })()}
       </section>
+      <ToastStack toasts={toasts} />
     </div>
   );
 }

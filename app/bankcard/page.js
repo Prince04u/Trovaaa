@@ -48,7 +48,11 @@ export default function BankCardPage() {
       // 3. Redirect to add bank card page with edit mode
       router.push("/addbankcard?edit=true");
     } catch (err) {
-      alert(err.response?.data?.message || err.message || "Failed to update account.");
+      push(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to update account.",
+      );
       setLoading(false);
     }
   };

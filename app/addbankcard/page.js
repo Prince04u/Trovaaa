@@ -122,7 +122,7 @@ export default function AddBankCardPage() {
         }, 1500);
       }, 1000);
     } catch (err) {
-      alert(
+      pushToast(
         err.response?.data?.message ||
           err.message ||
           "Failed to save bank card.",
@@ -134,7 +134,7 @@ export default function AddBankCardPage() {
 
   const handleSendOtp = async () => {
     if (!form.accountPhone) {
-      alert("Phone number not found.");
+      pushToast("Phone number not found.");
       return;
     }
     setSubmitLoading(true);
@@ -146,7 +146,7 @@ export default function AddBankCardPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message || "Failed to send OTP");
+        pushToast(data.message || "Failed to send OTP");
       } else {
         setTimeout(() => {
           pushToast("success", "success");
@@ -154,7 +154,7 @@ export default function AddBankCardPage() {
         }, 1000);
       }
     } catch (err) {
-      alert("Failed to send OTP. Please check your network connection.");
+      pushToast("Failed to send OTP. Please check your network connection.");
     } finally {
       setSubmitLoading(false);
     }

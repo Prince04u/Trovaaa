@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/components/home/BottomNav";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function AddAddressPage() {
   const router = useRouter();
+  const { toasts, push: pushToast } = useToasts();
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [pincode, setPincode] = useState("");
@@ -16,8 +18,10 @@ export default function AddAddressPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Address added successfully!");
-    router.push("/address");
+    pushToast("Address added successfully!", "success");
+    setTimeout(() => {
+      router.push("/address");
+    }, 1000);
   };
 
   return (
@@ -106,6 +110,7 @@ export default function AddAddressPage() {
       </form>
 
       <BottomNav />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }

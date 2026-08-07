@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/home/BottomNav";
+import { useToasts, ToastStack } from "@/components/ui/Toast";
 
 export default function LuckDrawPage() {
+  const { toasts, push: pushToast } = useToasts();
   const [spinning, setSpinning] = useState(false);
 
   const handleSpin = () => {
@@ -12,7 +14,7 @@ export default function LuckDrawPage() {
     setSpinning(true);
     setTimeout(() => {
       setSpinning(false);
-      alert("Congratulations! You won a gift bonus!");
+      pushToast("Congratulations! You won a gift bonus!", "success");
     }, 3000);
   };
 
@@ -45,6 +47,7 @@ export default function LuckDrawPage() {
       </div>
 
       <BottomNav />
+      <ToastStack toasts={toasts} />
     </main>
   );
 }
