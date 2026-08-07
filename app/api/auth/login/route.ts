@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const cleanMobile = String(mobile).trim();
     const isEmail = cleanMobile.includes("@");
     if (!isEmail && !/^\+91\d{10}$/.test(cleanMobile)) {
-      return NextResponse.json({ message: "Invalid phone number format. Must be +91 followed by 10 digits." }, { status: 400 });
+      return NextResponse.json({ message: "invalid phone number" }, { status: 400 });
     }
 
     const user = await prisma.user.findUnique({

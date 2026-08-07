@@ -25,11 +25,6 @@ export async function POST(req: NextRequest) {
     const cleanMobile = String(mobile).trim().toLowerCase();
     const cleanCode = String(code).trim();
 
-    const isEmail = cleanMobile.includes("@");
-    if (!isEmail && !/^\+91\d{10}$/.test(cleanMobile)) {
-      return NextResponse.json({ message: "Invalid phone number format. Must be +91 followed by 10 digits." }, { status: 400 });
-    }
-
     // Verify OTP code
     const storedOtp = await prisma.otp.findUnique({
       where: { phone: cleanMobile },
@@ -37,6 +32,11 @@ export async function POST(req: NextRequest) {
 
     if (!storedOtp) {
       return NextResponse.json({ message: "Verification Code is false" }, { status: 400 });
+    }
+
+    const isEmail = cleanMobile.includes("@");
+    if (!isEmail && !/^\+91\d{10}$/.test(cleanMobile)) {
+      return NextResponse.json({ message: "invalid phone number" }, { status: 400 });
     }
 
     // Check expiration (5 minutes)
