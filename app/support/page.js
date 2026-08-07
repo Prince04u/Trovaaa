@@ -823,7 +823,7 @@ function SupportContent() {
                 <span className="arrow">›</span>
               </div>
 
-              <a href="#" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
+              <a href="https://t.me/luvomall66666" target="_blank" rel="noopener noreferrer" className="service-item" style={{ textDecoration: "none" }}>
                 <div className="item-left">
                   <div className="item-icon" style={{ background: "rgba(0, 136, 204, 0.1)", color: "#0088cc", border: "1px solid rgba(0, 136, 204, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", width: "28px", height: "28px" }}>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
