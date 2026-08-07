@@ -11,15 +11,16 @@ import { AdjustBalanceForm } from "./AdjustBalanceForm";
 import { getAdminPathPrefix } from "@/lib/admin/path";
 import { SortSelector } from "./SortSelector";
 import { SunpaysSyncButton } from "./SunpaysSyncButton";
+import Link from "next/link";
 
 export default async function AdminWalletPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; sort?: "asc" | "desc" }>;
+  searchParams: Promise<{ q?: string; sort?: "asc" | "desc"; tab?: string }>;
 }) {
   const staff = await requirePermission("wallet.view");
   const canAdjust = await hasPermission(staff, "wallet.adjust");
-  const { q = "", sort = "desc" } = await searchParams;
+  const { q = "", sort = "desc", tab = "pending-deposits" } = await searchParams;
   const prefix = getAdminPathPrefix();
 
   const [{ deposits, withdraws }, stats, depositHistory, withdrawHistory] = await Promise.all([
@@ -37,6 +38,24 @@ export default async function AdminWalletPage({
     { label: "Real Withdrawals (All-time)", value: formatAmount(stats.realWithdrawalsTotal), tone: "text-red" },
   ];
 
+  const tabs = [
+    { id: "pending-deposits", label: `Pending Deposits (${deposits.length})` },
+    { id: "pending-withdrawals", label: `Pending Withdrawals (${withdraws.length})` },
+    { id: "deposit-history", label: "Deposit History" },
+    { id: "withdraw-history", label: "Withdrawal History" },
+  ];
+  if (canAdjust) {
+    tabs.push({ id: "adjust-balance", label: "Adjust Balance" });
+  }
+
+  const makeTabUrl = (tabId: string) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (sort !== "desc") params.set("sort", sort);
+    params.set("tab", tabId);
+    return `${prefix}/wallet?${params.toString()}`;
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -53,226 +72,252 @@ export default async function AdminWalletPage({
         ))}
       </div>
 
-      <section className="card-surface rounded-2xl p-6">
-        <SunpaysSyncButton />
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <h2 className="font-semibold">Pending deposits ({deposits.length})</h2>
-            {q && (
-              <span className="text-xs bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded flex items-center gap-1.5">
-                Filtered by: "{q}"
-                <a href={prefix + "/wallet"} className="text-red font-bold hover:underline">×</a>
-              </span>
-            )}
+      {/* Tab Bar Switcher */}
+      <div className="flex flex-wrap gap-2 border-b border-border pb-4">
+        {tabs.map((t) => {
+          const isActive = tab === t.id;
+          return (
+            <Link
+              key={t.id}
+              href={makeTabUrl(t.id)}
+              className={clsx(
+                "px-4 py-2 text-xs font-semibold rounded-lg transition-all",
+                isActive
+                  ? "bg-gold-gradient text-white shadow-md"
+                  : "bg-surface-2 hover:bg-surface-3 text-muted border border-border"
+              )}
+            >
+              {t.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Conditionally Render Sections based on active Tab */}
+      {tab === "pending-deposits" && (
+        <section className="card-surface rounded-2xl p-6">
+          <SunpaysSyncButton />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <h2 className="font-semibold">Pending deposits ({deposits.length})</h2>
+              {q && (
+                <span className="text-xs bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded flex items-center gap-1.5">
+                  Filtered by: "{q}"
+                  <Link href={prefix + "/wallet?tab=pending-deposits"} className="text-red font-bold hover:underline">×</Link>
+                </span>
+              )}
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-3">
+              <form className="flex items-center gap-1.5" method="GET">
+                <input type="hidden" name="tab" value="pending-deposits" />
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={q}
+                  placeholder="Search UID, phone, name..."
+                  className="text-xs rounded bg-surface-2 border border-border px-2.5 py-1.5 outline-none focus:border-gold/60 w-48"
+                />
+                {sort && <input type="hidden" name="sort" value={sort} />}
+                <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-gold text-white rounded hover:bg-gold/90 transition-colors">
+                  Search
+                </button>
+              </form>
+              <SortSelector currentSort={sort} />
+            </div>
           </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
-            <form className="flex items-center gap-1.5" method="GET">
-              <input
-                type="text"
-                name="q"
-                defaultValue={q}
-                placeholder="Search UID, phone, name..."
-                className="text-xs rounded bg-surface-2 border border-border px-2.5 py-1.5 outline-none focus:border-gold/60 w-48"
-              />
-              {sort && <input type="hidden" name="sort" value={sort} />}
-              <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-gold text-white rounded hover:bg-gold/90 transition-colors">
-                Search
-              </button>
-            </form>
-            <SortSelector currentSort={sort} />
-          </div>
-        </div>
-        {deposits.length === 0 ? (
-          <p className="text-sm text-muted">No pending deposit requests.</p>
-        ) : (
-          <div className="flex flex-col divide-y divide-border">
-            {deposits.map((d) => (
-              <div key={d.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
-                <div>
-                  <p className="font-medium">{d.user.displayName}</p>
-                  <p className="text-xs text-muted">
-                    {d.user.phone} · UID: <span className="font-semibold text-foreground select-all">{d.user.uid}</span> · {formatAmount(d.amount)}
-                  </p>
-                  {(() => {
-                    let noteDetails: any = {};
-                    try {
-                      noteDetails = JSON.parse(d.note || "{}");
-                    } catch {}
-                    
-                    return (
-                      <div className="mt-1.5 flex flex-col gap-1 text-xs">
-                        {noteDetails.paymentId && (
-                          <p className="text-[10px] text-muted">
-                            Gateway: {noteDetails.payCurrency?.toUpperCase()} · ID: {noteDetails.paymentId} {noteDetails.gatewayStatus ? `(${noteDetails.gatewayStatus})` : ""}
-                          </p>
-                        )}
-                        {noteDetails.txid && (
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="text-[10px] text-muted uppercase">TXID:</span>
-                            <span className="font-mono bg-surface-3 border border-border px-1.5 py-0.5 rounded text-foreground select-all text-[11px]">
-                              {noteDetails.txid}
-                            </span>
+          {deposits.length === 0 ? (
+            <p className="text-sm text-muted">No pending deposit requests.</p>
+          ) : (
+            <div className="flex flex-col divide-y divide-border">
+              {deposits.map((d) => (
+                <div key={d.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
+                  <div>
+                    <p className="font-medium">{d.user.displayName}</p>
+                    <p className="text-xs text-muted">
+                      {d.user.phone} · UID: <span className="font-semibold text-foreground select-all">{d.user.uid}</span> · {formatAmount(d.amount)}
+                    </p>
+                    {(() => {
+                      let noteDetails: any = {};
+                      try {
+                        noteDetails = JSON.parse(d.note || "{}");
+                      } catch {}
+                      if (noteDetails.channelName || noteDetails.utr) {
+                        return (
+                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted mt-1 bg-surface-3 border border-border/60 rounded px-2.5 py-1">
+                            {noteDetails.channelName && <span>Channel: <strong className="text-foreground">{noteDetails.channelName}</strong></span>}
+                            {noteDetails.utr && <span>UTR: <strong className="text-gold select-all">{noteDetails.utr}</strong></span>}
                           </div>
-                        )}
-                        {noteDetails.screenshotUrl && (
-                          <a
-                            href={noteDetails.screenshotUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gold hover:underline mt-1 flex items-center gap-1 text-[11px] font-medium"
-                          >
-                            🖼️ View Payment Proof Screenshot
-                          </a>
-                        )}
-                        {noteDetails.manualChannelLabel && (
-                          <p className="text-[10px] text-muted">
-                            Method: {noteDetails.manualChannelLabel}
-                          </p>
-                        )}
+                        );
+                      }
+                      return null;
+                    })()}
+                  </div>
+                  <div className="flex gap-2 shrink-0 self-end sm:self-center">
+                    <form action={approveDepositAction} className="flex flex-wrap items-center gap-1.5">
+                      <input type="hidden" name="id" value={d.id} />
+                      <input
+                        type="text"
+                        name="channelTxId"
+                        placeholder="Tx ID (optional)"
+                        className="text-xs rounded bg-surface-2 border border-border px-2 py-1 outline-none focus:border-gold/60 max-w-[120px]"
+                      />
+                      <Button type="submit" className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700">Approve</Button>
+                    </form>
+                    <form action={rejectDepositAction} className="flex items-center gap-1.5">
+                      <input type="hidden" name="id" value={d.id} />
+                      <input
+                        type="text"
+                        name="reason"
+                        placeholder="Reason (optional)"
+                        className="text-xs rounded bg-surface-2 border border-border px-2 py-1 outline-none focus:border-gold/60 max-w-[120px]"
+                      />
+                      <Button type="submit" variant="danger" className="text-xs px-3 py-1.5">Reject</Button>
+                    </form>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {tab === "pending-withdrawals" && (
+        <section className="card-surface rounded-2xl p-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <h2 className="font-semibold">Pending withdrawals ({withdraws.length})</h2>
+              {q && (
+                <span className="text-xs bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded flex items-center gap-1.5">
+                  Filtered by: "{q}"
+                  <Link href={prefix + "/wallet?tab=pending-withdrawals"} className="text-red font-bold hover:underline">×</Link>
+                </span>
+              )}
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-3">
+              <form className="flex items-center gap-1.5" method="GET">
+                <input type="hidden" name="tab" value="pending-withdrawals" />
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={q}
+                  placeholder="Search UID, phone, name..."
+                  className="text-xs rounded bg-surface-2 border border-border px-2.5 py-1.5 outline-none focus:border-gold/60 w-48"
+                />
+                <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-gold text-white rounded hover:bg-gold/90 transition-colors">
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+          {withdraws.length === 0 ? (
+            <p className="text-sm text-muted">No pending withdrawal requests.</p>
+          ) : (
+            <div className="flex flex-col divide-y divide-border">
+              {withdraws.map((w) => (
+                <div key={w.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
+                  <div>
+                    <p className="font-medium">{w.user.displayName}</p>
+                    <p className="text-xs text-muted">
+                      {w.user.phone} · UID: <span className="font-semibold text-foreground select-all">{w.user.uid}</span> · Requested: <span className="font-bold text-red">{formatAmount(w.amount)}</span>
+                    </p>
+                    {w.userStats && (
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted mt-1">
+                        <span>Bal: <strong className="text-gold">{formatAmount(w.userStats.balance)}</strong></span>
+                        <span>Total Bets: <strong className="text-foreground">{formatAmount(w.userStats.totalBets)}</strong></span>
+                        <span>Recharge: <strong className="text-green">{formatAmount(w.userStats.totalRecharge)}</strong></span>
+                        <span>by refer: <strong className="text-emerald-400">{formatAmount(w.userStats.totalReferralReward)}</strong></span>
                       </div>
-                    );
-                  })()}
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2 shrink-0 self-end sm:self-center">
+                    <form action={approveWithdrawAction}>
+                      <input type="hidden" name="id" value={w.id} />
+                      <input type="hidden" name="isMock" value="false" />
+                      <Button type="submit" className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700">Approve Real</Button>
+                    </form>
+                    <form action={approveWithdrawAction}>
+                      <input type="hidden" name="id" value={w.id} />
+                      <input type="hidden" name="isMock" value="true" />
+                      <Button type="submit" className="text-xs px-3 py-1.5 bg-amber-600 hover:bg-amber-700">Approve Mock</Button>
+                    </form>
+                    <form action={rejectWithdrawAction}>
+                      <input type="hidden" name="id" value={w.id} />
+                      <Button type="submit" variant="danger" className="text-xs px-3 py-1.5">Reject</Button>
+                    </form>
+                  </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 shrink-0 self-end sm:self-center">
-                  <form action={approveDepositAction} className="flex flex-wrap items-center gap-1.5">
-                    <input type="hidden" name="id" value={d.id} />
-                    <input
-                      type="number"
-                      name="customAmount"
-                      placeholder="Override amount..."
-                      className="text-xs px-2.5 py-1.5 rounded-xl border border-border bg-background w-28 outline-none placeholder:text-[10px]"
-                      step="any"
-                      min="1"
-                    />
-                    <Button type="submit" name="isMock" value="false" className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700">Approve Real</Button>
-                    <Button type="submit" name="isMock" value="true" className="text-xs px-3 py-1.5 bg-amber-600 hover:bg-amber-700">Approve Mock</Button>
-                  </form>
-                  <form action={rejectDepositAction} className="flex items-center gap-1.5">
-                    <input type="hidden" name="id" value={d.id} />
-                    <input
-                      type="text"
-                      name="remarks"
-                      placeholder="Remarks..."
-                      className="text-xs px-2.5 py-1.5 rounded-xl border border-border bg-background max-w-[120px] outline-none"
-                    />
-                    <Button type="submit" variant="danger" className="text-xs px-3 py-1.5 shrink-0">Reject</Button>
-                  </form>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
-      <section className="card-surface rounded-2xl p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <h2 className="font-semibold">Pending withdrawals ({withdraws.length})</h2>
-            {q && (
-              <span className="text-xs bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded flex items-center gap-1.5">
-                Filtered by: "{q}"
-                <a href={prefix + "/wallet"} className="text-red font-bold hover:underline">×</a>
-              </span>
-            )}
-          </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
-            <form className="flex items-center gap-1.5" method="GET">
-              <input
-                type="text"
-                name="q"
-                defaultValue={q}
-                placeholder="Search UID, phone, name..."
-                className="text-xs rounded bg-surface-2 border border-border px-2.5 py-1.5 outline-none focus:border-gold/60 w-48"
-              />
-              {sort && <input type="hidden" name="sort" value={sort} />}
-              <button type="submit" className="text-xs font-semibold px-3 py-1.5 bg-gold text-white rounded hover:bg-gold/90 transition-colors">
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-        {withdraws.length === 0 ? (
-          <p className="text-sm text-muted">No pending withdrawal requests.</p>
-        ) : (
-          <div className="flex flex-col divide-y divide-border">
-            {withdraws.map((w) => (
-              <div key={w.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
-                <div>
-                  <p className="font-medium">{w.user.displayName}</p>
-                  <p className="text-xs text-muted">
-                    {w.user.phone} · UID: <span className="font-semibold text-foreground select-all">{w.user.uid}</span> · Requested: <span className="font-bold text-red">{formatAmount(w.amount)}</span>
-                  </p>
-                  {w.userStats && (
-                    <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted mt-1">
-                      <span>Bal: <strong className="text-gold">{formatAmount(w.userStats.balance)}</strong></span>
-                      <span>Total Bets: <strong className="text-foreground">{formatAmount(w.userStats.totalBets)}</strong></span>
-                      <span>Recharge: <strong className="text-green">{formatAmount(w.userStats.totalRecharge)}</strong></span>
-                      <span>by refer: <strong className="text-emerald-400">{formatAmount(w.userStats.totalReferralReward)}</strong></span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2 shrink-0 self-end sm:self-center">
-                  <form action={approveWithdrawAction}>
-                    <input type="hidden" name="id" value={w.id} />
-                    <input type="hidden" name="isMock" value="false" />
-                    <Button type="submit" className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700">Approve Real</Button>
-                  </form>
-                  <form action={approveWithdrawAction}>
-                    <input type="hidden" name="id" value={w.id} />
-                    <input type="hidden" name="isMock" value="true" />
-                    <Button type="submit" className="text-xs px-3 py-1.5 bg-amber-600 hover:bg-amber-700">Approve Mock</Button>
-                  </form>
-                  <form action={rejectWithdrawAction}>
-                    <input type="hidden" name="id" value={w.id} />
-                    <Button type="submit" variant="danger" className="text-xs px-3 py-1.5">Reject</Button>
-                  </form>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {canAdjust && (
+      {tab === "adjust-balance" && canAdjust && (
         <section className="card-surface rounded-2xl p-6">
           <h2 className="font-semibold mb-4">Manual balance adjustment</h2>
           <AdjustBalanceForm />
         </section>
       )}
 
-      <form className="card-surface rounded-2xl p-4 flex flex-wrap items-end gap-3" method="GET">
-        <label className="flex flex-col gap-1.5 text-sm flex-1 min-w-48">
-          <span className="text-muted text-xs">Search user (applies to history below)</span>
-          <input
-            type="text"
-            name="q"
-            defaultValue={q}
-            placeholder="Phone or display name…"
-            className="rounded-lg bg-surface-2 border border-border px-3.5 py-2.5 outline-none focus:border-gold/60"
-          />
-        </label>
-        <button type="submit" className="rounded-xl bg-gold-gradient text-white font-semibold px-6 py-2.5 text-sm">
-          Search
-        </button>
-      </form>
+      {tab === "deposit-history" && (
+        <>
+          <form className="card-surface rounded-2xl p-4 flex flex-wrap items-end gap-3" method="GET">
+            <input type="hidden" name="tab" value="deposit-history" />
+            <label className="flex flex-col gap-1.5 text-sm flex-1 min-w-48">
+              <span className="text-muted text-xs">Search user (applies to history below)</span>
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Phone or display name…"
+                className="rounded-lg bg-surface-2 border border-border px-3.5 py-2.5 outline-none focus:border-gold/60"
+              />
+            </label>
+            <button type="submit" className="rounded-xl bg-gold-gradient text-white font-semibold px-6 py-2.5 text-sm">
+              Search
+            </button>
+          </form>
 
-      <section className="card-surface rounded-2xl p-6 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="font-semibold">Deposit history</h2>
-          <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "deposit", q }} />
-        </div>
-        <HistoryTable rows={depositHistory} />
-      </section>
+          <section className="card-surface rounded-2xl p-6 overflow-x-auto">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h2 className="font-semibold">Deposit history</h2>
+              <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "deposit", q }} />
+            </div>
+            <HistoryTable rows={depositHistory} />
+          </section>
+        </>
+      )}
 
-      <section className="card-surface rounded-2xl p-6 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="font-semibold">Withdrawal history</h2>
-          <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "withdraw", q }} />
-        </div>
-        <HistoryTable rows={withdrawHistory} isWithdraw={true} />
-      </section>
+      {tab === "withdraw-history" && (
+        <>
+          <form className="card-surface rounded-2xl p-4 flex flex-wrap items-end gap-3" method="GET">
+            <input type="hidden" name="tab" value="withdraw-history" />
+            <label className="flex flex-col gap-1.5 text-sm flex-1 min-w-48">
+              <span className="text-muted text-xs">Search user (applies to history below)</span>
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Phone or display name…"
+                className="rounded-lg bg-surface-2 border border-border px-3.5 py-2.5 outline-none focus:border-gold/60"
+              />
+            </label>
+            <button type="submit" className="rounded-xl bg-gold-gradient text-white font-semibold px-6 py-2.5 text-sm">
+              Search
+            </button>
+          </form>
+
+          <section className="card-surface rounded-2xl p-6 overflow-x-auto">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h2 className="font-semibold">Withdrawal history</h2>
+              <CsvExportBar href="/api/yewu/wallet/export" extraParams={{ type: "withdraw", q }} />
+            </div>
+            <HistoryTable rows={withdrawHistory} isWithdraw={true} />
+          </section>
+        </>
+      )}
     </div>
   );
 }
