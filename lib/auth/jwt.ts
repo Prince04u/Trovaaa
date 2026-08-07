@@ -26,7 +26,7 @@ export async function getAuthUser(req: Request) {
       where: { id: decoded.id },
     });
 
-    if (user?.status === "SUSPENDED") return null;
+    if (user?.status === "SUSPENDED" || user?.phone?.includes("_deleted")) return null;
     if (user?.activeToken && user.activeToken !== token) return null;
     return user;
   } catch (err) {
