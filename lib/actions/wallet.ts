@@ -113,12 +113,9 @@ export async function requestDepositAction(_prevState: ActionState, formData: Fo
       const protocol = host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
       const ipnCallbackUrl = `${protocol}://${host}/api/wallet/nowpayments-ipn`;
 
-      // Convert INR to USD using the custom exchange rate (1 USD = 97 INR)
-      const priceAmountUsd = Number((amount / 97).toFixed(2));
-
-      // Call NOWPayments to generate payment
+      // Call NOWPayments to generate payment using the INR amount directly (since price_currency is hardcoded to "inr")
       const npPayment = await createNowPaymentsPayment(
-        priceAmountUsd,
+        amount,
         payCurrency,
         depositRequest.id,
         ipnCallbackUrl
@@ -147,7 +144,7 @@ export async function requestDepositAction(_prevState: ActionState, formData: Fo
       const updatedNote = JSON.stringify({
         paymentId: npPayment.payment_id,
         payAddress: npPayment.pay_address,
-        payAmount: priceAmountUsd,
+        payAmount: npPayment.pay_amount,
         payCurrency: npPayment.pay_currency,
         priceAmount: npPayment.price_amount,
         priceCurrency: npPayment.price_currency,
