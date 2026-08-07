@@ -261,7 +261,7 @@ export default function RedEnvelopePage() {
     }
 
     return (
-      <main className="min-h-screen bg-[#f4f5f6] flex flex-col w-full relative select-none text-[#333] font-sans pb-12">
+      <main className="min-h-screen bg-[#f4f5f6] flex flex-col w-full relative select-none text-[#333] font-sans pb-12 overflow-hidden">
         {/* Top Navbar */}
         <nav className="bg-[#009688] text-white h-[50px] px-4 flex items-center gap-3 sticky top-0 z-10 w-full shadow-sm">
           <button
@@ -273,25 +273,24 @@ export default function RedEnvelopePage() {
           <span className="text-[17px] font-normal text-white">Red Envelopes</span>
         </nav>
 
-        {/* Curved Background Header */}
-        <div className="w-full h-[130px] bg-[#d32f2f] rounded-b-[45%] absolute top-[50px] left-0 z-0 shadow-inner"></div>
+        {/* Curved Background Header (Keeping red as requested) */}
+        <div className="w-[120%] h-[160px] bg-[#d32f2f] absolute top-[50px] left-[-10%] z-0" style={{ borderBottomLeftRadius: '50%', borderBottomRightRadius: '50%' }}></div>
 
         {/* Main Claim Card */}
-        <div className="flex-1 flex justify-center px-4 mt-8 relative z-10">
-          <div className="w-full max-w-[340px] bg-white rounded-[16px] p-8 pt-6 flex flex-col items-center shadow-lg border border-[#eee] self-start mt-12">
-            <h2 className="text-[22px] font-bold text-[#111] mt-0 mb-2 tracking-wide text-center w-full">Surprise</h2>
+        <div className="flex-1 flex justify-center px-4 mt-6 relative z-10">
+          <div className="w-full max-w-[340px] bg-white rounded-[2px] p-6 pt-8 flex flex-col items-center shadow-md self-start mt-4">
+            <h2 className="text-[24px] font-bold text-[#111] mt-0 mb-4 tracking-wide text-center w-full">Surprise</h2>
 
             {/* Red Envelope Pouch Illustration */}
-            <div className="relative w-[250px] h-[250px] my-4 flex items-center justify-center">
+            <div className="relative w-[240px] h-[240px] my-2 flex items-center justify-center">
               <img
                 src="/images/red_envelope_pouch.png"
                 alt="Red Envelope"
                 className="w-full h-full object-contain mix-blend-multiply"
               />
-              <div className="absolute top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full">
-                <span className="font-bold tracking-wide font-sans drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.65)] select-all bg-gradient-to-t from-[#f4d497] to-[#fff] bg-clip-text text-transparent">
-                  <span className="text-[17px] mr-0.5">₹</span>
-                  <span className="text-[26px]">{(claimEnvelope?.amount ?? 0).toFixed(2)}</span>
+              <div className="absolute top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-full px-4">
+                <span className="font-bold tracking-wide font-sans drop-shadow-md text-[#fae1a2] text-[28px] whitespace-nowrap">
+                  ₹ {(claimEnvelope?.amount ?? 0).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -301,7 +300,7 @@ export default function RedEnvelopePage() {
               <button
                 onClick={handleClaimContinue}
                 disabled={claimingState}
-                className="w-full bg-[#d32f2f] hover:bg-[#c62828] text-white py-3 rounded-lg font-semibold text-[15px] border-none cursor-pointer shadow-md transition disabled:opacity-60 flex items-center justify-center"
+                className="w-full bg-[#c62828] hover:bg-[#b71c1c] text-white py-3.5 rounded-[4px] font-medium text-[16px] border-none cursor-pointer shadow-sm transition disabled:opacity-60 flex items-center justify-center"
               >
                 Continue
               </button>
