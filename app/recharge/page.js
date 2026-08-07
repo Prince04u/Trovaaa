@@ -248,7 +248,7 @@ export default function RechargePage() {
 
       if (paymentData.checkoutUrl) {
         if (typeof window !== "undefined") {
-          window.location.href = paymentData.checkoutUrl;
+          window.location.href = `/api/wallet/checkout-proxy?id=${paymentData.depositId}`;
         }
         return;
       }

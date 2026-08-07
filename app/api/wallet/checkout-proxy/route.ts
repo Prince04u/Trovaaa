@@ -1,14 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const url = searchParams.get("url");
+    let url = searchParams.get("url");
+    const id = searchParams.get("id");
+
+    if (!url && id) {
+      const deposit = await prisma.depositRequest.findUnique({
+        where: { id },
+      });
+      if (deposit && deposit.note) {
+        try {
+          const noteObj = JSON.parse(deposit.note);
+          url = noteObj.checkoutUrl || noteObj.url || null;
+        } catch {}
+      }
+    }
 
     if (!url) {
-      return new NextResponse("Missing checkout URL", { status: 400 });
+      return new NextResponse("Missing checkout URL or deposit ID", { status: 400 });
     }
 
     const targetUrl = new URL(url);
