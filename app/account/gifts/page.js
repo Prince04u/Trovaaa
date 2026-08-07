@@ -47,8 +47,16 @@ export default function GiftsPage() {
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const codeParam = searchParams.get("code");
+      if (codeParam) {
+        setCode(codeParam);
+      }
+    }
     if (!getToken()) {
-      router.replace("/login");
+      const currentUrl = window.location.pathname + window.location.search;
+      router.replace(`/login?redirect=${encodeURIComponent(currentUrl)}`);
       return;
     }
     loadHistory();

@@ -103,7 +103,7 @@ export default function PublicRedEnvelopesPage() {
         }, 1500);
       } else if (resData.alreadyClaimed) {
         setIsClaimed(true);
-        pushToast("Already claimed", "error");
+        pushToast("Has been received", "error");
         setTimeout(() => {
           router.push("/account");
         }, 1500);

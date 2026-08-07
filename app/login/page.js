@@ -7,7 +7,7 @@ import PhoneInput from "@/components/auth/PhoneInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import BottomNav from "@/components/home/BottomNav";
 import { login as loginRequest } from "@/lib/authApi";
-import { saveAuth } from "@/lib/auth";
+import { saveAuth, getToken } from "@/lib/auth";
 import { BACK_ICON_B64 } from "@/components/auth/AuthIconsData";
 import LoadingDialog from "@/components/auth/LoadingDialog";
 import { useToasts, ToastStack } from "@/components/ui/Toast";
@@ -21,6 +21,12 @@ function LoginFormComponent() {
   const { toasts, push: pushToast } = useToasts();
 
   useEffect(() => {
+    const token = getToken();
+    if (token) {
+      router.replace(redirectUrl || "/account");
+      return;
+    }
+
     if (typeof window !== "undefined") {
       if (sessionStorage.getItem("show_relogin_toast") === "true") {
         sessionStorage.removeItem("show_relogin_toast");
@@ -41,7 +47,7 @@ function LoginFormComponent() {
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [pushToast]);
+  }, [pushToast, router, redirectUrl]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
