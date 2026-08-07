@@ -25,6 +25,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Password error" }, { status: 400 });
     }
 
+    // Daily withdraw count limit validation
+    const midnight = startOfDay(new Date());
+    const withdrawalsCountToday = await prisma.withdrawRequest.count({
+      where: {
+        userId: user.id,
+        createdAt: { gte: midnight },
+      },
+    });
+
+    const dailyLimit = dbUser.dailyWithdrawLimit ?? 3;
+    if (withdrawalsCountToday >= dailyLimit) {
+      return NextResponse.json({ message: "Daily withdrawal limit has run out of time" }, { status: 400 });
+    }
+
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
       return NextResponse.json({ message: "Amount is required and must be positive" }, { status: 400 });
     }

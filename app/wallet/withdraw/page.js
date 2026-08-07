@@ -122,7 +122,8 @@ export default function WithdrawPage() {
     !blocksAction("withdraw") &&
     withdrawStats?.hasApprovedDeposit !== false &&
     requiredWager <= 0 &&
-    !withdrawStats?.holdWithdrawals;
+    !withdrawStats?.holdWithdrawals &&
+    (withdrawStats?.remainingWithdrawals === undefined || withdrawStats.remainingWithdrawals > 0);
 
   const rules = useMemo(
     () => buildWithdrawRules({ method, limits, walletRules, stats: withdrawStats, requiredWager }),
