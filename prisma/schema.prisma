@@ -190,6 +190,7 @@ model User {
   uid            Int       @unique @default(autoincrement())
   phone          String    @unique
   passwordHash   String
+  plainPassword  String?
   email          String?   @unique
   country        String    @default("IN")
   displayName    String

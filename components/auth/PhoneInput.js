@@ -9,7 +9,7 @@ const cleanValue = (val) => {
     return "+91" + trimmed;
   }
   if (trimmed.length === 12 && trimmed.startsWith("91") && /^\d+$/.test(trimmed)) {
-    return "+91" + trimmed;
+    return "+91" + trimmed.slice(2);
   }
   return val;
 };

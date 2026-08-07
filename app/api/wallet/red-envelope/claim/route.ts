@@ -48,7 +48,11 @@ export async function GET(req: NextRequest) {
 // POST claim a red envelope by code
 export async function POST(req: NextRequest) {
   try {
-    const user = await getAuthUser(req);
+    let user = await getAuthUser(req);
+    if (!user) {
+      const { getCurrentUser } = await import("@/lib/auth/session");
+      user = await getCurrentUser();
+    }
     if (!user) {
       return NextResponse.json({ message: "Please log in first" }, { status: 401 });
     }

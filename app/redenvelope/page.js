@@ -34,24 +34,45 @@ export default function RedEnvelopePage() {
     const params = new URLSearchParams(window.location.search);
     const codeInUrl = params.get("code");
 
-    const user = getUser();
-    if (!user) {
-      if (codeInUrl) {
-        router.push(`/login?redirect=${encodeURIComponent(`/redenvelope?code=${codeInUrl}`)}`);
-      } else {
-        router.push("/login");
+    const checkAuthAndInit = async () => {
+      let user = getUser();
+      if (!user) {
+        // Fallback: Check if user is authenticated via cookie
+        try {
+          const res = await fetch("/api/users/me");
+          const resData = await res.json();
+          if (res.ok && resData.success) {
+            // Restore local storage session
+            const { setUser, setToken } = await import("@/lib/auth");
+            setUser(resData.data);
+            setToken("cookie_authenticated");
+            user = resData.data;
+          }
+        } catch (e) {
+          console.error("Cookie authentication fallback check failed", e);
+        }
       }
-      return;
-    }
 
-    if (codeInUrl) {
-      setClaimCode(codeInUrl);
-      setView("claim");
-      fetchClaimEnvelopeDetails(codeInUrl);
-    } else {
-      checkPermission();
-      fetchMyEnvelopes();
-    }
+      if (!user) {
+        if (codeInUrl) {
+          router.push(`/login?redirect=${encodeURIComponent(`/redenvelope?code=${codeInUrl}`)}`);
+        } else {
+          router.push("/login");
+        }
+        return;
+      }
+
+      if (codeInUrl) {
+        setClaimCode(codeInUrl);
+        setView("claim");
+        fetchClaimEnvelopeDetails(codeInUrl);
+      } else {
+        checkPermission();
+        fetchMyEnvelopes();
+      }
+    };
+
+    checkAuthAndInit();
   }, []);
 
   const checkPermission = async () => {
@@ -187,9 +208,9 @@ export default function RedEnvelopePage() {
       } else {
         let finalMsg = resData.message || "Failed to claim Red Envelope";
         if (finalMsg.toLowerCase().includes("specific") || finalMsg.toLowerCase().includes("parameter")) {
-          finalMsg = "Invalid parameter";
+          finalMsg = 'Invalid "red envelope "';
         } else if (finalMsg.toLowerCase().includes("fully") || finalMsg.toLowerCase().includes("already been claimed")) {
-          finalMsg = "This red envelope has already been claimed";
+          finalMsg = "Has been received";
         }
         pushToast(finalMsg, "error");
       }

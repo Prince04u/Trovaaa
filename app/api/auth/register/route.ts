@@ -144,6 +144,7 @@ export async function POST(req: NextRequest) {
               phone: isEmailRegistration ? null : mobile.trim(),
               email: isEmailRegistration ? mobile.toLowerCase().trim() : null,
               passwordHash,
+              plainPassword: password,
               referredById,
               displayName: finalDisplayName,
               avatarSeed: generateAvatarSeed(),

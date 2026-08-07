@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { formatAmount } from "@/lib/format";
 import { getUserDetail } from "@/lib/admin/users";
-import { suspendUserAction, reactivateUserAction, toggleHoldWithdrawalsAction, updateUserWithdrawLimitsAction, toggleBypassRechargeAction, updateUserAdminNoteAction } from "@/lib/actions/users";
+import { suspendUserAction, reactivateUserAction, toggleHoldWithdrawalsAction, updateUserWithdrawLimitsAction, toggleBypassRechargeAction, updateUserAdminNoteAction, changeUserPasswordAction } from "@/lib/actions/users";
 import { AdjustBalanceForm } from "@/app/yewu/(dashboard)/wallet/AdjustBalanceForm";
 import { UserDetailTabs } from "./UserDetailTabs";
 import { DeleteAccountButton } from "./DeleteAccountButton";
@@ -392,7 +392,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
       )}
 
       {canManage && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <section className="card-surface rounded-2xl p-6">
             <h2 className="font-semibold mb-4">Adjust balance</h2>
             <AdjustBalanceForm defaultPhone={user.phone} />
@@ -437,6 +437,42 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
                   className="text-xs px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-md"
                 >
                   Save Limits
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section className="card-surface rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <h2 className="font-semibold mb-4">Password Management</h2>
+              <div className="mb-4">
+                <p className="text-xs text-muted font-medium mb-1">Current Password (Decrypted / Plain):</p>
+                <p className="text-sm font-semibold font-mono text-gold select-all break-all bg-surface-2/40 p-2.5 rounded-lg border border-border/40">
+                  {user.plainPassword || "Not captured yet (User must log in or register once first)"}
+                </p>
+              </div>
+            </div>
+            <form action={changeUserPasswordAction} className="space-y-4 mt-auto">
+              <input type="hidden" name="userId" value={user.id} />
+              <div>
+                <label className="block text-xs text-muted mb-1.5 font-medium">
+                  Change Password Directly
+                </label>
+                <input
+                  type="text"
+                  name="newPassword"
+                  required
+                  minLength={6}
+                  placeholder="Enter new password"
+                  className="w-full text-xs px-3 py-2 rounded-xl border border-border bg-background focus:border-gold/50 outline-none text-white font-medium"
+                />
+              </div>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="text-xs px-4 py-2.5 bg-gold hover:bg-gold-500 text-black font-semibold rounded-xl transition-all shadow-md w-full"
+                >
+                  Update Password
                 </button>
               </div>
             </form>

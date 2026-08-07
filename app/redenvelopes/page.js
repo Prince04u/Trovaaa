@@ -23,21 +23,41 @@ export default function PublicRedEnvelopesPage() {
     const cleanCode = c ? c.trim() : "";
     setCode(cleanCode);
 
-    // Authenticate first
-    const user = getUser();
-    if (!user) {
-      const redirectPath = cleanCode ? `/login?redirect=${encodeURIComponent(`/redenvelopes?code=${cleanCode}`)}` : "/login";
-      router.push(redirectPath);
-      return;
-    }
+    const checkAuthAndFetch = async () => {
+      let user = getUser();
+      if (!user) {
+        // Fallback: Check if user is authenticated via cookie
+        try {
+          const res = await fetch("/api/users/me");
+          const resData = await res.json();
+          if (res.ok && resData.success) {
+            // Restore local storage session
+            const { setUser, setToken } = await import("@/lib/auth");
+            setUser(resData.data);
+            setToken("cookie_authenticated");
+            user = resData.data;
+          }
+        } catch (e) {
+          console.error("Cookie authentication fallback check failed", e);
+        }
+      }
 
-    if (!cleanCode) {
-      setErrorMsg("Invalid Red Envelope Link");
-      setLoading(false);
-      return;
-    }
+      if (!user) {
+        const redirectPath = cleanCode ? `/login?redirect=${encodeURIComponent(`/redenvelopes?code=${cleanCode}`)}` : "/login";
+        router.push(redirectPath);
+        return;
+      }
 
-    fetchEnvelopeDetails(cleanCode);
+      if (!cleanCode) {
+        setErrorMsg("Invalid Red Envelope Link");
+        setLoading(false);
+        return;
+      }
+
+      await fetchEnvelopeDetails(cleanCode);
+    };
+
+    checkAuthAndFetch();
   }, []);
 
   const fetchEnvelopeDetails = async (c) => {
@@ -90,9 +110,9 @@ export default function PublicRedEnvelopesPage() {
       } else {
         let finalMsg = resData.message || "Failed to claim Red Envelope";
         if (finalMsg.toLowerCase().includes("specific") || finalMsg.toLowerCase().includes("parameter")) {
-          finalMsg = "Invalid parameter";
+          finalMsg = 'Invalid "red envelope "';
         } else if (finalMsg.toLowerCase().includes("fully") || finalMsg.toLowerCase().includes("already been claimed")) {
-          finalMsg = "This red envelope has already been claimed";
+          finalMsg = "Has been received";
         }
         pushToast(finalMsg, "error");
       }

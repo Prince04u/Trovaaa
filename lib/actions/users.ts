@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { assertPermission } from "@/lib/admin/permissions";
 import { logActivity } from "@/lib/admin/activity";
+import { hashPassword } from "@/lib/auth/password";
 
 async function logAudit(actorId: string, action: string, targetType: string, targetId?: string, meta?: Record<string, unknown>) {
   await prisma.auditLog.create({ data: { actorId, action, targetType, targetId, meta: meta as never } });
@@ -160,6 +161,31 @@ export async function deleteWithdrawalAccountAction(formData: FormData) {
     details: detailString 
   });
   await logActivity("USER_WITHDRAW_ACCOUNT_DELETED", `Deleted bound ${account.type.toUpperCase()} card/account (${detailString})`, staff.id, { userId });
+
+  revalidatePath(`/yewu/users/${userId}`);
+}
+
+export async function changeUserPasswordAction(formData: FormData) {
+  const staff = await assertPermission("users.manage");
+  const userId = String(formData.get("userId"));
+  const newPassword = String(formData.get("newPassword")).trim();
+
+  if (!newPassword || newPassword.length < 6) {
+    throw new Error("Password must be at least 6 characters long");
+  }
+
+  const passwordHash = await hashPassword(newPassword);
+
+  const target = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      passwordHash,
+      plainPassword: newPassword,
+    },
+  });
+
+  await logAudit(staff.id, "USER_PASSWORD_CHANGED", "User", userId, { phone: target.phone });
+  await logActivity("USER_PASSWORD_CHANGED", `Changed password for ${target.displayName} from admin panel`, staff.id, { userId });
 
   revalidatePath(`/yewu/users/${userId}`);
 }

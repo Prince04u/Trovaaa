@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 import type { User } from "@/generated/prisma/client";
 import jwt from "jsonwebtoken";
+import { prisma } from "@/lib/prisma";
 
 const COOKIE_NAME = process.env.SESSION_COOKIE_NAME || "luckynova_session";
 

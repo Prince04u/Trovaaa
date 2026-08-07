@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       data: { 
         lastLoginAt: new Date(),
         lastLoginIp: ip,
+        plainPassword: password,
       },
     });
     const mappedRole = user.role === "SUPER_ADMIN" ? "admin" : "player";
