@@ -450,20 +450,8 @@ export default function WingoGameScreen({ duration: propDuration, initialPeriod 
 
   const reloadInitiatedRef = useRef(false);
 
-  useEffect(() => {
-    if (period && remainingSeconds === 0 && !reloadInitiatedRef.current) {
-      reloadInitiatedRef.current = true;
-      setRefreshing(true);
-      const timer = setTimeout(() => {
-        if (typeof window !== "undefined") {
-          window.location.reload();
-        }
-      }, 1500);
-      return () => clearTimeout(timer);
-    } else if (remainingSeconds > 0) {
-      reloadInitiatedRef.current = false;
-    }
-  }, [remainingSeconds, period]);
+  // Automatic reload on round transitions is disabled to prevent full page reloads and heavy spinner loading.
+  // Instead, the smoothTick interval manages silent in-memory updates and triggers when results settle.
 
   const openBetSheet = (betType, betValue) => {
     if (showCountdownOverlay || maintenanceMode || blocksAction("bet")) return;

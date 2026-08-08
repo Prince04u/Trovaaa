@@ -114,18 +114,22 @@ export async function processPredictionQueue(originUrl?: string) {
         const headerValues = JSON.parse(pred.headerValues || "{}");
         const rows = JSON.parse(pred.rows || "[]") as TableRow[];
 
-        // Dynamically resolve row period numbers based on the scheduled execution time
+        // Dynamically resolve row period numbers based on the scheduled execution time if placeholder used
         const baseRoundNumbers: Record<string, bigint> = {};
         rows.forEach((row) => {
-          const modeStr = String(row.project || "").toLowerCase();
-          const mode = DURATION_MAP[modeStr];
-          if (mode) {
-            if (baseRoundNumbers[mode] === undefined) {
-              baseRoundNumbers[mode] = getRoundNumber(mode, pred.scheduledAt.getTime());
-            } else {
-              baseRoundNumbers[mode] = baseRoundNumbers[mode] + BigInt(1);
+          const cleanPeriod = String(row.period || "").trim();
+          const isNumeric = /^\d+$/.test(cleanPeriod);
+          if (!isNumeric) {
+            const modeStr = String(row.project || "").toLowerCase();
+            const mode = DURATION_MAP[modeStr];
+            if (mode) {
+              if (baseRoundNumbers[mode] === undefined) {
+                baseRoundNumbers[mode] = getRoundNumber(mode, pred.scheduledAt.getTime());
+              } else {
+                baseRoundNumbers[mode] = baseRoundNumbers[mode] + BigInt(1);
+              }
+              row.period = String(baseRoundNumbers[mode]);
             }
-            row.period = String(baseRoundNumbers[mode]);
           }
         });
 
@@ -149,7 +153,20 @@ export async function processPredictionQueue(originUrl?: string) {
             const periodIdStr = String(row.period || "").replace(/\D/g, "");
 
             if (mode && periodIdStr) {
-              const roundNumber = BigInt(periodIdStr);
+              let roundNumber = BigInt(periodIdStr);
+              // Expand 11-digit round numbers to 16-digits for auto override matching
+              if (periodIdStr.length === 11) {
+                const datePart = periodIdStr.substring(0, 8);
+                const countPart = periodIdStr.substring(8);
+                let middle = "00000";
+                if (mode === "PARITY") middle = "00300";
+                else if (mode === "BCONE") middle = "00390";
+                else if (mode === "S30") middle = "03000";
+                else if (mode === "M1") middle = "00100";
+                else if (mode === "M3") middle = "00300";
+                else if (mode === "M5") middle = "00500";
+                roundNumber = BigInt(datePart + middle + countPart);
+              }
               const { endsAt } = getRoundWindow(mode, roundNumber);
 
               // Only override if the round has not ended/settled yet

@@ -11,6 +11,13 @@ export interface TableRow {
   profit: string;
 }
 
+function formatPeriodId(id: string | bigint | number): string {
+  if (!id) return "";
+  const str = String(id).trim();
+  if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+  return str;
+}
+
 export async function generatePredictionImage(
   template: { imageUrl: string; fields: any },
   headerValues: Record<string, string>,
@@ -125,7 +132,7 @@ export async function generatePredictionImage(
 
             return (
               <div key={i} style={{ display: 'flex', width: 1972, height: 60, marginLeft: 38, backgroundColor: bgFill, borderLeft: '2px solid #e05307', borderRight: '2px solid #e05307', borderBottom: `2px solid ${bottomLineColor}` }}>
-                <div style={{ display: 'flex', width: 350, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.period}</div>
+                <div style={{ display: 'flex', width: 350, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{formatPeriodId(r.period)}</div>
                 <div style={{ display: 'flex', width: 322, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.project}</div>
                 <div style={{ display: 'flex', width: 314, borderRight: '2px solid #d3d3d3', backgroundColor: colourBg, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: colourBg ? '#ffffff' : '#222222' }}>{r.colour}</div>
                 <div style={{ display: 'flex', width: 316, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.amount}</div>
