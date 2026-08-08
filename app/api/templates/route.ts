@@ -50,10 +50,141 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const ext = file.name.split(".").pop() || "png";
 
-    // Read image metadata to dynamically place default coordinates
-    const metadata = await sharp(buffer).metadata();
+    // Read image metadata and raw pixels to dynamically place coordinates and detect table alignment
+    const rawImage = sharp(buffer);
+    const metadata = await rawImage.metadata();
     const width = metadata.width || 800;
     const height = metadata.height || 600;
+
+    const { data: rawData } = await rawImage.raw().toBuffer({ resolveWithObject: true });
+
+    // Auto-detect tableConfig from the uploaded PNG background image
+    let detectedTableConfig = null;
+    try {
+      const scanX = 50; // far left to avoid center figures/overlays
+      let orangeBottomY = -1;
+      let orangeTopY = -1;
+
+      for (let y = height - 1; y >= Math.max(0, height - 100); y--) {
+        const idx = (y * width + scanX) * 4;
+        const r = rawData[idx];
+        const g = rawData[idx + 1];
+        const b = rawData[idx + 2];
+
+        // Orange/Red detection (high red, low blue)
+        const isOrange = r > 140 && g < 130 && b < 100;
+
+        if (isOrange) {
+          if (orangeBottomY === -1) orangeBottomY = y;
+          orangeTopY = y;
+        } else {
+          if (orangeBottomY !== -1) break;
+        }
+      }
+
+      if (orangeTopY !== -1 && orangeBottomY !== -1) {
+        const y1 = orangeTopY + 2;
+        const y2 = orangeTopY + 4;
+        const y3 = orangeBottomY - 4;
+        const y4 = orangeBottomY - 2;
+
+        let leftBorder = -1;
+        for (let x = 0; x < width; x++) {
+          let orangeCount = 0;
+          for (const yVal of [y1, y2, y3, y4]) {
+            const idx = (yVal * width + x) * 4;
+            if (rawData[idx] > 140 && rawData[idx + 1] < 130 && rawData[idx + 2] < 100) {
+              orangeCount++;
+            }
+          }
+          if (orangeCount >= 3) {
+            leftBorder = x;
+            break;
+          }
+        }
+
+        let rightBorder = -1;
+        for (let x = width - 1; x >= 0; x--) {
+          let orangeCount = 0;
+          for (const yVal of [y1, y2, y3, y4]) {
+            const idx = (yVal * width + x) * 4;
+            if (rawData[idx] > 140 && rawData[idx + 1] < 130 && rawData[idx + 2] < 100) {
+              orangeCount++;
+            }
+          }
+          if (orangeCount >= 3) {
+            rightBorder = x;
+            break;
+          }
+        }
+
+        if (leftBorder !== -1 && rightBorder !== -1) {
+          const separators: number[] = [];
+          let inSeparator = false;
+          let currentSepStart = -1;
+
+          for (let x = leftBorder + 10; x < rightBorder - 10; x++) {
+            const b_top1 = rawData[(y1 * width + x) * 4 + 2];
+            const b_top2 = rawData[(y2 * width + x) * 4 + 2];
+            const b_bot1 = rawData[(y3 * width + x) * 4 + 2];
+            const b_bot2 = rawData[(y4 * width + x) * 4 + 2];
+
+            const hasTop = b_top1 > 60 || b_top2 > 60;
+            const hasBottom = b_bot1 > 60 || b_bot2 > 60;
+            const isWhiteLine = hasTop && hasBottom;
+
+            if (isWhiteLine) {
+              if (!inSeparator) {
+                inSeparator = true;
+                currentSepStart = x;
+              }
+            } else {
+              if (inSeparator) {
+                inSeparator = false;
+                const center = Math.round((currentSepStart + x - 1) / 2);
+                separators.push(center);
+              }
+            }
+          }
+
+          if (separators.length === 5) {
+            const widths: number[] = [];
+            let lastX = leftBorder;
+            for (const sep of separators) {
+              widths.push(sep - lastX);
+              lastX = sep;
+            }
+            widths.push(rightBorder - lastX);
+
+            const scaleFactor = 2048 / width;
+            const scaledLeft = Math.round(leftBorder * scaleFactor);
+            const scaledWidths = widths.map(w => Math.round(w * scaleFactor));
+            const totalWidth = scaledWidths.reduce((a, b) => a + b, 0);
+
+            detectedTableConfig = {
+              marginLeft: scaledLeft,
+              width: totalWidth,
+              colWidths: scaledWidths,
+              borderColor: "#fe7741",
+              innerBorderColor: "#ffebe0"
+            };
+          }
+        }
+      }
+    } catch (detectErr) {
+      console.error("Auto tableConfig detection failed, falling back:", detectErr);
+    }
+
+    const scale = 2048 / width;
+    const fallbackTableConfig = {
+      marginLeft: Math.round(39 * scale),
+      width: 1972,
+      colWidths: [350, 322, 314, 316, 330, 340].map(w => Math.round(w * scale)),
+      borderColor: "#fe7741",
+      innerBorderColor: "#ffebe0"
+    };
+
+    const tableConfig = detectedTableConfig || fallbackTableConfig;
 
     // Convert template background image to Base64 data URL directly
     const base64 = buffer.toString("base64");
@@ -61,6 +192,7 @@ export async function POST(req: NextRequest) {
 
     // Responsive default placements for fields based on image size
     const defaultFields = {
+      tableConfig,
       period: {
         text: "20260805001",
         x: Math.round(width / 2),
