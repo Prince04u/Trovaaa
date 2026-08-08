@@ -24,8 +24,10 @@ export function PeriodCalculator() {
   // Calculate single period for selected date & time
   const calculatedPeriod = useMemo(() => {
     try {
-      const dateTimeStr = `${selectedDate}T${selectedTime}:00`;
-      const timestamp = new Date(dateTimeStr).getTime();
+      const [year, month, day] = selectedDate.split("-").map(Number);
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+      const localDate = new Date(year, month - 1, day, hours, minutes, 0);
+      const timestamp = localDate.getTime();
       if (isNaN(timestamp)) return null;
 
       const roundNumber = getRoundNumber(selectedMode, timestamp);
@@ -46,8 +48,10 @@ export function PeriodCalculator() {
   const hourlyPeriods = useMemo(() => {
     try {
       const periods: { periodId: string; startsAt: Date; endsAt: Date }[] = [];
-      const dateTimeStr = `${selectedDate}T${selectedTime.split(":")[0]}:00:00`;
-      const baseTimestamp = new Date(dateTimeStr).getTime();
+      const [year, month, day] = selectedDate.split("-").map(Number);
+      const hours = Number(selectedTime.split(":")[0]);
+      const localDate = new Date(year, month - 1, day, hours, 0, 0);
+      const baseTimestamp = localDate.getTime();
       if (isNaN(baseTimestamp)) return [];
 
       const modeDurationSeconds = selectedMode === "S30" ? 30 : selectedMode === "M1" ? 60 : selectedMode === "M5" ? 300 : 180;
