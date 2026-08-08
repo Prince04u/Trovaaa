@@ -65,6 +65,17 @@ export async function processPredictionQueue(originUrl?: string) {
 
   for (const pred of pending) {
     try {
+      // Acquire lock atomically by transitioning status from PENDING to PROCESSING
+      const lock = await prisma.scheduledPrediction.updateMany({
+        where: { id: pred.id, status: "PENDING" },
+        data: { status: "PROCESSING" },
+      });
+
+      if (lock.count === 0) {
+        console.log(`[Queue] Prediction ${pred.id} already locked/processed. Skipping.`);
+        continue;
+      }
+
       console.log(`[Queue] Processing scheduled prediction ${pred.id}...`);
 
       if (pred.messageText) {
