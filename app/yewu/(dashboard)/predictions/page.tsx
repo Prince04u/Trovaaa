@@ -78,7 +78,7 @@ export default function PredictionsPage() {
   const [scheduledPredictions, setScheduledPredictions] = useState<any[]>([]);
   const [scheduleTime, setScheduleTime] = useState<string>("");
   const [schedulePriority, setSchedulePriority] = useState<number>(0);
-  const [scheduleAutoOverride, setScheduleAutoOverride] = useState<boolean>(true);
+  const [scheduleAutoOverride, setScheduleAutoOverride] = useState<boolean>(false);
   const [scheduling, setScheduling] = useState<boolean>(false);
   const [scheduleType, setScheduleType] = useState<"chart" | "text">("chart");
   const [scheduleMessageText, setScheduleMessageText] = useState<string>("");
