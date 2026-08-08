@@ -22,6 +22,15 @@ export async function generatePredictionImage(
   let baseImageBuffer: Buffer;
   let imageSrc = template.imageUrl;
 
+  let mime = "image/png";
+  if (template.imageUrl.endsWith(".jpg") || template.imageUrl.endsWith(".jpeg")) {
+    mime = "image/jpeg";
+  } else if (template.imageUrl.endsWith(".webp")) {
+    mime = "image/webp";
+  } else if (template.imageUrl.endsWith(".svg")) {
+    mime = "image/svg+xml";
+  }
+
   if (template.imageUrl.startsWith("http")) {
     const res = await fetch(template.imageUrl);
     if (!res.ok) throw new Error(`Failed to fetch template image: ${res.statusText}`);
@@ -36,8 +45,9 @@ export async function generatePredictionImage(
     } catch (fsError: any) {
       throw new Error(`Failed to read template image from local path "${localPath}": ${fsError.message}`);
     }
-    imageSrc = new URL(template.imageUrl, resolvedOrigin).toString();
   }
+
+  imageSrc = `data:${mime};base64,${baseImageBuffer.toString("base64")}`;
 
   const metadata = await sharp(baseImageBuffer).metadata();
   const width = 2048;

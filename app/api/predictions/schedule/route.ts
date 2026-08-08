@@ -10,6 +10,15 @@ export async function GET(req: NextRequest) {
       return new Response("Not authorized", { status: 403 });
     }
 
+    const url = new URL(req.url);
+    const origin = url.origin;
+    try {
+      const { processPredictionQueue } = await import("@/lib/admin/predictionQueue");
+      await processPredictionQueue(origin);
+    } catch (err) {
+      console.error("Failed to process prediction queue in GET:", err);
+    }
+
     const scheduled = await prisma.scheduledPrediction.findMany({
       where: {
         status: "PENDING",

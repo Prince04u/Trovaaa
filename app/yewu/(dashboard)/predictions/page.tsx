@@ -157,6 +157,13 @@ export default function PredictionsPage() {
     fetchTemplates();
     fetchTelegramSettings();
     fetchScheduledPredictions();
+
+    // Poll every 5 seconds to ensure instant queue processing and real-time UI updates
+    const interval = setInterval(() => {
+      fetchScheduledPredictions();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const showNotification = (message: string, type: "success" | "error") => {

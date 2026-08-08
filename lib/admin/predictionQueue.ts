@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getTemplateById } from "@/lib/admin/templates";
 import { generatePredictionImage } from "@/lib/admin/imageGenerator";
 import { sendPhotoToTelegram, sendTextToTelegram } from "@/lib/admin/telegram";
-import { getRoundWindow } from "@/lib/wingo/rounds";
+import { getRoundNumber, getRoundWindow } from "@/lib/wingo/rounds";
 import type { WingoMode } from "@/generated/prisma/client";
 
 interface TableRow {
@@ -79,6 +79,21 @@ export async function processPredictionQueue(originUrl?: string) {
 
         const headerValues = JSON.parse(pred.headerValues || "{}");
         const rows = JSON.parse(pred.rows || "[]") as TableRow[];
+
+        // Dynamically resolve row period numbers based on the scheduled execution time
+        const baseRoundNumbers: Record<string, bigint> = {};
+        rows.forEach((row) => {
+          const modeStr = String(row.project || "").toLowerCase();
+          const mode = DURATION_MAP[modeStr];
+          if (mode) {
+            if (baseRoundNumbers[mode] === undefined) {
+              baseRoundNumbers[mode] = getRoundNumber(mode, pred.scheduledAt.getTime());
+            } else {
+              baseRoundNumbers[mode] = baseRoundNumbers[mode] + BigInt(1);
+            }
+            row.period = String(baseRoundNumbers[mode]);
+          }
+        });
 
         // Generate the prediction chart image
         const imageBuffer = await generatePredictionImage(
