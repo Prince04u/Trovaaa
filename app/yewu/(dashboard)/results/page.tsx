@@ -5,6 +5,7 @@ import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { ResultModeForm, OverrideForm, CancelOverrideButton, WinningPercentageForm, BrahmastraProfitsForm } from "./ResultControlForms";
 import { LiveControl } from "./LiveControl";
 import { AdminQueryProvider } from "./QueryProvider";
+import { PeriodCalculator } from "./PeriodCalculator";
 export default async function AdminResultsPage() {
   const staff = await requirePermission("results.view");
   const canMode = await hasPermission(staff, "results.mode");
@@ -82,6 +83,10 @@ export default async function AdminResultsPage() {
             </div>
           )}
         </div>
+      </section>
+
+      <section>
+        <PeriodCalculator />
       </section>
       </div>
     </AdminQueryProvider>

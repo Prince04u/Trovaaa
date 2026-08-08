@@ -7,6 +7,7 @@ import {
   AlignCenter, AlignLeft, AlignRight, RefreshCw, Star 
 } from "lucide-react";
 import ClientSidePreview from "@/components/admin/ClientSidePreview";
+import { format } from "date-fns";
 
 interface FieldStyle {
   text: string;
@@ -73,6 +74,13 @@ export default function PredictionsPage() {
   const [savingChannel, setSavingChannel] = useState<boolean>(false);
   const [telegramChatId, setTelegramChatId] = useState<string>("");
 
+  // Scheduled prediction queue states
+  const [scheduledPredictions, setScheduledPredictions] = useState<any[]>([]);
+  const [scheduleTime, setScheduleTime] = useState<string>("");
+  const [schedulePriority, setSchedulePriority] = useState<number>(0);
+  const [scheduleAutoOverride, setScheduleAutoOverride] = useState<boolean>(true);
+  const [scheduling, setScheduling] = useState<boolean>(false);
+
   // Editor states
   const [editorTemplate, setEditorTemplate] = useState<Template | null>(null);
   const [editorFields, setEditorFields] = useState<Record<string, FieldStyle>>({});
@@ -131,9 +139,22 @@ export default function PredictionsPage() {
     }
   };
 
+  const fetchScheduledPredictions = async () => {
+    try {
+      const res = await fetch("/api/predictions/schedule");
+      if (res.ok) {
+        const json = await res.json();
+        setScheduledPredictions(json.data || []);
+      }
+    } catch (err) {
+      console.error("Failed to load scheduled predictions:", err);
+    }
+  };
+
   useEffect(() => {
     fetchTemplates();
     fetchTelegramSettings();
+    fetchScheduledPredictions();
   }, []);
 
   const showNotification = (message: string, type: "success" | "error") => {
@@ -264,7 +285,7 @@ export default function PredictionsPage() {
     const match = periodStr.match(/(\d+)$/);
     if (!match) return periodStr;
     const numStr = match[1];
-    const nextNum = (BigInt(numStr) + 1n).toString();
+    const nextNum = (BigInt(numStr) + BigInt(1)).toString();
     const padded = nextNum.padStart(numStr.length, "0");
     return periodStr.slice(0, periodStr.length - numStr.length) + padded;
   };
@@ -399,6 +420,64 @@ export default function PredictionsPage() {
     } catch (err: any) {
       setNotification({ message: err.message || "Send failed", type: "error" });
       setTimeout(() => setNotification(null), 4000);
+    }
+  };
+
+  const handleSchedulePrediction = async () => {
+    if (!selectedTemplate) return;
+    if (!scheduleTime) {
+      showNotification("Please select a date & time for scheduling", "error");
+      return;
+    }
+
+    try {
+      setScheduling(true);
+      const res = await fetch("/api/predictions/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          templateId: selectedTemplate.id,
+          headerValues,
+          rows,
+          isLast: isLastPrediction,
+          chatId: telegramChatId || undefined,
+          scheduledAt: scheduleTime,
+          priority: schedulePriority,
+          autoOverrideWingo: scheduleAutoOverride,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to schedule");
+      }
+
+      showNotification("Prediction scheduled successfully!", "success");
+      setScheduleTime("");
+      fetchScheduledPredictions();
+    } catch (err: any) {
+      showNotification(err.message || "Scheduling failed", "error");
+    } finally {
+      setScheduling(false);
+    }
+  };
+
+  const handleDeleteScheduled = async (id: string) => {
+    if (!confirm("Are you sure you want to cancel this scheduled prediction?")) return;
+    try {
+      const res = await fetch(`/api/predictions/schedule?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to delete");
+      }
+
+      showNotification("Cancelled scheduled prediction", "success");
+      fetchScheduledPredictions();
+    } catch (err: any) {
+      showNotification(err.message || "Cancellation failed", "error");
     }
   };
 
@@ -911,9 +990,119 @@ export default function PredictionsPage() {
                     Broadcast
                   </button>
                 </div>
+
+                {/* Schedule For Later Form */}
+                <div className="border-t border-border mt-4 pt-4 flex flex-col gap-3">
+                  <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">Schedule Broadcast</h3>
+                  <div>
+                    <label className="text-[10px] text-muted block mb-1">Scheduled Time</label>
+                    <input
+                      type="datetime-local"
+                      value={scheduleTime}
+                      onChange={(e) => setScheduleTime(e.target.value)}
+                      className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] text-muted block mb-1">Priority Order</label>
+                      <select
+                        value={schedulePriority}
+                        onChange={(e) => setSchedulePriority(Number(e.target.value))}
+                        className="w-full bg-surface-2 border border-border rounded-xl px-2 py-1.5 text-xs focus:outline-none"
+                      >
+                        <option value={0}>Normal</option>
+                        <option value={1}>1st / First (High)</option>
+                        <option value={2}>Highest (Urgent)</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-4">
+                      <input
+                        type="checkbox"
+                        id="autoOverride"
+                        checked={scheduleAutoOverride}
+                        onChange={(e) => setScheduleAutoOverride(e.target.checked)}
+                        className="rounded bg-surface-2 border-border accent-teal-500 w-3.5 h-3.5"
+                      />
+                      <label htmlFor="autoOverride" className="text-[10px] text-muted select-none cursor-pointer">
+                        Auto Wingo Pre-Result
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleSchedulePrediction}
+                    disabled={scheduling || !selectedTemplate}
+                    className="w-full bg-teal-500 hover:bg-teal-600 text-black rounded-xl py-2 text-xs font-bold transition mt-1 disabled:opacity-50"
+                  >
+                    {scheduling ? "Scheduling..." : "Schedule Broadcast"}
+                  </button>
+                </div>
               </section>
             </div>
           </div>
+
+          {/* Scheduled Predictions Queue Section */}
+          <section className="card-surface rounded-2xl p-6 border border-white/5 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md shadow-xl mt-6">
+            <h2 className="text-lg font-semibold mb-2">Pending Telegram Dispatch Queue</h2>
+            <p className="text-xs text-muted mb-4">Predictions scheduled to be automatically broadcasted to Telegram.</p>
+
+            {scheduledPredictions.length === 0 ? (
+              <p className="text-sm text-muted py-4 text-center">No scheduled predictions pending.</p>
+            ) : (
+              <div className="overflow-x-auto border border-border rounded-xl">
+                <table className="w-full text-sm border-collapse text-left">
+                  <thead>
+                    <tr className="bg-surface-2 border-b border-border">
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase">Template</th>
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase">Scheduled Time</th>
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase">Priority</th>
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase">Wingo Pre-Result</th>
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase">Created By</th>
+                      <th className="py-2.5 px-4 font-semibold text-xs text-muted uppercase text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {scheduledPredictions.map((pred) => (
+                      <tr key={pred.id} className="hover:bg-white/5 transition-colors">
+                        <td className="py-3 px-4 font-medium">{pred.templateName}</td>
+                        <td className="py-3 px-4 text-muted">
+                          {format(new Date(pred.scheduledAt), "yyyy-MM-dd HH:mm:ss")}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            pred.priority === 2 ? "bg-red/10 text-red border border-red/20" :
+                            pred.priority === 1 ? "bg-gold/10 text-gold border border-gold/20" :
+                            "bg-white/10 text-muted"
+                          }`}>
+                            {pred.priority === 2 ? "Highest" : pred.priority === 1 ? "High" : "Normal"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            pred.autoOverrideWingo ? "bg-green/10 text-green border border-green/20" : "bg-white/10 text-muted"
+                          }`}>
+                            {pred.autoOverrideWingo ? "Auto-Set" : "None"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-muted">{pred.createdBy}</td>
+                        <td className="py-3 px-4 text-right">
+                          <button
+                            onClick={() => handleDeleteScheduled(pred.id)}
+                            className="text-xs font-semibold px-2.5 py-1 rounded bg-red/10 border border-red/30 text-red hover:bg-red/20 hover:text-white transition"
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
         </div>
       )}
 

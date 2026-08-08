@@ -226,6 +226,7 @@ model User {
   fiveDOverridesMade    FiveDResultOverride[] @relation("FiveDOverrides")
   resultOverridesMade   ResultOverride[]
   pregeneratedResults   PregeneratedResult[]
+  scheduledPredictions  ScheduledPrediction[]
   passwordResetRequests PasswordResetRequest[]
   auditLogs             AuditLog[]
   rewards               Reward[]
@@ -460,6 +461,26 @@ model PregeneratedResult {
   createdAt   DateTime  @default(now())
 
   @@unique([mode, roundNumber])
+}
+
+model ScheduledPrediction {
+  id                String   @id @default(uuid())
+  templateId        String
+  headerValues      String   // JSON string representing Record<string, string>
+  rows              String   // JSON string representing TableRow[]
+  isLast            Boolean  @default(false)
+  chatId            String?  // Optional chat ID override
+  scheduledAt       DateTime
+  priority          Int      @default(0) // Higher priority sent first
+  autoOverrideWingo Boolean  @default(true) // Set pre-results for Wingo periods
+  status            String   @default("PENDING") // PENDING, SENT, FAILED
+  error             String?
+  sentAt            DateTime?
+  createdById       String
+  createdBy         User     @relation(fields: [createdById], references: [id])
+  createdAt         DateTime @default(now())
+
+  @@index([status, scheduledAt])
 }
 
 model K3Bet {

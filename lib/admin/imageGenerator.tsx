@@ -16,12 +16,13 @@ export async function generatePredictionImage(
   headerValues: Record<string, string>,
   rows: TableRow[],
   isLast: boolean,
-  origin: string
+  origin?: string
 ): Promise<Buffer> {
+  const resolvedOrigin = origin || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   // Construct absolute URL for the image
   let baseImageUrl = template.imageUrl;
   if (!baseImageUrl.startsWith("http")) {
-    baseImageUrl = new URL(baseImageUrl, origin).toString();
+    baseImageUrl = new URL(baseImageUrl, resolvedOrigin).toString();
   }
   
   // We need to fetch the image ourselves first to get its dimensions via sharp

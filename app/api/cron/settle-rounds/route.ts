@@ -29,6 +29,15 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  const url = new URL(req.url);
+  const origin = url.origin;
+  try {
+    const { processPredictionQueue } = await import("@/lib/admin/predictionQueue");
+    await processPredictionQueue(origin);
+  } catch (err) {
+    console.error("Cron failed to process prediction queue:", err);
+  }
+
   const now = Date.now();
 
   const jobs = [

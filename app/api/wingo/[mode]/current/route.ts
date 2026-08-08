@@ -57,6 +57,11 @@ export async function GET(
     }
     settleSiblingModesInBackground(mode, now);
 
+    const origin = _req.nextUrl.origin;
+    import("@/lib/admin/predictionQueue")
+      .then(({ processPredictionQueue }) => processPredictionQueue(origin))
+      .catch((err) => console.error("Background prediction queue error:", err));
+
     // Fetch active stakes summary for this round
     const activeBets = await prisma.wingoBet.findMany({
       where: {
