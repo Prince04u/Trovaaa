@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { hasPermission, isStaffUser } from "@/lib/admin/permissions";
-import { uploadMediaToTelegram } from "@/lib/admin/telegram";
-
 export async function POST(req: NextRequest) {
   try {
     const user = await getCurrentUser();
@@ -17,10 +15,10 @@ export async function POST(req: NextRequest) {
     }
 
     const arrayBuf = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuf);
-    const fileId = await uploadMediaToTelegram(buffer, file.type, file.name);
+    const base64 = Buffer.from(arrayBuf).toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64}`;
 
-    return NextResponse.json({ success: true, url: fileId });
+    return NextResponse.json({ success: true, url: dataUrl });
   } catch (error: any) {
     console.error("File upload error:", error);
     return NextResponse.json({ error: error.message || "Failed to upload file" }, { status: 500 });

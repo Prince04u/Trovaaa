@@ -80,7 +80,27 @@ export async function processPredictionQueue(originUrl?: string) {
 
       if (pred.gifUrl) {
         // Handle animated GIF message broadcast
-        await sendAnimationToTelegram(pred.gifUrl, pred.messageText || undefined, pred.chatId || undefined);
+        if (pred.gifUrl.startsWith("data:")) {
+          const matches = pred.gifUrl.match(/^data:([^;]+);base64,(.+)$/);
+          if (matches) {
+            const mimeType = matches[1];
+            const base64Data = matches[2];
+            const buffer = Buffer.from(base64Data, "base64");
+            const ext = mimeType.split("/")[1] || "gif";
+            const filename = `animation.${ext}`;
+            await sendAnimationToTelegram(
+              buffer,
+              pred.messageText || undefined,
+              pred.chatId || undefined,
+              filename,
+              mimeType
+            );
+          } else {
+            throw new Error("Invalid base64 Data URL format for GIF");
+          }
+        } else {
+          await sendAnimationToTelegram(pred.gifUrl, pred.messageText || undefined, pred.chatId || undefined);
+        }
       } else if (pred.messageText) {
         // Handle plain text message broadcast
         await sendTextToTelegram(pred.messageText, pred.chatId || undefined);
