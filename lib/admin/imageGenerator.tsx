@@ -38,7 +38,12 @@ export async function generatePredictionImage(
     mime = "image/svg+xml";
   }
 
-  if (template.imageUrl.startsWith("http")) {
+  if (template.imageUrl.startsWith("data:")) {
+    const matches = template.imageUrl.match(/^data:([^;]+);base64,(.+)$/);
+    if (!matches) throw new Error("Invalid base64 Data URL format for template image");
+    mime = matches[1];
+    baseImageBuffer = Buffer.from(matches[2], "base64");
+  } else if (template.imageUrl.startsWith("http")) {
     const res = await fetch(template.imageUrl);
     if (!res.ok) throw new Error(`Failed to fetch template image: ${res.statusText}`);
     baseImageBuffer = Buffer.from(await res.arrayBuffer());

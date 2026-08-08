@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { hasPermission, isStaffUser } from "@/lib/admin/permissions";
-import { uploadImage } from "@/lib/storage/supabase";
 import { getAllTemplates, createTemplate, duplicateTemplate } from "@/lib/admin/templates";
 import sharp from "sharp";
 
@@ -56,8 +55,9 @@ export async function POST(req: NextRequest) {
     const width = metadata.width || 800;
     const height = metadata.height || 600;
 
-    // Upload template image to Supabase
-    const imageUrl = await uploadImage(buffer, file.type, ext);
+    // Convert template background image to Base64 data URL directly
+    const base64 = buffer.toString("base64");
+    const imageUrl = `data:${file.type};base64,${base64}`;
 
     // Responsive default placements for fields based on image size
     const defaultFields = {
