@@ -178,7 +178,7 @@ export default function PredictionsPage() {
     if (selectedTemplate) {
       const initialHeader: Record<string, string> = {};
       Object.entries(selectedTemplate.fields).forEach(([key, field]) => {
-        initialHeader[key] = headerValues[key] !== undefined ? headerValues[key] : field.text;
+        initialHeader[key] = headerValues[key] !== undefined ? headerValues[key] : "";
       });
       setHeaderValues(initialHeader);
     }
