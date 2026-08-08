@@ -5,7 +5,15 @@ import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { ResultModeForm, OverrideForm, CancelOverrideButton, WinningPercentageForm, BrahmastraProfitsForm } from "./ResultControlForms";
 import { LiveControl } from "./LiveControl";
 import { AdminQueryProvider } from "./QueryProvider";
-import { PeriodCalculator, formatPeriodId } from "./PeriodCalculator";
+import { PeriodCalculator } from "./PeriodCalculator";
+
+function formatPeriodId(id: string | bigint | number): string {
+  if (!id) return "";
+  const str = String(id);
+  if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+  return str;
+}
+
 export default async function AdminResultsPage() {
   const staff = await requirePermission("results.view");
   const canMode = await hasPermission(staff, "results.mode");
