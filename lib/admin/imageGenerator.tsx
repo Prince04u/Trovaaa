@@ -73,6 +73,14 @@ export async function generatePredictionImage(
   let totalProfit = 0;
   rows.forEach(r => { totalProfit += parseInt(r.profit) || 0; });
 
+  const fields = template.fields as any || {};
+  const tableConfig = fields.tableConfig || {};
+  const marginLeft = tableConfig.marginLeft !== undefined ? Number(tableConfig.marginLeft) : 38;
+  const tableWidth = tableConfig.width !== undefined ? Number(tableConfig.width) : 1972;
+  const colWidths = tableConfig.colWidths || [350, 322, 314, 316, 330, 340];
+  const borderColor = tableConfig.borderColor || "#e05307";
+  const innerBorderColor = tableConfig.innerBorderColor || "#d3d3d3";
+
   const ogRes = new ImageResponse(
     (
       <div style={{ display: 'flex', width: 2048, height: finalHeight, backgroundColor: '#fff', position: 'relative' }}>
@@ -80,7 +88,15 @@ export async function generatePredictionImage(
         
         {/* Header fields */}
         {Object.entries(template.fields || {}).map(([key, field]: [string, any]) => {
-          if (field.y >= 416) return null;
+          if (field.y >= 416 || key === "tableConfig") return null;
+          
+          // For history charts (where table rows are present), do NOT render single-round prediction overlay fields
+          // unless they are explicitly customized in headerValues.
+          const isSingleRoundField = ["period", "prediction", "bigSmall", "confidence"].includes(key);
+          if (isSingleRoundField && (headerValues[key] === undefined || headerValues[key] === "")) {
+            return null;
+          }
+
           const value = headerValues[key] !== undefined && headerValues[key] !== "" ? headerValues[key] : (field.text || "");
           return (
             <div
@@ -133,22 +149,22 @@ export async function generatePredictionImage(
               profitText = `${profitVal >= 0 ? "+" : ""}${r.profit}`;
             }
 
-            const bottomLineColor = (i === N - 1 && !isLast) ? "#e05307" : "#d3d3d3";
+            const bottomLineColor = (i === N - 1 && !isLast) ? borderColor : innerBorderColor;
 
             return (
-              <div key={i} style={{ display: 'flex', width: 1972, height: 60, marginLeft: 38, backgroundColor: bgFill, borderLeft: '2px solid #e05307', borderRight: '2px solid #e05307', borderBottom: `2px solid ${bottomLineColor}` }}>
-                <div style={{ display: 'flex', width: 350, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{formatPeriodId(r.period)}</div>
-                <div style={{ display: 'flex', width: 322, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.project}</div>
-                <div style={{ display: 'flex', width: 314, borderRight: '2px solid #d3d3d3', backgroundColor: colourBg, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: colourBg ? '#ffffff' : '#222222' }}>{r.colour}</div>
-                <div style={{ display: 'flex', width: 316, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.amount}</div>
-                <div style={{ display: 'flex', width: 330, borderRight: '2px solid #d3d3d3', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: resultColor }}>{resultText}</div>
-                <div style={{ display: 'flex', width: 340, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: profitColor }}>{profitText}</div>
+              <div key={i} style={{ display: 'flex', width: tableWidth, height: 60, marginLeft: marginLeft, backgroundColor: bgFill, borderLeft: `2px solid ${borderColor}`, borderRight: `2px solid ${borderColor}`, borderBottom: `2px solid ${bottomLineColor}` }}>
+                <div style={{ display: 'flex', width: colWidths[0], borderRight: `2px solid ${innerBorderColor}`, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{formatPeriodId(r.period)}</div>
+                <div style={{ display: 'flex', width: colWidths[1], borderRight: `2px solid ${innerBorderColor}`, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.project}</div>
+                <div style={{ display: 'flex', width: colWidths[2], borderRight: `2px solid ${innerBorderColor}`, backgroundColor: colourBg, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: colourBg ? '#ffffff' : '#222222' }}>{r.colour}</div>
+                <div style={{ display: 'flex', width: colWidths[3], borderRight: `2px solid ${innerBorderColor}`, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: '#222222' }}>{r.amount}</div>
+                <div style={{ display: 'flex', width: colWidths[4], borderRight: `2px solid ${innerBorderColor}`, alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: resultColor }}>{resultText}</div>
+                <div style={{ display: 'flex', width: colWidths[5], alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: profitColor }}>{profitText}</div>
               </div>
             );
           })}
           
           {isLast && (
-            <div style={{ display: 'flex', width: 1972, height: 80, marginLeft: 38, backgroundColor: '#ffffff', borderLeft: '2px solid #e05307', borderRight: '2px solid #e05307', borderBottom: '2px solid #e05307', alignItems: 'center', justifyItems: 'flex-end', justifyContent: 'flex-end', paddingRight: 35 }}>
+            <div style={{ display: 'flex', width: tableWidth, height: 80, marginLeft: marginLeft, backgroundColor: '#ffffff', borderLeft: `2px solid ${borderColor}`, borderRight: `2px solid ${borderColor}`, borderBottom: `2px solid ${borderColor}`, alignItems: 'center', justifyItems: 'flex-end', justifyContent: 'flex-end', paddingRight: 35 }}>
               <div style={{ display: 'flex', fontSize: 36, fontWeight: 700, color: '#222222', marginRight: 15 }}>Total Profit = </div>
               <div style={{ display: 'flex', fontSize: 44, fontWeight: 700, color: totalProfit >= 0 ? '#0f9d58' : '#ef4444' }}>₹{totalProfit}</div>
             </div>
