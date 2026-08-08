@@ -438,8 +438,13 @@ export default function PredictionsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/gif") && !file.name.endsWith(".gif")) {
-      showNotification("Please select a valid GIF file", "error");
+    if (
+      !file.type.startsWith("image/gif") &&
+      !file.type.startsWith("video/mp4") &&
+      !file.name.endsWith(".gif") &&
+      !file.name.endsWith(".mp4")
+    ) {
+      showNotification("Please select a valid GIF or MP4 file", "error");
       return;
     }
 
@@ -1138,15 +1143,15 @@ export default function PredictionsPage() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-muted block mb-1">Or Upload GIF File</label>
+                          <label className="text-[10px] text-muted block mb-1">Or Upload GIF/MP4 File</label>
                           <input
                             type="file"
-                            accept="image/gif"
+                            accept="image/gif,video/mp4"
                             onChange={handleGifUpload}
                             disabled={uploadingGif}
                             className="w-full bg-surface-2 border border-border rounded-xl px-2 py-1 text-xs focus:outline-none file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-teal-500 file:text-black file:cursor-pointer disabled:opacity-50"
                           />
-                          {uploadingGif && <span className="text-[9px] text-teal-400 mt-0.5 block animate-pulse">Uploading GIF...</span>}
+                          {uploadingGif && <span className="text-[9px] text-teal-400 mt-0.5 block animate-pulse">Uploading File...</span>}
                         </div>
                       </div>
                       <div>

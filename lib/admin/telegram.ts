@@ -36,7 +36,7 @@ export async function sendPhotoToTelegram(
   formData.append("chat_id", targetChatId);
 
   // Convert Buffer to Blob for standard Fetch multipart/form-data
-  const blob = new Blob([photoBuffer], { type: "image/png" });
+  const blob = new Blob([new Uint8Array(photoBuffer)], { type: "image/png" });
   formData.append("photo", blob, "prediction_chart.png");
 
   if (caption) {
@@ -158,5 +158,75 @@ export async function sendAnimationToTelegram(
 
   console.log("Animation successfully sent to Telegram!");
   return true;
+}
+
+export async function uploadMediaToTelegram(
+  buffer: Buffer,
+  mimeType: string,
+  filename: string,
+  chatId?: string
+): Promise<string> {
+  let targetChatId = chatId;
+
+  if (!targetChatId) {
+    try {
+      const setting = await prisma.setting.findUnique({
+        where: { key: "telegram_channel_username" },
+      });
+      if (setting && setting.value) {
+        targetChatId = setting.value;
+      }
+    } catch (e) {
+      console.warn("Failed to retrieve telegram_channel_username setting for upload:", e);
+    }
+  }
+
+  if (!targetChatId) {
+    targetChatId = process.env.TELEGRAM_CHANNEL_ID || DEFAULT_CHANNEL_ID;
+  }
+
+  const formData = new FormData();
+  formData.append("chat_id", targetChatId);
+
+  const blob = new Blob([new Uint8Array(buffer)], { type: mimeType });
+  formData.append("animation", blob, filename);
+
+  const token = TELEGRAM_BOT_TOKEN;
+  console.log(`[Upload] Uploading media file to Telegram chat ID: ${targetChatId}...`);
+
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendAnimation`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+  if (!data.ok) {
+    console.error("Failed to upload media to Telegram:", data);
+    throw new Error(`Telegram sendAnimation failed during upload: ${JSON.stringify(data)}`);
+  }
+
+  const messageId = data.result.message_id;
+  const fileId = data.result.animation?.file_id || data.result.video?.file_id;
+
+  if (!fileId) {
+    throw new Error("No file_id found in Telegram upload response");
+  }
+
+  // Delete the uploaded message immediately so users don't see it
+  try {
+    console.log(`[Upload] Deleting temporary upload message ${messageId} from ${targetChatId}...`);
+    await fetch(`https://api.telegram.org/bot${token}/deleteMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: targetChatId,
+        message_id: messageId,
+      }),
+    });
+  } catch (deleteErr) {
+    console.warn("Failed to delete temporary Telegram message:", deleteErr);
+  }
+
+  return fileId;
 }
 
