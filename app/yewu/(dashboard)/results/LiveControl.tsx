@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { setResultOverrideAction, type AdminActionState } from "@/lib/actions/admin";
 import { formatAmount } from "@/lib/format";
 import { Button } from "@/components/ui/Button";
+import { formatPeriodId } from "./PeriodCalculator";
 
 const MODES = [
   { key: "parity", label: "Parity (3m)", enum: "PARITY" },
@@ -76,7 +77,7 @@ export function LiveControl({ canOverride }: { canOverride: boolean }) {
         <div>
           <h2 className="font-semibold">Live period — instant force result</h2>
           <p className="text-xs text-muted mt-0.5 font-mono">
-            {data ? `PARITY ${modeEnum} · round #${data.roundNumber}` : "loading…"}
+            {data ? `PARITY ${modeEnum} · round #${formatPeriodId(data.roundNumber)}` : "loading…"}
           </p>
         </div>
         <div className="rounded-lg border border-gold/40 bg-gold/10 px-4 py-2 text-center">

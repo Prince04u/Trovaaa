@@ -1081,7 +1081,19 @@ export async function setResultOverrideAction(_prevState: AdminActionState, form
 
   // Suffix lookup for convenience (e.g. entering just last 3 digits like "832")
   let resolvedRoundNumber = BigInt(roundNumber);
-  if (roundNumber < 100000) {
+  const roundStr = String(roundNumber);
+  if (roundStr.length === 11) {
+    const datePart = roundStr.substring(0, 8);
+    const countPart = roundStr.substring(8);
+    let middle = "00000";
+    if (mode === "PARITY") middle = "00300";
+    else if (mode === "BCONE") middle = "00390";
+    else if (mode === "S30") middle = "03000";
+    else if (mode === "M1") middle = "00100";
+    else if (mode === "M3") middle = "00300";
+    else if (mode === "M5") middle = "00500";
+    resolvedRoundNumber = BigInt(datePart + middle + countPart);
+  } else if (roundNumber < 100000) {
     const currentRound = getRoundNumber(mode as WingoMode);
     const candidates = [
       currentRound,

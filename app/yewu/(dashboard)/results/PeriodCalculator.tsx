@@ -15,6 +15,30 @@ const MODES: { value: WingoMode; label: string }[] = [
   { value: "BCONE", label: "Bcone (3 Min)" },
 ];
 
+export const formatPeriodId = (id: string | bigint | number): string => {
+  if (!id) return "";
+  const str = String(id);
+  if (str.length > 11) return str.substring(0, 8) + str.substring(str.length - 3);
+  return str;
+};
+
+export const expandPeriodId = (id: string, mode: WingoMode): string => {
+  const str = String(id).trim();
+  if (str.length === 11) {
+    const datePart = str.substring(0, 8);
+    const countPart = str.substring(8);
+    let middle = "00000";
+    if (mode === "PARITY") middle = "00300";
+    else if (mode === "BCONE") middle = "00390";
+    else if (mode === "S30") middle = "03000";
+    else if (mode === "M1") middle = "00100";
+    else if (mode === "M3") middle = "00300";
+    else if (mode === "M5") middle = "00500";
+    return datePart + middle + countPart;
+  }
+  return str;
+};
+
 export function PeriodCalculator() {
   const [selectedMode, setSelectedMode] = useState<WingoMode>("M1");
   const [selectedDate, setSelectedDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
@@ -34,7 +58,7 @@ export function PeriodCalculator() {
       const window = getRoundWindow(selectedMode, roundNumber);
 
       return {
-        periodId: String(roundNumber),
+        periodId: formatPeriodId(roundNumber),
         startsAt: new Date(window.startsAt),
         endsAt: new Date(window.endsAt),
         locksAt: new Date(window.locksAt),
@@ -64,7 +88,7 @@ export function PeriodCalculator() {
         const roundNum = getRoundNumber(selectedMode, timestamp);
         const window = getRoundWindow(selectedMode, roundNum);
         periods.push({
-          periodId: String(roundNum),
+          periodId: formatPeriodId(roundNum),
           startsAt: new Date(window.startsAt),
           endsAt: new Date(window.endsAt),
         });
@@ -82,11 +106,12 @@ export function PeriodCalculator() {
       const cleanVal = searchPeriod.trim().replace(/\D/g, "");
       if (cleanVal.length < 5) return { error: "Please enter a valid period number" };
 
-      const roundNum = BigInt(cleanVal);
+      const expandedVal = expandPeriodId(cleanVal, selectedMode);
+      const roundNum = BigInt(expandedVal);
       const window = getRoundWindow(selectedMode, roundNum);
 
       return {
-        periodId: cleanVal,
+        periodId: formatPeriodId(roundNum),
         startsAt: new Date(window.startsAt),
         endsAt: new Date(window.endsAt),
         locksAt: new Date(window.locksAt),

@@ -5,7 +5,7 @@ import { requirePermission, hasPermission } from "@/lib/admin/permissions";
 import { ResultModeForm, OverrideForm, CancelOverrideButton, WinningPercentageForm, BrahmastraProfitsForm } from "./ResultControlForms";
 import { LiveControl } from "./LiveControl";
 import { AdminQueryProvider } from "./QueryProvider";
-import { PeriodCalculator } from "./PeriodCalculator";
+import { PeriodCalculator, formatPeriodId } from "./PeriodCalculator";
 export default async function AdminResultsPage() {
   const staff = await requirePermission("results.view");
   const canMode = await hasPermission(staff, "results.mode");
@@ -71,7 +71,7 @@ export default async function AdminResultsPage() {
                 <div key={o.id} className="py-2.5 flex items-center justify-between">
                   <div>
                     <p>
-                      {o.mode} · #{o.roundNumber} → <span className="text-gold font-semibold">{o.number}</span>
+                      {o.mode} · #{formatPeriodId(o.roundNumber)} → <span className="text-gold font-semibold">{o.number}</span>
                     </p>
                     <p className="text-xs text-muted">
                       {o.createdBy.displayName} · {format(new Date(o.createdAt), "d MMM, h:mm a")}
