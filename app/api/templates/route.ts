@@ -61,58 +61,78 @@ export async function POST(req: NextRequest) {
     // Auto-detect tableConfig from the uploaded PNG background image
     let detectedTableConfig = null;
     try {
-      const scanX = 50; // far left to avoid center figures/overlays
-      let orangeBottomY = -1;
-      let orangeTopY = -1;
+      // Scan y from height - 5 upwards to find the top border line of the bottom bar
+      let borderY = -1;
+      const sampleXs = [50, 200, 400, 600, 800, 950];
 
-      for (let y = height - 1; y >= Math.max(0, height - 100); y--) {
-        const idx = (y * width + scanX) * 4;
-        const r = rawData[idx];
-        const g = rawData[idx + 1];
-        const b = rawData[idx + 2];
-
-        // Orange/Red detection (high red, low blue)
-        const isOrange = r > 140 && g < 130 && b < 100;
-
-        if (isOrange) {
-          if (orangeBottomY === -1) orangeBottomY = y;
-          orangeTopY = y;
-        } else {
-          if (orangeBottomY !== -1) break;
+      for (let y = height - 5; y >= Math.max(0, height - 100); y--) {
+        let orangeCount = 0;
+        for (const x of sampleXs) {
+          const idx = (y * width + x) * 4;
+          const r = rawData[idx];
+          const g = rawData[idx+1];
+          const b = rawData[idx+2];
+          // Orange detection
+          if (r > 140 && g < 130 && b < 100) {
+            orangeCount++;
+          }
+        }
+        if (orangeCount >= 3) {
+          borderY = y;
+          break;
         }
       }
 
-      if (orangeTopY !== -1 && orangeBottomY !== -1) {
-        const y1 = orangeTopY + 2;
-        const y2 = orangeTopY + 4;
-        const y3 = orangeBottomY - 4;
-        const y4 = orangeBottomY - 2;
+      if (borderY !== -1) {
+        const barTopY = borderY;
+        const barBottomY = height - 1;
 
+        const y1 = barTopY + 2;
+        const y2 = barTopY + 4;
+        const y3 = barBottomY - 4;
+        const y4 = barBottomY - 2;
+
+        // Determine if background inside the bar is white or orange
+        // Check at x = 50 (far left) to avoid text/figures
+        const bgIdx = ((barTopY + 5) * width + 50) * 4;
+        const bgB = rawData[bgIdx + 2];
+        const isBgWhite = bgB > 120;
+
+        // Find left border of the bar (first consecutive orange pixels on the border line y=borderY)
         let leftBorder = -1;
-        for (let x = 0; x < width; x++) {
-          let orangeCount = 0;
-          for (const yVal of [y1, y2, y3, y4]) {
-            const idx = (yVal * width + x) * 4;
-            if (rawData[idx] > 140 && rawData[idx + 1] < 130 && rawData[idx + 2] < 100) {
-              orangeCount++;
+        for (let x = 0; x < width - 10; x++) {
+          let isContinuousOrange = true;
+          for (let offset = 0; offset < 5; offset++) {
+            const idx = (borderY * width + (x + offset)) * 4;
+            const r = rawData[idx];
+            const g = rawData[idx+1];
+            const b = rawData[idx+2];
+            if (!(r > 140 && g < 135 && b < 100)) {
+              isContinuousOrange = false;
+              break;
             }
           }
-          if (orangeCount >= 3) {
+          if (isContinuousOrange) {
             leftBorder = x;
             break;
           }
         }
 
+        // Find right border of the bar (last consecutive orange pixels on the border line y=borderY)
         let rightBorder = -1;
-        for (let x = width - 1; x >= 0; x--) {
-          let orangeCount = 0;
-          for (const yVal of [y1, y2, y3, y4]) {
-            const idx = (yVal * width + x) * 4;
-            if (rawData[idx] > 140 && rawData[idx + 1] < 130 && rawData[idx + 2] < 100) {
-              orangeCount++;
+        for (let x = width - 1; x >= 10; x--) {
+          let isContinuousOrange = true;
+          for (let offset = 0; offset < 5; offset++) {
+            const idx = (borderY * width + (x - offset)) * 4;
+            const r = rawData[idx];
+            const g = rawData[idx+1];
+            const b = rawData[idx+2];
+            if (!(r > 140 && g < 135 && b < 100)) {
+              isContinuousOrange = false;
+              break;
             }
           }
-          if (orangeCount >= 3) {
+          if (isContinuousOrange) {
             rightBorder = x;
             break;
           }
@@ -124,16 +144,20 @@ export async function POST(req: NextRequest) {
           let currentSepStart = -1;
 
           for (let x = leftBorder + 10; x < rightBorder - 10; x++) {
-            const b_top1 = rawData[(y1 * width + x) * 4 + 2];
-            const b_top2 = rawData[(y2 * width + x) * 4 + 2];
-            const b_bot1 = rawData[(y3 * width + x) * 4 + 2];
-            const b_bot2 = rawData[(y4 * width + x) * 4 + 2];
+            let dividerPixelCount = 0;
+            for (const yVal of [y1, y2, y3, y4]) {
+              const idx = (yVal * width + x) * 4;
+              const b = rawData[idx + 2];
+              
+              // If background is white, divider is orange/dark (low blue < 180)
+              // If background is orange, divider is white/light (high blue > 120)
+              const isDividerPixel = isBgWhite ? (b < 180) : (b > 120);
+              if (isDividerPixel) dividerPixelCount++;
+            }
 
-            const hasTop = b_top1 > 60 || b_top2 > 60;
-            const hasBottom = b_bot1 > 60 || b_bot2 > 60;
-            const isWhiteLine = hasTop && hasBottom;
+            const isDividerLine = dividerPixelCount >= 3;
 
-            if (isWhiteLine) {
+            if (isDividerLine) {
               if (!inSeparator) {
                 inSeparator = true;
                 currentSepStart = x;
@@ -166,7 +190,7 @@ export async function POST(req: NextRequest) {
               width: totalWidth,
               colWidths: scaledWidths,
               borderColor: "#fe7741",
-              innerBorderColor: "#ffebe0"
+              innerBorderColor: isBgWhite ? "#ffebe0" : "#ffebe0"
             };
           }
         }
