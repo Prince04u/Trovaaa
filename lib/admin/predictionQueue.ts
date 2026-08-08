@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getTemplateById } from "@/lib/admin/templates";
 import { generatePredictionImage } from "@/lib/admin/imageGenerator";
-import { sendPhotoToTelegram, sendTextToTelegram } from "@/lib/admin/telegram";
+import { sendPhotoToTelegram, sendTextToTelegram, sendAnimationToTelegram } from "@/lib/admin/telegram";
 import { getRoundNumber, getRoundWindow } from "@/lib/wingo/rounds";
 import type { WingoMode } from "@/generated/prisma/client";
 
@@ -78,7 +78,10 @@ export async function processPredictionQueue(originUrl?: string) {
 
       console.log(`[Queue] Processing scheduled prediction ${pred.id}...`);
 
-      if (pred.messageText) {
+      if (pred.gifUrl) {
+        // Handle animated GIF message broadcast
+        await sendAnimationToTelegram(pred.gifUrl, pred.messageText || undefined, pred.chatId || undefined);
+      } else if (pred.messageText) {
         // Handle plain text message broadcast
         await sendTextToTelegram(pred.messageText, pred.chatId || undefined);
       } else {

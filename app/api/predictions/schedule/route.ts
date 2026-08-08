@@ -43,12 +43,13 @@ export async function GET(req: NextRequest) {
     const formatted = scheduled.map((p) => ({
       id: p.id,
       templateId: p.templateId,
-      templateName: p.messageText ? "Text Message" : (templateMap.get(p.templateId || "") || "Unknown Template"),
+      templateName: p.gifUrl ? "GIF Message" : (p.messageText ? "Text Message" : (templateMap.get(p.templateId || "") || "Unknown Template")),
       headerValues: p.headerValues ? JSON.parse(p.headerValues) : {},
       rows: p.rows ? JSON.parse(p.rows) : [],
       isLast: p.isLast,
       chatId: p.chatId,
       messageText: p.messageText,
+      gifUrl: p.gifUrl,
       scheduledAt: p.scheduledAt.toISOString(),
       priority: p.priority,
       autoOverrideWingo: p.autoOverrideWingo,
@@ -76,6 +77,7 @@ export async function POST(req: NextRequest) {
       isLast,
       chatId,
       messageText,
+      gifUrl,
       scheduledAt,
       priority,
       autoOverrideWingo,
@@ -85,8 +87,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "scheduledAt is required" }, { status: 400 });
     }
 
-    if (!templateId && !messageText) {
-      return NextResponse.json({ error: "Either templateId or messageText must be provided" }, { status: 400 });
+    if (!templateId && !messageText && !gifUrl) {
+      return NextResponse.json({ error: "Either templateId, messageText or gifUrl must be provided" }, { status: 400 });
     }
 
     const scheduledTime = new Date(scheduledAt);
@@ -107,6 +109,7 @@ export async function POST(req: NextRequest) {
         isLast: !!isLast,
         chatId: chatId || null,
         messageText: messageText || null,
+        gifUrl: gifUrl || null,
         scheduledAt: scheduledTime,
         priority: Number(priority || 0),
         autoOverrideWingo: autoOverrideWingo !== false,

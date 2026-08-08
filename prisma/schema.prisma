@@ -471,6 +471,7 @@ model ScheduledPrediction {
   isLast            Boolean  @default(false)
   chatId            String?  // Optional chat ID override
   messageText       String?  // Optional plain text message
+  gifUrl            String?  // Optional GIF url or file path
   scheduledAt       DateTime
   priority          Int      @default(0) // Higher priority sent first
   autoOverrideWingo Boolean  @default(true) // Set pre-results for Wingo periods

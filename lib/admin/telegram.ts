@@ -110,3 +110,53 @@ export async function sendTextToTelegram(
   return true;
 }
 
+export async function sendAnimationToTelegram(
+  animationUrl: string,
+  caption?: string,
+  chatId?: string
+): Promise<boolean> {
+  let targetChatId = chatId;
+
+  if (!targetChatId) {
+    try {
+      const setting = await prisma.setting.findUnique({
+        where: { key: "telegram_channel_username" },
+      });
+      if (setting && setting.value) {
+        targetChatId = setting.value;
+      }
+    } catch (e) {
+      console.warn("Failed to retrieve telegram_channel_username setting for animation:", e);
+    }
+  }
+
+  if (!targetChatId) {
+    targetChatId = process.env.TELEGRAM_CHANNEL_ID || DEFAULT_CHANNEL_ID;
+  }
+
+  const token = TELEGRAM_BOT_TOKEN;
+  console.log(`Sending animation/GIF to Telegram chat ID: ${targetChatId}...`);
+
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendAnimation`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: targetChatId,
+      animation: animationUrl,
+      caption: caption || undefined,
+      parse_mode: "HTML",
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Failed to send animation/GIF to Telegram:", errorText);
+    throw new Error(`Telegram SendAnimation error: ${errorText}`);
+  }
+
+  console.log("Animation successfully sent to Telegram!");
+  return true;
+}
+

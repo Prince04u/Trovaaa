@@ -80,8 +80,9 @@ export default function PredictionsPage() {
   const [schedulePriority, setSchedulePriority] = useState<number>(0);
   const [scheduleAutoOverride, setScheduleAutoOverride] = useState<boolean>(false);
   const [scheduling, setScheduling] = useState<boolean>(false);
-  const [scheduleType, setScheduleType] = useState<"chart" | "text">("chart");
+  const [scheduleType, setScheduleType] = useState<"chart" | "text" | "gif">("chart");
   const [scheduleMessageText, setScheduleMessageText] = useState<string>("");
+  const [scheduleGifUrl, setScheduleGifUrl] = useState<string>("");
 
   // Editor states
   const [editorTemplate, setEditorTemplate] = useState<Template | null>(null);
@@ -441,6 +442,10 @@ export default function PredictionsPage() {
       showNotification("Please enter a message to schedule", "error");
       return;
     }
+    if (scheduleType === "gif" && !scheduleGifUrl.trim()) {
+      showNotification("Please enter or select a GIF URL", "error");
+      return;
+    }
     if (!scheduleTime) {
       showNotification("Please select a date & time for scheduling", "error");
       return;
@@ -455,7 +460,11 @@ export default function PredictionsPage() {
         priority: schedulePriority,
       };
 
-      if (scheduleType === "text") {
+      if (scheduleType === "gif") {
+        payload.gifUrl = scheduleGifUrl.trim();
+        payload.messageText = scheduleMessageText.trim() || undefined;
+        payload.autoOverrideWingo = false;
+      } else if (scheduleType === "text") {
         payload.messageText = scheduleMessageText;
         payload.autoOverrideWingo = false;
       } else {
@@ -1023,7 +1032,7 @@ export default function PredictionsPage() {
                   
                   <div>
                     <label className="text-[10px] text-muted block mb-1">Broadcast Type</label>
-                    <div className="grid grid-cols-2 gap-1 bg-surface-2 p-0.5 rounded-lg border border-border">
+                    <div className="grid grid-cols-3 gap-1 bg-surface-2 p-0.5 rounded-lg border border-border">
                       <button
                         type="button"
                         onClick={() => setScheduleType("chart")}
@@ -1031,7 +1040,7 @@ export default function PredictionsPage() {
                           scheduleType === "chart" ? "bg-teal-500 text-black font-bold" : "text-muted hover:text-foreground"
                         }`}
                       >
-                        Prediction Chart
+                        Chart
                       </button>
                       <button
                         type="button"
@@ -1040,7 +1049,16 @@ export default function PredictionsPage() {
                           scheduleType === "text" ? "bg-teal-500 text-black font-bold" : "text-muted hover:text-foreground"
                         }`}
                       >
-                        Text Message
+                        Text
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setScheduleType("gif")}
+                        className={`text-[10px] py-1.5 rounded font-semibold transition ${
+                          scheduleType === "gif" ? "bg-teal-500 text-black font-bold" : "text-muted hover:text-foreground"
+                        }`}
+                      >
+                        GIF
                       </button>
                     </div>
                   </div>
@@ -1055,6 +1073,44 @@ export default function PredictionsPage() {
                         rows={3}
                         className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none resize-none"
                       />
+                    </div>
+                  ) : null}
+
+                  {scheduleType === "gif" ? (
+                    <div className="flex flex-col gap-2">
+                      <div>
+                        <label className="text-[10px] text-muted block mb-1">Preset GIF (Optional)</label>
+                        <select
+                          onChange={(e) => {
+                            if (e.target.value) setScheduleGifUrl(e.target.value);
+                          }}
+                          className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none"
+                        >
+                          <option value="">-- Custom GIF URL --</option>
+                          <option value="https://media.giphy.com/media/3oz8xAFtq1qOcnsC9G/giphy.gif">Win Celebration GIF</option>
+                          <option value="https://media.giphy.com/media/26FPsOhZmqtMC6G0E/giphy.gif">Loss / Try Again GIF</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[10px] text-muted block mb-1">GIF URL (Direct Link to .gif)</label>
+                        <input
+                          type="text"
+                          value={scheduleGifUrl}
+                          onChange={(e) => setScheduleGifUrl(e.target.value)}
+                          placeholder="https://example.com/win.gif"
+                          className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] text-muted block mb-1">Caption Text (Optional, HTML allowed)</label>
+                        <textarea
+                          value={scheduleMessageText}
+                          onChange={(e) => setScheduleMessageText(e.target.value)}
+                          placeholder="Caption to send with the GIF..."
+                          rows={2}
+                          className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none resize-none"
+                        />
+                      </div>
                     </div>
                   ) : null}
 
@@ -1103,7 +1159,7 @@ export default function PredictionsPage() {
                   <button
                     type="button"
                     onClick={handleSchedulePrediction}
-                    disabled={scheduling || (scheduleType === "chart" && !selectedTemplate)}
+                    disabled={scheduling || (scheduleType === "chart" && !selectedTemplate) || (scheduleType === "gif" && !scheduleGifUrl.trim())}
                     className="w-full bg-teal-500 hover:bg-teal-600 text-black rounded-xl py-2 text-xs font-bold transition mt-1 disabled:opacity-50"
                   >
                     {scheduling ? "Scheduling..." : "Schedule Broadcast"}
@@ -1138,6 +1194,11 @@ export default function PredictionsPage() {
                       <tr key={pred.id} className="hover:bg-white/5 transition-colors">
                         <td className="py-3 px-4 font-medium">
                           <div>{pred.templateName}</div>
+                          {pred.gifUrl && (
+                            <div className="text-[10px] text-gold truncate max-w-[200px] mt-0.5" title={pred.gifUrl}>
+                              GIF: {pred.gifUrl}
+                            </div>
+                          )}
                           {pred.messageText && (
                             <div className="text-[10px] text-muted truncate max-w-[200px] mt-0.5" title={pred.messageText}>
                               {pred.messageText}
