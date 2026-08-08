@@ -109,6 +109,8 @@ export default function PredictionsPage() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const submittingSendRef = useRef<boolean>(false);
+  const submittingScheduleRef = useRef<boolean>(false);
 
   // Fetch templates from DB
   const fetchTemplates = async () => {
@@ -403,8 +405,9 @@ export default function PredictionsPage() {
 
   // Send to Telegram Channel
   const handleSendTelegram = async () => {
-    if (!selectedTemplate) return;
+    if (!selectedTemplate || submittingSendRef.current) return;
     try {
+      submittingSendRef.current = true;
       // Set persistent notification (no auto-hide timeout)
       setNotification({ message: "Sending chart to Telegram...", type: "success" });
       
@@ -431,6 +434,8 @@ export default function PredictionsPage() {
     } catch (err: any) {
       setNotification({ message: err.message || "Send failed", type: "error" });
       setTimeout(() => setNotification(null), 4000);
+    } finally {
+      submittingSendRef.current = false;
     }
   };
 
@@ -474,6 +479,7 @@ export default function PredictionsPage() {
   };
 
   const handleSchedulePrediction = async () => {
+    if (submittingScheduleRef.current || scheduling) return;
     if (scheduleType === "chart" && !selectedTemplate) {
       showNotification("Please select a template first", "error");
       return;
@@ -492,6 +498,7 @@ export default function PredictionsPage() {
     }
 
     try {
+      submittingScheduleRef.current = true;
       setScheduling(true);
       
       const payload: any = {
@@ -533,6 +540,7 @@ export default function PredictionsPage() {
     } catch (err: any) {
       showNotification(err.message || "Scheduling failed", "error");
     } finally {
+      submittingScheduleRef.current = false;
       setScheduling(false);
     }
   };
