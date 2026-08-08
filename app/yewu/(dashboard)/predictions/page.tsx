@@ -104,6 +104,11 @@ export default function PredictionsPage() {
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
 
+  // Viewing Scheduled Items
+  const [viewingPrediction, setViewingPrediction] = useState<ScheduledPrediction | null>(null);
+  const [viewImageUrl, setViewImageUrl] = useState<string | null>(null);
+  const [viewLoading, setViewLoading] = useState(false);
+
   // Notifications
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
@@ -561,6 +566,37 @@ export default function PredictionsPage() {
       fetchScheduledPredictions();
     } catch (err: any) {
       showNotification(err.message || "Cancellation failed", "error");
+    }
+  };
+
+  const handleViewScheduled = async (pred: ScheduledPrediction) => {
+    setViewingPrediction(pred);
+    setViewImageUrl(null);
+    if (pred.templateId && pred.templateId !== "none" && pred.headerValues && pred.rows) {
+      setViewLoading(true);
+      try {
+        const parsedHeaderValues = typeof pred.headerValues === 'string' ? JSON.parse(pred.headerValues) : pred.headerValues;
+        const parsedRows = typeof pred.rows === 'string' ? JSON.parse(pred.rows) : pred.rows;
+        
+        const res = await fetch("/api/prediction/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            templateId: pred.templateId,
+            headerValues: parsedHeaderValues,
+            rows: parsedRows,
+            isLast: pred.isLast,
+          }),
+        });
+        if (!res.ok) throw new Error("Failed to load preview");
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        setViewImageUrl(url);
+      } catch (err: any) {
+        showNotification("Failed to load image preview", "error");
+      } finally {
+        setViewLoading(false);
+      }
     }
   };
 
@@ -1289,7 +1325,13 @@ export default function PredictionsPage() {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-muted">{pred.createdBy}</td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-3 px-4 text-right flex justify-end gap-2">
+                          <button
+                            onClick={() => handleViewScheduled(pred)}
+                            className="text-xs font-semibold px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 hover:text-white transition"
+                          >
+                            View
+                          </button>
                           <button
                             onClick={() => handleDeleteScheduled(pred.id)}
                             className="text-xs font-semibold px-2.5 py-1 rounded bg-red/10 border border-red/30 text-red hover:bg-red/20 hover:text-white transition"
@@ -1494,6 +1536,76 @@ export default function PredictionsPage() {
               >
                 Close
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Viewing Scheduled Prediction Modal */}
+      {viewingPrediction && (
+        <div 
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          onClick={() => {
+            setViewingPrediction(null);
+            if (viewImageUrl) URL.revokeObjectURL(viewImageUrl);
+          }}
+        >
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-surface rounded-2xl shadow-2xl border border-white/10 flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="p-4 border-b border-border flex justify-between items-center bg-surface-2">
+              <h3 className="text-lg font-bold text-white">Scheduled Item Preview</h3>
+              <button 
+                onClick={() => {
+                  setViewingPrediction(null);
+                  if (viewImageUrl) URL.revokeObjectURL(viewImageUrl);
+                }}
+                className="text-muted hover:text-white transition"
+              >
+                Close
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-6">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div><span className="text-muted">Template:</span> {viewingPrediction.templateName}</div>
+                <div><span className="text-muted">Time:</span> {format(new Date(viewingPrediction.scheduledAt), "yyyy-MM-dd HH:mm:ss")}</div>
+                <div><span className="text-muted">Priority:</span> {viewingPrediction.priority}</div>
+                <div><span className="text-muted">Auto-Override Wingo:</span> {viewingPrediction.autoOverrideWingo ? "Yes" : "No"}</div>
+              </div>
+              
+              <div className="border-t border-border pt-4">
+                <h4 className="font-semibold text-white mb-2">Content Preview</h4>
+                {viewingPrediction.messageText && (
+                  <div className="mb-4">
+                    <p className="text-xs text-muted mb-1">Text Message:</p>
+                    <div className="p-3 bg-surface-2 rounded-xl border border-border whitespace-pre-wrap text-sm text-white font-mono">
+                      {viewingPrediction.messageText}
+                    </div>
+                  </div>
+                )}
+                
+                {viewingPrediction.gifUrl && (
+                  <div className="mb-4">
+                    <p className="text-xs text-muted mb-1">GIF Preview:</p>
+                    <img src={viewingPrediction.gifUrl} alt="GIF Preview" className="max-w-xs rounded-xl border border-border" />
+                  </div>
+                )}
+
+                {viewingPrediction.templateId && viewingPrediction.templateId !== "none" && (
+                  <div>
+                    <p className="text-xs text-muted mb-2">Generated Chart Preview:</p>
+                    {viewLoading ? (
+                      <div className="h-64 bg-surface-2 rounded-xl border border-border flex items-center justify-center">
+                        <div className="animate-spin h-8 w-8 border-4 border-teal-500 border-t-transparent rounded-full" />
+                      </div>
+                    ) : viewImageUrl ? (
+                      <div className="bg-surface-2 p-2 rounded-xl border border-border flex justify-center">
+                        <img src={viewImageUrl} alt="Chart Preview" className="max-w-full rounded shadow-lg" />
+                      </div>
+                    ) : (
+                      <div className="text-red-400 text-sm">Failed to load chart preview.</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
