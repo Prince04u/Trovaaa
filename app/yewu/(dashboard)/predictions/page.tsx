@@ -83,6 +83,7 @@ export default function PredictionsPage() {
   const [scheduleType, setScheduleType] = useState<"chart" | "text" | "gif">("chart");
   const [scheduleMessageText, setScheduleMessageText] = useState<string>("");
   const [scheduleGifUrl, setScheduleGifUrl] = useState<string>("");
+  const [uploadingGif, setUploadingGif] = useState<boolean>(false);
 
   // Editor states
   const [editorTemplate, setEditorTemplate] = useState<Template | null>(null);
@@ -430,6 +431,40 @@ export default function PredictionsPage() {
     } catch (err: any) {
       setNotification({ message: err.message || "Send failed", type: "error" });
       setTimeout(() => setNotification(null), 4000);
+    }
+  };
+
+  const handleGifUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/gif") && !file.name.endsWith(".gif")) {
+      showNotification("Please select a valid GIF file", "error");
+      return;
+    }
+
+    try {
+      setUploadingGif(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Upload failed");
+      }
+
+      const data = await res.json();
+      setScheduleGifUrl(data.url);
+      showNotification("GIF uploaded successfully!", "success");
+    } catch (err: any) {
+      showNotification(err.message || "Failed to upload GIF", "error");
+    } finally {
+      setUploadingGif(false);
     }
   };
 
@@ -1091,15 +1126,28 @@ export default function PredictionsPage() {
                           <option value="https://media.giphy.com/media/26FPsOhZmqtMC6G0E/giphy.gif">Loss / Try Again GIF</option>
                         </select>
                       </div>
-                      <div>
-                        <label className="text-[10px] text-muted block mb-1">GIF URL (Direct Link to .gif)</label>
-                        <input
-                          type="text"
-                          value={scheduleGifUrl}
-                          onChange={(e) => setScheduleGifUrl(e.target.value)}
-                          placeholder="https://example.com/win.gif"
-                          className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none"
-                        />
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[10px] text-muted block mb-1">GIF URL (Direct Link to .gif)</label>
+                          <input
+                            type="text"
+                            value={scheduleGifUrl}
+                            onChange={(e) => setScheduleGifUrl(e.target.value)}
+                            placeholder="https://example.com/win.gif"
+                            className="w-full bg-surface-2 border border-border rounded-xl px-3 py-1.5 text-xs focus:outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-muted block mb-1">Or Upload GIF File</label>
+                          <input
+                            type="file"
+                            accept="image/gif"
+                            onChange={handleGifUpload}
+                            disabled={uploadingGif}
+                            className="w-full bg-surface-2 border border-border rounded-xl px-2 py-1 text-xs focus:outline-none file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-teal-500 file:text-black file:cursor-pointer disabled:opacity-50"
+                          />
+                          {uploadingGif && <span className="text-[9px] text-teal-400 mt-0.5 block animate-pulse">Uploading GIF...</span>}
+                        </div>
                       </div>
                       <div>
                         <label className="text-[10px] text-muted block mb-1">Caption Text (Optional, HTML allowed)</label>
