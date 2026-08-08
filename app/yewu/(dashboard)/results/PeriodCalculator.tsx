@@ -23,20 +23,21 @@ export const formatPeriodId = (id: string | bigint | number): string => {
 };
 
 export const expandPeriodId = (id: string, mode: WingoMode): string => {
-  const str = String(id).trim();
-  if (str.length === 11) {
-    const datePart = str.substring(0, 8);
-    const countPart = str.substring(8);
-    let middle = "00000";
-    if (mode === "PARITY") middle = "00300";
-    else if (mode === "BCONE") middle = "00390";
-    else if (mode === "S30") middle = "03000";
-    else if (mode === "M1") middle = "00100";
-    else if (mode === "M3") middle = "00300";
-    else if (mode === "M5") middle = "00500";
-    return datePart + middle + countPart;
+  const clean = id.trim().replace(/\D/g, "");
+  if (clean.length === 11) {
+    try {
+      const currentRound = getRoundNumber(mode);
+      for (let offset = -1000; offset <= 1000; offset++) {
+        const candidate = currentRound + BigInt(offset);
+        const candidateStr = String(candidate);
+        const formatted = candidateStr.substring(0, 8) + candidateStr.substring(candidateStr.length - 3);
+        if (formatted === clean) {
+          return String(candidate);
+        }
+      }
+    } catch (e) {}
   }
-  return str;
+  return clean;
 };
 
 export function PeriodCalculator() {
