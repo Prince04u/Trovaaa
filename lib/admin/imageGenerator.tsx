@@ -125,6 +125,23 @@ export async function generatePredictionImage(
 
         {/* Table Rows */}
         <div style={{ position: 'absolute', top: baseHeight, left: 0, width: 2048, display: 'flex', flexDirection: 'column' }}>
+          
+          {/* Dynamic Native Header Row (guarantees perfect alignment) */}
+          {template.imageUrl.includes("luvo_base_cropped") && (
+            <div style={{ display: 'flex', width: tableWidth, height: 80, marginLeft: marginLeft, backgroundColor: '#ffffff', borderTop: `2px solid ${borderColor}`, borderLeft: `2px solid ${borderColor}`, borderRight: `2px solid ${borderColor}`, borderBottom: `2px solid ${borderColor}` }}>
+              {["PERIOD", "PROJECT", "COLOUR", "AMOUNT", "RESULT", "PROFIT"].map((title, idx) => (
+                <div key={idx} style={{ display: 'flex', width: colWidths[idx], borderRight: idx < 5 ? `2px solid ${borderColor}` : 'none', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 700, color: borderColor }}>
+                  {title}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Explicit Top Border Line for the Table (for non-native headers to close the box) */}
+          {!template.imageUrl.includes("luvo_base_cropped") && (
+            <div style={{ display: 'flex', width: tableWidth, height: 2, backgroundColor: borderColor, marginLeft: marginLeft }} />
+          )}
+          
           {rows.map((r, i) => {
             const bgFill = i % 2 === 0 ? "#ffffff" : "#f9f9f9";
             const colVal = (r.colour || "").toLowerCase();
