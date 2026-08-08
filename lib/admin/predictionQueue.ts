@@ -104,9 +104,8 @@ export async function processPredictionQueue(originUrl?: string) {
           origin
         );
 
-        // Broadcast image directly to Telegram
-        const caption = `Prediction update from dispatch console`;
-        await sendPhotoToTelegram(imageBuffer, caption, pred.chatId || undefined);
+        // Broadcast image directly to Telegram with no text caption
+        await sendPhotoToTelegram(imageBuffer, undefined, pred.chatId || undefined);
 
         // Handle Wingo Pre-Result Overrides if enabled
         if (pred.autoOverrideWingo && rows.length > 0) {
