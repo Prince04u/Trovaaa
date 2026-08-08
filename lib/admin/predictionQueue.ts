@@ -55,6 +55,7 @@ export async function processPredictionQueue(originUrl?: string) {
     orderBy: [
       { priority: "desc" },
       { scheduledAt: "asc" },
+      { createdAt: "asc" },
     ],
   });
 

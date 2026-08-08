@@ -19,16 +19,26 @@ export async function generatePredictionImage(
   origin?: string
 ): Promise<Buffer> {
   const resolvedOrigin = origin || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  // Construct absolute URL for the image
-  let baseImageUrl = template.imageUrl;
-  if (!baseImageUrl.startsWith("http")) {
-    baseImageUrl = new URL(baseImageUrl, resolvedOrigin).toString();
+  let baseImageBuffer: Buffer;
+  let imageSrc = template.imageUrl;
+
+  if (template.imageUrl.startsWith("http")) {
+    const res = await fetch(template.imageUrl);
+    if (!res.ok) throw new Error(`Failed to fetch template image: ${res.statusText}`);
+    baseImageBuffer = Buffer.from(await res.arrayBuffer());
+  } else {
+    const fs = await import("fs");
+    const path = await import("path");
+    const relativePath = template.imageUrl.startsWith("/") ? template.imageUrl.slice(1) : template.imageUrl;
+    const localPath = path.join(process.cwd(), "public", relativePath);
+    try {
+      baseImageBuffer = fs.readFileSync(localPath);
+    } catch (fsError: any) {
+      throw new Error(`Failed to read template image from local path "${localPath}": ${fsError.message}`);
+    }
+    imageSrc = new URL(template.imageUrl, resolvedOrigin).toString();
   }
-  
-  // We need to fetch the image ourselves first to get its dimensions via sharp
-  const res = await fetch(baseImageUrl);
-  if (!res.ok) throw new Error("Failed to fetch template image");
-  const baseImageBuffer = Buffer.from(await res.arrayBuffer());
+
   const metadata = await sharp(baseImageBuffer).metadata();
   const width = 2048;
   const baseHeight = Math.round((metadata.height! * width) / metadata.width!);
@@ -44,7 +54,7 @@ export async function generatePredictionImage(
   const ogRes = new ImageResponse(
     (
       <div style={{ display: 'flex', width: 2048, height: finalHeight, backgroundColor: '#fff', position: 'relative' }}>
-        <img src={baseImageUrl} width={2048} height={baseHeight} style={{ position: 'absolute', top: 0, left: 0 }} />
+        <img src={imageSrc} width={2048} height={baseHeight} style={{ position: 'absolute', top: 0, left: 0 }} />
         
         {/* Header fields */}
         {Object.entries(template.fields || {}).map(([key, field]: [string, any]) => {
