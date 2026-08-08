@@ -68,7 +68,9 @@ export async function generatePredictionImage(
   const N = rows.length;
   const rowHeight = 60;
   const totalProfitHeight = isLast ? 80 : 0;
-  const finalHeight = baseHeight + (N * rowHeight) + totalProfitHeight;
+  const isNativeHeader = template.imageUrl.includes("luvo_base_cropped");
+  const nativeHeaderHeight = isNativeHeader ? 80 : 0;
+  const finalHeight = baseHeight + nativeHeaderHeight + (N * rowHeight) + totalProfitHeight;
 
   let totalProfit = 0;
   rows.forEach(r => { totalProfit += parseInt(r.profit) || 0; });
@@ -130,7 +132,7 @@ export async function generatePredictionImage(
           {template.imageUrl.includes("luvo_base_cropped") && (
             <div style={{ display: 'flex', width: tableWidth, height: 80, marginLeft: marginLeft, backgroundColor: '#ffffff', borderTop: `2px solid ${borderColor}`, borderLeft: `2px solid ${borderColor}`, borderRight: `2px solid ${borderColor}`, borderBottom: `2px solid ${borderColor}` }}>
               {["PERIOD", "PROJECT", "COLOUR", "AMOUNT", "RESULT", "PROFIT"].map((title, idx) => (
-                <div key={idx} style={{ display: 'flex', width: colWidths[idx], borderRight: idx < 5 ? `2px solid ${borderColor}` : 'none', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 700, color: borderColor }}>
+                <div key={idx} style={{ display: 'flex', width: colWidths[idx], borderRight: idx < 5 ? `2px solid ${borderColor}` : 'none', alignItems: 'center', justifyContent: 'center', fontSize: 38, fontWeight: 700, color: borderColor }}>
                   {title}
                 </div>
               ))}
