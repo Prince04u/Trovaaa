@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getTemplateById } from "@/lib/admin/templates";
 import { generatePredictionImage } from "@/lib/admin/imageGenerator";
-import { sendPhotoToTelegram } from "@/lib/admin/telegram";
+import { sendPhotoToTelegram, sendTextToTelegram } from "@/lib/admin/telegram";
 import { getRoundWindow } from "@/lib/wingo/rounds";
 import type { WingoMode } from "@/generated/prisma/client";
 
@@ -66,57 +66,63 @@ export async function processPredictionQueue(originUrl?: string) {
     try {
       console.log(`[Queue] Processing scheduled prediction ${pred.id}...`);
 
-      const template = await getTemplateById(pred.templateId);
-      if (!template) {
-        throw new Error(`Template not found: ${pred.templateId}`);
-      }
+      if (pred.messageText) {
+        // Handle plain text message broadcast
+        await sendTextToTelegram(pred.messageText, pred.chatId || undefined);
+      } else {
+        // Handle standard prediction chart image broadcast
+        const template = await getTemplateById(pred.templateId || "");
+        if (!template) {
+          throw new Error(`Template not found: ${pred.templateId}`);
+        }
 
-      const headerValues = JSON.parse(pred.headerValues || "{}");
-      const rows = JSON.parse(pred.rows || "[]") as TableRow[];
+        const headerValues = JSON.parse(pred.headerValues || "{}");
+        const rows = JSON.parse(pred.rows || "[]") as TableRow[];
 
-      // Generate the prediction chart image
-      const imageBuffer = await generatePredictionImage(
-        template,
-        headerValues,
-        rows,
-        pred.isLast,
-        origin
-      );
+        // Generate the prediction chart image
+        const imageBuffer = await generatePredictionImage(
+          template,
+          headerValues,
+          rows,
+          pred.isLast,
+          origin
+        );
 
-      // Broadcast image directly to Telegram
-      const caption = `Prediction update from dispatch console`;
-      await sendPhotoToTelegram(imageBuffer, caption, pred.chatId || undefined);
+        // Broadcast image directly to Telegram
+        const caption = `Prediction update from dispatch console`;
+        await sendPhotoToTelegram(imageBuffer, caption, pred.chatId || undefined);
 
-      // Handle Wingo Pre-Result Overrides if enabled
-      if (pred.autoOverrideWingo && rows.length > 0) {
-        for (const row of rows) {
-          const modeStr = String(row.project || "").toLowerCase();
-          const mode = DURATION_MAP[modeStr];
-          const periodIdStr = String(row.period || "").replace(/\D/g, "");
+        // Handle Wingo Pre-Result Overrides if enabled
+        if (pred.autoOverrideWingo && rows.length > 0) {
+          for (const row of rows) {
+            const modeStr = String(row.project || "").toLowerCase();
+            const mode = DURATION_MAP[modeStr];
+            const periodIdStr = String(row.period || "").replace(/\D/g, "");
 
-          if (mode && periodIdStr) {
-            const roundNumber = BigInt(periodIdStr);
-            const { endsAt } = getRoundWindow(mode, roundNumber);
+            if (mode && periodIdStr) {
+              const roundNumber = BigInt(periodIdStr);
+              const { endsAt } = getRoundWindow(mode, roundNumber);
 
-            // Only override if the round has not ended/settled yet
-            if (Date.now() < endsAt) {
-              const winningNumber = getOverrideNumber(row.colour, row.result);
-              
-              // Check if override already exists for this mode & round
-              const existingOverride = await prisma.resultOverride.findFirst({
-                where: { mode, roundNumber },
-              });
-
-              if (!existingOverride) {
-                await prisma.resultOverride.create({
-                  data: {
-                    mode,
-                    roundNumber,
-                    number: winningNumber,
-                    createdById: pred.createdById,
-                  },
+              // Only override if the round has not ended/settled yet
+              if (Date.now() < endsAt) {
+                const winningNumber = getOverrideNumber(row.colour, row.result);
+                
+                // Check if override already exists for this mode & round
+                const existingOverride = await prisma.resultOverride.findFirst({
+                  where: { mode, roundNumber },
                 });
-                console.log(`[Queue] Auto-set override: ${mode} round #${roundNumber} → ${winningNumber}`);
+
+                if (!existingOverride) {
+                  await prisma.resultOverride.create({
+                    data: {
+                      mode,
+                      roundNumber,
+                      number: winningNumber,
+                      createdById: pred.createdById,
+                    },
+                  });
+                  console.log(`[Queue] Auto-set override: ${mode} round #${roundNumber} → ${winningNumber}`);
+                }
               }
             }
           }

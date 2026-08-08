@@ -34,11 +34,12 @@ export async function GET(req: NextRequest) {
     const formatted = scheduled.map((p) => ({
       id: p.id,
       templateId: p.templateId,
-      templateName: templateMap.get(p.templateId) || "Unknown Template",
-      headerValues: JSON.parse(p.headerValues || "{}"),
-      rows: JSON.parse(p.rows || "[]"),
+      templateName: p.messageText ? "Text Message" : (templateMap.get(p.templateId || "") || "Unknown Template"),
+      headerValues: p.headerValues ? JSON.parse(p.headerValues) : {},
+      rows: p.rows ? JSON.parse(p.rows) : [],
       isLast: p.isLast,
       chatId: p.chatId,
+      messageText: p.messageText,
       scheduledAt: p.scheduledAt.toISOString(),
       priority: p.priority,
       autoOverrideWingo: p.autoOverrideWingo,
@@ -65,13 +66,18 @@ export async function POST(req: NextRequest) {
       rows,
       isLast,
       chatId,
+      messageText,
       scheduledAt,
       priority,
       autoOverrideWingo,
     } = await req.json();
 
-    if (!templateId || !scheduledAt) {
-      return NextResponse.json({ error: "templateId and scheduledAt are required" }, { status: 400 });
+    if (!scheduledAt) {
+      return NextResponse.json({ error: "scheduledAt is required" }, { status: 400 });
+    }
+
+    if (!templateId && !messageText) {
+      return NextResponse.json({ error: "Either templateId or messageText must be provided" }, { status: 400 });
     }
 
     const scheduledTime = new Date(scheduledAt);
@@ -83,14 +89,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Scheduled time must be in the future" }, { status: 400 });
     }
 
-    // Save scheduled prediction to db
+    // Save scheduled prediction/text message to db
     await prisma.scheduledPrediction.create({
       data: {
-        templateId,
-        headerValues: JSON.stringify(headerValues || {}),
-        rows: JSON.stringify(rows || []),
+        templateId: templateId || null,
+        headerValues: headerValues ? JSON.stringify(headerValues) : null,
+        rows: rows ? JSON.stringify(rows) : null,
         isLast: !!isLast,
         chatId: chatId || null,
+        messageText: messageText || null,
         scheduledAt: scheduledTime,
         priority: Number(priority || 0),
         autoOverrideWingo: autoOverrideWingo !== false,
